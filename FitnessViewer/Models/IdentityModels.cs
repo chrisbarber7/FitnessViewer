@@ -21,7 +21,7 @@ namespace FitnessViewer.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("FitnessViewer", throwIfV1Schema: false)
         {
         }
 
