@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using FitnessViewer.Infrastructure.Models;
+using System.Collections;
 
-namespace FitnessViewer.Core.Interfaces
+namespace FitnessViewer.Inftastructure.Interfaces
 {
     public interface IRepository
     {

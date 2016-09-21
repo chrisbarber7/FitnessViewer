@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		connectionStrings.config = connectionStrings.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Core", "FitnessViewer.Core\FitnessViewer.Core.csproj", "{CA3E4870-F803-4C67-93C8-277903F3C348}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Infrastructure", "FitnessViewer.Infrastructure\FitnessViewer.Infrastructure.csproj", "{2CBBB62F-B131-49BC-9492-18C7A37B20F3}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{6F4D394D-7888-4799-B8BB-CB1AF158BA28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F4D394D-7888-4799-B8BB-CB1AF158BA28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F4D394D-7888-4799-B8BB-CB1AF158BA28}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA3E4870-F803-4C67-93C8-277903F3C348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA3E4870-F803-4C67-93C8-277903F3C348}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA3E4870-F803-4C67-93C8-277903F3C348}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA3E4870-F803-4C67-93C8-277903F3C348}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CBBB62F-B131-49BC-9492-18C7A37B20F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CBBB62F-B131-49BC-9492-18C7A37B20F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CBBB62F-B131-49BC-9492-18C7A37B20F3}.Release|Any CPU.ActiveCfg = Release|Any CPU

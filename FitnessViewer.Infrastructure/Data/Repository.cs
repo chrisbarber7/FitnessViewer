@@ -1,11 +1,12 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Inftastructure.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FitnessViewer.Core;
-using FitnessViewer.Core.Interfaces;
+
 
 namespace FitnessViewer.Infrastructure.Data
 {

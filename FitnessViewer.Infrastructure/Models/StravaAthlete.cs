@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Data;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FitnessViewer.Core
+namespace FitnessViewer.Infrastructure.Models
 {
     public class StravaAthlete
     {
@@ -13,7 +14,9 @@ namespace FitnessViewer.Core
 
         [Required]
         [MaxLength(128)]
+        [ForeignKey("User")]
         public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

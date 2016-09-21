@@ -92,6 +92,7 @@
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\Repository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.Designer.cs">
       <DependentUpon>201609211018039_InitialCreate.cs</DependentUpon>
@@ -104,19 +105,18 @@
     <Compile Include="Migrations\201609211121025_ChangeStravaAthleteIdType.Designer.cs">
       <DependentUpon>201609211121025_ChangeStravaAthleteIdType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609211844261_ChangeStravaAthleteUserId.cs" />
+    <Compile Include="Migrations\201609211844261_ChangeStravaAthleteUserId.Designer.cs">
+      <DependentUpon>201609211844261_ChangeStravaAthleteUserId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\StravaAthlete.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Strava.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FitnessViewer.Core\FitnessViewer.Core.csproj">
-      <Project>{ca3e4870-f803-4c67-93c8-277903f3c348}</Project>
-      <Name>FitnessViewer.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609211018039_InitialCreate.resx">
@@ -127,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609211121025_ChangeStravaAthleteIdType.resx">
       <DependentUpon>201609211121025_ChangeStravaAthleteIdType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609211844261_ChangeStravaAthleteUserId.resx">
+      <DependentUpon>201609211844261_ChangeStravaAthleteUserId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

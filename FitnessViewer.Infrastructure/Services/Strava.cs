@@ -3,7 +3,7 @@ using Strava.Authentication;
 using Strava.Clients;
 using System;
 using FitnessViewer.Infrastructure.Data;
-using FitnessViewer.Core;
+using FitnessViewer.Infrastructure.Models;
 
 namespace FitnessViewer.Infrastructure.Services
 {
