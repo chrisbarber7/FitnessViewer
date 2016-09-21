@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FitnessViewer.ViewModels;
-using FitnessViewer.Infrastructure;
+using FitnessViewer.Infrastructure.Data;
 
 namespace FitnessViewer.Controllers
 {
@@ -334,7 +334,18 @@ namespace FitnessViewer.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    {
+                        // grab hold of the access token from the strava external login
+                        Claim stravaTokenClaim = loginInfo.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:accesstoken");
+
+                        long stravaId = Convert.ToInt64(loginInfo.Login.ProviderKey);
+
+                        // update details from current strava athlete settings.
+                        FitnessViewer.Infrastructure.Services.Strava s = new Infrastructure.Services.Strava(stravaId, stravaTokenClaim.Value);
+                        s.UpdateAthlete(stravaTokenClaim.Value);
+
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -375,6 +386,13 @@ namespace FitnessViewer.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        // at this point the user exists so grab hold of the access token from the strava external login
+                        Claim stravaTokenClaim = info.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:accesstoken");
+                  
+                        // create a new strava athlete record and store the UserId and access token. 
+                        FitnessViewer.Infrastructure.Services.Strava s = new Infrastructure.Services.Strava();
+                        s.AddAthlete(user.Id, stravaTokenClaim.Value);
+                        
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
