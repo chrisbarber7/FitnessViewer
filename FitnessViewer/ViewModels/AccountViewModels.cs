@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FitnessViewer.Models
+namespace FitnessViewer.ViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {
