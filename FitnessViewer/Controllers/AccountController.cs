@@ -338,10 +338,10 @@ namespace FitnessViewer.Controllers
                         // grab hold of the access token from the strava external login
                         Claim stravaTokenClaim = loginInfo.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:accesstoken");
 
-                        long stravaId = Convert.ToInt64(loginInfo.Login.ProviderKey);
+                        long stravaAthleteId = Convert.ToInt64(loginInfo.Login.ProviderKey);
 
                         // update details from current strava athlete settings.
-                        FitnessViewer.Infrastructure.Services.Strava s = new Infrastructure.Services.Strava(stravaId, stravaTokenClaim.Value);
+                        FitnessViewer.Infrastructure.Services.Strava s = new Infrastructure.Services.Strava(stravaAthleteId, stravaTokenClaim.Value);
                         s.UpdateAthlete(stravaTokenClaim.Value);
 
                         return RedirectToLocal(returnUrl);

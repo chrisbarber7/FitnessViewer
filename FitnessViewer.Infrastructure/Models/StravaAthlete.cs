@@ -7,7 +7,7 @@ namespace FitnessViewer.Infrastructure.Models
 {
     public class StravaAthlete
     {
-        // disabling auto identity column to allow use of strava activity id as the key.
+        // disabling auto identity column to allow use of strava athlete id as the key.
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }

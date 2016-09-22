@@ -109,8 +109,32 @@
     <Compile Include="Migrations\201609211844261_ChangeStravaAthleteUserId.Designer.cs">
       <DependentUpon>201609211844261_ChangeStravaAthleteUserId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609211922211_AddStravaActivity.cs" />
+    <Compile Include="Migrations\201609211922211_AddStravaActivity.Designer.cs">
+      <DependentUpon>201609211922211_AddStravaActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609212059200_AddQueue.cs" />
+    <Compile Include="Migrations\201609212059200_AddQueue.Designer.cs">
+      <DependentUpon>201609212059200_AddQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609221148523_AddStravaBestEffort.cs" />
+    <Compile Include="Migrations\201609221148523_AddStravaBestEffort.Designer.cs">
+      <DependentUpon>201609221148523_AddStravaBestEffort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609221339462_AddStravaStreamTable.cs" />
+    <Compile Include="Migrations\201609221339462_AddStravaStreamTable.Designer.cs">
+      <DependentUpon>201609221339462_AddStravaStreamTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609221451536_UpdateStravaStreamTable.cs" />
+    <Compile Include="Migrations\201609221451536_UpdateStravaStreamTable.Designer.cs">
+      <DependentUpon>201609221451536_UpdateStravaStreamTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\StravaActivity.cs" />
     <Compile Include="Models\StravaAthlete.cs" />
+    <Compile Include="Models\StravaBestEffort.cs" />
+    <Compile Include="Models\StravaQueue.cs" />
+    <Compile Include="Models\StravaStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Strava.cs" />
   </ItemGroup>
@@ -130,6 +154,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609211844261_ChangeStravaAthleteUserId.resx">
       <DependentUpon>201609211844261_ChangeStravaAthleteUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609211922211_AddStravaActivity.resx">
+      <DependentUpon>201609211922211_AddStravaActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609212059200_AddQueue.resx">
+      <DependentUpon>201609212059200_AddQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609221148523_AddStravaBestEffort.resx">
+      <DependentUpon>201609221148523_AddStravaBestEffort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609221339462_AddStravaStreamTable.resx">
+      <DependentUpon>201609221339462_AddStravaStreamTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609221451536_UpdateStravaStreamTable.resx">
+      <DependentUpon>201609221451536_UpdateStravaStreamTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
