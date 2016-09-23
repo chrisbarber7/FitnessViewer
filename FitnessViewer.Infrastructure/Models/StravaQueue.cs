@@ -19,9 +19,8 @@ namespace FitnessViewer.Infrastructure.Models
         public bool Processed { get; set; }
         public DateTime? ProcessedAt { get; set; }
 
-        [ForeignKey("Activity")]
         public long? StravaActivityId { get; set; }
-        public virtual StravaActivity Activity { get; set; }
+        
     }
 }
 

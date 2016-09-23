@@ -16,9 +16,12 @@ namespace FitnessViewer.Download
             Repository _repo = new Repository();
             var jobs = _repo.GetQueue();
 
+
+
+            int x = (int)PeakStreamType.Power;
             foreach (StravaQueue job in jobs)
             {
-                if (job.Activity == null)
+                if (job.StravaActivityId == null)
                 {
                     Strava s = new Strava(job.UserId);
                     s.AddActivitesForAthlete();

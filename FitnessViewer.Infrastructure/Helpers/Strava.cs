@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Strava.Streams;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Linq;
+using Strava.Api;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -26,7 +28,22 @@ namespace FitnessViewer.Infrastructure.Helpers
         public Strava()
         {
             _repo = new Repository();
+            Limits.UsageChanged += Limits_UsageChanged;
         }
+
+        private void Limits_UsageChanged(object sender, UsageChangedEventArgs e)
+        {
+            // if getting close to short term limit introduce delays.
+            if (e.Usage.ShortTerm < 550)
+                return;
+
+            System.Diagnostics.Debug.WriteLine("Short: "+e.Usage.ShortTerm.ToString());
+            System.Diagnostics.Debug.WriteLine("Long : " + e.Usage.LongTerm.ToString());
+            System.Threading.Thread.Sleep(30000);
+
+        }
+
+
         /// <summary>
         /// Constructor for a given identity user id (token looked up)
         /// </summary>
@@ -35,6 +52,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _repo = new Repository();
             _userId = userId;
+            Limits.UsageChanged += Limits_UsageChanged;
+
             string token = _repo.FindAthleteByUserId(userId).Token;
 
             if (string.IsNullOrEmpty(token))
@@ -122,10 +141,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                // temp just to ensure strava limits aren't broken!
-                System.Threading.Thread.Sleep(3000);
-
-                var activities = _client.Activities.GetActivities(new DateTime(2000, 1, 1), DateTime.Now, page++, perPage);
+                var activities = _client.Activities.GetActivities(new DateTime(2016, 1, 1), DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
                     break;
@@ -159,8 +175,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             StravaActivity activity = _repo.GetActivity(activityId);
 
+            System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
+                activity.Name));
+
             // heart rate/power zones
-            List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
+            //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
 
             // detailed information
             List<ActivityStream> stream = _client.Streams.GetActivityStream(activity.Id.ToString(),
@@ -177,7 +196,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 StreamType.Watts,
                 StreamResolution.All);
 
-            ExtractStream(activity.Id, stream);
+            ExtractAndStoreStream(activity.Id, stream);
 
             if (activity.Type == "Run")
                 RunDetailsDownload(activity);
@@ -191,7 +210,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="activityId">Strava activity id</param>
         /// <param name="stream">Detailed information for activity in strava format</param>
-        private void ExtractStream(long activityId, List<ActivityStream> stream)
+        private void ExtractAndStoreStream(long activityId, List<ActivityStream> stream)
         {
             List<StravaStream> convertedStream = new List<StravaStream>();
 
@@ -199,8 +218,26 @@ namespace FitnessViewer.Infrastructure.Helpers
             for (int row = 0; row <= stream[0].OriginalSize - 1; row++)
                 convertedStream.Add(ExtractStreamRow(activityId, stream, row));
 
+            ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.Watts).ToList(), PeakStreamType.Power);
+            ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.Cadence).ToList(), PeakStreamType.Cadence);
+            ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.HeartRate).ToList(), PeakStreamType.HeartRate);
+
             // write all details to database.
             _repo.AddSteam(convertedStream);
+        }
+
+        private void ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
+        {
+            if (!stream.Contains(null))
+            {
+                PeakValueFinder finder = new PeakValueFinder(
+                    stream.Select(s => s.Value).ToList(),
+                    PeakStreamType.Power);
+
+                List<PeakDetail> peaks = finder.FindPeaks();
+
+                _repo.AddPeak(activityId, type, peaks);
+            }
         }
 
         /// <summary>

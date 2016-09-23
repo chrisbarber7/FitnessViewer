@@ -23,9 +23,9 @@ namespace FitnessViewer.Test
             // add 30 records for 30 seconds peak.
             for (int i = 0; i <= 30; i++)
                 _30SecondData.Add(1000);
-      
+
             for (int i = 1000; i <= 0; i--)
-                _30SecondData.Add(i);            
+                _30SecondData.Add(i);
         }
 
         [TestMethod]
@@ -108,21 +108,21 @@ namespace FitnessViewer.Test
 
             List<PeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
-       Assert.AreEqual(    1,     peaks.Where(p => p.Duration == 5).Count());
-    
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 5).Count());
+
 
 
             Assert.AreEqual(1, peaks.Where(p => p.Duration == 10).Count());
-           Assert.AreEqual(1, peaks.Where(p => p.Duration == 30).Count());
-           Assert.AreEqual(1, peaks.Where(p => p.Duration == 60).Count());
-          Assert.AreEqual(1, peaks.Where(p => p.Duration == 120).Count());
-           Assert.AreEqual(1, peaks.Where(p => p.Duration == 300).Count());
-          Assert.AreEqual(1, peaks.Where(p => p.Duration == 360).Count());
-          Assert.AreEqual(1, peaks.Where(p => p.Duration == 600).Count());
-          Assert.AreEqual(1, peaks.Where(p => p.Duration == 720).Count());
-          Assert.AreEqual(1, peaks.Where(p => p.Duration == 1200).Count());
-         Assert.AreEqual(1, peaks.Where(p => p.Duration == 1800).Count());
-         Assert.AreEqual(1, peaks.Where(p => p.Duration == 3600).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 30).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 60).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 120).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 300).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 360).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 600).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 720).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 1200).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 1800).Count());
+            Assert.AreEqual(1, peaks.Where(p => p.Duration == 3600).Count());
             Assert.AreEqual(1, peaks.Where(p => p.Duration == int.MaxValue).Count());
 
             // and a few we're not.
@@ -199,7 +199,7 @@ namespace FitnessViewer.Test
 
 
             foreach (PeakDetail p in finder.FindPeaks())
-            { 
+            {
                 switch (p.Duration)
                 {
                     case 5: { Assert.AreEqual(102, p.Value); break; }
@@ -236,7 +236,7 @@ namespace FitnessViewer.Test
             {
                 switch (p.Duration)
                 {
-                       case 60: { Assert.AreEqual(153, p.Value); break; }
+                    case 60: { Assert.AreEqual(153, p.Value); break; }
                     case 120: { Assert.AreEqual(151, p.Value); break; }
                     case 300: { Assert.AreEqual(141, p.Value); break; }
                     case 360: { Assert.AreEqual(138, p.Value); break; }
@@ -3520,7 +3520,7 @@ namespace FitnessViewer.Test
 126  ,
 125  ,
 123  ,
-122  
+122
             };
         }
 
@@ -9969,7 +9969,7 @@ namespace FitnessViewer.Test
 84   ,
 84   ,
 0    ,
-0   
+0
 
             };
         }
@@ -9979,5 +9979,4 @@ namespace FitnessViewer.Test
 
     }
 }
-
 

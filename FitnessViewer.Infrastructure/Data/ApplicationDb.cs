@@ -21,5 +21,6 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<StravaQueue> Queue { get; set; }
         public DbSet<StravaBestEffort> StravaBestEffort { get; set; }
         public DbSet<StravaStream> StravaStream { get; set; }
+        public DbSet<StravaActivityPeaks> StravaActivityPeak { get; set; }
     }
 }

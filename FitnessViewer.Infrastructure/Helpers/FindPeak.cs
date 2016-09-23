@@ -31,9 +31,9 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public enum PeakStreamType
     {
-        Power,
-        HeartRate,
-        Cadence
+        Power = 1,
+        HeartRate = 2,
+        Cadence = 3
     }
 
     /// <summary>

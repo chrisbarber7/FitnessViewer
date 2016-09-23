@@ -129,8 +129,21 @@
     <Compile Include="Migrations\201609221451536_UpdateStravaStreamTable.Designer.cs">
       <DependentUpon>201609221451536_UpdateStravaStreamTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609231332425_AddStravaActivityPeaks.cs" />
+    <Compile Include="Migrations\201609231332425_AddStravaActivityPeaks.Designer.cs">
+      <DependentUpon>201609231332425_AddStravaActivityPeaks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609231557012_AddPeak3600ToStravaActivityPeaks.cs" />
+    <Compile Include="Migrations\201609231557012_AddPeak3600ToStravaActivityPeaks.Designer.cs">
+      <DependentUpon>201609231557012_AddPeak3600ToStravaActivityPeaks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609232100073_RemoveFKFromQueueTable.cs" />
+    <Compile Include="Migrations\201609232100073_RemoveFKFromQueueTable.Designer.cs">
+      <DependentUpon>201609232100073_RemoveFKFromQueueTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\StravaActivity.cs" />
+    <Compile Include="Models\StravaActivityPeaks.cs" />
     <Compile Include="Models\StravaAthlete.cs" />
     <Compile Include="Models\StravaBestEffort.cs" />
     <Compile Include="Models\StravaQueue.cs" />
@@ -170,6 +183,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609221451536_UpdateStravaStreamTable.resx">
       <DependentUpon>201609221451536_UpdateStravaStreamTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609231332425_AddStravaActivityPeaks.resx">
+      <DependentUpon>201609231332425_AddStravaActivityPeaks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609231557012_AddPeak3600ToStravaActivityPeaks.resx">
+      <DependentUpon>201609231557012_AddPeak3600ToStravaActivityPeaks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609232100073_RemoveFKFromQueueTable.resx">
+      <DependentUpon>201609232100073_RemoveFKFromQueueTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Models;
+﻿using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Models;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -33,6 +34,9 @@ namespace FitnessViewer.Infrastructure.Interfaces
 
         // stream
         void AddSteam(IEnumerable<StravaStream> s);
+
+        // peaks
+        void AddPeak(long activityId, PeakStreamType type, List<PeakDetail> peaks);
     }
 
 }
