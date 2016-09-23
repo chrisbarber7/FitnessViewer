@@ -136,7 +136,8 @@
     <Compile Include="Models\StravaQueue.cs" />
     <Compile Include="Models\StravaStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Strava.cs" />
+    <Compile Include="Helpers\FindPeak.cs" />
+    <Compile Include="Helpers\Strava.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

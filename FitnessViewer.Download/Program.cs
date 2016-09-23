@@ -1,6 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models;
-using FitnessViewer.Infrastructure.Services;
+using FitnessViewer.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

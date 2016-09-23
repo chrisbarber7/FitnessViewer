@@ -11,7 +11,7 @@ using Strava.Streams;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
-namespace FitnessViewer.Infrastructure.Services
+namespace FitnessViewer.Infrastructure.Helpers
 {
     /// <summary>
     /// Used to get data from strava and add/update the information in the database

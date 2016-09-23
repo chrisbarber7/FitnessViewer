@@ -341,7 +341,7 @@ namespace FitnessViewer.Controllers
                         long stravaAthleteId = Convert.ToInt64(loginInfo.Login.ProviderKey);
 
                         // update details from current strava athlete settings.
-                        FitnessViewer.Infrastructure.Services.Strava s = new Infrastructure.Services.Strava(stravaAthleteId, stravaTokenClaim.Value);
+                        FitnessViewer.Infrastructure.Helpers.Strava s = new Infrastructure.Helpers.Strava(stravaAthleteId, stravaTokenClaim.Value);
                         s.UpdateAthlete(stravaTokenClaim.Value);
 
                         return RedirectToLocal(returnUrl);
@@ -390,7 +390,7 @@ namespace FitnessViewer.Controllers
                         Claim stravaTokenClaim = info.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:accesstoken");
                   
                         // create a new strava athlete record and store the UserId and access token. 
-                        FitnessViewer.Infrastructure.Services.Strava s = new Infrastructure.Services.Strava();
+                        FitnessViewer.Infrastructure.Helpers.Strava s = new Infrastructure.Helpers.Strava();
                         s.AddAthlete(user.Id, stravaTokenClaim.Value);
                         
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
