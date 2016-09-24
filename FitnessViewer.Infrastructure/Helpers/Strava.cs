@@ -1,17 +1,18 @@
-﻿using Strava.Athletes;
-using Strava.Authentication;
-using Strava.Clients;
-using System;
+﻿using System;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models;
-using Strava.Activities;
-using com.strava.api.Activities;
 using System.Collections.Generic;
-using Strava.Streams;
+
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Linq;
-using Strava.Api;
+
+// Strava.DotNet
+using StravaDotNetAthletes = Strava.Athletes;
+using StravaDotNetAuthentication = Strava.Authentication;
+using StravaDotNetClient = Strava.Clients;
+using StravaDotNetStreams = Strava.Streams;
+using StravaDotNetActivities = Strava.Activities;
+using StravaDotNetApi = Strava.Api;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -21,17 +22,17 @@ namespace FitnessViewer.Infrastructure.Helpers
     public class Strava
     {
         private Repository _repo;
-        private StravaClient _client;
+        private StravaDotNetClient.StravaClient _client;
         private string _userId;
         private long _stravaId;
 
         public Strava()
         {
             _repo = new Repository();
-            Limits.UsageChanged += Limits_UsageChanged;
+            StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
         }
 
-        private void Limits_UsageChanged(object sender, UsageChangedEventArgs e)
+        private void Limits_UsageChanged(object sender, StravaDotNetApi.UsageChangedEventArgs e)
         {
             // if getting close to short term limit introduce delays.
             if (e.Usage.ShortTerm < 550)
@@ -52,7 +53,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _repo = new Repository();
             _userId = userId;
-            Limits.UsageChanged += Limits_UsageChanged;
+            StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
 
             string token = _repo.FindAthleteByUserId(userId).Token;
 
@@ -80,8 +81,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="token">Strava Access Token</param>
         private void SetupClient(string token)
         {
-            StaticAuthentication auth = new StaticAuthentication(token);
-            _client = new StravaClient(auth);
+            StravaDotNetAuthentication.StaticAuthentication auth = new StravaDotNetAuthentication.StaticAuthentication(token);
+            _client = new StravaDotNetClient.StravaClient(auth);
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _userId = userId;
             SetupClient(token);
-            Athlete athlete = _client.Athletes.GetAthlete();
+            StravaDotNetAthletes.Athlete athlete = _client.Athletes.GetAthlete();
             var a = new StravaAthlete();
             a.Id = athlete.Id;
             a.UserId = userId;
@@ -111,7 +112,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="token">Strava access token</param>
         public void UpdateAthlete(string token)
         {
-            Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
+            StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
             StravaAthlete a = _repo.FindAthleteById(this._stravaId);
 
             if (a == null)
@@ -146,11 +147,11 @@ namespace FitnessViewer.Infrastructure.Helpers
                 if (activities.Count == 0)
                     break;
 
-                List<StravaActivity> newActivities = new List<StravaActivity>();
+                List<Models.StravaActivity> newActivities = new List<Models.StravaActivity>();
 
                 foreach (var item in activities)
                 {
-                    StravaActivity activity = InsertActivity(a.Id, item);
+                    Models.StravaActivity activity = InsertActivity(a.Id, item);
 
                     if (activity == null)
                         continue;
@@ -173,7 +174,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="activityId">Strava activity Id</param>
         public void ActivityDetailsDownload(long activityId)
         {
-            StravaActivity activity = _repo.GetActivity(activityId);
+            Models.StravaActivity activity = _repo.GetActivity(activityId);
 
             System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
                 activity.Name));
@@ -182,19 +183,19 @@ namespace FitnessViewer.Infrastructure.Helpers
             //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
 
             // detailed information
-            List<ActivityStream> stream = _client.Streams.GetActivityStream(activity.Id.ToString(),
-                StreamType.Altitude |
-                StreamType.Cadence |
-                StreamType.Distance |
-                StreamType.GradeSmooth |
-                StreamType.Heartrate |
-                StreamType.LatLng |
-                StreamType.Moving |
-                StreamType.Temperature |
-                StreamType.Time |
-                StreamType.Velocity_Smooth |
-                StreamType.Watts,
-                StreamResolution.All);
+            List<StravaDotNetStreams.ActivityStream> stream = _client.Streams.GetActivityStream(activity.Id.ToString(),
+                StravaDotNetStreams.StreamType.Altitude |
+                StravaDotNetStreams.StreamType.Cadence |
+                StravaDotNetStreams.StreamType.Distance |
+                StravaDotNetStreams.StreamType.GradeSmooth |
+                StravaDotNetStreams.StreamType.Heartrate |
+                StravaDotNetStreams.StreamType.LatLng |
+                StravaDotNetStreams.StreamType.Moving |
+                StravaDotNetStreams.StreamType.Temperature |
+                StravaDotNetStreams.StreamType.Time |
+                StravaDotNetStreams.StreamType.Velocity_Smooth |
+                StravaDotNetStreams.StreamType.Watts,
+                StravaDotNetStreams.StreamResolution.All);
 
             ExtractAndStoreStream(activity.Id, stream);
 
@@ -210,7 +211,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="activityId">Strava activity id</param>
         /// <param name="stream">Detailed information for activity in strava format</param>
-        private void ExtractAndStoreStream(long activityId, List<ActivityStream> stream)
+        private void ExtractAndStoreStream(long activityId, List<StravaDotNetStreams.ActivityStream> stream)
         {
             List<StravaStream> convertedStream = new List<StravaStream>();
 
@@ -247,16 +248,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="stream">Detailed information for activity in strava format</param>
         /// <param name="rowNumber">Row to be processed</param>
         /// <returns></returns>
-        private static StravaStream ExtractStreamRow(long activityId, List<ActivityStream> stream, int rowNumber)
+        private static StravaStream ExtractStreamRow(long activityId, List<StravaDotNetStreams.ActivityStream> stream, int rowNumber)
         {
             StravaStream newStream = new StravaStream();
             newStream.StravaActivityId = activityId;
 
-            foreach (ActivityStream s in stream)
+            foreach (StravaDotNetStreams.ActivityStream s in stream)
             {
                 switch (s.StreamType)
                 {
-                    case StreamType.LatLng:
+                    case StravaDotNetStreams.StreamType.LatLng:
                         {
                             // convert json lat/long  
                             JArray o = (JArray)s.Data[rowNumber];
@@ -265,16 +266,16 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                             break;
                         }
-                    case StreamType.Altitude: { newStream.Altitude = Convert.ToDouble(s.Data[rowNumber]); break; }
-                    case StreamType.Cadence: { newStream.Cadence = Convert.ToInt32(s.Data[rowNumber]); break; }
-                    case StreamType.Distance: { newStream.Distance = Convert.ToDouble(s.Data[rowNumber]); break; }
-                    case StreamType.GradeSmooth: { newStream.Gradient = Convert.ToDouble(s.Data[rowNumber]); break; }
-                    case StreamType.Heartrate: { newStream.HeartRate = Convert.ToInt32(s.Data[rowNumber]); break; }
-                    case StreamType.Moving: { newStream.Moving = Convert.ToBoolean(s.Data[rowNumber]); break; }
-                    case StreamType.Temperature: { newStream.Temperature = Convert.ToInt32(s.Data[rowNumber]); break; }
-                    case StreamType.Time: { newStream.Time = Convert.ToInt32(s.Data[rowNumber]); break; }
-                    case StreamType.Velocity_Smooth: { newStream.Velocity = Convert.ToDouble(s.Data[rowNumber]); break; }
-                    case StreamType.Watts: { newStream.Watts = Convert.ToInt32(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Altitude: { newStream.Altitude = Convert.ToDouble(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Cadence: { newStream.Cadence = Convert.ToInt32(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Distance: { newStream.Distance = Convert.ToDouble(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.GradeSmooth: { newStream.Gradient = Convert.ToDouble(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Heartrate: { newStream.HeartRate = Convert.ToInt32(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Moving: { newStream.Moving = Convert.ToBoolean(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Temperature: { newStream.Temperature = Convert.ToInt32(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Time: { newStream.Time = Convert.ToInt32(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Velocity_Smooth: { newStream.Velocity = Convert.ToDouble(s.Data[rowNumber]); break; }
+                    case StravaDotNetStreams.StreamType.Watts: { newStream.Watts = Convert.ToInt32(s.Data[rowNumber]); break; }
                 }
             }
 
@@ -285,7 +286,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download bike specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void BikeDetailsDownload(StravaActivity activity)
+        private void BikeDetailsDownload(Models.StravaActivity activity)
         {
         }
 
@@ -293,11 +294,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download run specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void RunDetailsDownload(StravaActivity activity)
+        private void RunDetailsDownload(Models.StravaActivity activity)
         {
             var act = _client.Activities.GetActivity(activity.Id.ToString(), true);
 
-            foreach (BestEffort effort in act.BestEfforts)
+            foreach (StravaDotNetActivities.BestEffort effort in act.BestEfforts)
                 InsertBestEffort(activity.Id, effort);
 
             _repo.SaveChanges();
@@ -308,7 +309,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="activityId">Strava activity Id</param>
         /// <param name="e">Strava best effort information</param>
-        private void InsertBestEffort(long activityId, BestEffort e)
+        private void InsertBestEffort(long activityId, StravaDotNetActivities.BestEffort e)
         {
             StravaBestEffort effort = new StravaBestEffort();
 
@@ -332,9 +333,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="athleteId">Strava Athlete Id</param>
         /// <param name="item">Strava Summary infomation</param>
         /// <returns></returns>
-        private StravaActivity InsertActivity(long athleteId, ActivitySummary item)
+        private StravaActivity InsertActivity(long athleteId, StravaDotNetActivities.ActivitySummary item)
         {
-            StravaActivity s = new StravaActivity();
+            Models.StravaActivity s = new Models.StravaActivity();
 
             try
             {
@@ -407,7 +408,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="athlete">Strava athlete details</param>
         /// <param name="a">FV Athlete details</param>
-        private static void UpdateEntityWithStravaDetails(Athlete athlete, StravaAthlete a)
+        private static void UpdateEntityWithStravaDetails(StravaDotNetAthletes.Athlete athlete, StravaAthlete a)
         {
             a.FirstName = athlete.FirstName;
             a.LastName = athlete.LastName;
