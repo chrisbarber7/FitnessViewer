@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class StravaActivityPeaks
+    public class ActivityPeaks
     {
         public int Id { get; set; }
 
         [Required]
         [ForeignKey("Activity")]
-        public long StravaActivityId { get; set; }
-        public virtual StravaActivity Activity { get; set; }
+        public long ActivityId { get; set; }
+        public virtual Activity Activity { get; set; }
 
         public byte PeakType { get; set; }
         public int? Peak5 { get; set; }

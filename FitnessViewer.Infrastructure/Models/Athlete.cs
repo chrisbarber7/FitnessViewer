@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class StravaAthlete
+    public class Athlete
     {
         // disabling auto identity column to allow use of strava athlete id as the key.
         [Key]

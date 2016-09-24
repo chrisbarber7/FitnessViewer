@@ -19,9 +19,9 @@ namespace FitnessViewer.Download
 
 
             int x = (int)PeakStreamType.Power;
-            foreach (StravaQueue job in jobs)
+            foreach (DownloadQueue job in jobs)
             {
-                if (job.StravaActivityId == null)
+                if (job.ActivityId == null)
                 {
                     Strava s = new Strava(job.UserId);
                     s.AddActivitesForAthlete();
@@ -31,7 +31,7 @@ namespace FitnessViewer.Download
                 else
                 {
                     Strava s = new Strava(job.UserId);
-                    s.ActivityDetailsDownload(job.StravaActivityId.Value);
+                    s.ActivityDetailsDownload(job.ActivityId.Value);
                     _repo.RemoveQueueItem(job.Id);
                 }
 

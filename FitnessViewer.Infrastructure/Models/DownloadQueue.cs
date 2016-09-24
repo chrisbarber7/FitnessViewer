@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class StravaQueue
+    public class DownloadQueue
     {
         public int Id { get; set; }
 
@@ -19,7 +19,7 @@ namespace FitnessViewer.Infrastructure.Models
         public bool Processed { get; set; }
         public DateTime? ProcessedAt { get; set; }
 
-        public long? StravaActivityId { get; set; }
+        public long? ActivityId { get; set; }
         
     }
 }

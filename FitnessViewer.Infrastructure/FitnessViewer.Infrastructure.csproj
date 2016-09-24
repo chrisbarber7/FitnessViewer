@@ -141,13 +141,21 @@
     <Compile Include="Migrations\201609232100073_RemoveFKFromQueueTable.Designer.cs">
       <DependentUpon>201609232100073_RemoveFKFromQueueTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609240723430_RemoveStravaPrefix.cs" />
+    <Compile Include="Migrations\201609240723430_RemoveStravaPrefix.Designer.cs">
+      <DependentUpon>201609240723430_RemoveStravaPrefix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609240739333_RenameStravaForeignKeys.cs" />
+    <Compile Include="Migrations\201609240739333_RenameStravaForeignKeys.Designer.cs">
+      <DependentUpon>201609240739333_RenameStravaForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\StravaActivity.cs" />
-    <Compile Include="Models\StravaActivityPeaks.cs" />
-    <Compile Include="Models\StravaAthlete.cs" />
-    <Compile Include="Models\StravaBestEffort.cs" />
-    <Compile Include="Models\StravaQueue.cs" />
-    <Compile Include="Models\StravaStream.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityPeaks.cs" />
+    <Compile Include="Models\Athlete.cs" />
+    <Compile Include="Models\BestEffort.cs" />
+    <Compile Include="Models\DownloadQueue.cs" />
+    <Compile Include="Models\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\FindPeak.cs" />
     <Compile Include="Helpers\Strava.cs" />
@@ -192,6 +200,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609232100073_RemoveFKFromQueueTable.resx">
       <DependentUpon>201609232100073_RemoveFKFromQueueTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609240723430_RemoveStravaPrefix.resx">
+      <DependentUpon>201609240723430_RemoveStravaPrefix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609240739333_RenameStravaForeignKeys.resx">
+      <DependentUpon>201609240739333_RenameStravaForeignKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

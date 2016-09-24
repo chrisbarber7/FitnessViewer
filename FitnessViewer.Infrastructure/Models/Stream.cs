@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class StravaStream
+    public class Stream
     {
         public int Id { get; set; }
 
         [Required]
         [ForeignKey("Activity")]
-        public long StravaActivityId { get; set; }
-        public virtual StravaActivity Activity { get; set; }
+        public long ActivityId { get; set; }
+        public virtual Activity Activity { get; set; }
         
         public int Time { get; set; }
         public double? Latitude { get; set; }

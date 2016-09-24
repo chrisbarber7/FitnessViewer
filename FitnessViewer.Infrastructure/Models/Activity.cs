@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class StravaActivity
+    public class Activity
     {
         // disabling auto identity column to allow use of strava activity id as the key.
         [Key]
@@ -13,8 +13,8 @@ namespace FitnessViewer.Infrastructure.Models
 
         [Required]
         [ForeignKey("Athlete")]
-        public long StravaAthleteId { get; set; }
-        public virtual StravaAthlete Athlete { get; set; }
+        public long AthleteId { get; set; }
+        public virtual Athlete Athlete { get; set; }
 
         public string Name { get; set; }
         public string ExternalId { get; set; }

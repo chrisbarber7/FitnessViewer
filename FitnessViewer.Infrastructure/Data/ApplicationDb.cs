@@ -16,11 +16,11 @@ namespace FitnessViewer.Infrastructure.Data
             return new ApplicationDb();
         }
 
-        public DbSet<StravaAthlete> StravaAthlete { get; set; }
-        public DbSet<StravaActivity> StravaActivity { get; set; }
-        public DbSet<StravaQueue> Queue { get; set; }
-        public DbSet<StravaBestEffort> StravaBestEffort { get; set; }
-        public DbSet<StravaStream> StravaStream { get; set; }
-        public DbSet<StravaActivityPeaks> StravaActivityPeak { get; set; }
+        public DbSet<Athlete> Athlete { get; set; }
+        public DbSet<Activity> Activity { get; set; }
+        public DbSet<DownloadQueue> Queue { get; set; }
+        public DbSet<BestEffort> BestEffort { get; set; }
+        public DbSet<Stream> Stream { get; set; }
+        public DbSet<ActivityPeaks> ActivityPeak { get; set; }
     }
 }

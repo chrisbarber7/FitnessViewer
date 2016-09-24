@@ -95,7 +95,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             _userId = userId;
             SetupClient(token);
             StravaDotNetAthletes.Athlete athlete = _client.Athletes.GetAthlete();
-            var a = new StravaAthlete();
+            var a = new Athlete();
             a.Id = athlete.Id;
             a.UserId = userId;
             a.Token = token;
@@ -113,7 +113,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         public void UpdateAthlete(string token)
         {
             StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
-            StravaAthlete a = _repo.FindAthleteById(this._stravaId);
+            Athlete a = _repo.FindAthleteById(this._stravaId);
 
             if (a == null)
                 return;
@@ -129,7 +129,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         public void AddActivitesForAthlete()
         {
-            StravaAthlete a = _repo.FindAthleteByUserId(_userId);
+            Athlete a = _repo.FindAthleteByUserId(_userId);
 
             if (a == null)
                 throw new ArgumentException("Invalid UserId");
@@ -142,16 +142,16 @@ namespace FitnessViewer.Infrastructure.Helpers
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                var activities = _client.Activities.GetActivities(new DateTime(2016, 1, 1), DateTime.Now, page++, perPage);
+                var activities = _client.Activities.GetActivities(new DateTime(2015, 1, 1), new DateTime(2015,2,1), page++, perPage);
 
                 if (activities.Count == 0)
                     break;
 
-                List<Models.StravaActivity> newActivities = new List<Models.StravaActivity>();
+                List<Models.Activity> newActivities = new List<Models.Activity>();
 
                 foreach (var item in activities)
                 {
-                    Models.StravaActivity activity = InsertActivity(a.Id, item);
+                    Models.Activity activity = InsertActivity(a.Id, item);
 
                     if (activity == null)
                         continue;
@@ -174,7 +174,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="activityId">Strava activity Id</param>
         public void ActivityDetailsDownload(long activityId)
         {
-            Models.StravaActivity activity = _repo.GetActivity(activityId);
+            Models.Activity activity = _repo.GetActivity(activityId);
 
             System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
                 activity.Name));
@@ -213,7 +213,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="stream">Detailed information for activity in strava format</param>
         private void ExtractAndStoreStream(long activityId, List<StravaDotNetStreams.ActivityStream> stream)
         {
-            List<StravaStream> convertedStream = new List<StravaStream>();
+            List<Stream> convertedStream = new List<Stream>();
 
             // convert each strava item
             for (int row = 0; row <= stream[0].OriginalSize - 1; row++)
@@ -248,10 +248,10 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="stream">Detailed information for activity in strava format</param>
         /// <param name="rowNumber">Row to be processed</param>
         /// <returns></returns>
-        private static StravaStream ExtractStreamRow(long activityId, List<StravaDotNetStreams.ActivityStream> stream, int rowNumber)
+        private static Stream ExtractStreamRow(long activityId, List<StravaDotNetStreams.ActivityStream> stream, int rowNumber)
         {
-            StravaStream newStream = new StravaStream();
-            newStream.StravaActivityId = activityId;
+            Stream newStream = new Stream();
+            newStream.ActivityId = activityId;
 
             foreach (StravaDotNetStreams.ActivityStream s in stream)
             {
@@ -286,7 +286,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download bike specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void BikeDetailsDownload(Models.StravaActivity activity)
+        private void BikeDetailsDownload(Models.Activity activity)
         {
         }
 
@@ -294,7 +294,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download run specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void RunDetailsDownload(Models.StravaActivity activity)
+        private void RunDetailsDownload(Models.Activity activity)
         {
             var act = _client.Activities.GetActivity(activity.Id.ToString(), true);
 
@@ -311,9 +311,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="e">Strava best effort information</param>
         private void InsertBestEffort(long activityId, StravaDotNetActivities.BestEffort e)
         {
-            StravaBestEffort effort = new StravaBestEffort();
+            BestEffort effort = new BestEffort();
 
-            effort.StravaActivityId = activityId;
+            effort.ActivityId = activityId;
             effort.MovingTime = TimeSpan.FromSeconds(e.MovingTime);
             effort.Name = e.Name;
             effort.ResourceState = e.ResourceState;
@@ -333,13 +333,13 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="athleteId">Strava Athlete Id</param>
         /// <param name="item">Strava Summary infomation</param>
         /// <returns></returns>
-        private StravaActivity InsertActivity(long athleteId, StravaDotNetActivities.ActivitySummary item)
+        private Activity InsertActivity(long athleteId, StravaDotNetActivities.ActivitySummary item)
         {
-            Models.StravaActivity s = new Models.StravaActivity();
+            Models.Activity s = new Models.Activity();
 
             try
             {
-                s.StravaAthleteId = athleteId;
+                s.AthleteId = athleteId;
                 s.Id = item.Id;
                 s.Name = item.Name;
                 s.ExternalId = item.ExternalId;
@@ -408,7 +408,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="athlete">Strava athlete details</param>
         /// <param name="a">FV Athlete details</param>
-        private static void UpdateEntityWithStravaDetails(StravaDotNetAthletes.Athlete athlete, StravaAthlete a)
+        private static void UpdateEntityWithStravaDetails(StravaDotNetAthletes.Athlete athlete, Athlete a)
         {
             a.FirstName = athlete.FirstName;
             a.LastName = athlete.LastName;

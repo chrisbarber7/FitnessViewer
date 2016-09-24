@@ -23,26 +23,26 @@ namespace FitnessViewer.Infrastructure.Data
         }
 
         #region Athlete
-        public void AddAthlete(StravaAthlete a)
+        public void AddAthlete(Athlete a)
         {
-            context.StravaAthlete.Add(a);
+            context.Athlete.Add(a);
             context.SaveChanges();
         }
     
-        public void EditAthlete(StravaAthlete a)
+        public void EditAthlete(Athlete a)
         {
             context.SaveChanges();
         }
 
-        public StravaAthlete FindAthleteById(long id)
+        public Athlete FindAthleteById(long id)
         {
-            var result = (from r in context.StravaAthlete where r.Id == id select r).FirstOrDefault();
+            var result = (from r in context.Athlete where r.Id == id select r).FirstOrDefault();
             return result;
         }
 
-        public StravaAthlete FindAthleteByUserId(string userId)
+        public Athlete FindAthleteByUserId(string userId)
         {
-            var result = (from r in context.StravaAthlete where r.UserId == userId select r).FirstOrDefault();
+            var result = (from r in context.Athlete where r.UserId == userId select r).FirstOrDefault();
             return result;
         }
 
@@ -67,7 +67,7 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void AddQueueItem(string userId, long? activityId)
         {
-            StravaQueue q = new StravaQueue() { UserId = userId, Added = DateTime.Now, Processed = false, StravaActivityId=activityId };
+            DownloadQueue q = new DownloadQueue() { UserId = userId, Added = DateTime.Now, Processed = false, ActivityId=activityId };
             context.Queue.Add(q);
             context.SaveChanges();
         }
@@ -80,7 +80,7 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void RemoveQueueItem(int id)
         {
-            StravaQueue q = context.Queue.Find(id);
+            DownloadQueue q = context.Queue.Find(id);
             q.Processed = true;
             q.ProcessedAt = DateTime.Now;
             context.SaveChanges();
@@ -94,34 +94,34 @@ namespace FitnessViewer.Infrastructure.Data
         #endregion
 
         #region activity
-        public void AddActivity(StravaActivity a)
+        public void AddActivity(Activity a)
         {
-            context.StravaActivity.Add(a);
+            context.Activity.Add(a);
         
         }
 
-        public void AddActivity(IEnumerable<StravaActivity> activities)
+        public void AddActivity(IEnumerable<Activity> activities)
         {
-            context.StravaActivity.AddRange(activities);
+            context.Activity.AddRange(activities);
         }
 
-        public StravaActivity GetActivity(long activityId)
+        public Activity GetActivity(long activityId)
         {
-            return context.StravaActivity.Where(a => a.Id == activityId).FirstOrDefault();
+            return context.Activity.Where(a => a.Id == activityId).FirstOrDefault();
         }
         #endregion
 
         #region Best Effort
-        public void AddBestEffort(StravaBestEffort e)
+        public void AddBestEffort(BestEffort e)
         {
-            context.StravaBestEffort.Add(e);
+            context.BestEffort.Add(e);
         }
         #endregion
 
         #region streams
-        public void AddSteam(IEnumerable<StravaStream> s)
+        public void AddSteam(IEnumerable<Stream> s)
         {
-            context.StravaStream.AddRange(s);
+            context.Stream.AddRange(s);
             context.SaveChanges();
                     }
 
@@ -131,7 +131,7 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void AddPeak(long activityId, PeakStreamType type, List<PeakDetail> peaks)
         {
-            StravaActivityPeaks stravaPeak = new StravaActivityPeaks() { StravaActivityId = activityId, PeakType = (byte)type };
+            ActivityPeaks stravaPeak = new ActivityPeaks() { ActivityId = activityId, PeakType = (byte)type };
 
             foreach (PeakDetail d in peaks)
             {
@@ -153,7 +153,7 @@ namespace FitnessViewer.Infrastructure.Data
                 }
             }
 
-            context.StravaActivityPeak.Add(stravaPeak);
+            context.ActivityPeak.Add(stravaPeak);
             context.SaveChanges();
 
         }
