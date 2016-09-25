@@ -96,6 +96,7 @@
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\Repository.cs" />
+    <Compile Include="Helpers\MetreDistance.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.Designer.cs">
