@@ -344,7 +344,8 @@ namespace FitnessViewer.Controllers
                         FitnessViewer.Infrastructure.Helpers.Strava s = new Infrastructure.Helpers.Strava(stravaAthleteId, stravaTokenClaim.Value);
                         s.UpdateAthlete(stravaTokenClaim.Value);
 
-                        return RedirectToLocal(returnUrl);
+                       return RedirectToLocal(returnUrl);
+                
                     }
                 case SignInStatus.LockedOut:
                     return View("Lockout");

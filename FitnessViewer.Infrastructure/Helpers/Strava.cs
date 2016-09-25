@@ -142,7 +142,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                var activities = _client.Activities.GetActivities(new DateTime(2015, 1, 1), new DateTime(2015,2,1), page++, perPage);
+                var activities = _client.Activities.GetActivities(DateTime.Now.AddDays(-90), DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
                     break;
@@ -199,9 +199,9 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             ExtractAndStoreStream(activity.Id, stream);
 
-            if (activity.Type == "Run")
+            if (activity.ActivityTypeId == "Run")
                 RunDetailsDownload(activity);
-            else if (activity.Type == "Ride" || activity.Type == "VirtualRide")
+            else if (activity.ActivityTypeId == "Ride" || activity.ActivityTypeId == "VirtualRide")
                 BikeDetailsDownload(activity);
 
         }
@@ -343,7 +343,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 s.Id = item.Id;
                 s.Name = item.Name;
                 s.ExternalId = item.ExternalId;
-                s.Type = item.Type.ToString();
+                s.ActivityTypeId = item.Type.ToString();
                 s.SufferScore = item.SufferScore;
                 s.EmbedToken = item.EmbedToken;
                 s.Distance = item.Distance;

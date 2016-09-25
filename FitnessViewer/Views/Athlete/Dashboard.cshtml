@@ -1,0 +1,71 @@
+﻿@model FitnessViewer.ViewModels.AthleteViewModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/dataTables")
+
+
+
+<div class="jumbotron">
+    <h1></h1>
+
+</div>
+
+<div class="row">
+    @Model.FirstName
+
+  
+    <table id="table_id" class="table table table-striped table-hover compact ">
+        <thead>
+            <tr>
+                <th>
+                   Name
+                </th>
+      
+                <th>
+                    Type
+                </th>
+                <th>
+                    Distance
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Activities)
+            {
+                <tr>
+             
+
+                    <td>
+                        @Html.ActionLink(item.Name, "View", "Activity", new { id= item.Id }, null)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityTypeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Distance)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/dataTables")
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+
+    </script>
+}

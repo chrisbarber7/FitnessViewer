@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -149,9 +153,22 @@
     <Compile Include="Migrations\201609240739333_RenameStravaForeignKeys.Designer.cs">
       <DependentUpon>201609240739333_RenameStravaForeignKeys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609251131543_AddActivityTypeTable.cs" />
+    <Compile Include="Migrations\201609251131543_AddActivityTypeTable.Designer.cs">
+      <DependentUpon>201609251131543_AddActivityTypeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609251138420_RemoveActivityTable.cs" />
+    <Compile Include="Migrations\201609251138420_RemoveActivityTable.Designer.cs">
+      <DependentUpon>201609251138420_RemoveActivityTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609251142591_ReAddActivityTypeTable.cs" />
+    <Compile Include="Migrations\201609251142591_ReAddActivityTypeTable.Designer.cs">
+      <DependentUpon>201609251142591_ReAddActivityTypeTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityPeaks.cs" />
+    <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\Athlete.cs" />
     <Compile Include="Models\BestEffort.cs" />
     <Compile Include="Models\DownloadQueue.cs" />
@@ -206,6 +223,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609240739333_RenameStravaForeignKeys.resx">
       <DependentUpon>201609240739333_RenameStravaForeignKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609251131543_AddActivityTypeTable.resx">
+      <DependentUpon>201609251131543_AddActivityTypeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609251138420_RemoveActivityTable.resx">
+      <DependentUpon>201609251138420_RemoveActivityTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609251142591_ReAddActivityTypeTable.resx">
+      <DependentUpon>201609251142591_ReAddActivityTypeTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

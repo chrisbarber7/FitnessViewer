@@ -109,6 +109,12 @@ namespace FitnessViewer.Infrastructure.Data
         {
             return context.Activity.Where(a => a.Id == activityId).FirstOrDefault();
         }
+
+        public IEnumerable<Activity> GetActivities(string userId)
+        {
+          return  context.Activity.Where(a => a.Athlete.UserId == userId).ToList();
+
+        }
         #endregion
 
         #region Best Effort

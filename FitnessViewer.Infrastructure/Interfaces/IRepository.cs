@@ -28,6 +28,7 @@ namespace FitnessViewer.Infrastructure.Interfaces
         void AddActivity(Activity a);
         void AddActivity(IEnumerable<Activity> activities);
         Activity GetActivity(long activityId);
+        IEnumerable<Activity> GetActivities(string userId);
 
         // Run Best Effort
         void AddBestEffort(BestEffort e);

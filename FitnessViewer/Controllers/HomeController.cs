@@ -10,6 +10,10 @@ namespace FitnessViewer.Controllers
     {
         public ActionResult Index()
         {
+
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Dashboard", "Athlete");
+
             return View();
         }
 

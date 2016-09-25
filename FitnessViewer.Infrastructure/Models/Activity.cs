@@ -18,7 +18,13 @@ namespace FitnessViewer.Infrastructure.Models
 
         public string Name { get; set; }
         public string ExternalId { get; set; }
-        public string Type { get; set; }
+
+
+
+      [ForeignKey("ActivityType")]
+                public string ActivityTypeId { get; set; }
+       public virtual ActivityType ActivityType { get; set; }
+
         public int? SufferScore { get; set; }
         public string EmbedToken { get; set; }
         public float Distance { get; set; }

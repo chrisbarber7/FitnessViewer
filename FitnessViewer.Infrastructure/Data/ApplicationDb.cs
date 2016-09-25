@@ -22,5 +22,20 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<BestEffort> BestEffort { get; set; }
         public DbSet<Stream> Stream { get; set; }
         public DbSet<ActivityPeaks> ActivityPeak { get; set; }
+        public DbSet<ActivityType> ActivityType { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+
+            //modelBuilder.Entity<Activity>()
+            //    .HasRequired<ActivityType>(t => t.ActivityType)
+            // .WithRequiredPrincipal()
+            //    .WillCascadeOnDelete(false); ;
+        
+
+
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
