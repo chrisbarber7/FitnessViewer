@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Helpers;
+using System.Data.Entity;
 
 namespace FitnessViewer.Infrastructure.Data
 {
@@ -116,12 +117,17 @@ namespace FitnessViewer.Infrastructure.Data
 
         public Activity GetActivity(long activityId)
         {
-            return context.Activity.Where(a => a.Id == activityId).FirstOrDefault();
+            return context.Activity.Where(a => a.Id == activityId)
+                .Include(a=>a.ActivityType)
+                .FirstOrDefault();
         }
 
         public IEnumerable<Activity> GetActivities(string userId)
         {
-          return  context.Activity.Where(a => a.Athlete.UserId == userId).ToList();
+          return  context.Activity
+                .Where(a => a.Athlete.UserId == userId)
+                .Include(a => a.ActivityType)
+                .ToList();
 
         }
         #endregion

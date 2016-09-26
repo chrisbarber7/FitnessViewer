@@ -26,14 +26,13 @@ namespace FitnessViewer.Controllers
 
         public ActionResult Dashboard()
         {
-            DateTime now = DateTime.Now;
-            var x = _repo.GetPeaks(this.User.Identity.GetUserId(), Infrastructure.Helpers.PeakStreamType.Power);
+      //      DateTime now = DateTime.Now;
+      //      var x = _repo.GetPeaks(this.User.Identity.GetUserId(), Infrastructure.Helpers.PeakStreamType.Power);
 
-            TimeSpan taken = DateTime.Now.Subtract(now);
+        //    TimeSpan taken = DateTime.Now.Subtract(now);
 
             Athlete data = _repo.FindAthleteByUserId(this.User.Identity.GetUserId());
-            IEnumerable<ActivityViewModel> activites = Mapper.Map<IEnumerable<ActivityViewModel>>( _repo.GetActivities(this.User.Identity.GetUserId()));
-            var result = new AthleteViewModel() { FirstName = data.FirstName, Activities=activites };
+            var result = new AthleteViewModel() { FirstName = data.FirstName};
 
             return View(result);
         }

@@ -13,36 +13,58 @@
                 <th>
                     Name
                 </th>
-
+                <th>
+                    Date
+                </th>
                 <th>
                     Type
                 </th>
                 <th>
-                    Distance
+                    Dist mi
                 </th>
+                <th>Ele</th>
+                <th>Time</th>
             </tr>
         </thead>
-        <tbody>
-                </tbody>
+        <tbody></tbody>
     </table>
-    </div>
+</div>
 @section scripts {
     @Scripts.Render("~/bundles/dataTables")
     <script type="text/javascript">
         $(document).ready(function () {
             $('#table_id').dataTable({
                 "ajax": "/api/activity",
+                "autoWidth": false,
                 "deferRender": true,
-                "columns": [
-                      {
-                          "data": function (data, type, row, meta) {
-                              return '<a href="/activity/view/' + data.Id + '">' + data.Name + '</a>';
-                          }
-                      },
-                    { "data": "ActivityTypeId" },
-                    { "data": "Distance" }
+                "order": [[1, "desc"]],
+                "columns": [{
+                    "data": function (data, type, row, meta) {
+                        return '<a href="/activity/view/' + data.Id + '">' + data.Name + '</a>';
+                    }
+                },
+                {
+                    "data": {
+                        _: "Date",
+                        sort: "StartDateLocal"
+                    }
+                },
+                { "data": "ActivityTypeId" },
+                { "data": "Distance" },
+                { "data": "ElevationGain" },
+                { "data": "ElapsedTime" }
+
                 ]
+
+                ,
+                "columnDefs": [
+                    { "className": "dt-right", "targets": [3, 4] },
+                { "width": "60%", "targets": 0 } ]
             });
-        })
+
+
+        }
+        )
     </script>
+
 }

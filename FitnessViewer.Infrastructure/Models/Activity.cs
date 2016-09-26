@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Helpers;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,9 +22,9 @@ namespace FitnessViewer.Infrastructure.Models
 
 
 
-      [ForeignKey("ActivityType")]
-                public string ActivityTypeId { get; set; }
-       public virtual ActivityType ActivityType { get; set; }
+        [ForeignKey("ActivityType")]
+        public string ActivityTypeId { get; set; }
+        public virtual ActivityType ActivityType { get; set; }
 
         public int? SufferScore { get; set; }
         public string EmbedToken { get; set; }
@@ -67,5 +68,30 @@ namespace FitnessViewer.Infrastructure.Models
 
         public float Calories { get; set; }
         public string Description { get; set; }
+
+        /// <summary>
+        /// return distance formatted for the given activity.
+        /// </summary>
+        /// <returns>formatted distance</returns>
+        public string GetDistanceByActivityType()
+        {
+            if (this.ActivityType.IsRide)
+                return string.Format("{0}mi", MetreDistance.ToMiles(this.Distance).ToString());
+            else if (this.ActivityType.IsRun)
+                return string.Format("{0}mi", MetreDistance.ToMiles(this.Distance).ToString());
+            else if (this.ActivityType.IsSwim)
+                return string.Format("{0}m", this.Distance.ToString());
+            else
+                return this.Distance.ToString();
+        }
+
+        /// <summary>
+        /// return distance in miles.
+        /// </summary>
+        /// <returns>formatted distance in miles</returns>
+        public string DistanceInMiles()
+        {
+            return MetreDistance.ToMiles(this.Distance).ToString();
+        }
     }
 }

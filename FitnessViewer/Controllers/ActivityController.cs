@@ -33,7 +33,7 @@ namespace FitnessViewer.Controllers
             {
                 Id = a.Id,
                 Name = a.Name,
-                Distance = a.Distance
+                Distance = a.GetDistanceByActivityType()
             };
             return View(m);
         }
