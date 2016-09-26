@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Helpers;
 using System.Data.Entity;
+using static FitnessViewer.Infrastructure.Models.AthletePeaks;
 
 namespace FitnessViewer.Infrastructure.Data
 {
@@ -178,79 +179,61 @@ namespace FitnessViewer.Infrastructure.Data
             context.SaveChanges();
 
         }
-
+        /// <summary>
+        /// Return Peak information for common time duration
+        /// </summary>
+        /// <param name="userId">Indentity</param>
+        /// <param name="type">Stream Type to analyse</param>
+        /// <returns></returns>
         public IEnumerable<AthletePeaks> GetPeaks(string userId, PeakStreamType type)
         {
             var peaks = context.ActivityPeak
-                  .Where(p => p.Activity.Athlete.UserId == userId && p.PeakType == (byte)type);
-      //            .ToList();
-
+                  .Where(p => p.Activity.Athlete.UserId == userId && p.PeakType == (byte)type)
+                  .Include(p=>p.Activity);
 
             List<AthletePeaks> ap = new List<AthletePeaks>();
             ap.Add(ExtractPeaksByDays(type, peaks, 7));
             ap.Add(ExtractPeaksByDays(type, peaks, 30));
             ap.Add(ExtractPeaksByDays(type, peaks, 90));
             ap.Add(ExtractPeaksByDays(type, peaks, 365));
+            ap.Add(ExtractPeaksByDays(type, peaks, int.MaxValue));
             return ap ;
         }
 
         private static AthletePeaks ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)
         {
-            DateTime earliestDate = DateTime.Now.AddDays(days*-1);
+            // days=int.maxvalue is used for earlist date
+            DateTime earliestDate = days==int.MaxValue ? DateTime.MinValue: DateTime.Now.AddDays(days*-1);
 
             AthletePeaks ap = new AthletePeaks();
             ap.PeakType = type;
             ap.Days = days;
 
+            ap.Seconds5 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+                                .OrderByDescending(p => p.Peak5)
+                                .Select(p=>new AthletePeaksDetails() { Peak=p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault();
 
-            var peak5 = peaks
-                .Where(p => p.Activity.StartDateLocal >= earliestDate)
+            ap.Minute1 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+                                .OrderByDescending(p => p.Peak60)
+                                .Select(p => new AthletePeaksDetails() { Peak = p.Peak60, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault();
 
+            ap.Minute5 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+                                .OrderByDescending(p => p.Peak300)
+                                .Select(p => new AthletePeaksDetails() { Peak = p.Peak300, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault();
 
-                  .OrderByDescending(p => p.Peak5)
-                .Select(p => new { Peak5 = p.Peak5, ActivityId = p.ActivityId })
-                  .FirstOrDefault();
+            ap.Minute20 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+                                .OrderByDescending(p => p.Peak1200)
+                                .Select(p => new AthletePeaksDetails() { Peak = p.Peak1200, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault();
 
-            var peak60 = peaks
-                .Where(p => p.Activity.StartDateLocal >= earliestDate)
-               .OrderByDescending(p => p.Peak60)
-                .Select(p => new { Peak60 = p.Peak60, ActivityId = p.ActivityId })
-
-                  .FirstOrDefault();
-
-            var peak300 = peaks
-                .Where(p => p.Activity.StartDateLocal >= earliestDate)
-                .OrderByDescending(p => p.Peak300)
-                .Select(p => new { Peak300 = p.Peak300, ActivityId = p.ActivityId })
-
-                  .FirstOrDefault();
-
-            var peak1200 = peaks
-                .Where(p => p.Activity.StartDateLocal >= earliestDate)
-               .OrderByDescending(p => p.Peak1200)
-                .Select(p => new { Peak1200 = p.Peak1200, ActivityId = p.ActivityId })
-
-               .FirstOrDefault();
-
-            var peak3600 = peaks
-                .Where(p => p.Activity.StartDateLocal >= earliestDate)
-            .OrderByDescending(p => p.Peak3600)
-                .Select(p => new { Peak3600 = p.Peak3600, ActivityId = p.ActivityId })
-
-            .FirstOrDefault();
-
-            ap.Peak05 = peak5.Peak5;
-            ap.Peak05ActivityId = peak5.ActivityId;
-            ap.Peak60 = peak60.Peak60;
-            ap.Peak60ActivityId = peak60.ActivityId;
-            ap.Peak300 = peak300.Peak300;
-            ap.Peak300ActivityId = peak300.ActivityId;
-
-            ap.Peak1200 = peak1200.Peak1200;
-            ap.Peak1200ActivityId = peak1200.ActivityId;
-
-            ap.Peak3600 = peak3600.Peak3600;
-            ap.Peak3600ActivityId = peak3600.ActivityId;
+            ap.Minute60 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+                                .OrderByDescending(p => p.Peak3600)
+                                .Select(p => new AthletePeaksDetails() { Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault();
+            
             return ap;
         }
 

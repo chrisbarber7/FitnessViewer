@@ -26,13 +26,12 @@ namespace FitnessViewer.Controllers
 
         public ActionResult Dashboard()
         {
-      //      DateTime now = DateTime.Now;
-      //      var x = _repo.GetPeaks(this.User.Identity.GetUserId(), Infrastructure.Helpers.PeakStreamType.Power);
+            var powerPeakInfo = _repo.GetPeaks(this.User.Identity.GetUserId(), Infrastructure.Helpers.PeakStreamType.Power);
 
-        //    TimeSpan taken = DateTime.Now.Subtract(now);
 
             Athlete data = _repo.FindAthleteByUserId(this.User.Identity.GetUserId());
-            var result = new AthleteViewModel() { FirstName = data.FirstName};
+            var result = new AthleteViewModel() { FirstName = data.FirstName,
+            PowerPeaks = powerPeakInfo};
 
             return View(result);
         }

@@ -6,28 +6,42 @@
 @Styles.Render("~/Content/dataTables")
 
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
+
 <div class="row">
-    <table id="table_id" class="table table table-striped table-hover compact ">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Type
-                </th>
-                <th>
-                    Dist mi
-                </th>
-                <th>Ele</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <div class="col-md-4">One</div>
+    <div class="col-md-4">Two blah blah blah blah blah blah blah blah blah</div>
+    <div class="col-md-4">
+
+
+
+        @{Html.RenderPartial("PeakPowerSummary", Model.PowerPeaks); }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table id="table_id" class="table table table-striped table-hover compact ">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Dist mi
+                    </th>
+                    <th>Ele</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 @section scripts {
     @Scripts.Render("~/bundles/dataTables")
@@ -59,7 +73,7 @@
                 ,
                 "columnDefs": [
                     { "className": "dt-right", "targets": [3, 4] },
-                { "width": "60%", "targets": 0 } ]
+                { "width": "60%", "targets": 0 }]
             });
 
 

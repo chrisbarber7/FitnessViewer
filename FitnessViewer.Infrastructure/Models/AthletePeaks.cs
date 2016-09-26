@@ -7,20 +7,37 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-   public class AthletePeaks
+    public class AthletePeaks
     {
-  
+ 
+
+        public AthletePeaks()
+        {
+            Seconds5 = new AthletePeaksDetails();
+            Minute1 = new AthletePeaksDetails();
+            Minute5 = new AthletePeaksDetails();
+            Minute20 = new AthletePeaksDetails();
+            Minute60 = new AthletePeaksDetails();
+
+        }
+
         public PeakStreamType PeakType { get; set; }
-        public int Days { get; set; }
-        public int? Peak05 { get; set; }
-        public long? Peak05ActivityId { get; set; }
-        public int? Peak60 { get; set; }
-        public long? Peak60ActivityId { get; set; }
-        public int? Peak300 { get; set; }
-        public long? Peak300ActivityId { get; set; }
-        public int? Peak1200 { get; set; }
-        public long? Peak1200ActivityId { get; set; }
-        public int? Peak3600 { get; set; }
-        public long? Peak3600ActivityId { get; set; }
+        public int Days { get; set; }        
+
+        public AthletePeaksDetails Seconds5 { get; set; }
+        public AthletePeaksDetails Minute1 { get; set; }
+        public AthletePeaksDetails Minute5 { get; set; }
+        public AthletePeaksDetails Minute20 { get; set; }
+        public AthletePeaksDetails Minute60 { get; set; }
+
+        public class AthletePeaksDetails {
+            public AthletePeaksDetails( )
+            {
+            }
+
+            public int? Peak { get; set; }
+            public long? ActivityId { get; set; }
+            public string Description { get; set; }
+        }    
     }
 }
