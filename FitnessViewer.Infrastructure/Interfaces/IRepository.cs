@@ -23,6 +23,7 @@ namespace FitnessViewer.Infrastructure.Interfaces
         IEnumerable GetQueue();
         IEnumerable FindQueueItemByUserId(string userId);
         void RemoveQueueItem(int id);
+        void QueueItemMarkHasError(int id);
 
         // activity
         void AddActivity(Activity a);
@@ -38,6 +39,7 @@ namespace FitnessViewer.Infrastructure.Interfaces
 
         // peaks
         void AddPeak(long activityId, PeakStreamType type, List<PeakDetail> peaks);
+        IEnumerable<AthletePeaks> GetPeaks(string userId, PeakStreamType type);
     }
 
 }

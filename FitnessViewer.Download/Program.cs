@@ -16,28 +16,33 @@ namespace FitnessViewer.Download
             Repository _repo = new Repository();
             var jobs = _repo.GetQueue();
 
-
-
-            int x = (int)PeakStreamType.Power;
             foreach (DownloadQueue job in jobs)
             {
-                if (job.ActivityId == null)
+                try
                 {
-                    Strava s = new Strava(job.UserId);
-                    s.AddActivitesForAthlete();
+                    if (job.HasError != null)
+                        if (job.HasError.Value)
+                            continue;
 
-                    _repo.RemoveQueueItem(job.Id);
+                    if (job.ActivityId == null)
+                    {
+                        Strava s = new Strava(job.UserId);
+                        s.AddActivitesForAthlete();
+                        _repo.RemoveQueueItem(job.Id);
+                    }
+                    else
+                    {
+                        Strava s = new Strava(job.UserId);
+                        s.ActivityDetailsDownload(job.ActivityId.Value);
+                        _repo.RemoveQueueItem(job.Id);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Strava s = new Strava(job.UserId);
-                    s.ActivityDetailsDownload(job.ActivityId.Value);
-                    _repo.RemoveQueueItem(job.Id);
+                    _repo.QueueItemMarkHasError(job.Id);
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
-
-
             }
-
         }
     }
 }

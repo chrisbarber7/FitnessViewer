@@ -20,6 +20,7 @@ namespace FitnessViewer.Infrastructure.Models
         public DateTime? ProcessedAt { get; set; }
 
         public long? ActivityId { get; set; }
+        public bool? HasError { get; set; }
         
     }
 }

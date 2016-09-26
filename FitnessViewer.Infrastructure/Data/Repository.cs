@@ -83,6 +83,15 @@ namespace FitnessViewer.Infrastructure.Data
             DownloadQueue q = context.Queue.Find(id);
             q.Processed = true;
             q.ProcessedAt = DateTime.Now;
+            q.HasError = false;
+            context.SaveChanges();
+
+        }
+
+        public void QueueItemMarkHasError(int id)
+        {
+            DownloadQueue q = context.Queue.Find(id);
+            q.HasError = true;
             context.SaveChanges();
 
         }
@@ -164,6 +173,80 @@ namespace FitnessViewer.Infrastructure.Data
 
         }
 
+        public IEnumerable<AthletePeaks> GetPeaks(string userId, PeakStreamType type)
+        {
+            var peaks = context.ActivityPeak
+                  .Where(p => p.Activity.Athlete.UserId == userId && p.PeakType == (byte)type);
+      //            .ToList();
+
+
+            List<AthletePeaks> ap = new List<AthletePeaks>();
+            ap.Add(ExtractPeaksByDays(type, peaks, 7));
+            ap.Add(ExtractPeaksByDays(type, peaks, 30));
+            ap.Add(ExtractPeaksByDays(type, peaks, 90));
+            ap.Add(ExtractPeaksByDays(type, peaks, 365));
+            return ap ;
+        }
+
+        private static AthletePeaks ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)
+        {
+            DateTime earliestDate = DateTime.Now.AddDays(days*-1);
+
+            AthletePeaks ap = new AthletePeaks();
+            ap.PeakType = type;
+            ap.Days = days;
+
+
+            var peak5 = peaks
+                .Where(p => p.Activity.StartDateLocal >= earliestDate)
+
+
+                  .OrderByDescending(p => p.Peak5)
+                .Select(p => new { Peak5 = p.Peak5, ActivityId = p.ActivityId })
+                  .FirstOrDefault();
+
+            var peak60 = peaks
+                .Where(p => p.Activity.StartDateLocal >= earliestDate)
+               .OrderByDescending(p => p.Peak60)
+                .Select(p => new { Peak60 = p.Peak60, ActivityId = p.ActivityId })
+
+                  .FirstOrDefault();
+
+            var peak300 = peaks
+                .Where(p => p.Activity.StartDateLocal >= earliestDate)
+                .OrderByDescending(p => p.Peak300)
+                .Select(p => new { Peak300 = p.Peak300, ActivityId = p.ActivityId })
+
+                  .FirstOrDefault();
+
+            var peak1200 = peaks
+                .Where(p => p.Activity.StartDateLocal >= earliestDate)
+               .OrderByDescending(p => p.Peak1200)
+                .Select(p => new { Peak1200 = p.Peak1200, ActivityId = p.ActivityId })
+
+               .FirstOrDefault();
+
+            var peak3600 = peaks
+                .Where(p => p.Activity.StartDateLocal >= earliestDate)
+            .OrderByDescending(p => p.Peak3600)
+                .Select(p => new { Peak3600 = p.Peak3600, ActivityId = p.ActivityId })
+
+            .FirstOrDefault();
+
+            ap.Peak05 = peak5.Peak5;
+            ap.Peak05ActivityId = peak5.ActivityId;
+            ap.Peak60 = peak60.Peak60;
+            ap.Peak60ActivityId = peak60.ActivityId;
+            ap.Peak300 = peak300.Peak300;
+            ap.Peak300ActivityId = peak300.ActivityId;
+
+            ap.Peak1200 = peak1200.Peak1200;
+            ap.Peak1200ActivityId = peak1200.ActivityId;
+
+            ap.Peak3600 = peak3600.Peak3600;
+            ap.Peak3600ActivityId = peak3600.ActivityId;
+            return ap;
+        }
 
         #endregion
 
