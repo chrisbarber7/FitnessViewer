@@ -166,11 +166,16 @@
     <Compile Include="Migrations\201609251142591_ReAddActivityTypeTable.Designer.cs">
       <DependentUpon>201609251142591_ReAddActivityTypeTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609260651411_AddHasErrorFieldToDownloadQueue.cs" />
+    <Compile Include="Migrations\201609260651411_AddHasErrorFieldToDownloadQueue.Designer.cs">
+      <DependentUpon>201609260651411_AddHasErrorFieldToDownloadQueue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityPeaks.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\Athlete.cs" />
+    <Compile Include="Models\AthletePeaks.cs" />
     <Compile Include="Models\BestEffort.cs" />
     <Compile Include="Models\DownloadQueue.cs" />
     <Compile Include="Models\Stream.cs" />
@@ -233,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609251142591_ReAddActivityTypeTable.resx">
       <DependentUpon>201609251142591_ReAddActivityTypeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609260651411_AddHasErrorFieldToDownloadQueue.resx">
+      <DependentUpon>201609260651411_AddHasErrorFieldToDownloadQueue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

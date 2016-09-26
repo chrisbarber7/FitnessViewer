@@ -1,10 +1,8 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Microsoft.AspNet.Identity;
+using System.Net;
 using System.Web.Mvc;
 
 namespace FitnessViewer.Controllers
@@ -19,9 +17,17 @@ namespace FitnessViewer.Controllers
 
             _repo = new Repository();
         }
-        public ActionResult View(long id)
+
+        [Authorize]
+        public ActionResult View(long? id)
         {
-            Activity a = _repo.GetActivity(id);
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Activity a = _repo.GetActivity(id.Value);
+
+            if (a.Athlete.UserId != User.Identity.GetUserId())
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ActivityViewModel m = new ActivityViewModel()
             {
