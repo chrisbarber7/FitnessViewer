@@ -30,7 +30,7 @@ namespace FitnessViewer.Infrastructure.Data
             context.Athlete.Add(a);
             context.SaveChanges();
         }
-    
+
         public void EditAthlete(Athlete a)
         {
             context.SaveChanges();
@@ -61,7 +61,7 @@ namespace FitnessViewer.Infrastructure.Data
 
 
         #region Queue
-            public void AddQueueItem(string userId)
+        public void AddQueueItem(string userId)
 
         {
             this.AddQueueItem(userId, null);
@@ -69,7 +69,7 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void AddQueueItem(string userId, long? activityId)
         {
-            DownloadQueue q = new DownloadQueue() { UserId = userId, Added = DateTime.Now, Processed = false, ActivityId=activityId };
+            DownloadQueue q = new DownloadQueue() { UserId = userId, Added = DateTime.Now, Processed = false, ActivityId = activityId };
             context.Queue.Add(q);
             context.SaveChanges();
         }
@@ -108,7 +108,7 @@ namespace FitnessViewer.Infrastructure.Data
         public void AddActivity(Activity a)
         {
             context.Activity.Add(a);
-        
+
         }
 
         public void AddActivity(IEnumerable<Activity> activities)
@@ -119,16 +119,16 @@ namespace FitnessViewer.Infrastructure.Data
         public Activity GetActivity(long activityId)
         {
             return context.Activity.Where(a => a.Id == activityId)
-                .Include(a=>a.ActivityType)
+                .Include(a => a.ActivityType)
                 .FirstOrDefault();
         }
 
         public IEnumerable<Activity> GetActivities(string userId)
         {
-          return  context.Activity
-                .Where(a => a.Athlete.UserId == userId)
-                .Include(a => a.ActivityType)
-                .ToList();
+            return context.Activity
+                  .Where(a => a.Athlete.UserId == userId)
+                  .Include(a => a.ActivityType)
+                  .ToList();
 
         }
         #endregion
@@ -145,7 +145,7 @@ namespace FitnessViewer.Infrastructure.Data
         {
             context.Stream.AddRange(s);
             context.SaveChanges();
-                    }
+        }
 
         #endregion
 
@@ -157,7 +157,7 @@ namespace FitnessViewer.Infrastructure.Data
 
             foreach (PeakDetail d in peaks)
             {
-                switch (d.Duration )
+                switch (d.Duration)
                 {
                     case 5: { stravaPeak.Peak5 = d.Value; break; }
                     case 10: { stravaPeak.Peak10 = d.Value; break; }
@@ -189,7 +189,7 @@ namespace FitnessViewer.Infrastructure.Data
         {
             var peaks = context.ActivityPeak
                   .Where(p => p.Activity.Athlete.UserId == userId && p.PeakType == (byte)type)
-                  .Include(p=>p.Activity);
+                  .Include(p => p.Activity);
 
             List<AthletePeaks> ap = new List<AthletePeaks>();
             ap.Add(ExtractPeaksByDays(type, peaks, 7));
@@ -197,13 +197,13 @@ namespace FitnessViewer.Infrastructure.Data
             ap.Add(ExtractPeaksByDays(type, peaks, 90));
             ap.Add(ExtractPeaksByDays(type, peaks, 365));
             ap.Add(ExtractPeaksByDays(type, peaks, int.MaxValue));
-            return ap ;
+            return ap;
         }
 
         private static AthletePeaks ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)
         {
             // days=int.maxvalue is used for earlist date
-            DateTime earliestDate = days==int.MaxValue ? DateTime.MinValue: DateTime.Now.AddDays(days*-1);
+            DateTime earliestDate = days == int.MaxValue ? DateTime.MinValue : DateTime.Now.AddDays(days * -1);
 
             AthletePeaks ap = new AthletePeaks();
             ap.PeakType = type;
@@ -211,7 +211,7 @@ namespace FitnessViewer.Infrastructure.Data
 
             ap.Seconds5 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
                                 .OrderByDescending(p => p.Peak5)
-                                .Select(p=>new AthletePeaksDetails() { Peak=p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .Select(p => new AthletePeaksDetails() { Peak = p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
             ap.Minute1 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
@@ -233,11 +233,45 @@ namespace FitnessViewer.Infrastructure.Data
                                 .OrderByDescending(p => p.Peak3600)
                                 .Select(p => new AthletePeaksDetails() { Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
-            
+
             return ap;
         }
 
         #endregion
 
+        public IEnumerable<RunningTimes> GetBestTimes(string userId)
+        {
+            // get a list of best times
+            var times = from t in context.BestEffort
+                        join act in context.Activity on t.ActivityId equals act.Id
+                        join a in context.Athlete on act.AthleteId equals a.Id
+                        where a.UserId == userId
+                        group t by t.Name into dptgrp
+                        let fastestTime = dptgrp.Min(x => x.ElapsedTime)
+                        select new
+                        {
+                            DistanceName = dptgrp.Key,
+                            BestEffortId = dptgrp.FirstOrDefault(y => y.ElapsedTime == fastestTime).Id,
+                            Time = fastestTime
+
+                        };
+         
+            // join to other table to get full info.
+            var results = from t in times
+                          join e in context.BestEffort on t.BestEffortId equals e.Id
+                          join a in context.Activity on e.ActivityId equals a.Id
+                          orderby t.Time
+                          select new RunningTimes
+                          {
+                              ActivityName = a.Name,
+                              ActivityDate = a.StartDateLocal,
+                              DistanceName = t.DistanceName,
+                              Distance = e.Distance,
+                              Time = t.Time,
+                              ActivityId =e.ActivityId
+                          };
+
+            return results.ToList();
+        }
     }
 }

@@ -8,7 +8,7 @@
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
 
 <div class="row">
-    <div class="col-md-4">One</div>
+    <div class="col-md-4">@{Html.RenderPartial("RunningTimes", Model.RunningTime); }</div>
     <div class="col-md-4">Two blah blah blah blah blah blah blah blah blah</div>
     <div class="col-md-4">
 

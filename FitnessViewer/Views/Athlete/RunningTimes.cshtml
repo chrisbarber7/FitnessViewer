@@ -1,0 +1,22 @@
+﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.RunningTimes>
+
+Peak Power Summary
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+
+            <th>Distance</th>
+            <th>Time</th>
+            <th>Description</th>
+                    </tr>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.DistanceName</td>
+                <td>@p.Time</td>
+                <td>@p.ActivityName</td>
+            </tr>
+        }
+    </table>
+</div>
+

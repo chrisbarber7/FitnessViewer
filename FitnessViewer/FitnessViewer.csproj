@@ -539,6 +539,7 @@
     <Content Include="Views\Athlete\Dashboard.cshtml" />
     <Content Include="Views\Activity\View.cshtml" />
     <Content Include="Views\Athlete\PeakPowerSummary.cshtml" />
+    <Content Include="Views\Athlete\RunningTimes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
