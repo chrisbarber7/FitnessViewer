@@ -142,7 +142,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                var activities = _client.Activities.GetActivities(DateTime.Now.AddDays(-90), DateTime.Now, page++, perPage);
+                var activities = _client.Activities.GetActivities(new DateTime(2005, 1, 1), DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
                     break;
