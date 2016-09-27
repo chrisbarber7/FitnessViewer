@@ -43,7 +43,12 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year</p>
+            <div>
+                &copy; @DateTime.Now.Year
+                <div class="footer-logo">
+             <img src="~/Content/Images/Strava/api_logo_pwrdBy_strava_horiz_light.png" alt="Powered by Strava" />
+                </div>
+            </div>
         </footer>
     </div>
 

@@ -156,7 +156,7 @@ namespace FitnessViewer.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent:true, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -330,7 +330,7 @@ namespace FitnessViewer.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: true);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -353,10 +353,16 @@ namespace FitnessViewer.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    {
+                        ExternalLoginConfirmationViewModel model = new ExternalLoginConfirmationViewModel();
+                        model.Email = loginInfo.Email;
+                     return   await ExternalLoginConfirmation(model, null);
+                    }
+
+                    //// If the user does not have an account, then prompt the user to create an account
+                    //ViewBag.ReturnUrl = returnUrl;
+                    //ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                    //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
@@ -394,7 +400,7 @@ namespace FitnessViewer.Controllers
                         FitnessViewer.Infrastructure.Helpers.Strava s = new Infrastructure.Helpers.Strava();
                         s.AddAthlete(user.Id, stravaTokenClaim.Value);
                         
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await SignInManager.SignInAsync(user, isPersistent: true, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
                 }

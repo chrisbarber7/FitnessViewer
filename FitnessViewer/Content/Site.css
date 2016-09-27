@@ -22,3 +22,16 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+.footer-logo {
+    float:right;
+}
+
+.login-button{
+    border:0;
+    padding:0;
+    background-color:black;
+
+}
+
