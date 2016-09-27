@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitnessViewer.Infrastructure.Models
+namespace FitnessViewer.Infrastructure.Models.Dto
 {
     public class AthletePeaks
     {
- 
-
         public AthletePeaks()
         {
             Seconds5 = new AthletePeaksDetails();
@@ -18,7 +16,6 @@ namespace FitnessViewer.Infrastructure.Models
             Minute5 = new AthletePeaksDetails();
             Minute20 = new AthletePeaksDetails();
             Minute60 = new AthletePeaksDetails();
-
         }
 
         public PeakStreamType PeakType { get; set; }

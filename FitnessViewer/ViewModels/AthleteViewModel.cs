@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

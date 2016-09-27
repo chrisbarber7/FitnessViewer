@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.Dto;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -40,6 +41,7 @@ namespace FitnessViewer.Infrastructure.Interfaces
         // peaks
         void AddPeak(long activityId, PeakStreamType type, List<PeakDetail> peaks);
         IEnumerable<AthletePeaks> GetPeaks(string userId, PeakStreamType type);
+        IEnumerable<RunningTimes> GetBestTimes(string userId);
     }
 
 }

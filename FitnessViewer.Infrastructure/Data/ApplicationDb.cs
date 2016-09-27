@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.Dto;
 
 namespace FitnessViewer.Infrastructure.Data
 {

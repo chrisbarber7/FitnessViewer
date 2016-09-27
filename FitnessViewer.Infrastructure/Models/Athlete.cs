@@ -40,5 +40,7 @@ namespace FitnessViewer.Infrastructure.Models
         public int? FTP { get; set; }
         public float? Weight { get; set; }
         public string Token { get; set; }
+
+
     }
 }

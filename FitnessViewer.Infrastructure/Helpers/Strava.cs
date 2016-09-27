@@ -102,6 +102,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             UpdateEntityWithStravaDetails(athlete, a);
             _repo.AddAthlete(a);
 
+            
+
             // add user to the strava download queue for background downloading of activities.
             _repo.AddQueueItem(userId);
         }    
