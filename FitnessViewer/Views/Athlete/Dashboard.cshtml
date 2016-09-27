@@ -49,19 +49,19 @@
                 "order": [[1, "desc"]],
                 "columns": [{
                     "data": function (data, type, row, meta) {
-                        return '<a href="/activity/view/' + data.Id + '">' + data.Name + '</a>';
+                        return '<a href="/activity/view/' + data.id + '">' + data.name + '</a>';
                     }
                 },
                 {
                     "data": {
-                        _: "Date",
-                        sort: "StartDateLocal"
+                        _: "date",
+                        sort: "startDateLocal"
                     }
                 },
-                { "data": "ActivityTypeId" },
-                { "data": "Distance" },
-                { "data": "ElevationGain" },
-                { "data": "ElapsedTime" }
+                { "data": "activityTypeId" },
+                { "data": "distance" },
+                { "data": "elevationGain" },
+                { "data": "elapsedTime" }
 
                 ]
 

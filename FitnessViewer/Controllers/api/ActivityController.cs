@@ -29,7 +29,7 @@ namespace FitnessViewer.Controllers.api
         {
        
 
-            return Json(new { data =
+            return Ok(new { data =
                 Mapper.Map<IEnumerable<ActivityViewModel>>(_repo.GetActivities(this.User.Identity.GetUserId())).ToList() });
         }
     }
