@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.RunningTimes>
 
-Peak Power Summary
+Running Times
 <div class="table-responsive">
     <table class="table">
         <tr>
@@ -8,13 +8,15 @@ Peak Power Summary
             <th>Distance</th>
             <th>Time</th>
             <th>Description</th>
+            <th>Date</th>
                     </tr>
         @foreach (var p in Model)
         {
             <tr>
                 <td>@p.DistanceName</td>
                 <td>@p.Time</td>
-                <td>@p.ActivityName</td>
+                <td>@Html.ActionLink(p.ActivityName.ToString(), "View", "Activity",new { Id = p.ActivityId },null)</td>
+                <td>@p.ActivityDate.ToShortDateString()</td>
             </tr>
         }
     </table>
