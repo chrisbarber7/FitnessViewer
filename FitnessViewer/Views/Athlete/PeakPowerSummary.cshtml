@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.AthletePeaks>
 
 Peak Power Summary
+
 <div class="table-responsive">
     <table class="table">
         <tr>
@@ -12,61 +13,80 @@ Peak Power Summary
             <th>20m</th>
             <th>1h</th>
         </tr>
+
+
         @foreach (var p in Model)
         {
             <tr>
                 <td>@(p.Days == int.MaxValue ? "All" : @p.Days.ToString()) Days</td>
                 <td>
-                    @Html.ActionLink(p.Seconds5.Peak.ToString(), "View", "Activity",
-                            new { Id = p.Seconds5.ActivityId},
-                            new { data_toggle = "tooltip", title = @p.Seconds5.Description})
+                    @if (p.Seconds5 != null)
+                    {
+                        @Html.ActionLink(p.Seconds5.Peak.ToString(), "View", "Activity",
+new { Id = p.Seconds5.ActivityId },
+new { data_toggle = "tooltip", title = @p.Seconds5.Description })
+                    }
                 </td>
 
                 <td>
+@if (p.Minute1 != null)
+{
                     @Html.ActionLink(p.Minute1.Peak.ToString(), "View", "Activity",
-                            new { Id = p.Minute1.ActivityId },
-                            new { data_toggle = "tooltip", title = @p.Minute1.Description })
-                </td>
-
-                <td>
-                    @Html.ActionLink(p.Minute5.Peak.ToString(), "View", "Activity",
-                            new { Id = p.Minute5.ActivityId },
-                            new { data_toggle = "tooltip", title = @p.Minute5.Description })
-                </td>
-
-                <td>
-                    @Html.ActionLink(p.Minute20.Peak.ToString(), "View", "Activity",
-                            new { Id = p.Minute20.ActivityId },
-                            new { data_toggle = "tooltip", title = @p.Minute20.Description })
-                </td>
-
-                <td>
-                    @Html.ActionLink(p.Minute60.Peak.ToString(), "View", "Activity",
-                            new { Id = p.Minute60.ActivityId },
-                            new { data_toggle = "tooltip", title = @p.Minute60.Description })
-                </td>
-
-   </tr>
-        }
-    </table>
-</div>
-@section scripts {
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+              new { Id = p.Minute1.ActivityId },
+              new { data_toggle = "tooltip", title = @p.Minute1.Description })
 }
+                </td>
 
-@*public PeakStreamType PeakType { get; set; }
-    public int Days { get; set; }
-    public int? Peak05 { get; set; }
-    public long? Peak05ActivityId { get; set; }
-    public int? Peak60 { get; set; }
-    public long? Peak60ActivityId { get; set; }
-    public int? Peak300 { get; set; }
-    public long? Peak300ActivityId { get; set; }
-    public int? Peak1200 { get; set; }
-    public long? Peak1200ActivityId { get; set; }
-    public int? Peak3600 { get; set; }
-    public long? Peak3600ActivityId { get; set; }*@
+                <td>
+@if (p.Minute5 != null)
+{
+                    @Html.ActionLink(p.Minute5.Peak.ToString(), "View", "Activity",
+              new { Id = p.Minute5.ActivityId },
+              new { data_toggle = "tooltip", title = @p.Minute5.Description })
+}
+                </td>
+
+                <td>
+@if (p.Minute20 != null)
+{
+                    @Html.ActionLink(p.Minute20.Peak.ToString(), "View", "Activity",
+              new { Id = p.Minute20.ActivityId },
+              new { data_toggle = "tooltip", title = @p.Minute20.Description })
+}
+                </td>
+
+                <td>
+@if (p.Minute60 != null)
+{
+                    @Html.ActionLink(p.Minute60.Peak.ToString(), "View", "Activity",
+              new { Id = p.Minute60.ActivityId },
+              new { data_toggle = "tooltip", title = @p.Minute60.Description })
+}
+                </td>
+
+            </tr>
+        }
+        </table>
+    </div>
+        }
+
+        @section scripts {
+            <script>
+                $(document).ready(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+            </script>
+        }
+
+        @*public PeakStreamType PeakType { get; set; }
+            public int Days { get; set; }
+            public int? Peak05 { get; set; }
+            public long? Peak05ActivityId { get; set; }
+            public int? Peak60 { get; set; }
+            public long? Peak60ActivityId { get; set; }
+            public int? Peak300 { get; set; }
+            public long? Peak300ActivityId { get; set; }
+            public int? Peak1200 { get; set; }
+            public long? Peak1200ActivityId { get; set; }
+            public int? Peak3600 { get; set; }
+            public long? Peak3600ActivityId { get; set; }*@
