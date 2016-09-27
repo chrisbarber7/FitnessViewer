@@ -13,6 +13,7 @@ using StravaDotNetClient = Strava.Clients;
 using StravaDotNetStreams = Strava.Streams;
 using StravaDotNetActivities = Strava.Activities;
 using StravaDotNetApi = Strava.Api;
+using StravaDotNetGear = Strava.Gear;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -41,7 +42,6 @@ namespace FitnessViewer.Infrastructure.Helpers
             System.Diagnostics.Debug.WriteLine("Short: "+e.Usage.ShortTerm.ToString());
             System.Diagnostics.Debug.WriteLine("Long : " + e.Usage.LongTerm.ToString());
             System.Threading.Thread.Sleep(30000);
-
         }
 
 
@@ -102,7 +102,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             UpdateEntityWithStravaDetails(athlete, a);
             _repo.AddAthlete(a);
 
-            
+            CheckGear( athlete);           
 
             // add user to the strava download queue for background downloading of activities.
             _repo.AddQueueItem(userId);
@@ -118,12 +118,50 @@ namespace FitnessViewer.Infrastructure.Helpers
             Athlete a = _repo.FindAthleteById(this._stravaId);
 
             if (a == null)
-                return;
+                return;  
 
             a.Id = stravaAthleteDetails.Id;            
             a.Token = token;
             UpdateEntityWithStravaDetails(stravaAthleteDetails, a);
             _repo.EditAthlete(a);
+
+            CheckGear(stravaAthleteDetails);
+        }
+
+        private void CheckGear(StravaDotNetAthletes.Athlete stravaAthleteDetails)
+        {
+            foreach(StravaDotNetGear.Bike b in stravaAthleteDetails.Bikes)
+            {
+                Gear g = Gear.CreateBike(b.Id, stravaAthleteDetails.Id);
+          
+                g.Brand = b.Brand;
+                g.Description = b.Description;
+                g.Distance = b.Distance;
+                switch (b.FrameType)
+                {
+                    case StravaDotNetGear.BikeType.Cross: { g.FrameType = enums.BikeType.Cross; break; }
+                    case StravaDotNetGear.BikeType.Mountain: { g.FrameType = enums.BikeType.Mountain; break; }
+                    case StravaDotNetGear.BikeType.Road: { g.FrameType = enums.BikeType.Road; break; }
+                    case StravaDotNetGear.BikeType.Timetrial: { g.FrameType = enums.BikeType.Timetrial; break; }
+                }     
+                g.IsPrimary = b.IsPrimary;
+                g.Model = b.Model;
+                g.Name = b.Name;
+                g.ResourceState = b.ResourceState;
+
+                _repo.AddOrUpdateGear(g);
+            }
+
+            foreach (StravaDotNetGear.Shoes s in stravaAthleteDetails.Shoes)
+            {
+                Gear g = Gear.CreateShoe(s.Id, stravaAthleteDetails.Id);
+                g.Distance = s.Distance;
+                g.FrameType = enums.BikeType.Default;
+                g.IsPrimary = s.IsPrimary;
+                g.Name = s.Name;
+                g.ResourceState = s.ResourceState;
+                _repo.AddOrUpdateGear(g);
+            }
         }
 
         /// <summary>

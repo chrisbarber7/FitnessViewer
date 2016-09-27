@@ -42,6 +42,9 @@ namespace FitnessViewer.Infrastructure.Interfaces
         void AddPeak(long activityId, PeakStreamType type, List<PeakDetail> peaks);
         IEnumerable<AthletePeaks> GetPeaks(string userId, PeakStreamType type);
         IEnumerable<RunningTimes> GetBestTimes(string userId);
+
+        // gear
+        void AddOrUpdateGear(Gear g);
     }
 
 }

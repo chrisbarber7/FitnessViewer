@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Helpers;
 using System.Data.Entity;
 using FitnessViewer.Infrastructure.Models.Dto;
+using System.Data.Entity.Migrations;
 
 namespace FitnessViewer.Infrastructure.Data
 {
@@ -272,6 +273,12 @@ namespace FitnessViewer.Infrastructure.Data
                           };
 
             return results.ToList();
+        }
+
+        public void AddOrUpdateGear(Gear g)
+        {
+            context.Gear.AddOrUpdate(g);
+            context.SaveChanges();
         }
     }
 }

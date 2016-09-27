@@ -96,6 +96,8 @@
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\Repository.cs" />
+    <Compile Include="enums\BikeType.cs" />
+    <Compile Include="enums\GearType.cs" />
     <Compile Include="Helpers\MetreDistance.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.cs" />
@@ -170,6 +172,18 @@
     <Compile Include="Migrations\201609260651411_AddHasErrorFieldToDownloadQueue.Designer.cs">
       <DependentUpon>201609260651411_AddHasErrorFieldToDownloadQueue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609271751317_AddGearTable.cs" />
+    <Compile Include="Migrations\201609271751317_AddGearTable.Designer.cs">
+      <DependentUpon>201609271751317_AddGearTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609271801583_AddMissingFrameTypeToGearTable.cs" />
+    <Compile Include="Migrations\201609271801583_AddMissingFrameTypeToGearTable.Designer.cs">
+      <DependentUpon>201609271801583_AddMissingFrameTypeToGearTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609271804077_AddGearTypeToGear.cs" />
+    <Compile Include="Migrations\201609271804077_AddGearTypeToGear.Designer.cs">
+      <DependentUpon>201609271804077_AddGearTypeToGear.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityPeaks.cs" />
@@ -179,6 +193,7 @@
     <Compile Include="Models\BestEffort.cs" />
     <Compile Include="Models\DownloadQueue.cs" />
     <Compile Include="Models\Dto\RunningTimes.cs" />
+    <Compile Include="Models\Gear.cs" />
     <Compile Include="Models\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\FindPeak.cs" />
@@ -242,6 +257,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609260651411_AddHasErrorFieldToDownloadQueue.resx">
       <DependentUpon>201609260651411_AddHasErrorFieldToDownloadQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609271751317_AddGearTable.resx">
+      <DependentUpon>201609271751317_AddGearTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609271801583_AddMissingFrameTypeToGearTable.resx">
+      <DependentUpon>201609271801583_AddMissingFrameTypeToGearTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609271804077_AddGearTypeToGear.resx">
+      <DependentUpon>201609271804077_AddGearTypeToGear.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
