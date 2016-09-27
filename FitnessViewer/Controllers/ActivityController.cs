@@ -37,5 +37,19 @@ namespace FitnessViewer.Controllers
             };
             return View(m);
         }
+
+        [Authorize]
+        public ActionResult Table()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Calendar()
+        {
+            return View();
+        }
+
+
     }
 }
