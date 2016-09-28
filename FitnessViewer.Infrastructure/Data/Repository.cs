@@ -22,7 +22,14 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void SaveChanges()
         {
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         #region Athlete
@@ -279,6 +286,16 @@ namespace FitnessViewer.Infrastructure.Data
         {
             context.Gear.AddOrUpdate(g);
             context.SaveChanges();
+        }
+
+        public void AddCalendarDates(List<Calendar> dates)
+        {
+            context.Calendar.AddRange(dates);
+        }
+
+        public IEnumerable<Calendar> GetCalendar()
+        {
+            return context.Calendar ;
         }
     }
 }

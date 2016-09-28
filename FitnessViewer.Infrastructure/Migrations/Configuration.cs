@@ -1,6 +1,9 @@
 namespace FitnessViewer.Infrastructure.Migrations
 {
+    using Data;
+    using Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -26,6 +29,25 @@ namespace FitnessViewer.Infrastructure.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            Repository repo = new Repository();
+            // if no data in calendar then populate it.  1980->2050 should be plenty
+            if (repo.GetCalendar().ToList().Count == 0)
+            {
+
+                DateTime date = new DateTime(1980, 1, 1);
+
+                List<Calendar> detailsToAdd = new List<Calendar>();
+
+                while (date <= new DateTime(2050, 12, 31))
+                {
+                    detailsToAdd.Add(new Calendar(date));
+                    date = date.AddDays(1);
+                }
+                repo.AddCalendarDates(detailsToAdd);
+                repo.SaveChanges();
+            }
         }
     }
 }
+

@@ -184,11 +184,20 @@
     <Compile Include="Migrations\201609271804077_AddGearTypeToGear.Designer.cs">
       <DependentUpon>201609271804077_AddGearTypeToGear.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609281413047_AddCalendarTable.cs" />
+    <Compile Include="Migrations\201609281413047_AddCalendarTable.Designer.cs">
+      <DependentUpon>201609281413047_AddCalendarTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609281456010_AmendToCalendarTable.cs" />
+    <Compile Include="Migrations\201609281456010_AmendToCalendarTable.Designer.cs">
+      <DependentUpon>201609281456010_AmendToCalendarTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityPeaks.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\Athlete.cs" />
+    <Compile Include="Models\Calendar.cs" />
     <Compile Include="Models\Dto\AthletePeaks.cs" />
     <Compile Include="Models\BestEffort.cs" />
     <Compile Include="Models\DownloadQueue.cs" />
@@ -266,6 +275,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609271804077_AddGearTypeToGear.resx">
       <DependentUpon>201609271804077_AddGearTypeToGear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609281413047_AddCalendarTable.resx">
+      <DependentUpon>201609281413047_AddCalendarTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609281456010_AmendToCalendarTable.resx">
+      <DependentUpon>201609281456010_AmendToCalendarTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
