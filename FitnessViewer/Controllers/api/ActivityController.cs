@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity;
 using FitnessViewer.Infrastructure.Models;
 using System.Web.Http.Results;
 using Newtonsoft.Json;
+using FitnessViewer.Infrastructure.Models.Dto;
+
 
 namespace FitnessViewer.Controllers.api
 {
@@ -24,13 +26,42 @@ namespace FitnessViewer.Controllers.api
             _repo = new Repository();
         }
 
- 
-        public IHttpActionResult Get()
+        [HttpGet]
+        public IHttpActionResult GetActivities()
         {
-       
+            return Ok(new
+            {
+                data =
+                Mapper.Map<IEnumerable<ActivityViewModel>>(_repo.GetActivities(this.User.Identity.GetUserId())).ToList()
+            });
+        }
 
-            return Ok(new { data =
-                Mapper.Map<IEnumerable<ActivityViewModel>>(_repo.GetActivities(this.User.Identity.GetUserId())).ToList() });
+       [HttpPost]
+        public IHttpActionResult GetRunDistancePerWeek()
+        {
+            var runData = _repo.ActivityByWeek("Run", DateTime.Now.AddDays(12*7*-1), DateTime.Now);
+
+            List<string> period = new List<string>();
+            List<string> distance = new List<string>();
+            List<string> number = new List<string>();
+
+            foreach (ActivityByPeriod a in runData)
+            {
+                period.Add(a.Period);
+                distance.Add(a.TotalDistance.ToString());
+                number.Add(a.Number.ToString());
+            }
+
+            var chart = new
+            {
+                Period = period,
+                distance = distance,
+                number = number,
+            };
+
+            //return Ok(new { chart });
+
+            return Json(chart);
         }
     }
 }

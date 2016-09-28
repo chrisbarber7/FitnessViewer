@@ -34,6 +34,9 @@ namespace FitnessViewer
             bundles.Add(new StyleBundle("~/Content/dataTables").Include(
                       "~/Content/DataTables/css/jquery.dataTables.css",
                       "~/Content/DataTables/css/jquery.dataTables.min.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/chart").Include(
+                      "~/Scripts/Chart.js"));
         }
     }
 }

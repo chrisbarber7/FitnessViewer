@@ -297,5 +297,31 @@ namespace FitnessViewer.Infrastructure.Data
         {
             return context.Calendar ;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="activityType"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public IEnumerable<ActivityByPeriod> ActivityByWeek(string activityType, DateTime start, DateTime end)
+        {
+            return context.Activity
+                .Include(r => r.Calendar)
+                .Include(r => r.ActivityType)
+                .Where(r => r.Start >= start && 
+                        r.Start <= end && 
+                        (r.ActivityTypeId == activityType || activityType == "All"))
+                .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek })
+                .Select(r => new ActivityByPeriod
+                {
+                    ActivityType = r.Key.ActivityType,
+                    Period = r.Key.YearWeek,
+                    TotalDistance = (float)Math.Round(r.Sum(d => d.DistanceInMiles),1),
+                    Number = r.Select(i => i.Id).Distinct().Count()
+                })
+                .OrderBy(r => r.Period)
+                .ToList();
+        }
     }
 }

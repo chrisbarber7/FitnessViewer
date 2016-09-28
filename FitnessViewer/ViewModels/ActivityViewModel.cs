@@ -15,7 +15,7 @@ namespace FitnessViewer.ViewModels
         public string Date { get; set; }
         public DateTime StartDateLocal { get; set; }
 
-public TimeSpan ElapsedTime { get; set; }
+        public TimeSpan ElapsedTime { get; set; }
         public string ActivityTypeId { get; set; }
 
     }

@@ -2,14 +2,48 @@
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int[] result = ViewBag.intArray;
+    string test = "";
+
+    for (int i = 0; i <= result.Length - 1; i++)
+    {
+        if (i == 0)
+        {
+            test = test + result[i].ToString();
+        }
+        else
+        {
+            test = test + "," + result[i].ToString();
+        }
+
+    }
+
 }
+
+
 @Styles.Render("~/Content/dataTables")
+@Scripts.Render("~/bundles/chart")
 
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
 
+
+
+<div class="row">
+    <div class="col-md-4">
+
+
+     
+
+
+
+       
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-4">@{Html.RenderPartial("RunningTimes", Model.RunningTime); }</div>
-    <div class="col-md-4">Two blah blah blah blah blah blah blah blah blah</div>
+    <div class="col-md-4"><canvas id="myChart" width="800" height="400"></canvas></div>
     <div class="col-md-4">@{Html.RenderPartial("PeakPowerSummary", Model.PowerPeaks); }    </div>
 </div>
 
@@ -40,10 +74,10 @@
 </div>
 @section scripts {
     @Scripts.Render("~/bundles/dataTables")
-    <script type="text/javascript">
+ <script type="text/javascript">
         $(document).ready(function () {
             $('#table_id').dataTable({
-                "ajax": "/api/activity",
+                "ajax": "/api/activity/getactivities",
                 "autoWidth": false,
                 "deferRender": true,
                 "order": [[1, "desc"]],
@@ -72,8 +106,43 @@
             });
 
 
-        }
-        )
-    </script>
+
+
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/api/Activity/GetRunDistancePerWeek/",
+                data: JSON,
+                success: function (data) {
+                    BarChart(data);
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+
+
+            function BarChart(data) {
+                var barChartData = {
+                    labels: data.Period,
+                    datasets: [
+                        {
+                            data: data.distance
+                        }
+                    ]
+                }
+
+                var ctx = document.getElementById("myChart").getContext("2d");
+
+                var myBarChart = Chart.Bar(ctx, {
+                    data: barChartData,
+                    options: {
+                        animation: false
+                    }
+                });
+            }
+        }) </script>
+
+
 
 }

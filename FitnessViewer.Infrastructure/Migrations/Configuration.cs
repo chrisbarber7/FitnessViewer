@@ -47,6 +47,9 @@ namespace FitnessViewer.Infrastructure.Migrations
                 repo.AddCalendarDates(detailsToAdd);
                 repo.SaveChanges();
             }
+
+
+           
         }
     }
 }

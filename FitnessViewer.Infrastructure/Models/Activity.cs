@@ -28,7 +28,23 @@ namespace FitnessViewer.Infrastructure.Models
 
         public int? SufferScore { get; set; }
         public string EmbedToken { get; set; }
-        public float Distance { get; set; }
+
+        private float _distance { get; set; }
+        public float Distance
+        {
+            get
+            {
+                return _distance;
+
+            }
+            set
+            {
+                _distance = value;
+                DistanceInMiles = MetreDistance.ToMiles(value);
+            }
+        }
+
+        public float DistanceInMiles { get; set; }
         public int TotalPhotoCount { get; set; }
         public float ElevationGain { get; set; }
         public bool HasKudoed { get; set; }
@@ -53,7 +69,28 @@ namespace FitnessViewer.Infrastructure.Models
         public int AthleteCount { get; set; }
         public int PhotoCount { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime StartDateLocal { get; set; }
+
+        private DateTime _startDateLocal;
+      
+
+        // necessay so that we can join to calendar on date only
+        public DateTime StartDateLocal
+        {
+            get { return _startDateLocal; }
+            set
+            {
+                _startDateLocal = value;
+                Start = StartDateLocal.Date;
+            }
+        }
+
+       
+
+        // just the date (no time).
+      [ForeignKey("Calendar")]
+        public DateTime Start { get; private set; }
+        public virtual Calendar Calendar { get; set; }
+
         public TimeSpan? MovingTime { get; set; }
         public TimeSpan? ElapsedTime { get; set; }
         public string TimeZone { get; set; }
@@ -83,15 +120,6 @@ namespace FitnessViewer.Infrastructure.Models
                 return string.Format("{0}m", this.Distance.ToString());
             else
                 return this.Distance.ToString();
-        }
-
-        /// <summary>
-        /// return distance in miles.
-        /// </summary>
-        /// <returns>formatted distance in miles</returns>
-        public string DistanceInMiles()
-        {
-            return MetreDistance.ToMiles(this.Distance).ToString();
         }
     }
 }

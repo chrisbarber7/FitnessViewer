@@ -38,6 +38,11 @@ namespace FitnessViewer.Controllers
                 RunningTime = runningBestTimes
             };
 
+            int[] test  = { 1, 5, 3, 7, 9,5,7 };
+
+            ViewBag.intArray = test;
+
+
             return View(result);
         }
     }
