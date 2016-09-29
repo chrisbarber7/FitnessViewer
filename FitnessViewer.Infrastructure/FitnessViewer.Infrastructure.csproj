@@ -200,6 +200,14 @@
     <Compile Include="Migrations\201609281641126_AddDistanceInMilesToActivityTable.Designer.cs">
       <DependentUpon>201609281641126_AddDistanceInMilesToActivityTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609282027248_CalendarAddWeekLabel.cs" />
+    <Compile Include="Migrations\201609282027248_CalendarAddWeekLabel.Designer.cs">
+      <DependentUpon>201609282027248_CalendarAddWeekLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609282134096_CalendarPopulateWeekLabel.cs" />
+    <Compile Include="Migrations\201609282134096_CalendarPopulateWeekLabel.Designer.cs">
+      <DependentUpon>201609282134096_CalendarPopulateWeekLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityPeaks.cs" />
@@ -296,6 +304,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609281641126_AddDistanceInMilesToActivityTable.resx">
       <DependentUpon>201609281641126_AddDistanceInMilesToActivityTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609282027248_CalendarAddWeekLabel.resx">
+      <DependentUpon>201609282027248_CalendarAddWeekLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609282134096_CalendarPopulateWeekLabel.resx">
+      <DependentUpon>201609282134096_CalendarPopulateWeekLabel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

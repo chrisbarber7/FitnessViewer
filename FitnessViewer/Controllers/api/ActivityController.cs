@@ -47,7 +47,7 @@ namespace FitnessViewer.Controllers.api
 
             foreach (ActivityByPeriod a in runData)
             {
-                period.Add(a.Period);
+                period.Add(a.Label);
                 distance.Add(a.TotalDistance.ToString());
                 number.Add(a.Number.ToString());
             }

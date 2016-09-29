@@ -50,6 +50,9 @@ namespace FitnessViewer.Infrastructure.Models
         [Required]
         [MaxLength(9)]
         public string DayName { get; private set; }      
+
+        [MaxLength(15)]
+        public string WeekLabel { get; private set; }
        
 
         public void UpdateValuesForDate()
@@ -61,7 +64,7 @@ namespace FitnessViewer.Infrastructure.Models
             MonthName = Date.ToString("MMMM");
             DayName = Date.ToString("dddd");
 
-
+            // week in year - YYYYWW
             int weekInYear = GetWeekNumber(Date);
 
             if (weekInYear >=52  && this.Month==1)
@@ -71,7 +74,33 @@ namespace FitnessViewer.Infrastructure.Models
             else
                 this.YearWeek = (Year).ToString() + weekInYear.ToString().PadLeft(2, '0');
 
+            // label for current week
+            DateTime mondayOfWeek = MondayOfWeek(Date);
+            DateTime sundayOfWeek = mondayOfWeek.AddDays(7);
+       
+            if (mondayOfWeek.Month == sundayOfWeek.Month)
+                 WeekLabel = string.Format("{0}-{1} {2}", mondayOfWeek.Day.ToString(),
+                                                        sundayOfWeek.Day.ToString(), 
+                                                        mondayOfWeek.ToString("MMM"));
+            else
+                WeekLabel = string.Format("{0} {1}-{2} {3}", mondayOfWeek.Day.ToString(), 
+                                                            mondayOfWeek.ToString("MMM"),
+                                                            sundayOfWeek.Day.ToString(), 
+                                                            sundayOfWeek.ToString("MMM"));
         }
+
+
+
+        public static DateTime MondayOfWeek(DateTime dt)
+        {
+            int diff = dt.DayOfWeek - DayOfWeek.Monday;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+            return dt.AddDays(-1 * diff).Date;
+        }
+
 
         /// <summary>
         /// Calculate accurate week number with 7 days in each week.  Code originally taken from

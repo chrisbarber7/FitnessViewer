@@ -2,49 +2,26 @@
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    int[] result = ViewBag.intArray;
-    string test = "";
-
-    for (int i = 0; i <= result.Length - 1; i++)
-    {
-        if (i == 0)
-        {
-            test = test + result[i].ToString();
-        }
-        else
-        {
-            test = test + "," + result[i].ToString();
-        }
-
-    }
-
 }
-
 
 @Styles.Render("~/Content/dataTables")
 @Scripts.Render("~/bundles/chart")
 
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
 
-
-
 <div class="row">
     <div class="col-md-4">
-
-
-     
-
-
-
-       
+        @{Html.RenderPartial("RunningTimes", Model.RunningTime); }
     </div>
-</div>
-
-<div class="row">
-    <div class="col-md-4">@{Html.RenderPartial("RunningTimes", Model.RunningTime); }</div>
-    <div class="col-md-4"><canvas id="myChart" width="800" height="400"></canvas></div>
-    <div class="col-md-4">@{Html.RenderPartial("PeakPowerSummary", Model.PowerPeaks); }    </div>
+    <div class="col-md-4">
+        <label for="chart12weekRun">
+            Average Run Distance Per Week:<br />
+            <canvas id="chart12weekRun" width="800" height="400"></canvas>
+        </label>
+    </div>
+    <div class="col-md-4">
+        @{Html.RenderPartial("PeakPowerSummary", Model.PowerPeaks); }
+    </div>
 </div>
 
 <div class="row">
@@ -74,7 +51,7 @@
 </div>
 @section scripts {
     @Scripts.Render("~/bundles/dataTables")
- <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#table_id').dataTable({
                 "ajax": "/api/activity/getactivities",
@@ -127,12 +104,15 @@
                     labels: data.Period,
                     datasets: [
                         {
-                            data: data.distance
+            
+                            label: 'Distance',
+                            data: data.distance,
+                            
                         }
                     ]
                 }
 
-                var ctx = document.getElementById("myChart").getContext("2d");
+                var ctx = document.getElementById("chart12weekRun").getContext("2d");
 
                 var myBarChart = Chart.Bar(ctx, {
                     data: barChartData,
@@ -140,6 +120,8 @@
                         animation: false
                     }
                 });
+
+
             }
         }) </script>
 

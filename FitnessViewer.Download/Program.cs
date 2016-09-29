@@ -13,7 +13,12 @@ namespace FitnessViewer.Download
     {
         static void Main(string[] args)
         {
+
+
             Repository _repo = new Repository();
+
+
+
             var jobs = _repo.GetQueue();
 
             foreach (DownloadQueue job in jobs)

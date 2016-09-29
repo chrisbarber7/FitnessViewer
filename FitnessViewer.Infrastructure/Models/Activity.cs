@@ -84,10 +84,8 @@ namespace FitnessViewer.Infrastructure.Models
             }
         }
 
-       
-
-        // just the date (no time).
-      [ForeignKey("Calendar")]
+        // just the date (no time) to be used as FK to calendar.
+        [ForeignKey("Calendar")]
         public DateTime Start { get; private set; }
         public virtual Calendar Calendar { get; set; }
 

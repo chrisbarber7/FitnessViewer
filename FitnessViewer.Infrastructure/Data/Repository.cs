@@ -293,6 +293,15 @@ namespace FitnessViewer.Infrastructure.Data
             context.Calendar.AddRange(dates);
         }
 
+        public void UpdateCalendarWeekLabel(Calendar cal)
+        {
+            context.Calendar.Attach(cal);
+            var entry = context.Entry(cal);
+            entry.Property(c => c.WeekLabel).IsModified = true;
+         
+            context.SaveChanges();
+        }
+
         public IEnumerable<Calendar> GetCalendar()
         {
             return context.Calendar ;
@@ -312,13 +321,14 @@ namespace FitnessViewer.Infrastructure.Data
                 .Where(r => r.Start >= start && 
                         r.Start <= end && 
                         (r.ActivityTypeId == activityType || activityType == "All"))
-                .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek })
+                .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek, Label=r.Calendar.WeekLabel })
                 .Select(r => new ActivityByPeriod
                 {
                     ActivityType = r.Key.ActivityType,
                     Period = r.Key.YearWeek,
                     TotalDistance = (float)Math.Round(r.Sum(d => d.DistanceInMiles),1),
-                    Number = r.Select(i => i.Id).Distinct().Count()
+                    Number = r.Select(i => i.Id).Distinct().Count(),
+                    Label=r.Key.Label
                 })
                 .OrderBy(r => r.Period)
                 .ToList();

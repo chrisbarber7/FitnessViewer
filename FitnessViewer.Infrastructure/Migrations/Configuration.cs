@@ -48,8 +48,26 @@ namespace FitnessViewer.Infrastructure.Migrations
                 repo.SaveChanges();
             }
 
+            using (ApplicationDb db = new ApplicationDb())
+            {
+                List<Calendar> nullWeekLabel =db.Calendar.Where(c => c.WeekLabel == null).ToList();
 
-           
+                if (nullWeekLabel.Count > 0)
+                {
+                    foreach (Calendar cal in nullWeekLabel)
+                    {
+                        // populate WeekLabel property.
+                        cal.UpdateValuesForDate();
+
+                        // update 
+                        db.Calendar.Attach(cal);
+                        var entry = db.Entry(cal);
+                        entry.Property(c => c.WeekLabel).IsModified = true;
+                        db.SaveChanges();
+                    }
+                   
+                }
+            }
         }
     }
 }
