@@ -32,9 +32,7 @@ namespace FitnessViewer.Controllers
         public ActionResult Add(MeasurementViewModel viewModel)
         {
             if (!ModelState.IsValid)
-            {
                 return View("Add", viewModel);
-            }
 
             Measurement toAdd = new Measurement
             {

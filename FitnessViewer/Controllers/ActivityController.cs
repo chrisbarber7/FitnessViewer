@@ -13,8 +13,7 @@ namespace FitnessViewer.Controllers
         private Repository _repo;
 
         public ActivityController()
-        {
-
+        { 
             _repo = new Repository();
         }
 

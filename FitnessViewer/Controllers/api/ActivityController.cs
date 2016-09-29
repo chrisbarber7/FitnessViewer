@@ -4,13 +4,8 @@ using FitnessViewer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
-using FitnessViewer.Infrastructure.Models;
-using System.Web.Http.Results;
-using Newtonsoft.Json;
 using FitnessViewer.Infrastructure.Models.Dto;
 
 
@@ -58,9 +53,7 @@ namespace FitnessViewer.Controllers.api
                 distance = distance,
                 number = number,
             };
-
-            //return Ok(new { chart });
-
+           
             return Json(chart);
         }
     }
