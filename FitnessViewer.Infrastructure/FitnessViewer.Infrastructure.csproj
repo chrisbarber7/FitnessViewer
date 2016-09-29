@@ -208,6 +208,10 @@
     <Compile Include="Migrations\201609282134096_CalendarPopulateWeekLabel.Designer.cs">
       <DependentUpon>201609282134096_CalendarPopulateWeekLabel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609290909082_AddMeasurementTable.cs" />
+    <Compile Include="Migrations\201609290909082_AddMeasurementTable.Designer.cs">
+      <DependentUpon>201609290909082_AddMeasurementTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityPeaks.cs" />
@@ -220,6 +224,7 @@
     <Compile Include="Models\DownloadQueue.cs" />
     <Compile Include="Models\Dto\RunningTimes.cs" />
     <Compile Include="Models\Gear.cs" />
+    <Compile Include="Models\Measurement.cs" />
     <Compile Include="Models\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\FindPeak.cs" />
@@ -310,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609282134096_CalendarPopulateWeekLabel.resx">
       <DependentUpon>201609282134096_CalendarPopulateWeekLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609290909082_AddMeasurementTable.resx">
+      <DependentUpon>201609290909082_AddMeasurementTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

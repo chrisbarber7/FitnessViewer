@@ -293,15 +293,6 @@ namespace FitnessViewer.Infrastructure.Data
             context.Calendar.AddRange(dates);
         }
 
-        public void UpdateCalendarWeekLabel(Calendar cal)
-        {
-            context.Calendar.Attach(cal);
-            var entry = context.Entry(cal);
-            entry.Property(c => c.WeekLabel).IsModified = true;
-         
-            context.SaveChanges();
-        }
-
         public IEnumerable<Calendar> GetCalendar()
         {
             return context.Calendar ;
@@ -332,6 +323,13 @@ namespace FitnessViewer.Infrastructure.Data
                 })
                 .OrderBy(r => r.Period)
                 .ToList();
+        }
+
+
+        public void AddMeasurement(Measurement m)
+        {
+            context.Measurement.Add(m);
+            context.SaveChanges();
         }
     }
 }

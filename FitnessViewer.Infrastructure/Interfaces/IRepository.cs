@@ -1,6 +1,7 @@
 ﻿using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -31,6 +32,7 @@ namespace FitnessViewer.Infrastructure.Interfaces
         void AddActivity(IEnumerable<Activity> activities);
         Activity GetActivity(long activityId);
         IEnumerable<Activity> GetActivities(string userId);
+        IEnumerable<ActivityByPeriod> ActivityByWeek(string activityType, DateTime start, DateTime end);
 
         // Run Best Effort
         void AddBestEffort(BestEffort e);
@@ -45,6 +47,13 @@ namespace FitnessViewer.Infrastructure.Interfaces
 
         // gear
         void AddOrUpdateGear(Gear g);
+
+        // calendar
+        void AddCalendarDates(List<Calendar> dates);
+        IEnumerable<Calendar> GetCalendar();    
+        
+        // measurements.
+        void AddMeasurement(Measurement m);
     }
 
 }
