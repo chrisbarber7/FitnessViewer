@@ -18,6 +18,10 @@
             Average Run Distance Per Week:<br />
             <canvas id="chart12weekRun" width="800" height="400"></canvas>
         </label>
+        <label for="chart12weekBike">
+            Average Bike Distance Per Week:<br />
+            <canvas id="chart12weekBike" width="800" height="400"></canvas>
+        </label>
     </div>
     <div class="col-md-4">
         @{Html.RenderPartial("PeakPowerSummary", Model.PowerPeaks); }
@@ -53,78 +57,6 @@
     @Scripts.Render("~/bundles/dataTables")
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#table_id').dataTable({
-                "ajax": "/api/activity/getactivities",
-                "autoWidth": false,
-                "deferRender": true,
-                "order": [[1, "desc"]],
-                "columns": [{
-                    "data": function (data, type, row, meta) {
-                        return '<a href="/activity/view/' + data.id + '">' + data.name + '</a>';
-                    }
-                },
-                {
-                    "data": {
-                        _: "date",
-                        sort: "startDateLocal"
-                    }
-                },
-                { "data": "activityTypeId" },
-                { "data": "distance" },
-                { "data": "elevationGain" },
-                { "data": "elapsedTime" }
-
-                ]
-
-                ,
-                "columnDefs": [
-                    { "className": "dt-right", "targets": [3, 4] },
-                { "width": "60%", "targets": 0 }]
-            });
-
-
-
-
-            $.ajax({
-                dataType: "json",
-                type: "POST",
-                url: "/api/Activity/GetRunDistancePerWeek/",
-                data: JSON,
-                success: function (data) {
-                    BarChart(data);
-                },
-                error: function () {
-                    alert("Error!");
-                }
-            });
-
-
-            function BarChart(data) {
-                var barChartData = {
-                    labels: data.Period,
-                    datasets: [
-                        {
-            
-                            label: 'Distance',
-                            data: data.distance,
-                            
-                        }
-                    ]
-                }
-
-                var ctx = document.getElementById("chart12weekRun").getContext("2d");
-
-                var myBarChart = Chart.Bar(ctx, {
-                    data: barChartData,
-                    options: {
-                        animation: false
-                    }
-                });
-
-
-            }
+            DashboardController.init();
         }) </script>
-
-
-
 }

@@ -37,9 +37,9 @@ namespace FitnessViewer.Controllers.api
         }
 
        [HttpPost]
-        public IHttpActionResult GetRunDistancePerWeek()
+        public IHttpActionResult GetRunDistancePerWeek(string id)
         {
-            var runData = _repo.ActivityByWeek("Run", DateTime.Now.AddDays(12*7*-1), DateTime.Now);
+            var runData = _repo.ActivityByWeek(id, DateTime.Now.AddDays(12*7*-1), DateTime.Now);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();
