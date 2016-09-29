@@ -13,8 +13,6 @@ Peak Power Summary
             <th>20m</th>
             <th>1h</th>
         </tr>
-
-
         @foreach (var p in Model)
         {
             <tr>
@@ -30,7 +28,6 @@ Peak Power Summary
                         }
                     }
                 </td>
-
                 <td>
                     @if (p.Minute1 != null)
                     {
@@ -42,7 +39,6 @@ Peak Power Summary
                         }
                     }
                 </td>
-
                 <td>
                     @if (p.Minute5 != null)
                     {
@@ -54,7 +50,6 @@ Peak Power Summary
                         }
                     }
                 </td>
-
                 <td>
                     @if (p.Minute20 != null)
                     {
@@ -66,7 +61,6 @@ Peak Power Summary
                         }
                     }
                 </td>
-
                 <td>
                     @if (p.Minute60 != null)
                     {
@@ -78,12 +72,10 @@ Peak Power Summary
                         }
                     }
                 </td>
-
             </tr>
         }
     </table>
 </div>
-
 @section scripts {
     <script>
         $(document).ready(function () {
