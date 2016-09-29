@@ -8,8 +8,9 @@ using FitnessViewer.Infrastructure.Helpers;
 using System.Data.Entity;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System.Data.Entity.Migrations;
+using FitnessViewer.Infrastructure.Data;
 
-namespace FitnessViewer.Infrastructure.Data
+namespace FitnessViewer.Infrastructure.Repository
 {
     public class Repository : IRepository
     {

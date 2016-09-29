@@ -1,4 +1,4 @@
-﻿using FitnessViewer.Infrastructure.Data;
+﻿using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;

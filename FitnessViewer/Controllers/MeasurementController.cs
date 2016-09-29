@@ -1,4 +1,4 @@
-﻿using FitnessViewer.Infrastructure.Data;
+﻿using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.ViewModels;
 using System;

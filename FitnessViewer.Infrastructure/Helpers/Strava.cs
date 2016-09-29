@@ -1,5 +1,5 @@
 ﻿using System;
-using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.Infrastructure.Models;
 using System.Collections.Generic;
 
@@ -22,14 +22,14 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public class Strava
     {
-        private Repository _repo;
+        private Repository.Repository _repo;
         private StravaDotNetClient.StravaClient _client;
         private string _userId;
         private long _stravaId;
 
         public Strava()
         {
-            _repo = new Repository();
+            _repo = new Repository.Repository();
             StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
         }
 
@@ -51,7 +51,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="userId">Identity userid</param>
         public Strava(string userId)
         {
-            _repo = new Repository();
+            _repo = new Repository.Repository();
             _userId = userId;
             StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
 
@@ -70,7 +70,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="token">Strava access token</param>
         public Strava(long stravaAthleteId, string token)
         {
-            _repo = new Repository();
+            _repo = new Repository.Repository();
             this._stravaId = stravaAthleteId;
             SetupClient(token);
         }

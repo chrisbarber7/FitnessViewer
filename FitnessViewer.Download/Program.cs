@@ -1,4 +1,4 @@
-﻿using FitnessViewer.Infrastructure.Data;
+﻿using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Helpers;
 using System;
@@ -13,12 +13,8 @@ namespace FitnessViewer.Download
     {
         static void Main(string[] args)
         {
-
-
             Repository _repo = new Repository();
-
-
-
+            
             var jobs = _repo.GetQueue();
 
             foreach (DownloadQueue job in jobs)

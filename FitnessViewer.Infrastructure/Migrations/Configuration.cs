@@ -30,7 +30,7 @@ namespace FitnessViewer.Infrastructure.Migrations
             //    );
             //
 
-            Repository repo = new Repository();
+            Repository.Repository repo = new Repository.Repository();
             // if no data in calendar then populate it.  1980->2050 should be plenty
             if (repo.GetCalendar().ToList().Count == 0)
             {

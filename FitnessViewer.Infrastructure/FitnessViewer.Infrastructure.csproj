@@ -95,7 +95,7 @@
   <ItemGroup>
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
-    <Compile Include="Data\Repository.cs" />
+    <Compile Include="Repository\Repository.cs" />
     <Compile Include="enums\BikeType.cs" />
     <Compile Include="enums\GearType.cs" />
     <Compile Include="Helpers\MetreDistance.cs" />
@@ -320,6 +320,7 @@
       <DependentUpon>201609290909082_AddMeasurementTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

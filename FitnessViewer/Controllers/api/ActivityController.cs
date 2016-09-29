@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using System;
 using System.Collections.Generic;
