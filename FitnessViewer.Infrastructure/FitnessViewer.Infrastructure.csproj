@@ -95,6 +95,12 @@
   <ItemGroup>
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
+    <Compile Include="Data\UnitOfWork.cs" />
+    <Compile Include="Repository\ActivityRepository.cs" />
+    <Compile Include="Repository\AnalysisRepository.cs" />
+    <Compile Include="Repository\AthleteRepository.cs" />
+    <Compile Include="Repository\MetricsRepository.cs" />
+    <Compile Include="Repository\QueueRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="enums\BikeType.cs" />
     <Compile Include="enums\GearType.cs" />

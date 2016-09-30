@@ -14,11 +14,11 @@ namespace FitnessViewer.Controllers.api
     [Authorize]
     public class ActivityController : ApiController
     {
-        private Repository _repo;
+        private Infrastructure.Data.UnitOfWork _unitOfWork;
 
         public ActivityController()
         {
-            _repo = new Repository();
+            _unitOfWork = new Infrastructure.Data.UnitOfWork();
         }
 
         [HttpGet]
@@ -27,14 +27,14 @@ namespace FitnessViewer.Controllers.api
             return Ok(new
             {
                 data =
-                Mapper.Map<IEnumerable<ActivityViewModel>>(_repo.GetActivities(this.User.Identity.GetUserId())).ToList()
+                Mapper.Map<IEnumerable<ActivityViewModel>>(_unitOfWork.Activity.GetActivities(this.User.Identity.GetUserId())).ToList()
             });
         }
 
        [HttpPost]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
-            var runData = _repo.ActivityByWeek(id, DateTime.Now.AddDays(12*7*-1), DateTime.Now);
+            var runData = _unitOfWork.Activity.ActivityByWeek(id, DateTime.Now.AddDays(12*7*-1), DateTime.Now);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();

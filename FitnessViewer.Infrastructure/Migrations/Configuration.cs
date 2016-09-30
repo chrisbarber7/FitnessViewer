@@ -30,26 +30,25 @@ namespace FitnessViewer.Infrastructure.Migrations
             //    );
             //
 
-            Repository.Repository repo = new Repository.Repository();
-            // if no data in calendar then populate it.  1980->2050 should be plenty
-            if (repo.GetCalendar().ToList().Count == 0)
-            {
-
-                DateTime date = new DateTime(1980, 1, 1);
-
-                List<Calendar> detailsToAdd = new List<Calendar>();
-
-                while (date <= new DateTime(2050, 12, 31))
-                {
-                    detailsToAdd.Add(new Calendar(date));
-                    date = date.AddDays(1);
-                }
-                repo.AddCalendarDates(detailsToAdd);
-                repo.SaveChanges();
-            }
 
             using (ApplicationDb db = new ApplicationDb())
             {
+                // if no data in calendar then populate it.  1980->2050 should be plenty
+                if (db.Calendar.ToList().Count == 0)
+                {
+                    DateTime date = new DateTime(1980, 1, 1);
+
+                    List<Calendar> detailsToAdd = new List<Calendar>();
+
+                    while (date <= new DateTime(2050, 12, 31))
+                    {
+                        detailsToAdd.Add(new Calendar(date));
+                        date = date.AddDays(1);
+                    }
+                    context.Calendar.AddRange(detailsToAdd);
+                    db.SaveChanges();
+                   
+                }
                 List<Calendar> nullWeekLabel =db.Calendar.Where(c => c.WeekLabel == null).ToList();
 
                 if (nullWeekLabel.Count > 0)

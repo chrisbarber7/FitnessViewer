@@ -13,9 +13,9 @@ namespace FitnessViewer.Download
     {
         static void Main(string[] args)
         {
-            Repository _repo = new Repository();
-            
-            var jobs = _repo.GetQueue();
+            Infrastructure.Data.UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
+
+        var jobs = _unitOfWork.Queue.GetQueue();
 
             foreach (DownloadQueue job in jobs)
             {
@@ -29,18 +29,18 @@ namespace FitnessViewer.Download
                     {
                         Strava s = new Strava(job.UserId);
                         s.AddActivitesForAthlete();
-                        _repo.RemoveQueueItem(job.Id);
+                        _unitOfWork.Queue.RemoveQueueItem(job.Id);
                     }
                     else
                     {
                         Strava s = new Strava(job.UserId);
                         s.ActivityDetailsDownload(job.ActivityId.Value);
-                        _repo.RemoveQueueItem(job.Id);
+                        _unitOfWork.Queue.RemoveQueueItem(job.Id);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _repo.QueueItemMarkHasError(job.Id);
+                    _unitOfWork.Queue.QueueItemMarkHasError(job.Id);
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
             }

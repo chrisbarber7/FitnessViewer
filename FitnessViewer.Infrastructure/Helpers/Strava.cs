@@ -22,14 +22,14 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public class Strava
     {
-        private Repository.Repository _repo;
+        private Data.UnitOfWork _unitOfWork;
         private StravaDotNetClient.StravaClient _client;
         private string _userId;
         private long _stravaId;
 
         public Strava()
         {
-            _repo = new Repository.Repository();
+            _unitOfWork = new Data.UnitOfWork();
             StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
         }
 
@@ -51,11 +51,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="userId">Identity userid</param>
         public Strava(string userId)
         {
-            _repo = new Repository.Repository();
+            _unitOfWork = new Data.UnitOfWork();
             _userId = userId;
             StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
 
-            string token = _repo.FindAthleteByUserId(userId).Token;
+            string token = _unitOfWork.Athlete.FindAthleteByUserId(userId).Token;
 
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentException("Invalid UserId");
@@ -70,7 +70,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="token">Strava access token</param>
         public Strava(long stravaAthleteId, string token)
         {
-            _repo = new Repository.Repository();
+            _unitOfWork = new Data.UnitOfWork();
             this._stravaId = stravaAthleteId;
             SetupClient(token);
         }
@@ -100,12 +100,12 @@ namespace FitnessViewer.Infrastructure.Helpers
             a.UserId = userId;
             a.Token = token;
             UpdateEntityWithStravaDetails(athlete, a);
-            _repo.AddAthlete(a);
+            _unitOfWork.Athlete.AddAthlete(a);
 
             CheckGear( athlete);           
 
             // add user to the strava download queue for background downloading of activities.
-            _repo.AddQueueItem(userId);
+            _unitOfWork.Queue.AddQueueItem(userId);
         }    
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         public void UpdateAthlete(string token)
         {
             StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
-            Athlete a = _repo.FindAthleteById(this._stravaId);
+            Athlete a = _unitOfWork.Athlete.FindAthleteById(this._stravaId);
 
             if (a == null)
                 return;  
@@ -123,7 +123,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             a.Id = stravaAthleteDetails.Id;            
             a.Token = token;
             UpdateEntityWithStravaDetails(stravaAthleteDetails, a);
-            _repo.EditAthlete(a);
+            _unitOfWork.Athlete.EditAthlete(a);
 
             CheckGear(stravaAthleteDetails);
         }
@@ -149,7 +149,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 g.Name = b.Name;
                 g.ResourceState = b.ResourceState;
 
-                _repo.AddOrUpdateGear(g);
+                _unitOfWork.Activity.AddOrUpdateGear(g);
             }
 
             foreach (StravaDotNetGear.Shoes s in stravaAthleteDetails.Shoes)
@@ -160,7 +160,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 g.IsPrimary = s.IsPrimary;
                 g.Name = s.Name;
                 g.ResourceState = s.ResourceState;
-                _repo.AddOrUpdateGear(g);
+                _unitOfWork.Activity.AddOrUpdateGear(g);
             }
         }
 
@@ -169,7 +169,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         public void AddActivitesForAthlete()
         {
-            Athlete a = _repo.FindAthleteByUserId(_userId);
+            Athlete a = _unitOfWork.Athlete.FindAthleteByUserId(_userId);
 
             if (a == null)
                 throw new ArgumentException("Invalid UserId");
@@ -199,12 +199,12 @@ namespace FitnessViewer.Infrastructure.Helpers
                     newActivities.Add(activity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    _repo.AddQueueItem(a.UserId, activity.Id);
+                    _unitOfWork.Queue.AddQueueItem(a.UserId, activity.Id);
                 }
-                _repo.AddActivity(newActivities);
-                
+                _unitOfWork.Activity.AddActivity(newActivities);
+
                 // write changes to database.
-                _repo.SaveChanges();
+                _unitOfWork.Complete();
             }
         }
         
@@ -214,7 +214,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="activityId">Strava activity Id</param>
         public void ActivityDetailsDownload(long activityId)
         {
-            Models.Activity activity = _repo.GetActivity(activityId);
+            Models.Activity activity = _unitOfWork.Activity.GetActivity(activityId);
 
             System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
                 activity.Name));
@@ -264,7 +264,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.HeartRate).ToList(), PeakStreamType.HeartRate);
 
             // write all details to database.
-            _repo.AddSteam(convertedStream);
+            _unitOfWork.Activity.AddSteam(convertedStream);
         }
 
         private void ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
@@ -277,7 +277,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 List<PeakDetail> peaks = finder.FindPeaks();
 
-                _repo.AddPeak(activityId, type, peaks);
+                _unitOfWork.Analysis.AddPeak(activityId, type, peaks);
             }
         }
 
@@ -341,7 +341,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             foreach (StravaDotNetActivities.BestEffort effort in act.BestEfforts)
                 InsertBestEffort(activity.Id, effort);
 
-            _repo.SaveChanges();
+            _unitOfWork.Complete();
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             effort.Distance = e.Distance;
             effort.EndIndex = e.EndIndex;
 
-            _repo.AddBestEffort(effort);            
+            _unitOfWork.Activity.AddBestEffort(effort);            
         }
 
         /// <summary>

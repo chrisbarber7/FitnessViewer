@@ -10,11 +10,11 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class ActivityController : Controller
     {
-        private Repository _repo;
+        private Infrastructure.Data.UnitOfWork _unitOfWork;
 
         public ActivityController()
-        { 
-            _repo = new Repository();
+        {
+            _unitOfWork = new Infrastructure.Data.UnitOfWork();
         }
 
         [Authorize]
@@ -23,7 +23,7 @@ namespace FitnessViewer.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Activity a = _repo.GetActivity(id.Value);
+            Activity a = _unitOfWork.Activity.GetActivity(id.Value);
 
             if (a.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

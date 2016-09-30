@@ -8,12 +8,12 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class AthleteController : Controller
     {
-        private Repository _repo;
+        private Infrastructure.Data.UnitOfWork _unitOfWork;
 
         public AthleteController()
         {
 
-            _repo = new Repository();
+            _unitOfWork = new Infrastructure.Data.UnitOfWork();
         }
 
         public ActionResult Dashboard()
@@ -22,9 +22,9 @@ namespace FitnessViewer.Controllers
 
             var result = new AthleteViewModel()
             {
-                FirstName = _repo.FindAthleteByUserId(this.User.Identity.GetUserId()).FirstName,
-                PowerPeaks = _repo.GetPeaks(userId, Infrastructure.Helpers.PeakStreamType.Power),
-                RunningTime = _repo.GetBestTimes(userId)
+                FirstName = _unitOfWork.Athlete.FindAthleteByUserId(this.User.Identity.GetUserId()).FirstName,
+                PowerPeaks = _unitOfWork.Analysis.GetPeaks(userId, Infrastructure.Helpers.PeakStreamType.Power),
+                RunningTime = _unitOfWork.Activity.GetBestTimes(userId)
             };
 
             return View(result);

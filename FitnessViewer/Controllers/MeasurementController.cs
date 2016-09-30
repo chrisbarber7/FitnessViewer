@@ -12,11 +12,11 @@ namespace FitnessViewer.Controllers
 {
     public class MeasurementController : Controller
     {
-        private Repository _repo;
+        private Infrastructure.Data.UnitOfWork _unitOfWork;
 
         public MeasurementController()
         {
-            _repo = new Repository();
+            _unitOfWork = new Infrastructure.Data.UnitOfWork();
         }
 
         public object Measurement { get; private set; }
@@ -42,7 +42,7 @@ namespace FitnessViewer.Controllers
                 Bodyfat = viewModel.Bodyfat
             };
 
-            _repo.AddMeasurement(toAdd);
+            _unitOfWork.Metrics.AddMeasurement(toAdd);
 
             return RedirectToAction("Index", "Home");
         }
