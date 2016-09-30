@@ -58,16 +58,13 @@ namespace FitnessViewer.Infrastructure.Repository
         public void AddSteam(IEnumerable<Stream> s)
         {
             _context.Stream.AddRange(s);
-            _context.SaveChanges();
         }
 
         #endregion
 
-
         public void AddOrUpdateGear(Gear g)
         {
             _context.Gear.AddOrUpdate(g);
-            _context.SaveChanges();
         }
 
         public IEnumerable<RunningTimes> GetBestTimes(string userId)

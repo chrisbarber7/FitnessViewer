@@ -70,8 +70,8 @@
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AutoMapperConfiguration.cs" />
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
@@ -101,11 +102,9 @@
     <Compile Include="Repository\AthleteRepository.cs" />
     <Compile Include="Repository\MetricsRepository.cs" />
     <Compile Include="Repository\QueueRepository.cs" />
-    <Compile Include="Repository\Repository.cs" />
     <Compile Include="enums\BikeType.cs" />
     <Compile Include="enums\GearType.cs" />
     <Compile Include="Helpers\MetreDistance.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.cs" />
     <Compile Include="Migrations\201609211018039_InitialCreate.Designer.cs">
       <DependentUpon>201609211018039_InitialCreate.cs</DependentUpon>
@@ -326,7 +325,9 @@
       <DependentUpon>201609290909082_AddMeasurementTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -18,12 +18,13 @@ namespace FitnessViewer.Infrastructure.Repository
         public void AddAthlete(Athlete a)
         {
             _context.Athlete.Add(a);
-            _context.SaveChanges();
+         
         }
 
         public void EditAthlete(Athlete a)
         {
-            _context.SaveChanges();
+        
+            
         }
 
         public Athlete FindAthleteById(long id)

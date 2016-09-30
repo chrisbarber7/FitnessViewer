@@ -43,7 +43,7 @@ namespace FitnessViewer.Controllers
             };
 
             _unitOfWork.Metrics.AddMeasurement(toAdd);
-
+            _unitOfWork.Complete();
             return RedirectToAction("Index", "Home");
         }
     }

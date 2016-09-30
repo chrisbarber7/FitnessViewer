@@ -1,5 +1,7 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +9,12 @@ namespace FitnessViewer.Infrastructure.Models
 {
     public class Athlete
     {
+        public Athlete()
+        {
+            this.Activities = new Collection<Activity>();
+                      }
+
+
         // disabling auto identity column to allow use of strava athlete id as the key.
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -41,6 +49,6 @@ namespace FitnessViewer.Infrastructure.Models
         public float? Weight { get; set; }
         public string Token { get; set; }
 
-
+        public ICollection<Activity> Activities { get; private set; }
     }
 }

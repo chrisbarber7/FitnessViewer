@@ -14,6 +14,7 @@ using StravaDotNetStreams = Strava.Streams;
 using StravaDotNetActivities = Strava.Activities;
 using StravaDotNetApi = Strava.Api;
 using StravaDotNetGear = Strava.Gear;
+using AutoMapper;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -95,18 +96,22 @@ namespace FitnessViewer.Infrastructure.Helpers
             _userId = userId;
             SetupClient(token);
             StravaDotNetAthletes.Athlete athlete = _client.Athletes.GetAthlete();
-            var a = new Athlete();
-            a.Id = athlete.Id;
+
+            Athlete a = Mapper.Map<Athlete>(athlete);
             a.UserId = userId;
             a.Token = token;
-            UpdateEntityWithStravaDetails(athlete, a);
+
             _unitOfWork.Athlete.AddAthlete(a);
 
-            CheckGear( athlete);           
+            UpdateBikes(a.Id, athlete.Bikes);
+            UpdateShoes(a.Id, athlete.Shoes);
+         
 
             // add user to the strava download queue for background downloading of activities.
             _unitOfWork.Queue.AddQueueItem(userId);
-        }    
+
+            _unitOfWork.Complete();
+        }
 
         /// <summary>
         /// Update strava athlete details
@@ -115,25 +120,28 @@ namespace FitnessViewer.Infrastructure.Helpers
         public void UpdateAthlete(string token)
         {
             StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
-            Athlete a = _unitOfWork.Athlete.FindAthleteById(this._stravaId);
+            Athlete fitnessViewerAthlete = _unitOfWork.Athlete.FindAthleteById(this._stravaId);
 
-            if (a == null)
-                return;  
+            if (fitnessViewerAthlete == null)
+                return;
 
-            a.Id = stravaAthleteDetails.Id;            
-            a.Token = token;
-            UpdateEntityWithStravaDetails(stravaAthleteDetails, a);
-            _unitOfWork.Athlete.EditAthlete(a);
+            Mapper.Map(stravaAthleteDetails, fitnessViewerAthlete);
+                   
+            fitnessViewerAthlete.Token = token;
 
-            CheckGear(stravaAthleteDetails);
+            UpdateBikes(stravaAthleteDetails.Id, stravaAthleteDetails.Bikes);
+            UpdateShoes(stravaAthleteDetails.Id, stravaAthleteDetails.Shoes);
+
+            _unitOfWork.Complete();
         }
 
-        private void CheckGear(StravaDotNetAthletes.Athlete stravaAthleteDetails)
+        private void UpdateBikes(long athleteId, List<StravaDotNetGear.Bike> bikes)
+
         {
-            foreach(StravaDotNetGear.Bike b in stravaAthleteDetails.Bikes)
+            foreach (StravaDotNetGear.Bike b in bikes)
             {
-                Gear g = Gear.CreateBike(b.Id, stravaAthleteDetails.Id);
-          
+                Gear g = Gear.CreateBike(b.Id, athleteId);
+
                 g.Brand = b.Brand;
                 g.Description = b.Description;
                 g.Distance = b.Distance;
@@ -143,7 +151,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                     case StravaDotNetGear.BikeType.Mountain: { g.FrameType = enums.BikeType.Mountain; break; }
                     case StravaDotNetGear.BikeType.Road: { g.FrameType = enums.BikeType.Road; break; }
                     case StravaDotNetGear.BikeType.Timetrial: { g.FrameType = enums.BikeType.Timetrial; break; }
-                }     
+                }
                 g.IsPrimary = b.IsPrimary;
                 g.Model = b.Model;
                 g.Name = b.Name;
@@ -151,10 +159,14 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 _unitOfWork.Activity.AddOrUpdateGear(g);
             }
+        }
 
-            foreach (StravaDotNetGear.Shoes s in stravaAthleteDetails.Shoes)
+
+        private void UpdateShoes(long athleteId, List<StravaDotNetGear.Shoes> shoes)
+        { 
+            foreach (StravaDotNetGear.Shoes s in shoes)
             {
-                Gear g = Gear.CreateShoe(s.Id, stravaAthleteDetails.Id);
+                Gear g = Gear.CreateShoe(s.Id, athleteId);
                 g.Distance = s.Distance;
                 g.FrameType = enums.BikeType.Default;
                 g.IsPrimary = s.IsPrimary;
@@ -182,7 +194,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                var activities = _client.Activities.GetActivities(new DateTime(2005, 1, 1), DateTime.Now, page++, perPage);
+                var activities = _client.Activities.GetActivities(DateTime.Now.AddDays(-7), DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
                     break;
@@ -191,17 +203,20 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 foreach (var item in activities)
                 {
+                    // if activity already exists skip it
+                    if (_unitOfWork.Activity.GetActivities(_userId).Any(act => act.Id == item.Id))
+                        continue;
+
                     Models.Activity activity = InsertActivity(a.Id, item);
 
                     if (activity == null)
                         continue;
 
-                    newActivities.Add(activity);
+                    a.Activities.Add(activity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    _unitOfWork.Queue.AddQueueItem(a.UserId, activity.Id);
+                    _unitOfWork.Queue.AddQueueItem(a.UserId, item.Id);
                 }
-                _unitOfWork.Activity.AddActivity(newActivities);
 
                 // write changes to database.
                 _unitOfWork.Complete();
@@ -215,6 +230,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         public void ActivityDetailsDownload(long activityId)
         {
             Models.Activity activity = _unitOfWork.Activity.GetActivity(activityId);
+
+            if (activity == null)
+                throw new ArgumentException("Activity Not Found");
 
             System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
                 activity.Name));
@@ -239,10 +257,12 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             ExtractAndStoreStream(activity.Id, stream);
 
-            if (activity.ActivityTypeId == "Run")
+            if (activity.ActivityType.IsRun)
                 RunDetailsDownload(activity);
-            else if (activity.ActivityTypeId == "Ride" || activity.ActivityTypeId == "VirtualRide")
+            else if (activity.ActivityType.IsRide)
                 BikeDetailsDownload(activity);
+
+            _unitOfWork.Complete();
 
         }
 
@@ -341,7 +361,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             foreach (StravaDotNetActivities.BestEffort effort in act.BestEfforts)
                 InsertBestEffort(activity.Id, effort);
 
-            _unitOfWork.Complete();
+         //   _unitOfWork.Complete();
         }
 
         /// <summary>
@@ -443,33 +463,6 @@ namespace FitnessViewer.Infrastructure.Helpers
             return s;
         }
 
-        /// <summary>
-        /// Map strava fields on strava/FV.
-        /// </summary>
-        /// <param name="athlete">Strava athlete details</param>
-        /// <param name="a">FV Athlete details</param>
-        private static void UpdateEntityWithStravaDetails(StravaDotNetAthletes.Athlete athlete, Athlete a)
-        {
-            a.FirstName = athlete.FirstName;
-            a.LastName = athlete.LastName;
-            a.ProfileMedium = athlete.ProfileMedium;
-            a.Profile = athlete.Profile;
-            a.City = athlete.City;
-            a.State = athlete.State;
-            a.Country = athlete.Country;
-            a.Sex = athlete.Sex;
-            a.Friend = athlete.Friend;
-            a.Follower = athlete.Follower;
-            a.IsPremium = athlete.IsPremium;
-            a.CreatedAt = athlete.CreatedAt;
-            a.UpdatedAt = athlete.UpdatedAt;
-            a.ApproveFollowers = athlete.ApproveFollowers;
-            a.AthleteType = athlete.AthleteType;
-            a.DatePreference = athlete.DatePreference;
-            a.MeasurementPreference = athlete.MeasurementPreference;
-            a.Email = athlete.Email;
-            a.FTP = athlete.Ftp;
-            a.Weight = athlete.Weight;
-        }
+    
     }
 }

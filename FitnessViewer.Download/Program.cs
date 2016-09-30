@@ -30,18 +30,25 @@ namespace FitnessViewer.Download
                         Strava s = new Strava(job.UserId);
                         s.AddActivitesForAthlete();
                         _unitOfWork.Queue.RemoveQueueItem(job.Id);
+                        _unitOfWork.Complete();
                     }
                     else
                     {
                         Strava s = new Strava(job.UserId);
                         s.ActivityDetailsDownload(job.ActivityId.Value);
                         _unitOfWork.Queue.RemoveQueueItem(job.Id);
+                        _unitOfWork.Complete();
                     }
                 }
                 catch (Exception ex)
                 {
                     _unitOfWork.Queue.QueueItemMarkHasError(job.Id);
+                    _unitOfWork.Complete();
                     System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                finally
+                    {
+          
                 }
             }
         }

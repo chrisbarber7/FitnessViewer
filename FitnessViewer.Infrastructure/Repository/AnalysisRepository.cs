@@ -50,8 +50,6 @@ namespace FitnessViewer.Infrastructure.Repository
             }
 
             _context.ActivityPeak.Add(stravaPeak);
-            _context.SaveChanges();
-
         }
         /// <summary>
         /// Return Peak information for common time duration

@@ -15,9 +15,6 @@ namespace FitnessViewer.Infrastructure.Repository
         public void AddMeasurement(Measurement m)
         {
             _context.Measurement.Add(m);
-            _context.SaveChanges();
         }
-
-
     }
 }
