@@ -105,12 +105,15 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
-        public IEnumerable<ActivityByPeriod> ActivityByWeek(string activityType, DateTime start, DateTime end)
+        public IEnumerable<ActivityByPeriod> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
             return _context.Activity
                 .Include(r => r.Calendar)
                 .Include(r => r.ActivityType)
-                .Where(r => r.Start >= start &&
+                .Include(r => r.Athlete)
+                .Where(r => 
+                        r.Athlete.UserId == userId &&
+                        r.Start >= start &&
                         r.Start <= end &&
                         (r.ActivityTypeId == activityType || activityType == "All"))
                 .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek, Label = r.Calendar.WeekLabel })
