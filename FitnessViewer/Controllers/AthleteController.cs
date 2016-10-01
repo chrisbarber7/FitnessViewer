@@ -29,6 +29,13 @@ namespace FitnessViewer.Controllers
 
             return View(result);
         }
+
+        public ActionResult ActivityScan()
+        {
+            _unitOfWork.Queue.AddQueueItem(this.User.Identity.GetUserId());
+            _unitOfWork.Complete();
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+        }
     }
 }
 
