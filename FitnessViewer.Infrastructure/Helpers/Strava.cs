@@ -199,8 +199,6 @@ namespace FitnessViewer.Infrastructure.Helpers
                 if (activities.Count == 0)
                     break;
 
-                List<Models.Activity> newActivities = new List<Models.Activity>();
-
                 foreach (var item in activities)
                 {
                     // if activity already exists skip it
@@ -237,6 +235,19 @@ namespace FitnessViewer.Infrastructure.Helpers
             System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
                 activity.Name));
 
+            var full = _client.Activities.GetActivity(activityId.ToString(), true);
+
+            // update details missing from summary activity.
+            activity.Calories = full.Calories;
+            activity.Description = full.Description;
+            // gear??
+            activity.EmbedToken = full.EmbedToken;
+            activity.DeviceName = full.DeviceName;
+            activity.MapPolyline = full.Map.Polyline;
+            // splits_metric
+            // splits_standard
+
+
             // heart rate/power zones
             //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
 
@@ -258,12 +269,11 @@ namespace FitnessViewer.Infrastructure.Helpers
             ExtractAndStoreStream(activity.Id, stream);
 
             if (activity.ActivityType.IsRun)
-                RunDetailsDownload(activity);
+                ExtractRunDetails(full);
             else if (activity.ActivityType.IsRide)
-                BikeDetailsDownload(activity);
+                ExtractBikeDetails(full);
 
             _unitOfWork.Complete();
-
         }
 
         /// <summary>
@@ -346,7 +356,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download bike specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void BikeDetailsDownload(Models.Activity activity)
+        private void ExtractBikeDetails(StravaDotNetActivities.Activity activity)
         {
         }
 
@@ -354,11 +364,10 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download run specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void RunDetailsDownload(Models.Activity activity)
+        private void ExtractRunDetails(StravaDotNetActivities.Activity activity)
         {
-            var act = _client.Activities.GetActivity(activity.Id.ToString(), true);
 
-            foreach (StravaDotNetActivities.BestEffort effort in act.BestEfforts)
+            foreach (StravaDotNetActivities.BestEffort effort in activity.BestEfforts)
                 InsertBestEffort(activity.Id, effort);
 
          //   _unitOfWork.Complete();
@@ -452,6 +461,10 @@ namespace FitnessViewer.Infrastructure.Helpers
                 s.EndLatitude = item.EndLatitude;
                 s.EndLongitude = item.EndLongitude;
                 s.HasPowerMeter = item.HasPowerMeter;
+
+                s.MapId = item.Map.Id;
+                s.MapPolyline = item.Map.Polyline;
+                s.MapPolylineSummary = item.Map.SummaryPolyline;
             }
             catch (Exception ex)
             {

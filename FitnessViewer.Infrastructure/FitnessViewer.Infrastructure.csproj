@@ -97,6 +97,14 @@
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
+    <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
+    <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">
+      <DependentUpon>201609302208361_AddActivityMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610010716391_AddDeviceName.cs" />
+    <Compile Include="Migrations\201610010716391_AddDeviceName.Designer.cs">
+      <DependentUpon>201610010716391_AddDeviceName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
     <Compile Include="Repository\AthleteRepository.cs" />
@@ -323,6 +331,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609290909082_AddMeasurementTable.resx">
       <DependentUpon>201609290909082_AddMeasurementTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609302208361_AddActivityMap.resx">
+      <DependentUpon>201609302208361_AddActivityMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610010716391_AddDeviceName.resx">
+      <DependentUpon>201610010716391_AddDeviceName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -71,7 +71,8 @@ namespace FitnessViewer.Infrastructure.Models
         public DateTime StartDate { get; set; }
 
         private DateTime _startDateLocal;
-      
+        public  string DeviceName { get; set; }
+
 
         // necessay so that we can join to calendar on date only
         public DateTime StartDateLocal
@@ -100,6 +101,10 @@ namespace FitnessViewer.Infrastructure.Models
         public double? EndLongitude { get; set; }
         public bool HasPowerMeter { get; set; }
         //public Map Map { get; set; }
+
+        public string MapId { get; set; }
+        public string MapPolyline { get; set; }
+        public string MapPolylineSummary { get; set; }
 
         public float Calories { get; set; }
         public string Description { get; set; }
