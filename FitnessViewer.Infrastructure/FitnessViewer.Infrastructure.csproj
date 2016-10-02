@@ -105,7 +105,12 @@
     <Compile Include="Migrations\201610010716391_AddDeviceName.Designer.cs">
       <DependentUpon>201610010716391_AddDeviceName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610021800515_AddLapTable.cs" />
+    <Compile Include="Migrations\201610021800515_AddLapTable.Designer.cs">
+      <DependentUpon>201610021800515_AddLapTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
+    <Compile Include="Models\Lap.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
     <Compile Include="Repository\AthleteRepository.cs" />
@@ -338,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610010716391_AddDeviceName.resx">
       <DependentUpon>201610010716391_AddDeviceName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610021800515_AddLapTable.resx">
+      <DependentUpon>201610021800515_AddLapTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

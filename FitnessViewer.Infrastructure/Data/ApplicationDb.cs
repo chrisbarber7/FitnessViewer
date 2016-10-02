@@ -27,10 +27,18 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<Gear> Gear { get; set; }
         public DbSet<Calendar> Calendar { get; set; }
         public DbSet<Measurement> Measurement { get; set; }
+        public DbSet<Lap> Lap { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
+            //modelBuilder.Entity<Lap>()
+            //    .HasKey(l=>l.Id)
+            //    .HasRequired(l=>l.Athlete)
+                
+            //    .WithRequiredDependent()
+            //    .WillCascadeOnDelete(false);
+               
+                
             //modelBuilder.Entity<Activity>()
             //    .HasRequired<ActivityType>(t => t.ActivityType)
             // .WithRequiredPrincipal()

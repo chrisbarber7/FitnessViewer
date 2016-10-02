@@ -137,5 +137,10 @@ namespace FitnessViewer.Infrastructure.Repository
                 .OrderBy(r => r.Period)
                 .ToList();
         }
+
+        internal void AddLap(Lap lap)
+        {
+            _context.Lap.Add(lap);
+        }
     }
 }

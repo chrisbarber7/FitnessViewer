@@ -15,9 +15,10 @@ namespace FitnessViewer.Infrastructure.Configuration
     {
         public static void Configure()
         {
-            Mapper.Initialize(cfg => {
+            Mapper.Initialize(cfg =>
+            {
                 cfg.AddProfile<InfrasturtureProfile>();
-                });    
+            });
         }
 
         public class InfrasturtureProfile : Profile
@@ -25,10 +26,20 @@ namespace FitnessViewer.Infrastructure.Configuration
             public InfrasturtureProfile()
             {
                 CreateMap<Athlete, Strava.Athletes.Athlete>().ReverseMap();
-           //     CreateMap<Activity, Strava.Activities.Activity>().ReverseMap();
-             
+
+                CreateMap<Strava.Activities.ActivityLap, Lap>()
+                    .ForMember(src => src.Athlete, opt => opt.Ignore())
+                    .ForMember(src => src.Activity, opt => opt.Ignore())
+                    .ForMember(dest => dest.ElapsedTime, opts => opts.MapFrom(src => src.ElapsedTimeSpan))
+                    .ForMember(dest => dest.MovingTime, opts => opts.MapFrom(src => src.MovingTimeSpan))
+                    .ForMember(dest => dest.AthleteId, opts => opts.MapFrom(src => src.Athlete.Id));
+                 
+
+
 
             }
+
+
         }
     }
 }

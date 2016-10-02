@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using static FitnessViewer.Infrastructure.Configuration.AutoMapperConfig;
 
 namespace FitnessViewer.Download
 {
@@ -13,9 +15,11 @@ namespace FitnessViewer.Download
     {
         static void Main(string[] args)
         {
+            AutoMapperConfig();
+
             Infrastructure.Data.UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
 
-        var jobs = _unitOfWork.Queue.GetQueue();
+            var jobs = _unitOfWork.Queue.GetQueue();
 
             foreach (DownloadQueue job in jobs)
             {
@@ -47,10 +51,19 @@ namespace FitnessViewer.Download
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
                 finally
-                    {
-          
+                {
+
                 }
             }
         }
+
+        private static void AutoMapperConfig()
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile<InfrasturtureProfile>();
+            });
+        }
+
     }
 }

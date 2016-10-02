@@ -116,7 +116,7 @@ namespace FitnessViewer.Infrastructure.Models
         public string GetDistanceByActivityType()
         {
             if (this.ActivityType.IsRide)
-                return string.Format("{0}mi", MetreDistance.ToMiles(this.Distance).ToString());
+                return string.Format("{0}", MetreDistance.ToMiles(this.Distance).ToString());
             else if (this.ActivityType.IsRun)
                 return string.Format("{0}mi", MetreDistance.ToMiles(this.Distance).ToString());
             else if (this.ActivityType.IsSwim)

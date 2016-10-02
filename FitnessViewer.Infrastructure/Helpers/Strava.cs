@@ -232,26 +232,32 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (activity == null)
                 throw new ArgumentException("Activity Not Found");
 
+
+
             System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
                 activity.Name));
 
-            var full = _client.Activities.GetActivity(activityId.ToString(), true);
+            var fullActivityDetails = _client.Activities.GetActivity(activityId.ToString(), true);
 
             // update details missing from summary activity.
-            activity.Calories = full.Calories;
-            activity.Description = full.Description;
+            activity.Calories = fullActivityDetails.Calories;
+            activity.Description = fullActivityDetails.Description;
             // gear??
-            activity.EmbedToken = full.EmbedToken;
-            activity.DeviceName = full.DeviceName;
-            activity.MapPolyline = full.Map.Polyline;
+            activity.EmbedToken = fullActivityDetails.EmbedToken;
+            activity.DeviceName = fullActivityDetails.DeviceName;
+            activity.MapPolyline = fullActivityDetails.Map.Polyline;
             // splits_metric
             // splits_standard
 
 
             // heart rate/power zones
             //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
-
-            // detailed information
+            
+    
+            foreach (StravaDotNetActivities.ActivityLap stravaLap in _client.Activities.GetActivityLaps(activityId.ToString()))
+                _unitOfWork.Activity.AddLap(Mapper.Map<Lap>(stravaLap));
+            
+                     // detailed information
             List<StravaDotNetStreams.ActivityStream> stream = _client.Streams.GetActivityStream(activity.Id.ToString(),
                 StravaDotNetStreams.StreamType.Altitude |
                 StravaDotNetStreams.StreamType.Cadence |
@@ -269,9 +275,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             ExtractAndStoreStream(activity.Id, stream);
 
             if (activity.ActivityType.IsRun)
-                ExtractRunDetails(full);
+                ExtractRunDetails(fullActivityDetails);
             else if (activity.ActivityType.IsRide)
-                ExtractBikeDetails(full);
+                ExtractBikeDetails(fullActivityDetails);
 
             _unitOfWork.Complete();
         }
