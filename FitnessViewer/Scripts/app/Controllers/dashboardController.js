@@ -25,9 +25,9 @@
                 datasets: [
                     {
                         label: 'Distance',
-                        data: data.distance,
+                        data: data.distance
                     }]
-            }
+            };
 
             var ctx = document.getElementById(chartName).getContext("2d");
 
@@ -38,7 +38,7 @@
                 }
             });
         }
-    }
+    };
 
     var setupActivitiesDataTable = function () {
         $('#table_id').dataTable({
@@ -65,10 +65,10 @@
             "columnDefs": [
                 { "className": "dt-right", "targets": [3, 4] },
             { "width": "60%", "targets": 0 }]
-        })
+        });
     };
 
     return {
         init: init
-    }
+    };
 }();
