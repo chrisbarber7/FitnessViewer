@@ -67,6 +67,18 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Gear.AddOrUpdate(g);
         }
 
+        public IEnumerable<ActivitityCoords> GetActivityCoords(long activityId)
+        {
+            return _context.Stream
+                .Where(s => s.ActivityId == activityId)
+                .Select(s => new ActivitityCoords
+                {
+                    lat = s.Latitude.Value,
+                    lng = s.Longitude.Value
+                })
+                .ToList();
+        }
+
         public IEnumerable<RunningTimes> GetBestTimes(string userId)
         {
             // get a list of best times

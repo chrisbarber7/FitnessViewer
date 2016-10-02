@@ -105,6 +105,7 @@
     <Compile Include="Migrations\201610010716391_AddDeviceName.Designer.cs">
       <DependentUpon>201610010716391_AddDeviceName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
     <Compile Include="Repository\AthleteRepository.cs" />

@@ -3,12 +3,56 @@
     ViewBag.Title = "Activity";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
     <h1>@Model.Name</h1>
+    <div id="map" style="height:500px;width:500px"></div>
+    <script>
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+       //   zoom: 14,
+     //     center: { lat: 53.450128, lng: -2.078496 },
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var routeCoords = (function () {
+            var routeCoords = null;
+            $.ajax({
+                async: false,
+                global:false,
+                dataType: "json",
+                type: "POST",
+                url: "/api/Activity/GetMapCoords/"+@Model.Id,
+                success: function (data) {
+                    routeCoords = data;
+                },
+                error: function () {
+                    alert("Error getting coords data!");
+                }
+            });
+            return routeCoords;
+        })();
+
+          // override centre/boundaries
+          var latlngbounds = new google.maps.LatLngBounds( );
+          routeCoords.forEach(function(latLng){
+              latlngbounds.extend(latLng);
+          });
+
+          map.setCenter(latlngbounds.getCenter());
+          map.fitBounds(latlngbounds);
+
+        var routePath = new google.maps.Polyline({
+          path: routeCoords,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        routePath.setMap(map);
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARW8zp-dKOLcnloYsY13dRLHjKEkbA5wk&callback=initMap">
+    </script>
 
 
-
-<div class="row">
-   
-</div>

@@ -31,6 +31,15 @@ namespace FitnessViewer.Controllers.api
             });
         }
 
+        [HttpPost]
+        public IHttpActionResult GetMapCoords(string id)
+        {
+            var coords = _unitOfWork.Activity.GetActivityCoords(Convert.ToInt64(id));
+            return Ok(
+               coords
+            );
+        }
+
        [HttpPost]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
