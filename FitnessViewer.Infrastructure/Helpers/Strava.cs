@@ -27,6 +27,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         private StravaDotNetClient.StravaClient _client;
         private string _userId;
         private long _stravaId;
+        private int stravaLimitDelay;
 
         public Strava()
         {
@@ -36,16 +37,17 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         private void Limits_UsageChanged(object sender, StravaDotNetApi.UsageChangedEventArgs e)
         {
-            // if getting close to short term limit introduce delays.
+             // if getting close to short term limit introduce delays.
             if (e.Usage.ShortTerm < 550)
-                return;
-
-            System.Diagnostics.Debug.WriteLine("Short: "+e.Usage.ShortTerm.ToString());
-            System.Diagnostics.Debug.WriteLine("Long : " + e.Usage.LongTerm.ToString());
-            System.Threading.Thread.Sleep(30000);
+                stravaLimitDelay = 100;
+            else if (e.Usage.ShortTerm <=575)
+                stravaLimitDelay = 30000;
+            else if (e.Usage.ShortTerm <= 590)
+                stravaLimitDelay = 45000;
+            else
+                stravaLimitDelay = 60000;
         }
-
-
+        
         /// <summary>
         /// Constructor for a given identity user id (token looked up)
         /// </summary>
@@ -105,7 +107,6 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             UpdateBikes(a.Id, athlete.Bikes);
             UpdateShoes(a.Id, athlete.Shoes);
-         
 
             // add user to the strava download queue for background downloading of activities.
             _unitOfWork.Queue.AddQueueItem(userId);
@@ -125,6 +126,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (fitnessViewerAthlete == null)
                 return;
 
+            LogActivity("Updating Athlete", fitnessViewerAthlete);
+
+
             Mapper.Map(stravaAthleteDetails, fitnessViewerAthlete);
                    
             fitnessViewerAthlete.Token = token;
@@ -135,8 +139,30 @@ namespace FitnessViewer.Infrastructure.Helpers
             _unitOfWork.Complete();
         }
 
-        private void UpdateBikes(long athleteId, List<StravaDotNetGear.Bike> bikes)
+        private void LogActivity(string action, Athlete fitnessViewerAthlete)
+        {
 
+            string log = string.Format("{0} : {1} ({2} {3}) ", action,
+                                                               fitnessViewerAthlete.Id,
+                                                               fitnessViewerAthlete.FirstName,
+                                                               fitnessViewerAthlete.LastName);
+
+            System.Diagnostics.Debug.WriteLine(log);
+            Console.WriteLine(log);
+        }
+
+        private void LogActivity(string action, Activity activity )
+        {
+
+            string log = string.Format("{0} : {1} - {2}", action,
+                                                          activity.Id,
+                                                          activity.Name);
+                                                                                
+            System.Diagnostics.Debug.WriteLine(log);
+            Console.WriteLine(log);
+        }
+
+        private void UpdateBikes(long athleteId, List<StravaDotNetGear.Bike> bikes)
         {
             foreach (StravaDotNetGear.Bike b in bikes)
             {
@@ -186,6 +212,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (a == null)
                 throw new ArgumentException("Invalid UserId");
 
+            LogActivity("Add Activities", a);
+
             // max activities allowed by strava in each download.
             const int perPage = 200;
 
@@ -218,6 +246,11 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 // write changes to database.
                 _unitOfWork.Complete();
+
+                if (stravaLimitDelay > 100)
+                    LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), a);
+
+                System.Threading.Thread.Sleep(stravaLimitDelay);
             }
         }
         
@@ -227,38 +260,39 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="activityId">Strava activity Id</param>
         public void ActivityDetailsDownload(long activityId)
         {
-            Models.Activity activity = _unitOfWork.Activity.GetActivity(activityId);
+            Models.Activity fvActivity = _unitOfWork.Activity.GetActivity(activityId);
 
-            if (activity == null)
+            if (fvActivity == null)
                 throw new ArgumentException("Activity Not Found");
 
+            LogActivity("Download Activity", fvActivity);
 
-
-            System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", activity.StartDateLocal.ToShortDateString(),
-                activity.Name));
-
-            var fullActivityDetails = _client.Activities.GetActivity(activityId.ToString(), true);
+            var stravaActivity = _client.Activities.GetActivity(activityId.ToString(), true);
 
             // update details missing from summary activity.
-            activity.Calories = fullActivityDetails.Calories;
-            activity.Description = fullActivityDetails.Description;
+            fvActivity.Calories = stravaActivity.Calories;
+            fvActivity.Description = stravaActivity.Description;
             // gear??
-            activity.EmbedToken = fullActivityDetails.EmbedToken;
-            activity.DeviceName = fullActivityDetails.DeviceName;
-            activity.MapPolyline = fullActivityDetails.Map.Polyline;
+            fvActivity.EmbedToken = stravaActivity.EmbedToken;
+            fvActivity.DeviceName = stravaActivity.DeviceName;
+            fvActivity.MapPolyline = stravaActivity.Map.Polyline;
             // splits_metric
             // splits_standard
 
 
             // heart rate/power zones
             //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
-            
-    
+
+
+            LogActivity("Download Laps", fvActivity);
             foreach (StravaDotNetActivities.ActivityLap stravaLap in _client.Activities.GetActivityLaps(activityId.ToString()))
                 _unitOfWork.Activity.AddLap(Mapper.Map<Lap>(stravaLap));
-            
-                     // detailed information
-            List<StravaDotNetStreams.ActivityStream> stream = _client.Streams.GetActivityStream(activity.Id.ToString(),
+
+
+            LogActivity("Download Stream", fvActivity);
+
+            // detailed information
+            List<StravaDotNetStreams.ActivityStream> stream = _client.Streams.GetActivityStream(fvActivity.Id.ToString(),
                 StravaDotNetStreams.StreamType.Altitude |
                 StravaDotNetStreams.StreamType.Cadence |
                 StravaDotNetStreams.StreamType.Distance |
@@ -272,14 +306,19 @@ namespace FitnessViewer.Infrastructure.Helpers
                 StravaDotNetStreams.StreamType.Watts,
                 StravaDotNetStreams.StreamResolution.All);
 
-            ExtractAndStoreStream(activity.Id, stream);
+            ExtractAndStoreStream(fvActivity.Id, stream);
 
-            if (activity.ActivityType.IsRun)
-                ExtractRunDetails(fullActivityDetails);
-            else if (activity.ActivityType.IsRide)
-                ExtractBikeDetails(fullActivityDetails);
+            if (fvActivity.ActivityType.IsRun)
+                ExtractRunDetails(fvActivity, stravaActivity);
+            else if (fvActivity.ActivityType.IsRide)
+                ExtractBikeDetails(stravaActivity);
 
             _unitOfWork.Complete();
+
+            if (stravaLimitDelay > 100)
+                LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), fvActivity);
+
+            System.Threading.Thread.Sleep(stravaLimitDelay);
         }
 
         /// <summary>
@@ -370,11 +409,12 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Download run specific information
         /// </summary>
         /// <param name="activity">StravaActivity</param>
-        private void ExtractRunDetails(StravaDotNetActivities.Activity activity)
+        private void ExtractRunDetails(Activity fvActivity, StravaDotNetActivities.Activity stravaActivity)
         {
 
-            foreach (StravaDotNetActivities.BestEffort effort in activity.BestEfforts)
-                InsertBestEffort(activity.Id, effort);
+            LogActivity("Download Best Efforts", fvActivity);
+            foreach (StravaDotNetActivities.BestEffort effort in stravaActivity.BestEfforts)
+                InsertBestEffort(fvActivity, effort);
 
          //   _unitOfWork.Complete();
         }
@@ -384,11 +424,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="activityId">Strava activity Id</param>
         /// <param name="e">Strava best effort information</param>
-        private void InsertBestEffort(long activityId, StravaDotNetActivities.BestEffort e)
+        private void InsertBestEffort(Activity fvActivity, StravaDotNetActivities.BestEffort e)
         {
             BestEffort effort = new BestEffort();
 
-            effort.ActivityId = activityId;
+            effort.ActivityId = fvActivity.Id;
             effort.MovingTime = TimeSpan.FromSeconds(e.MovingTime);
             effort.Name = e.Name;
             effort.ResourceState = e.ResourceState;
@@ -397,9 +437,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             effort.StartIndex = e.StartIndex;
             effort.ElapsedTime = TimeSpan.FromSeconds(e.ElapsedTime);
             effort.Distance = e.Distance;
-            effort.EndIndex = e.EndIndex;
+            effort.EndIndex = e.EndIndex;         
 
-            _unitOfWork.Activity.AddBestEffort(effort);            
+          _unitOfWork.Activity.AddBestEffort(effort);            
         }
 
         /// <summary>
@@ -480,8 +520,6 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
 
             return s;
-        }
-
-    
+        }    
     }
 }

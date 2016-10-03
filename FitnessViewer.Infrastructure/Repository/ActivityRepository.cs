@@ -140,7 +140,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         internal void AddLap(Lap lap)
         {
-            _context.Lap.Add(lap);
+            _context.Lap.Add(lap);     
         }
     }
 }
