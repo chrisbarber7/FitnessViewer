@@ -28,6 +28,7 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<Calendar> Calendar { get; set; }
         public DbSet<Measurement> Measurement { get; set; }
         public DbSet<Lap> Lap { get; set; }
+        public DbSet<ActivityPeakDetail> ActivityPeakDetail { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

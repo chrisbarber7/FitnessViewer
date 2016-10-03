@@ -111,6 +111,11 @@
     <Compile Include="Migrations\201610021800515_AddLapTable.Designer.cs">
       <DependentUpon>201610021800515_AddLapTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610031716409_AddActivityPeakDetail.cs" />
+    <Compile Include="Migrations\201610031716409_AddActivityPeakDetail.Designer.cs">
+      <DependentUpon>201610031716409_AddActivityPeakDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
     <Compile Include="Models\Lap.cs" />
@@ -349,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610021800515_AddLapTable.resx">
       <DependentUpon>201610021800515_AddLapTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610031716409_AddActivityPeakDetail.resx">
+      <DependentUpon>201610031716409_AddActivityPeakDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

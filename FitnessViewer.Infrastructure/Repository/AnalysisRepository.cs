@@ -21,16 +21,21 @@ namespace FitnessViewer.Infrastructure.Repository
             _context = context;
         }
 
-
-
-
         #region peaks
 
-        public void AddPeak(long activityId, PeakStreamType type, List<PeakDetail> peaks)
+        public void AddPeak(long activityId, PeakStreamType type, List<ActivityPeakDetail> peaks)
         {
+            var existingPeaks = _context.ActivityPeak.Where(a => a.ActivityId == activityId && a.PeakType == (byte)type).ToList();
+            if (existingPeaks.Count > 0)
+                _context.ActivityPeak.RemoveRange(existingPeaks);
+
+            var existingPeakDetail = _context.ActivityPeakDetail.Where(a => a.ActivityId == activityId && a.StreamType == type).ToList();
+            if (existingPeakDetail.Count > 0)
+                _context.ActivityPeakDetail.RemoveRange(existingPeakDetail);
+
             ActivityPeaks stravaPeak = new ActivityPeaks() { ActivityId = activityId, PeakType = (byte)type };
 
-            foreach (PeakDetail d in peaks)
+            foreach (ActivityPeakDetail d in peaks)
             {
                 switch (d.Duration)
                 {
@@ -48,6 +53,8 @@ namespace FitnessViewer.Infrastructure.Repository
                     case 3600: { stravaPeak.Peak3600 = d.Value; break; }
                     case int.MaxValue: { stravaPeak.PeakDuration = d.Value; break; }
                 }
+
+                _context.ActivityPeakDetail.Add(d);
             }
 
             _context.ActivityPeak.Add(stravaPeak);

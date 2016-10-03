@@ -1,31 +1,10 @@
 ﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Models;
 using System.Collections.Generic;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
-    /// <summary>
-    /// holds detail of a single peak.
-    /// </summary>
-    public class PeakDetail
-    {
-        public PeakDetail(PeakStreamType type)
-        {
-            this.StreamType = type;
-        }
-
-        public PeakDetail(PeakStreamType type, int duration)
-        {
-            this.Duration = duration;
-            this.Value = null;
-            this.Start = null;
-            this.StreamType = type;
-        }
-
-        public int Duration { get; set; }       // duration of peak (in seconds)
-        public int? Value { get; set; }         // peak
-        public int? Start { get; set; }         // starting point in stream for the peak
-        public PeakStreamType StreamType { get; set; }
-    }
+   
 
 
 
@@ -36,19 +15,24 @@ namespace FitnessViewer.Infrastructure.Helpers
     {
         private List<int> _data;
         private int[] _standardDurations;
-        private PeakDetail _peakInformation;
+        private ActivityPeakDetail _peakInformation;
         private bool _peakFound = false;
         private PeakStreamType _streamType;
+        private long _activityId;
+
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="stream">Stream to be analysed for peaks.</param>
         /// <param name="type">Type of stream (power, HR, cadence)</param>
-        public PeakValueFinder(List<int> stream, PeakStreamType type)
+        /// <param name="activityId">Activity Id.</param>
+        public PeakValueFinder(List<int> stream, PeakStreamType type, long activityId)
         {
             _data = stream;
             _streamType = type;
+            _activityId = activityId;
 
             // set standard reporting durations (in seconds)
             switch (type)
@@ -75,9 +59,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Find peaks in stream for all standard durations
         /// </summary>
         /// <returns></returns>
-        public List<PeakDetail> FindPeaks()
+        public List<ActivityPeakDetail> FindPeaks()
         {
-            List<PeakDetail> peaks = new List<PeakDetail>();
+            List<ActivityPeakDetail> peaks = new List<ActivityPeakDetail>();
 
             foreach (int duration in _standardDurations)
                 peaks.Add(FindPeakForDuration(duration));
@@ -90,16 +74,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="duration">Time to find peak for (in seconds)</param>
         /// <returns></returns>
-        public PeakDetail FindPeakForDuration(int duration)
+        public ActivityPeakDetail FindPeakForDuration(int duration)
         {
             // if there isn't enough data for the duration then we can't find a peak
             // ie looking for 60 minute peak in a 30 minute activity
             if (_data.Count < duration)
-                return new PeakDetail(_streamType, duration);
+                return new ActivityPeakDetail(_activityId, _streamType, duration);
 
             _peakFound = false;
 
-            _peakInformation = new PeakDetail(_streamType) { Duration = duration, Value = 0, Start = 0 };
+            _peakInformation = new ActivityPeakDetail(_activityId, _streamType) { Duration = duration, Value = 0, Start = 0 };
 
             // loop over the data for each possible starting point for the given duration
             for (int startDataPoint = 0; startDataPoint <= _data.Count - duration; startDataPoint++)

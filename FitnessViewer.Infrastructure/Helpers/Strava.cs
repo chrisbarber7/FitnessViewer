@@ -322,6 +322,11 @@ namespace FitnessViewer.Infrastructure.Helpers
             System.Threading.Thread.Sleep(stravaLimitDelay);
         }
 
+        public void Complete()
+        {
+            _unitOfWork.Complete();
+        }
+
         /// <summary>
         /// Convert Strava stream information and write to database.
         /// </summary>
@@ -340,18 +345,19 @@ namespace FitnessViewer.Infrastructure.Helpers
             ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.HeartRate).ToList(), PeakStreamType.HeartRate);
 
             // write all details to database.
-            _unitOfWork.Activity.AddSteam(convertedStream);
+            _unitOfWork.Activity.AddStream(convertedStream);
         }
 
-        private void ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
+        public void ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
         {
             if (!stream.Contains(null))
             {
                 PeakValueFinder finder = new PeakValueFinder(
                     stream.Select(s => s.Value).ToList(),
-                    PeakStreamType.Power);
+                    PeakStreamType.Power,
+                    activityId);
 
-                List<PeakDetail> peaks = finder.FindPeaks();
+                List<ActivityPeakDetail> peaks = finder.FindPeaks();
 
                 _unitOfWork.Analysis.AddPeak(activityId, type, peaks);
             }

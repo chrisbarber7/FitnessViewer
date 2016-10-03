@@ -16,8 +16,11 @@ namespace FitnessViewer.Download
         static void Main(string[] args)
         {
             AutoMapperConfig();
+            
+       Infrastructure.Data.UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
 
-            Infrastructure.Data.UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            // un-comment to force recalculation of peak information from stream table.
+       //     _unitOfWork.Activity.RecalculateStreamPeaks();
 
             var jobs = _unitOfWork.Queue.GetQueue();
 
