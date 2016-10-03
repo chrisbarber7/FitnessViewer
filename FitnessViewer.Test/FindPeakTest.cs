@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Test
 {

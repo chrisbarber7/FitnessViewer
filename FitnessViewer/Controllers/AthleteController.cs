@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Repository;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
@@ -23,7 +24,7 @@ namespace FitnessViewer.Controllers
             var result = new AthleteViewModel()
             {
                 FirstName = _unitOfWork.Athlete.FindAthleteByUserId(this.User.Identity.GetUserId()).FirstName,
-                PowerPeaks = _unitOfWork.Analysis.GetPeaks(userId, Infrastructure.Helpers.PeakStreamType.Power),
+                PowerPeaks = _unitOfWork.Analysis.GetPeaks(userId, PeakStreamType.Power),
                 RunningTime = _unitOfWork.Activity.GetBestTimes(userId)
             };
 
