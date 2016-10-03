@@ -24,6 +24,54 @@ textarea {
     max-width: 280px;
 }
 
+
+/* Bootstrap Overrides */
+.navbar-inverse {
+    background-color: #3a8904;
+    border-color: #3a8904;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+
+h4{
+    background-color: #c0ef95;
+      border-color: #c0ef95;
+    color:#3a8904;
+    font-size:15px;
+        padding: 4px 10px;
+
+
+}
+
+a{
+    color:#3a8904;
+}
+
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #235202;
+}
+
+.dropdown-menu {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.navbar-inverse .navbar-nav > .dropdown > a .caret {
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+}
+
+.navbar-brand {
+    font-weight: 700;    
+}
+
 body,
 h1,
 h2,
@@ -47,7 +95,7 @@ h6,
 .login-button{
     border:0;
     padding:0;
-    background-color:black;
+    background-color:#3a8904;;
 
 }
 
