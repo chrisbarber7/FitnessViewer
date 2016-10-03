@@ -71,30 +71,45 @@
             <div id="lapTab" >
                 <ul class="nav nav-pills">
                     <li class="active">
-                        <a href="#lap" data-toggle="tab">Lap</a>
+                        <a href="#lapTabData" data-toggle="tab">Lap</a>
                     </li>
                     <li>
-                        <a href="#2a" data-toggle="tab">Power</a>
+                        <a href="#powerTabData" data-toggle="tab">Power</a>
                     </li>
                     <li>
-                        <a href="#3a" data-toggle="tab">Heart</a>
+                        <a href="#heartTabData" data-toggle="tab">Heart</a>
                     </li>
                     <li>
-                        <a href="#4a" data-toggle="tab">Cadence</a>
+                        <a href="#cadenceTabData" data-toggle="tab">Cadence</a>
                     </li>
                 </ul>
 
                 <div class="tab-content clearfix">
-                    <div class="tab-pane active" id="lap">
-                       Lap Data
+                    <div class="tab-pane active" id="lapTabData">
+                     <ul class="laps">
+@foreach (var p in Model.Laps)
+{
+
+                         <li class="lap">                      
+                             <div class="lapDetails">
+                                 <span class="lapName">@p.Name</span>
+                                 <span class="lapValue">@p.Value
+                                     <span class="lapUnits">@p.Units</span>
+                                 </span>
+                             </div>
+                         </li>
+
+}
+
+                     </ul>
                     </div>
-                    <div class="tab-pane" id="2a">
+                    <div class="tab-pane" id="powerTabData">
                        Power Data
                     </div>
-                    <div class="tab-pane" id="3a">
+                    <div class="tab-pane" id="heartTabData">
                       Heart Rate Data
                     </div>
-                    <div class="tab-pane" id="4a">
+                    <div class="tab-pane" id="cadenceTabData">
                      Cadenace
                     </div>
                 </div>

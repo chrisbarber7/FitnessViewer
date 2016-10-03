@@ -4,6 +4,8 @@ using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Net;
 using System.Web.Mvc;
+using System.Collections.Generic;
+using FitnessViewer.Infrastructure.Models.Dto;
 
 namespace FitnessViewer.Controllers
 {
@@ -28,7 +30,7 @@ namespace FitnessViewer.Controllers
             if (a.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-
+            IEnumerable<ActivityLap> laps = _unitOfWork.Activity.GetLaps(id.Value);
 
             ActivityViewModel m = new ActivityViewModel()
             {
@@ -39,7 +41,9 @@ namespace FitnessViewer.Controllers
                 ElevationGain = a.ElevationGain,
                 ActivityTypeId = a.ActivityTypeId,
                 Date = a.StartDateLocal.ToShortDateString(),
-                ElapsedTime = a.ElapsedTime.Value
+                ElapsedTime = a.ElapsedTime.Value,
+                Laps = laps
+                
             };
             return View(m);
         }

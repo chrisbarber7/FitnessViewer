@@ -37,6 +37,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .FirstOrDefault();
         }
 
+
         public IEnumerable<Activity> GetActivities(string userId)
         {
             return _context.Activity
@@ -142,5 +143,23 @@ namespace FitnessViewer.Infrastructure.Repository
         {
             _context.Lap.Add(lap);     
         }
+
+
+        public IEnumerable<ActivityLap> GetLaps(long activityId)
+        {
+          var result=  _context.Lap.Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
+                .Select(l => new ActivityLap {
+                    Id = l.Id,
+                    Type = enums.LapType.Lap,
+                    Selected = false,
+                    Name = l.Name,
+                    Value = l.ElapsedTime.ToString(),
+                    Units = ""
+                });
+
+
+            return result.ToList();
+        }
     }
 }
+
