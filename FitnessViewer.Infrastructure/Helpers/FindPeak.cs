@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FitnessViewer.Infrastructure.enums;
+using System.Collections.Generic;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -26,15 +27,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         public PeakStreamType StreamType { get; set; }
     }
 
-    /// <summary>
-    /// Type of stream (used to set standard duration periods)
-    /// </summary>
-    public enum PeakStreamType
-    {
-        Power = 1,
-        HeartRate = 2,
-        Cadence = 3
-    }
+
 
     /// <summary>
     /// Find peak values for a duration in a stream (ie 30 second peak power)

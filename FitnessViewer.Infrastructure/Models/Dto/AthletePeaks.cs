@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Helpers;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

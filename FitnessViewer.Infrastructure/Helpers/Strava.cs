@@ -15,6 +15,7 @@ using StravaDotNetActivities = Strava.Activities;
 using StravaDotNetApi = Strava.Api;
 using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
+using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {

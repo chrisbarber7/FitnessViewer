@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;

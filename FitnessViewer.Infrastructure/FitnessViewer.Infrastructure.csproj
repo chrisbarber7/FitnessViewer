@@ -97,6 +97,7 @@
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
+    <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">
       <DependentUpon>201609302208361_AddActivityMap.cs</DependentUpon>
