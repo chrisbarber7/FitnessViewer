@@ -3,34 +3,11 @@
     ViewBag.Title = "Activity";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" type="text/css" href="~/Content/ActivityView.css" />
 @Html.Hidden("activityId", Model.Id)
 
 <h1>@Model.Name</h1>
 
-<style>
-
-    .summaryBox{
- border-style: solid;
-    border-color: #c0ef95;
-    border-width: 1px;
-    background-color:#f6feee;
-    }
-
-    .SummaryTitle {
-        font-size: 11px;   
-
-        text-align: center;
-    }
-
-
-
-    .SummaryValue {
-        font-size: 24px;
-        text-align: center;
-         font-weight:700;
-        
-    }
-</style>
 <div class="row">
 
     <div class="col-md-2">
@@ -44,44 +21,92 @@
         <div class="summaryBox">
             <div class="SummaryValue">@Model.ElapsedTime</div>
             <div class="SummaryTitle">Time</div>
-            </div>
         </div>
+    </div>
     <div class="col-md-2">
         <div class="summaryBox">
             <div class="SummaryValue">00:00</div>
             <div class="SummaryTitle">Pace</div>
         </div>
-        </div>
+    </div>
     <div class="col-md-2">
         <div class="summaryBox">
             <div class="SummaryValue">@Model.ElevationGain</div>
             <div class="SummaryTitle">Elevation</div>
         </div>
-        </div>
+    </div>
     <div class="col-md-2">
         <div class="summaryBox">
             <div class="SummaryValue">54</div>
             <div class="SummaryTitle">Suffer Score</div>
         </div>
-        </div>
+    </div>
     <div class="col-md-2">
         <div class="summaryBox">
             <div class="SummaryValue">12323</div>
             <div class="SummaryTitle">Calories</div>
         </div>
-        </div>
+    </div>
 
 </div>
 
-<style>
-    .map {
-        height: 500px;
-    }
-</style>
 <div class="row">
-    <div class="col-md-6"></div>
-    <div id="map" class="col-md-6 map"></div>
+
+    <div class="col-md-8">
+        <div id="map" class="col-md-8 map"></div>
+        <div id="map" class="col-md-8">
+            Graph
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="col-md-12"><h4>Summary</h4></div>
+        <div class="col-md-12">Two</div>
+        <div class="col-md-12">Three</div>
+        <div class="col-md-12">
+            <h4>Lap Info</h4>
+
+
+
+   
+            <div id="lapTab" >
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="#lap" data-toggle="tab">Lap</a>
+                    </li>
+                    <li>
+                        <a href="#2a" data-toggle="tab">Power</a>
+                    </li>
+                    <li>
+                        <a href="#3a" data-toggle="tab">Heart</a>
+                    </li>
+                    <li>
+                        <a href="#4a" data-toggle="tab">Cadence</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content clearfix">
+                    <div class="tab-pane active" id="lap">
+                       Lap Data
+                    </div>
+                    <div class="tab-pane" id="2a">
+                       Power Data
+                    </div>
+                    <div class="tab-pane" id="3a">
+                      Heart Rate Data
+                    </div>
+                    <div class="tab-pane" id="4a">
+                     Cadenace
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
 </div>
+
+
 @*<div id="map" style="height:500px;width:500px"></div>*@
 
 <script src="~/Scripts/app/Controllers/athleteViewController.js" type="text/javascript"></script>
