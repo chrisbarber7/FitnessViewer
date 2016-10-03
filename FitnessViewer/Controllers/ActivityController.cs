@@ -28,11 +28,18 @@ namespace FitnessViewer.Controllers
             if (a.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+
+
             ActivityViewModel m = new ActivityViewModel()
             {
                 Id = a.Id,
                 Name = a.Name,
-                Distance = a.GetDistanceByActivityType()
+                Distance = a.GetDistanceByActivityType(),
+                AverageSpeed = 0,
+                ElevationGain = a.ElevationGain,
+                ActivityTypeId = a.ActivityTypeId,
+                Date = a.StartDateLocal.ToShortDateString(),
+                ElapsedTime = a.ElapsedTime.Value
             };
             return View(m);
         }
