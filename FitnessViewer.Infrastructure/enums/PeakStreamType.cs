@@ -13,6 +13,10 @@ namespace FitnessViewer.Infrastructure.enums
     {
         Power = 1,
         HeartRate = 2,
-        Cadence = 3
+        Cadence = 3,
+        Lap = 4,
+        Speed = 5
     }
 }
+
+

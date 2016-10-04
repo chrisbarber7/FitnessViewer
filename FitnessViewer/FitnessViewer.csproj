@@ -556,7 +556,7 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Athlete.cshtml" />
     <Content Include="Views\Athlete\Dashboard.cshtml" />
-    <Content Include="Views\Activity\View.cshtml" />
+    <Content Include="Views\Activity\ViewActivity.cshtml" />
     <Content Include="Views\Athlete\PeakPowerSummary.cshtml" />
     <Content Include="Views\Athlete\RunningTimes.cshtml" />
     <Content Include="Views\Activity\Table.cshtml" />

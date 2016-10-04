@@ -61,14 +61,14 @@
     <div class="col-md-4">
         <div class="col-md-12"><h4>Summary</h4></div>
         <div class="col-md-12">Two</div>
-        <div class="col-md-12">Three</div>
+
         <div class="col-md-12">
             <h4>Lap Info</h4>
 
 
 
-   
-            <div id="lapTab" >
+
+            <div id="lapTab">
                 <ul class="nav nav-pills">
                     <li class="active">
                         <a href="#lapTabData" data-toggle="tab">Lap</a>
@@ -86,37 +86,91 @@
 
                 <div class="tab-content clearfix">
                     <div class="tab-pane active" id="lapTabData">
-                     <ul class="laps">
-@foreach (var p in Model.Laps)
+                        <ul class="laps">
+                            @foreach (var p in Model.Laps)
 {
 
-                         <li class="lap">                      
-                             <div class="lapDetails">
-                                 <span class="lapName">@p.Name</span>
-                                 <span class="lapValue">@p.Value
-                                     <span class="lapUnits">@p.Units</span>
-                                 </span>
-                             </div>
-                         </li>
+                        <li class="lap">
+                            <div class="lapDetails">
+                                <span class="lapName">@p.Name</span>
+                                <span class="lapValue">
+                                    @p.Value
+                                <span class="lapUnits">@p.Units</span>
+                            </span>
+                        </div>
+                    </li>
 
 }
 
-                     </ul>
+                        </ul>
                     </div>
                     <div class="tab-pane" id="powerTabData">
-                       Power Data
+                        <ul class="laps">
+                            @foreach (var p in Model.Power)
+                            {
+
+                            <li class="lap">
+                                <div class="lapDetails">
+                                    <span class="lapName">@p.Name</span>
+                                    <span class="lapValue">
+                                        @p.Value
+                                        <span class="lapUnits">@p.Units</span>
+                                    </span>
+                                </div>
+                            </li>
+
+                            }
+
+                        </ul>
                     </div>
                     <div class="tab-pane" id="heartTabData">
-                      Heart Rate Data
+                        <ul class="laps">
+                            @foreach (var p in Model.HeartRate)
+                            {
+
+                            <li class="lap">
+                                <div class="lapDetails">
+                                    <span class="lapName">@p.Name</span>
+                                    <span class="lapValue">
+                                        @p.Value
+                                        <span class="lapUnits">@p.Units</span>
+                                    </span>
+                                </div>
+                            </li>
+
+                            }
+
+                        </ul>
                     </div>
                     <div class="tab-pane" id="cadenceTabData">
-                     Cadenace
+                        <ul class="laps">
+                            @foreach (var p in Model.Cadence)
+                            {
+
+                            <li class="lap">
+                                <div class="lapDetails">
+                                    <span class="lapName">@p.Name</span>
+                                    <span class="lapValue">
+                                        @p.Value
+                                        <span class="lapUnits">@p.Units</span>
+                                    </span>
+                                </div>
+                            </li>
+
+                            }
+
+                        </ul>
                     </div>
                 </div>
             </div>
 
 
 
+        </div>
+
+        <div class="col-md-12">
+            <h4>Activity Options</h4>
+            <input type="button" value="Recalculate" onclick="location.href='@Url.Action("Recalculate", "Activity",new { id = Model.Id })'" />
         </div>
     </div>
 </div>

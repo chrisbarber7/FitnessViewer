@@ -6,6 +6,8 @@ using System.Net;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Models.Dto;
+using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 
 namespace FitnessViewer.Controllers
 {
@@ -19,8 +21,23 @@ namespace FitnessViewer.Controllers
             _unitOfWork = new Infrastructure.Data.UnitOfWork();
         }
 
+
         [Authorize]
-        public ActionResult View(long? id)
+        public ActionResult Recalculate(long? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            StreamHelper.RecalculateSingleActivity(id.Value);
+
+
+
+            return RedirectToAction("ViewActivity", new { id = id });
+        }
+
+
+        [Authorize]
+        public ActionResult ViewActivity(long? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -31,7 +48,9 @@ namespace FitnessViewer.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             IEnumerable<ActivityLap> laps = _unitOfWork.Activity.GetLaps(id.Value);
-
+            IEnumerable<ActivityLap> power = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Power);
+            IEnumerable<ActivityLap> heartRate = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.HeartRate);
+            IEnumerable<ActivityLap> cadence = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Cadence);
             ActivityViewModel m = new ActivityViewModel()
             {
                 Id = a.Id,
@@ -42,7 +61,10 @@ namespace FitnessViewer.Controllers
                 ActivityTypeId = a.ActivityTypeId,
                 Date = a.StartDateLocal.ToShortDateString(),
                 ElapsedTime = a.ElapsedTime.Value,
-                Laps = laps
+                Laps = laps,
+                Power = power,
+                HeartRate = heartRate,
+                Cadence=cadence
                 
             };
             return View(m);

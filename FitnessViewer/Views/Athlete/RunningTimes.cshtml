@@ -15,7 +15,7 @@
             <tr>
                 <td>@p.DistanceName</td>
                 <td>@p.Time</td>
-                <td>@Html.ActionLink(p.ActivityName.ToString(), "View", "Activity",new { Id = p.ActivityId },null)</td>
+                <td>@Html.ActionLink(p.ActivityName.ToString(), "ViewActivity", "Activity",new { Id = p.ActivityId },null)</td>
                 <td>@p.ActivityDate.ToShortDateString()</td>
             </tr>
         }

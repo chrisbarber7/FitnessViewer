@@ -22,7 +22,7 @@
                     {
                         if (p.Seconds5.Peak != null)
                         {
-                        @Html.ActionLink(p.Seconds5.Peak.ToString(), "View", "Activity",
+                        @Html.ActionLink(p.Seconds5.Peak.ToString(), "ViewActivity", "Activity",
                                              new { Id = p.Seconds5.ActivityId },
                                              new { data_toggle = "tooltip", title = @p.Seconds5.Description })
                         }
@@ -33,7 +33,7 @@
                     {
                        if (p.Minute1.Peak != null)
                         {
-                            @Html.ActionLink(p.Minute1.Peak.ToString(), "View", "Activity",
+                            @Html.ActionLink(p.Minute1.Peak.ToString(), "ViewActivity", "Activity",
                                     new { Id = p.Minute1.ActivityId },
                                     new { data_toggle = "tooltip", title = @p.Minute1.Description })
                         }
@@ -44,7 +44,7 @@
                     {
                         if (p.Minute5.Peak != null)
                         {
-                            @Html.ActionLink(p.Minute5.Peak.ToString(), "View", "Activity",
+                            @Html.ActionLink(p.Minute5.Peak.ToString(), "ViewActivity", "Activity",
                                     new { Id = p.Minute5.ActivityId },
                                     new { data_toggle = "tooltip", title = @p.Minute5.Description })
                         }
@@ -55,7 +55,7 @@
                     {
                         if (p.Minute20.Peak != null)
                         {
-                            @Html.ActionLink(p.Minute20.Peak.ToString(), "View", "Activity",
+                            @Html.ActionLink(p.Minute20.Peak.ToString(), "ViewActivity", "Activity",
                                     new { Id = p.Minute20.ActivityId },
                                     new { data_toggle = "tooltip", title = @p.Minute20.Description })
                         }
@@ -66,7 +66,7 @@
                     {
                         if (p.Minute60.Peak != null)
                         {
-                            @Html.ActionLink(p.Minute60.Peak.ToString(), "View", "Activity",
+                            @Html.ActionLink(p.Minute60.Peak.ToString(), "ViewActivity", "Activity",
                                     new { Id = p.Minute60.ActivityId },
                                     new { data_toggle = "tooltip", title = @p.Minute60.Description })
                         }

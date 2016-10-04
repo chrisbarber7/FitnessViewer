@@ -26,6 +26,9 @@ namespace FitnessViewer.ViewModels
 
         public IEnumerable<ActivityLap> Laps { get; set; }
 
+        public IEnumerable<ActivityLap> Power { get; set; }
+        public IEnumerable<ActivityLap> HeartRate { get; set; }
+        public IEnumerable<ActivityLap> Cadence { get; set; }
     }
 }
 

@@ -64,6 +64,7 @@
     <Compile Include="FindPeakTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetreDistanceConversionTest.cs" />
+    <Compile Include="StreamHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\connectionStrings.config">

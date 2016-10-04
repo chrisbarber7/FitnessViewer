@@ -21,48 +21,47 @@
 }
 
 #lapTab .tab-content {
-  padding : 4px 16px;
+    padding: 4px 16px;
 }
 
 #lapTab .nav-pills > li.active > a {
-  border-radius: 1px;
-  background-color:#c0ef95;
-   color:#3a8904;
+    border-radius: 1px;
+    background-color: #c0ef95;
+    color: #3a8904;
 }
 
 
 ul.laps {
     list-style-type: none;
-    padding:0;
-
+    padding: 0;
 }
 
 
-li.lap{     padding: 0;
+li.lap {
+    padding: 0;
     list-style-type: none;
-        text-align: left;
+    text-align: left;
     cursor: pointer;
 }
 
 
 
-.lapDetails{
-        display: inline-block;
-    width: 100%;
-
-}
-
-.lapName{
+.lapDetails {
     display: inline-block;
-
+    width: 100%;
+    padding-bottom: 4px;
 }
 
-.lapValue{
+.lapName {
+    display: inline-block;
+}
+
+.lapValue {
     float: right;
 }
 
 .lapUnits {
-font-size:10px;
-   float: right;
+    font-size: 10px;
+    float: right;
+    vertical-align: bottom;
 }
-

@@ -40,10 +40,16 @@ namespace FitnessViewer.Infrastructure.Repository
                 .FirstOrDefault();
         }
 
-
-        internal IEnumerable<Stream> GetStream()
+        internal IQueryable<Stream> GetStream()
         {
             return _context.Stream;
+        }
+
+
+
+        internal IQueryable<Stream> GetStreamForActivity(long activityId)
+        {
+            return _context.Stream.Where(s => s.ActivityId == activityId);
         }
 
 
@@ -160,28 +166,39 @@ namespace FitnessViewer.Infrastructure.Repository
           var result=  _context.Lap.Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
                 .Select(l => new ActivityLap {
                     Id = l.Id,
-                    Type = enums.LapType.Lap,
+                    Type = PeakStreamType.Lap,
                     Selected = false,
                     Name = l.Name,
-                    Value = l.ElapsedTime.ToString(),
-                    Units = ""
+                    Value = l.ElapsedTime.ToString()
                 });
 
 
             return result.ToList();
         }
 
-       
-
-
-        public IEnumerable<ActivityLap> GetLapStream(long activityId, LapType power)
+        public IEnumerable<ActivityLap> GetLapStream(long activityId, PeakStreamType streamType)
         {
-            ActivityPeaks peaks = _context.ActivityPeak.Where(p => p.ActivityId == activityId).FirstOrDefault();
+            string units = StreamHelper.StreamTypeUnits(streamType);
+
+            var result = _context.ActivityPeakDetail
+              .Where(p => p.ActivityId == activityId && p.StreamType == streamType)
+              .OrderBy(p => p.Duration)
+              .Select(p => new ActivityLap
+              {
+                  Id = p.Id,
+                  Type = streamType,
+                  Selected = false,
+                  Name = p.Duration.ToString(),
+                  Value = p.Value.ToString()
+              }).ToList();
 
 
-            return new List<ActivityLap>();
-
-                }
+            foreach (ActivityLap l in result)
+            {
+                l.Name = StreamHelper.StreamDurationForDisplay(Convert.ToInt32(l.Name));
+            }
+            return result;
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -44,5 +45,15 @@ namespace FitnessViewer.Infrastructure.Models
         public int? Value { get; set; }         // peak
         public int? Start { get; set; }         // starting point in stream for the peak
         public PeakStreamType StreamType { get; set; }
+        
+        [NotMapped]
+        public string DurationName
+        {
+            get
+            {
+                return StreamHelper.StreamDurationForDisplay(Convert.ToInt32(Value));
+            }
+            private set { }
+        }
     }
 }
