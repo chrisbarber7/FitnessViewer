@@ -7,12 +7,14 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
     public class ActivityRepository
     {
         private ApplicationDb _context;
+
 
         public ActivityRepository(ApplicationDb context)
         {
@@ -36,6 +38,12 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Activity.Where(a => a.Id == activityId)
                 .Include(a => a.ActivityType)
                 .FirstOrDefault();
+        }
+
+
+        internal IEnumerable<Stream> GetStream()
+        {
+            return _context.Stream;
         }
 
 
@@ -163,42 +171,7 @@ namespace FitnessViewer.Infrastructure.Repository
             return result.ToList();
         }
 
-        public void RecalculateStreamPeaks()
-        {
-            System.Diagnostics.Debug.WriteLine("Recalc Power");
-            var activities = _context.Stream.Where(s => s.Watts != null).Select(s => s.ActivityId).Distinct().ToList();
-            
-            foreach (long activity in activities)
-            {
-                var powerData = _context.Stream.Where(s => s.ActivityId == activity).OrderBy(s => s.Time).Select(s => s.Watts);
-                FitnessViewer.Infrastructure.Helpers.Strava calc = new Helpers.Strava();
-                calc.ExtractPeaksFromStream(activity, powerData.ToList(), PeakStreamType.Power);
-                calc.Complete();
-            }
-
-
-            System.Diagnostics.Debug.WriteLine("Recalc Heart Rate");
-            var activitiesHeartRate = _context.Stream.Where(s => s.HeartRate != null).Select(s => s.ActivityId).Distinct().ToList();
-
-            foreach (long activity in activities)
-            {
-                var hrData = _context.Stream.Where(s => s.ActivityId == activity).OrderBy(s => s.Time).Select(s => s.HeartRate);
-                FitnessViewer.Infrastructure.Helpers.Strava calc = new Helpers.Strava();
-                calc.ExtractPeaksFromStream(activity, hrData.ToList(), PeakStreamType.HeartRate);
-                calc.Complete();
-            }
-
-            System.Diagnostics.Debug.WriteLine("Recalc Cadence");
-            var activitiesCadence = _context.Stream.Where(s => s.Cadence != null).Select(s => s.ActivityId).Distinct().ToList();
-
-            foreach (long activity in activities)
-            {
-                var cadenceData = _context.Stream.Where(s => s.ActivityId == activity).OrderBy(s => s.Time).Select(s => s.Cadence);
-                FitnessViewer.Infrastructure.Helpers.Strava calc = new Helpers.Strava();
-                calc.ExtractPeaksFromStream(activity, cadenceData.ToList(), PeakStreamType.Cadence);
-                calc.Complete();
-            }
-        }
+       
 
 
         public IEnumerable<ActivityLap> GetLapStream(long activityId, LapType power)

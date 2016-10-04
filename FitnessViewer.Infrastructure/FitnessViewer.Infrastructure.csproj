@@ -99,6 +99,10 @@
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="enums\LapType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
+    <Compile Include="Helpers\StravaActivityDownload.cs" />
+    <Compile Include="Helpers\StravaActivityScan.cs" />
+    <Compile Include="Helpers\StravaAthlete.cs" />
+    <Compile Include="Helpers\StreamHelper.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">
       <DependentUpon>201609302208361_AddActivityMap.cs</DependentUpon>

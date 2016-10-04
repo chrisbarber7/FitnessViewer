@@ -34,14 +34,14 @@ namespace FitnessViewer.Download
 
                     if (job.ActivityId == null)
                     {
-                        Strava s = new Strava(job.UserId);
+                        StravaActivityScan s = new StravaActivityScan(job.UserId);
                         s.AddActivitesForAthlete();
                         _unitOfWork.Queue.RemoveQueueItem(job.Id);
                         _unitOfWork.Complete();
                     }
                     else
                     {
-                        Strava s = new Strava(job.UserId);
+                        StravaActivityDownload s = new StravaActivityDownload(job.UserId);
                         s.ActivityDetailsDownload(job.ActivityId.Value);
                         _unitOfWork.Queue.RemoveQueueItem(job.Id);
                         _unitOfWork.Complete();

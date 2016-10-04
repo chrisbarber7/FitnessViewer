@@ -1,13 +1,10 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
-   
-
-
-
     /// <summary>
     /// Find peak values for a duration in a stream (ie 30 second peak power)
     /// </summary>
@@ -54,6 +51,21 @@ namespace FitnessViewer.Infrastructure.Helpers
                     };
             }
         }
+
+        public static List<ActivityPeakDetail> ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
+        {
+            if (stream.Contains(null))
+                return null;
+
+
+            PeakValueFinder finder = new PeakValueFinder(
+                stream.Select(s => s.Value).ToList(),
+                type,
+                activityId);
+
+            return finder.FindPeaks();
+        }
+
 
         /// <summary>
         /// Find peaks in stream for all standard durations
