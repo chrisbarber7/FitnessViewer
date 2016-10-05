@@ -20,7 +20,7 @@ namespace FitnessViewer.Download
        Infrastructure.Data.UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
 
           // un-comment to force recalculation of peak information from stream table.
-          //  StreamHelper.RecalculateAllActivities();
+           StreamHelper.RecalculateAllActivities();
           //  StreamHelper.RecalculateSingleActivity(18698122);
 
             var jobs = _unitOfWork.Queue.GetQueue();

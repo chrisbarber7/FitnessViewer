@@ -121,6 +121,7 @@
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
+    <Compile Include="Models\Dto\ActivitySummaryInformation.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />

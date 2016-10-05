@@ -54,12 +54,16 @@
 
     <div class="col-md-8">
         <div id="map" class="col-md-8 map"></div>
-        <div id="map" class="col-md-8">
+        <div class="col-md-8">
             Graph
         </div>
     </div>
     <div class="col-md-4">
-        <div class="col-md-12"><h4>Summary</h4></div>
+        <div class="col-md-12">
+            <div id="activitySummaryInformation">
+                @{Html.RenderPartial("_ActivitySummaryInformation", Model.SummaryInfo); }
+            </div>
+        </div>
         <div class="col-md-12">Two</div>
 
         <div class="col-md-12">
@@ -88,19 +92,19 @@
                     <div class="tab-pane active" id="lapTabData">
                         <ul class="laps">
                             @foreach (var p in Model.Laps)
-{
+                            {
 
-                        <li class="lap">
-                            <div class="lapDetails">
-                                <span class="lapName">@p.Name</span>
-                                <span class="lapValue">
-                                    @p.Value
-                                <span class="lapUnits">@p.Units</span>
-                            </span>
-                        </div>
-                    </li>
+                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                    <div class="lapDetails">
+                                        <span class="lapName">@p.Name</span>
+                                        <span class="lapValue">
+                                            @p.Value
+                                            <span class="lapUnits">@p.Units</span>
+                                        </span>
+                                    </div>
+                                </li>
 
-}
+                            }
 
                         </ul>
                     </div>
@@ -109,15 +113,15 @@
                             @foreach (var p in Model.Power)
                             {
 
-                            <li class="lap">
-                                <div class="lapDetails">
-                                    <span class="lapName">@p.Name</span>
-                                    <span class="lapValue">
-                                        @p.Value
-                                        <span class="lapUnits">@p.Units</span>
-                                    </span>
-                                </div>
-                            </li>
+                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                    <div class="lapDetails">
+                                        <span class="lapName">@p.Name</span>
+                                        <span class="lapValue">
+                                            @p.Value
+                                            <span class="lapUnits">@p.Units</span>
+                                        </span>
+                                    </div>
+                                </li>
 
                             }
 
@@ -128,15 +132,15 @@
                             @foreach (var p in Model.HeartRate)
                             {
 
-                            <li class="lap">
-                                <div class="lapDetails">
-                                    <span class="lapName">@p.Name</span>
-                                    <span class="lapValue">
-                                        @p.Value
-                                        <span class="lapUnits">@p.Units</span>
-                                    </span>
-                                </div>
-                            </li>
+                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                    <div class="lapDetails">
+                                        <span class="lapName">@p.Name</span>
+                                        <span class="lapValue">
+                                            @p.Value
+                                            <span class="lapUnits">@p.Units</span>
+                                        </span>
+                                    </div>
+                                </li>
 
                             }
 
@@ -147,15 +151,15 @@
                             @foreach (var p in Model.Cadence)
                             {
 
-                            <li class="lap">
-                                <div class="lapDetails">
-                                    <span class="lapName">@p.Name</span>
-                                    <span class="lapValue">
-                                        @p.Value
-                                        <span class="lapUnits">@p.Units</span>
-                                    </span>
-                                </div>
-                            </li>
+                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                    <div class="lapDetails">
+                                        <span class="lapName">@p.Name</span>
+                                        <span class="lapValue">
+                                            @p.Value
+                                            <span class="lapUnits">@p.Units</span>
+                                        </span>
+                                    </div>
+                                </li>
 
                             }
 
@@ -175,12 +179,5 @@
     </div>
 </div>
 
-
-@*<div id="map" style="height:500px;width:500px"></div>*@
-
-<script src="~/Scripts/app/Controllers/athleteViewController.js" type="text/javascript"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARW8zp-dKOLcnloYsY13dRLHjKEkbA5wk&callback=initActivityMap">
-
-</script>
-
-
+<script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARW8zp-dKOLcnloYsY13dRLHjKEkbA5wk&callback=initActivityMap"></script>

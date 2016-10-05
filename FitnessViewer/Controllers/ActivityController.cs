@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using System;
+//using System.Web.Http;
 
 namespace FitnessViewer.Controllers
 {
@@ -47,10 +49,9 @@ namespace FitnessViewer.Controllers
             if (a.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            IEnumerable<ActivityLap> laps = _unitOfWork.Activity.GetLaps(id.Value);
-            IEnumerable<ActivityLap> power = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Power);
-            IEnumerable<ActivityLap> heartRate = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.HeartRate);
-            IEnumerable<ActivityLap> cadence = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Cadence);
+
+            ActivitySummaryInformation summ = new ActivitySummaryInformation() { Distance = "100", Time = "08:01:02" };
+
             ActivityViewModel m = new ActivityViewModel()
             {
                 Id = a.Id,
@@ -61,14 +62,32 @@ namespace FitnessViewer.Controllers
                 ActivityTypeId = a.ActivityTypeId,
                 Date = a.StartDateLocal.ToShortDateString(),
                 ElapsedTime = a.ElapsedTime.Value,
-                Laps = laps,
-                Power = power,
-                HeartRate = heartRate,
-                Cadence=cadence
+                Laps = _unitOfWork.Activity.GetLaps(id.Value),
+                Power = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Power),
+                HeartRate = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.HeartRate),
+                Cadence = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Cadence),
+                SummaryInfo = summ
+                
                 
             };
             return View(m);
         }
+
+        public class SummaryInformationRequest
+        {
+            public int id { get; set; }
+            public int type { get; set; }
+        }
+
+        [HttpGet]
+        public ActionResult GetSummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
+        {
+            ActivitySummaryInformation s = new ActivitySummaryInformation() { Distance = detail.id.ToString(), Time = DateTime.Now.ToShortTimeString() };
+            return PartialView("_ActivitySummaryInformation", s);
+
+         //   return Ok(s);
+        }
+
 
         [Authorize]
         public ActionResult Table()

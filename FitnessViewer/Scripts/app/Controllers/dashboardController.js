@@ -48,7 +48,7 @@
             "order": [[1, "desc"]],
             "columns": [{
                 "data": function (data, type, row, meta) {
-                    return '<a href="/activity/view/' + data.id + '">' + data.name + '</a>';
+                    return '<a href="/activity/viewactivity/' + data.id + '">' + data.name + '</a>';
                 }
             },
                 {

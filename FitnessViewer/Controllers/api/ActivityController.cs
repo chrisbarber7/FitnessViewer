@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using FitnessViewer.Infrastructure.Models.Dto;
-
+using System.Net.Http;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -40,10 +40,10 @@ namespace FitnessViewer.Controllers.api
             );
         }
 
-       [HttpPost]
+        [HttpPost]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
-            var runData = _unitOfWork.Activity.ActivityByWeek(this.User.Identity.GetUserId(),id, DateTime.Now.AddDays(12*7*-1), DateTime.Now);
+            var runData = _unitOfWork.Activity.ActivityByWeek(this.User.Identity.GetUserId(), id, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();
@@ -62,8 +62,11 @@ namespace FitnessViewer.Controllers.api
                 distance = distance,
                 number = number,
             };
-           
+
             return Json(chart);
         }
+
+   
     }
+
 }

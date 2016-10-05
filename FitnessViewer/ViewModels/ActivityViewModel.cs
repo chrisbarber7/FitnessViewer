@@ -24,6 +24,8 @@ namespace FitnessViewer.ViewModels
         public TimeSpan ElapsedTime { get; set; }
         public string ActivityTypeId { get; set; }
 
+        public ActivitySummaryInformation SummaryInfo { get; set; }
+
         public IEnumerable<ActivityLap> Laps { get; set; }
 
         public IEnumerable<ActivityLap> Power { get; set; }

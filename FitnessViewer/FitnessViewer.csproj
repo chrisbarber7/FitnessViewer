@@ -430,6 +430,7 @@
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\Controllers\athleteViewController.js" />
     <Content Include="Scripts\app\Controllers\dashboardController.js" />
+    <Content Include="Scripts\app\Controllers\ViewActivityController.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Chart.js" />
@@ -557,11 +558,12 @@
     <Content Include="Views\Athlete.cshtml" />
     <Content Include="Views\Athlete\Dashboard.cshtml" />
     <Content Include="Views\Activity\ViewActivity.cshtml" />
-    <Content Include="Views\Athlete\PeakPowerSummary.cshtml" />
-    <Content Include="Views\Athlete\RunningTimes.cshtml" />
+    <Content Include="Views\Athlete\_PeakPowerSummary.cshtml" />
+    <Content Include="Views\Athlete\_RunningTimes.cshtml" />
     <Content Include="Views\Activity\Table.cshtml" />
     <Content Include="Views\Activity\Calendar.cshtml" />
     <Content Include="Views\Measurement\Add.cshtml" />
+    <Content Include="Views\Activity\_ActivitySummaryInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
