@@ -66,7 +66,7 @@ namespace FitnessViewer.Test
                 if (p.Duration == 30)
                 {
                     Assert.AreEqual(1000, p.Value);
-                    Assert.AreEqual(1000, p.Start);
+                    Assert.AreEqual(1000, p.StartIndex);
                 }
             }
         }
@@ -132,6 +132,72 @@ namespace FitnessViewer.Test
             Assert.AreEqual(0, peaks.Where(p => p.Duration == 17).Count());
             Assert.AreEqual(0, peaks.Where(p => p.Duration == 25).Count());
             Assert.AreEqual(0, peaks.Where(p => p.Duration == 101).Count());
+        }
+
+        [TestMethod]
+        public void CheckPowerHasCorrectStreamType()
+        {
+            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
+
+            List<ActivityPeakDetail> peaks = finder.FindPeaks();
+            // test for durations we're expecting
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 5).Select(p=>p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 10).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 30).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 60).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 120).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 300).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 360).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 600).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 720).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 1200).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 1800).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == 3600).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Power, peaks.Where(p => p.Duration == int.MaxValue).Select(p => p.StreamType).First());
+            
+        }
+
+        [TestMethod]
+        public void CheckHeartRateHasCorrectStreamType()
+        {
+            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
+
+            List<ActivityPeakDetail> peaks = finder.FindPeaks();
+            // test for durations we're expecting
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 60).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 120).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 300).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 360).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 600).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 720).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 1200).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 1800).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == 3600).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.HeartRate, peaks.Where(p => p.Duration == int.MaxValue).Select(p => p.StreamType).First());
+
+        }
+
+        [TestMethod]
+        public void CheckCadenceHasCorrectStreamType()
+        {
+            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
+
+            List<ActivityPeakDetail> peaks = finder.FindPeaks();
+            // test for durations we're expecting
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 5).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 10).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 30).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 60).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 120).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 300).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 360).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 600).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 720).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 1200).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 1800).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == 3600).Select(p => p.StreamType).First());
+            Assert.AreEqual(PeakStreamType.Cadence, peaks.Where(p => p.Duration == int.MaxValue).Select(p => p.StreamType).First());
+
         }
 
         [TestMethod]
@@ -283,7 +349,7 @@ namespace FitnessViewer.Test
             ActivityPeakDetail peak = finder.FindPeakForDuration(30);
 
             Assert.AreEqual(average, peak.Value);
-            Assert.AreEqual(0, peak.Start);
+            Assert.AreEqual(0, peak.StartIndex);
         }
 
         /// <summary>
