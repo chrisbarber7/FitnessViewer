@@ -14,10 +14,13 @@ namespace FitnessViewer.Infrastructure.Models
 
         [Required]
         [ForeignKey("Activity")]
+        [Index("IX_Stream_ActivityIdAndStream", 1, IsUnique = true)]
         public long ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
-        
+
+        [Index("IX_Stream_ActivityIdAndStream", 2, IsUnique = true)]
         public int Time { get; set; }
+
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public double? Distance { get; set; }

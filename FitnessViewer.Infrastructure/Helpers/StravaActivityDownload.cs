@@ -108,7 +108,19 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             // convert each strava item
             for (int row = 0; row <= stream[0].OriginalSize - 1; row++)
-                convertedStream.Add(ExtractStreamRow(activityId, stream, row));
+            {
+                Stream s = ExtractStreamRow(activityId, stream, row);
+
+                // occasinally we get duplicate rows for the same time back from Strava so need to ignore them!
+                if (convertedStream.Where(c => c.Time == s.Time).Any())
+                {
+                    System.Diagnostics.Debug.WriteLine(string.Format("Skipping row {0} for activity {1}", s.Time, activityId));
+                    continue;
+                }                    
+
+                convertedStream.Add(s);
+            }
+
 
             List<ActivityPeakDetail> powerPeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.Watts).ToList(), PeakStreamType.Power);
             if (powerPeaks != null)
