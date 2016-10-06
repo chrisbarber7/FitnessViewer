@@ -36,17 +36,17 @@ namespace FitnessViewer.Infrastructure.Helpers
             {
                 case PeakStreamType.Power:
                     {
-                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, _data.Count };
+                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
                         break;
                     }
                 case PeakStreamType.HeartRate:
                     {
-                        _standardDurations = new int[] { 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, _data.Count };
+                        _standardDurations = new int[] { 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
                         break;
                     }
                 case PeakStreamType.Cadence:
                     {
-                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, _data.Count };
+                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
                         break;
                     };
             }
@@ -95,18 +95,18 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             _peakFound = false;
 
-            _peakInformation = new ActivityPeakDetail(_activityId, _streamType) { Duration = duration, Value = 0, Start = 0 };
+            _peakInformation = new ActivityPeakDetail(_activityId, _streamType) { Duration = duration, Value = 0, StartIndex = 0 };
+
+            // if duration is full activity then change duration to full list size to process.
+            if (duration == int.MaxValue)
+                duration = _data.Count;
 
             // loop over the data for each possible starting point for the given duration
             for (int startDataPoint = 0; startDataPoint <= _data.Count - duration; startDataPoint++)
                 CheckDuration(startDataPoint, duration);
 
             if (!_peakFound)
-                _peakInformation.Value = _peakInformation.Start = null;
-
-            // if full activity peak then set duration to max int value so we've got a set value to search for to find activity average.
-            if (_peakInformation.Duration == _data.Count)
-                _peakInformation.Duration = int.MaxValue;
+                _peakInformation.Value = _peakInformation.StartIndex = null;
 
             return _peakInformation;
         }
@@ -139,7 +139,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             {
                 _peakFound = true;
                 _peakInformation.Value = loopPeak;
-                _peakInformation.Start = startDataPoint;
+                _peakInformation.StartIndex = startDataPoint;
             }
 
             return;
