@@ -30,7 +30,7 @@ namespace FitnessViewer.Infrastructure.Models
             this.ActivityId = activityId;
             this.Duration = duration;
             this.Value = null;
-            this.Start = null;
+            this.StartIndex = null;
             this.StreamType = type;
         }
 
@@ -38,20 +38,27 @@ namespace FitnessViewer.Infrastructure.Models
 
         [Required]
         [ForeignKey("Activity")]
+        [Index("IX_ActivityIdAndDuration", 1, IsUnique = true)]
         public long ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
+        [Index("IX_ActivityIdAndDuration", 3, IsUnique = true)]
         public int Duration { get; set; }       // duration of peak (in seconds)
+
         public int? Value { get; set; }         // peak
-        public int? Start { get; set; }         // starting point in stream for the peak
+
+        public int? StartIndex { get; set; }         // starting point in stream for the peak
+        public int? EndIndex { get; set; }
+
+        [Index("IX_ActivityIdAndDuration", 2, IsUnique = true)]
         public PeakStreamType StreamType { get; set; }
-        
+
         [NotMapped]
         public string DurationName
         {
             get
             {
-                return StreamHelper.StreamDurationForDisplay(Convert.ToInt32(Value));
+                return StreamHelper.StreamDurationForDisplay(Convert.ToInt32(Duration));
             }
             private set { }
         }
