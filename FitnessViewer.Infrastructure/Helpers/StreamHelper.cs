@@ -49,6 +49,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             RecalculatePower(uow, activityId);
             RecalculateHeartRate(uow, activityId);
             RecalculateCadence(uow, activityId);
+            uow.Complete();
         }
 
 
@@ -62,17 +63,23 @@ namespace FitnessViewer.Infrastructure.Helpers
             foreach (long activityId in activitiesWithPower)
                 RecalculatePower(uow, activityId);
 
+            uow.Complete();
+
             System.Diagnostics.Debug.WriteLine("Recalc Heart Rate");
             var activitiesWithHeartRate = uow.Activity.GetStream().Where(s => s.HeartRate != null).Select(s => s.ActivityId).Distinct().ToList();
 
             foreach (long activityId in activitiesWithHeartRate)
                 RecalculateHeartRate(uow, activityId);
 
+            uow.Complete();
+
             System.Diagnostics.Debug.WriteLine("Recalc Cadence");
             var activitiesWithCadence = uow.Activity.GetStream().Where(s => s.Cadence != null).Select(s => s.ActivityId).Distinct().ToList();
 
             foreach (long activityId in activitiesWithCadence)
                 RecalculateCadence(uow, activityId);
+
+            uow.Complete();
         }
 
         private static void RecalculateCadence(UnitOfWork uow, long activityId)
@@ -80,10 +87,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             var cadenceData = uow.Activity.GetStream().Where(s => s.ActivityId == activityId).OrderBy(s => s.Time).Select(s => s.Cadence);
             List<ActivityPeakDetail> cadencePeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, cadenceData.ToList(), PeakStreamType.Cadence);
             if (cadencePeaks != null)
-            {
                 uow.Analysis.AddPeak(activityId, PeakStreamType.Cadence, cadencePeaks);
-                uow.Complete();
-            }
         }
 
         private static void RecalculateHeartRate(UnitOfWork uow, long activityId)
@@ -91,10 +95,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             var hrData = uow.Activity.GetStream().Where(s => s.ActivityId == activityId).OrderBy(s => s.Time).Select(s => s.HeartRate);
             List<ActivityPeakDetail> hrPeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, hrData.ToList(), PeakStreamType.HeartRate);
             if (hrPeaks != null)
-            {
                 uow.Analysis.AddPeak(activityId, PeakStreamType.HeartRate, hrPeaks);
-                uow.Complete();
-            }
+
         }
 
         private static void RecalculatePower(UnitOfWork uow, long activityId)
@@ -103,10 +105,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             List<ActivityPeakDetail> powerPeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, powerData, PeakStreamType.Power);
             if (powerPeaks != null)
-            {
                 uow.Analysis.AddPeak(activityId, PeakStreamType.Power, powerPeaks);
-                uow.Complete();
-            }
+
         }
     }
 }
