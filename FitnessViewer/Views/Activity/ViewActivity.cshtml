@@ -103,7 +103,7 @@
                             @foreach (var p in Model.Laps)
                             {
 
-                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex">
                                     <div class="lapDetails">
                                         <span class="lapName">@p.Name</span>
                                         <span class="lapValue">
@@ -122,7 +122,7 @@
                             @foreach (var p in Model.Power)
                             {
 
-                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex">
                                     <div class="lapDetails">
                                         <span class="lapName">@p.Name</span>
                                         <span class="lapValue">
@@ -141,7 +141,7 @@
                             @foreach (var p in Model.HeartRate)
                             {
 
-                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex">
                                     <div class="lapDetails">
                                         <span class="lapName">@p.Name</span>
                                         <span class="lapValue">
@@ -160,7 +160,7 @@
                             @foreach (var p in Model.Cadence)
                             {
 
-                                <li class="lap" data-id="@p.Id" data-type="@p.Type">
+                                <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex">
                                     <div class="lapDetails">
                                         <span class="lapName">@p.Name</span>
                                         <span class="lapValue">

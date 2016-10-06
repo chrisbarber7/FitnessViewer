@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
     $('ul.laps li').click(function (e) {
-        var id = $(this).attr("data-id");
-        var type = $(this).attr("data-type");
+        var startIndex = $(this).attr("data-start-index");
+        var endIndex = $(this).attr("data-end-index");
         var activityId = document.getElementById('activityId').value;
-        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&id=" + id + "&type=" + type);
+        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&startIndex=" + startIndex + "&endIndex=" + endIndex);
     });
 
     var mymap = L.map('mapid');//.setView([51.505, -0.09], 13);
