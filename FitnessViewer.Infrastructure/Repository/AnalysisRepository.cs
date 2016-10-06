@@ -25,7 +25,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public void AddPeak(long activityId, PeakStreamType type, List<ActivityPeakDetail> peaks)
         {
-            var existingPeaks = _context.ActivityPeak.Where(a => a.ActivityId == activityId && a.PeakType == (byte)type).ToList();
+            var existingPeaks = _context.ActivityPeak.Where(a => a.ActivityId == activityId && a.StreamType == type).ToList();
             if (existingPeaks.Count > 0)
                 _context.ActivityPeak.RemoveRange(existingPeaks);
 
@@ -33,7 +33,7 @@ namespace FitnessViewer.Infrastructure.Repository
             if (existingPeakDetail.Count > 0)
                 _context.ActivityPeakDetail.RemoveRange(existingPeakDetail);
 
-            ActivityPeaks stravaPeak = new ActivityPeaks() { ActivityId = activityId, PeakType = (byte)type };
+            ActivityPeaks stravaPeak = new ActivityPeaks() { ActivityId = activityId, StreamType = type };
 
             foreach (ActivityPeakDetail d in peaks)
             {
@@ -68,7 +68,7 @@ namespace FitnessViewer.Infrastructure.Repository
         public IEnumerable<AthletePeaks> GetPeaks(string userId, PeakStreamType type)
         {
             var peaks = _context.ActivityPeak
-                  .Where(p => p.Activity.Athlete.UserId == userId && p.PeakType == (byte)type)
+                  .Where(p => p.Activity.Athlete.UserId == userId && p.StreamType == type)
                   .Include(p => p.Activity);
 
             List<AthletePeaks> ap = new List<AthletePeaks>();

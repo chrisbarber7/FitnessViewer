@@ -126,6 +126,18 @@
     <Compile Include="Migrations\201610060926520_ActivityPeakDetailRenameStartToStartIndex.Designer.cs">
       <DependentUpon>201610060926520_ActivityPeakDetailRenameStartToStartIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610060936533_ActivityPeaksAddStreamTypeColumn.cs" />
+    <Compile Include="Migrations\201610060936533_ActivityPeaksAddStreamTypeColumn.Designer.cs">
+      <DependentUpon>201610060936533_ActivityPeaksAddStreamTypeColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610060940378_ActivityPeaksRemovePeakType.cs" />
+    <Compile Include="Migrations\201610060940378_ActivityPeaksRemovePeakType.Designer.cs">
+      <DependentUpon>201610060940378_ActivityPeaksRemovePeakType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610060942137_ActivityPeaksAddUniqueIndex.cs" />
+    <Compile Include="Migrations\201610060942137_ActivityPeaksAddUniqueIndex.Designer.cs">
+      <DependentUpon>201610060942137_ActivityPeaksAddUniqueIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
@@ -375,6 +387,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610060926520_ActivityPeakDetailRenameStartToStartIndex.resx">
       <DependentUpon>201610060926520_ActivityPeakDetailRenameStartToStartIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060936533_ActivityPeaksAddStreamTypeColumn.resx">
+      <DependentUpon>201610060936533_ActivityPeaksAddStreamTypeColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060940378_ActivityPeaksRemovePeakType.resx">
+      <DependentUpon>201610060940378_ActivityPeaksRemovePeakType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060942137_ActivityPeaksAddUniqueIndex.resx">
+      <DependentUpon>201610060942137_ActivityPeaksAddUniqueIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

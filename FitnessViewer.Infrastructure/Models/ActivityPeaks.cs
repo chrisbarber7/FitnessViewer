@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,10 +15,13 @@ namespace FitnessViewer.Infrastructure.Models
 
         [Required]
         [ForeignKey("Activity")]
+        [Index("IX_ActivityPeaks_ActivityIdAndStreamType", 1, IsUnique = true)]
         public long ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
-        public byte PeakType { get; set; }
+        [Index("IX_ActivityPeaks_ActivityIdAndStreamType", 2, IsUnique = true)]
+        public PeakStreamType StreamType { get; set; }
+
         public int? Peak5 { get; set; }
         public int? Peak10 { get; set; }
         public int? Peak30 { get; set; }
