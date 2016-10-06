@@ -19,7 +19,7 @@ namespace FitnessViewer.Infrastructure.Models
         public TimeSpan MovingTime { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime StartDateLocal { get; set; }
-        public float Distance { get; set; }
+        public decimal Distance { get; set; }
         public int StartIndex { get; set; }
         public int EndIndex { get; set; }        
     }

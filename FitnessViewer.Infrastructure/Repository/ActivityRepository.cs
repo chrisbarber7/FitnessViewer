@@ -147,7 +147,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 {
                     ActivityType = r.Key.ActivityType,
                     Period = r.Key.YearWeek,
-                    TotalDistance = (float)Math.Round(r.Sum(d => d.DistanceInMiles), 1),
+                    TotalDistance = Math.Round(r.Sum(d => d.DistanceInMiles), 1),
                     Number = r.Select(i => i.Id).Distinct().Count(),
                     Label = r.Key.Label
                 })

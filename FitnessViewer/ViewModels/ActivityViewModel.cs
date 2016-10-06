@@ -16,8 +16,8 @@ namespace FitnessViewer.ViewModels
         public long Id { get; set; }
         public string Name { get; set; }
         public string Distance { get; set; }
-        public float AverageSpeed { get; set; }
-        public float ElevationGain { get; set; }
+        public decimal AverageSpeed { get; set; }
+        public decimal ElevationGain { get; set; }
         public string Date { get; set; }
         public DateTime StartDateLocal { get; set; }
 

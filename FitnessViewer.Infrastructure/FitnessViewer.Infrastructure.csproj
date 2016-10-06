@@ -138,6 +138,10 @@
     <Compile Include="Migrations\201610060942137_ActivityPeaksAddUniqueIndex.Designer.cs">
       <DependentUpon>201610060942137_ActivityPeaksAddUniqueIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610061016498_SwitchFloatToDecimal.cs" />
+    <Compile Include="Migrations\201610061016498_SwitchFloatToDecimal.Designer.cs">
+      <DependentUpon>201610061016498_SwitchFloatToDecimal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
@@ -396,6 +400,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610060942137_ActivityPeaksAddUniqueIndex.resx">
       <DependentUpon>201610060942137_ActivityPeaksAddUniqueIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610061016498_SwitchFloatToDecimal.resx">
+      <DependentUpon>201610061016498_SwitchFloatToDecimal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

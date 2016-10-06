@@ -3,6 +3,7 @@ using StravaDotNetAthletes = Strava.Athletes;
 using StravaDotNetGear = Strava.Gear;
 using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Models;
+using System;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -83,7 +84,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 g.Brand = b.Brand;
                 g.Description = b.Description;
-                g.Distance = b.Distance;
+                g.Distance = Convert.ToDecimal(b.Distance);
                 switch (b.FrameType)
                 {
                     case StravaDotNetGear.BikeType.Cross: { g.FrameType = enums.BikeType.Cross; break; }
@@ -106,7 +107,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             foreach (StravaDotNetGear.Shoes s in shoes)
             {
                 Gear g = Gear.CreateShoe(s.Id, athleteId);
-                g.Distance = s.Distance;
+                g.Distance = Convert.ToDecimal(s.Distance);
                 g.FrameType = enums.BikeType.Default;
                 g.IsPrimary = s.IsPrimary;
                 g.Name = s.Name;

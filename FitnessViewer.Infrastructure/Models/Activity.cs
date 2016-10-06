@@ -29,8 +29,8 @@ namespace FitnessViewer.Infrastructure.Models
         public int? SufferScore { get; set; }
         public string EmbedToken { get; set; }
 
-        private float _distance { get; set; }
-        public float Distance
+        private decimal _distance { get; set; }
+        public decimal Distance
         {
             get
             {
@@ -44,20 +44,20 @@ namespace FitnessViewer.Infrastructure.Models
             }
         }
 
-        public float DistanceInMiles { get; set; }
+        public decimal DistanceInMiles { get; set; }
         public int TotalPhotoCount { get; set; }
-        public float ElevationGain { get; set; }
+        public decimal ElevationGain { get; set; }
         public bool HasKudoed { get; set; }
-        public float AverageHeartrate { get; set; }
-        public float MaxHeartrate { get; set; }
+        public decimal AverageHeartrate { get; set; }
+        public decimal MaxHeartrate { get; set; }
         public int? Truncated { get; set; }
         public string GearId { get; set; }
-        public float AverageSpeed { get; set; }
-        public float MaxSpeed { get; set; }
-        public float AverageCadence { get; set; }
-        public float AverageTemperature { get; set; }
-        public float AveragePower { get; set; }
-        public float Kilojoules { get; set; }
+        public decimal AverageSpeed { get; set; }
+        public decimal MaxSpeed { get; set; }
+        public decimal AverageCadence { get; set; }
+        public decimal AverageTemperature { get; set; }
+        public decimal AveragePower { get; set; }
+        public decimal Kilojoules { get; set; }
         public bool IsTrainer { get; set; }
         public bool IsCommute { get; set; }
         public bool IsManual { get; set; }
@@ -106,7 +106,7 @@ namespace FitnessViewer.Infrastructure.Models
         public string MapPolyline { get; set; }
         public string MapPolylineSummary { get; set; }
 
-        public float Calories { get; set; }
+        public decimal Calories { get; set; }
         public string Description { get; set; }
 
         /// <summary>

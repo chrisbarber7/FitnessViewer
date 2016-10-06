@@ -66,7 +66,7 @@ namespace FitnessViewer.Test
                 if (p.Duration == 30)
                 {
                     Assert.AreEqual(1000, p.Value);
-                    Assert.AreEqual(1000, p.Start);
+                    Assert.AreEqual(1000, p.StartIndex);
                 }
             }
         }
@@ -349,7 +349,7 @@ namespace FitnessViewer.Test
             ActivityPeakDetail peak = finder.FindPeakForDuration(30);
 
             Assert.AreEqual(average, peak.Value);
-            Assert.AreEqual(0, peak.Start);
+            Assert.AreEqual(0, peak.StartIndex);
         }
 
         /// <summary>

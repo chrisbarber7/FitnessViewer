@@ -41,7 +41,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             var stravaActivity = _client.Activities.GetActivity(activityId.ToString(), true);
 
             // update details missing from summary activity.
-            fvActivity.Calories = stravaActivity.Calories;
+            fvActivity.Calories = Convert.ToDecimal(stravaActivity.Calories);
             fvActivity.Description = stravaActivity.Description;
             // gear??
             fvActivity.EmbedToken = stravaActivity.EmbedToken;
@@ -208,7 +208,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             effort.StartDateLocal = DateTime.Parse(e.StartDateLocal);
             effort.StartIndex = e.StartIndex;
             effort.ElapsedTime = TimeSpan.FromSeconds(e.ElapsedTime);
-            effort.Distance = e.Distance;
+            effort.Distance = Convert.ToDecimal(e.Distance);
             effort.EndIndex = e.EndIndex;
 
             _unitOfWork.Activity.AddBestEffort(effort);

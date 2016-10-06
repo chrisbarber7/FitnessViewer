@@ -44,7 +44,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                var activities = _client.Activities.GetActivities(DateTime.Now.AddDays(-7), DateTime.Now, page++, perPage);
+                 var activities = _client.Activities.GetActivities(new DateTime(2009,1,1), DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
                     break;
@@ -95,20 +95,20 @@ namespace FitnessViewer.Infrastructure.Helpers
                 s.ActivityTypeId = item.Type.ToString();
                 s.SufferScore = item.SufferScore;
                 s.EmbedToken = item.EmbedToken;
-                s.Distance = item.Distance;
+                s.Distance = Convert.ToDecimal(item.Distance);
                 s.TotalPhotoCount = item.TotalPhotoCount;
-                s.ElevationGain = item.ElevationGain;
+                s.ElevationGain = Convert.ToDecimal(item.ElevationGain);
                 s.HasKudoed = item.HasKudoed;
-                s.AverageHeartrate = item.AverageHeartrate;
-                s.MaxHeartrate = item.MaxHeartrate;
+                s.AverageHeartrate = Convert.ToDecimal(item.AverageHeartrate);
+                s.MaxHeartrate = Convert.ToDecimal(item.MaxHeartrate);
                 s.Truncated = item.Truncated;
                 s.GearId = item.GearId;
-                s.AverageSpeed = item.AverageSpeed;
-                s.MaxSpeed = item.MaxSpeed;
-                s.AverageCadence = item.AverageCadence;
-                s.AverageTemperature = item.AverageTemperature;
-                s.AveragePower = item.AveragePower;
-                s.Kilojoules = item.Kilojoules;
+                s.AverageSpeed = Convert.ToDecimal(item.AverageSpeed);
+                s.MaxSpeed = Convert.ToDecimal(item.MaxSpeed);
+                s.AverageCadence = Convert.ToDecimal(item.AverageCadence);
+                s.AverageTemperature = Convert.ToDecimal(item.AverageTemperature);
+                s.AveragePower = Convert.ToDecimal(item.AveragePower);
+                s.Kilojoules = Convert.ToDecimal(item.Kilojoules);
                 s.IsTrainer = item.IsTrainer;
                 s.IsCommute = item.IsCommute;
                 s.IsManual = item.IsManual;

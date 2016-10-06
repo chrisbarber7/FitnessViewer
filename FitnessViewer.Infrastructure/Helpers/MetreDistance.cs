@@ -11,9 +11,9 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public static class MetreDistance
     {
-        private const float METRE_TO_MILE = 0.00062137119F;
-        private const float METER_TO_KM = 0.001F;
-        private const float METER_TO_FEET = 3.2808399F;
+        private const decimal METRE_TO_MILE = 0.00062137119M;
+        private const decimal METER_TO_KM = 0.001M;
+        private const decimal METER_TO_FEET = 3.2808399M;
         private const int PRECISION = 2;
 
         /// <summary>
@@ -21,9 +21,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="metres">metre distance to convert</param>
         /// <returns></returns>
-        public static float ToMiles(float metres)
+        public static decimal ToMiles(decimal metres)
         {
-            return (float)Math.Round(metres * METRE_TO_MILE, PRECISION);
+            return Math.Round(metres * METRE_TO_MILE, PRECISION);
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="metres">metre distance to convert</param>
         /// <returns></returns>
-        public static float ToKM(float metres)
+        public static decimal ToKM(decimal metres)
         {
-            return (float)Math.Round(metres * METER_TO_KM, PRECISION);
+            return Math.Round(metres * METER_TO_KM, PRECISION);
         }
 
         /// <summary>
@@ -41,9 +41,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="metres">metre distance to convert</param>
         /// <returns></returns>
-        public static float ToFeet(float metres)
+        public static decimal ToFeet(decimal metres)
         {
-            return (float)Math.Round(metres * METER_TO_FEET, PRECISION);
+            return Math.Round(metres * METER_TO_FEET, PRECISION);
         }
     }
 }

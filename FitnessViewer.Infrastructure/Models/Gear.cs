@@ -28,7 +28,7 @@ namespace FitnessViewer.Infrastructure.Models
         public string Description { get; set; }
         public bool? IsPrimary { get; set; }
         public string Name { get; set; }
-        public float? Distance { get; set; }
+        public decimal? Distance { get; set; }
         public int? ResourceState { get; set; }
 
         public static Gear CreateBike(string gearId, long athleteId)

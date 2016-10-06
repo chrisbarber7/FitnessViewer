@@ -29,16 +29,16 @@ namespace FitnessViewer.Infrastructure.Models
         public TimeSpan ElapsedTime { get; set; }
         public DateTime Start { get; set; }
         public DateTime StartLocal { get; set; }
-        public float Distance { get; set; }
+        public decimal Distance { get; set; }
         public int StartIndex { get; set; }
         public int EndIndex { get; set; }
-        public float TotalElevationGain { get; set; }
-        public float AverageSpeed { get; set; }
-        public float MaxSpeed { get; set; }
-        public float AverageCadence { get; set; }
-        public float AveragePower { get; set; }
-        public float AverageHeartrate { get; set; }
-        public float MaxHeartrate { get; set; }
+        public decimal TotalElevationGain { get; set; }
+        public decimal AverageSpeed { get; set; }
+        public decimal MaxSpeed { get; set; }
+        public decimal AverageCadence { get; set; }
+        public decimal AveragePower { get; set; }
+        public decimal AverageHeartrate { get; set; }
+        public decimal MaxHeartrate { get; set; }
         public int LapIndex { get; set; }
     }
 }
