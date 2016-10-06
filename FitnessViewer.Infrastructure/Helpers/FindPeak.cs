@@ -90,7 +90,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             // if there isn't enough data for the duration then we can't find a peak
             // ie looking for 60 minute peak in a 30 minute activity
-            if (_data.Count < duration)
+            if ((_data.Count < duration) && (duration != int.MaxValue))
                 return new ActivityPeakDetail(_activityId, _streamType, duration);
 
             _peakFound = false;
