@@ -131,13 +131,99 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
+        public ActivitySummaryInformation BuildSummaryInformation(long activityId, int startIndex, int endIndex)
+        {
+            var stream = _context.Stream.Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex).ToList();
+
+            Stream startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
+            Stream endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
+
+            // need to group by something to get min/max/ave so grouping by a constant.
+            var minMaxAveResults = stream.GroupBy(i => 1)
+          .Select(g => new
+          {
+              powerMin = g.Min(s => s.Watts),
+              powerAve = g.Average(s => s.Watts),
+              powerMax = g.Max(s => s.Watts),
+              heartRateMin = g.Min(s => s.HeartRate),
+              heartRateAve = g.Average(s => s.HeartRate),
+              heartRateMax = g.Max(s => s.HeartRate),
+              cadenceMin = g.Min(s => s.Cadence),
+              cadenceAve = g.Average(s => s.Cadence),
+              cadenceMax = g.Max(s => s.Cadence),
+              elevationMin = g.Min(s => s.Altitude),
+              elevationAve = g.Average(s => s.Altitude),
+              elevationMax = g.Max(s => s.Altitude),
+              time = g.Count(),
+              distance = g.Sum(s => s.Distance)
+          }).First();
+
+            ActivitySummaryInformation info = new ActivitySummaryInformation();
+            if (minMaxAveResults.powerMin == null)
+            {
+                info.Power = null;
+            }
+            else
+            {
+                info.Power.Min = minMaxAveResults.powerMin.Value;
+                info.Power.Max = minMaxAveResults.powerMax.Value;
+                info.Power.Ave = Convert.ToInt32(minMaxAveResults.powerAve.Value);
+            }
+
+            if (minMaxAveResults.heartRateMin == null)
+            {
+                info.HeartRate = null;
+            }
+            else
+            {
+                info.HeartRate.Min = minMaxAveResults.heartRateMin.Value;
+                info.HeartRate.Max = minMaxAveResults.heartRateMax.Value;
+                info.HeartRate.Ave = Convert.ToInt32(minMaxAveResults.heartRateAve.Value);
+            }
+
+            if (minMaxAveResults.cadenceMin == null)
+            {
+                info.Cadence = null;
+            }
+            else
+            {
+                info.Cadence.Min = minMaxAveResults.cadenceMin.Value;
+                info.Cadence.Max = minMaxAveResults.cadenceMax.Value;
+                info.Cadence.Ave = Convert.ToInt32(minMaxAveResults.cadenceAve.Value);
+            }
+
+            if (minMaxAveResults.elevationMin == null) {
+                info.Elevation = null;
+            }
+            else
+            {
+
+                info.Elevation.Min = Convert.ToInt32(minMaxAveResults.elevationMin.Value);
+                info.Elevation.Ave = Convert.ToInt32(minMaxAveResults.elevationAve.Value);
+                info.Elevation.Max = Convert.ToInt32(minMaxAveResults.elevationMax.Value);
+            }
+
+            if (minMaxAveResults.distance != null)
+                info.Distance = MetreDistance.ToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
+
+            info.Time = TimeSpan.FromSeconds(endIndex - startIndex);
+
+            return info;
+
+        }
+
+        public ActivityPeakDetail GetActivityPeakDetail(int id)
+        {
+            return _context.ActivityPeakDetail.Where(p => p.Id == id).FirstOrDefault();
+        }
+
         public IEnumerable<ActivityByPeriod> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
             return _context.Activity
                 .Include(r => r.Calendar)
                 .Include(r => r.ActivityType)
                 .Include(r => r.Athlete)
-                .Where(r => 
+                .Where(r =>
                         r.Athlete.UserId == userId &&
                         r.Start >= start &&
                         r.Start <= end &&
@@ -157,23 +243,30 @@ namespace FitnessViewer.Infrastructure.Repository
 
         internal void AddLap(Lap lap)
         {
-            _context.Lap.Add(lap);     
+            _context.Lap.Add(lap);
         }
 
 
         public IEnumerable<ActivityLap> GetLaps(long activityId)
         {
-          var result=  _context.Lap.Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
-                .Select(l => new ActivityLap {
-                    Id = l.Id,
-                    Type = PeakStreamType.Lap,
-                    Selected = false,
-                    Name = l.Name,
-                    Value = l.ElapsedTime.ToString()
-                });
+            var result = _context.Lap.Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
+                  .Select(l => new ActivityLap
+                  {
+                      Id = l.Id,
+                      Type = PeakStreamType.Lap,
+                      Selected = false,
+                      Name = l.Name,
+                      Value = l.ElapsedTime.ToString()
+                  });
 
 
             return result.ToList();
+        }
+
+
+        public Lap GetLap(int id)
+        {
+            return _context.Lap.Where(l => l.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<ActivityLap> GetLapStream(long activityId, PeakStreamType streamType)

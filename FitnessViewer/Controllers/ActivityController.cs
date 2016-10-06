@@ -48,10 +48,7 @@ namespace FitnessViewer.Controllers
 
             if (a.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-
-            ActivitySummaryInformation summ = new ActivitySummaryInformation() { Distance = "100", Time = "08:01:02" };
-
+    
             ActivityViewModel m = new ActivityViewModel()
             {
                 Id = a.Id,
@@ -66,28 +63,60 @@ namespace FitnessViewer.Controllers
                 Power = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Power),
                 HeartRate = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.HeartRate),
                 Cadence = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Cadence),
-                SummaryInfo = summ
-                
-                
-            };
+                SummaryInfo = _unitOfWork.Activity.BuildSummaryInformation(id.Value, 0, int.MaxValue)
+        };
             return View(m);
         }
 
         public class SummaryInformationRequest
         {
+            public long activityId { get; set; }
             public int id { get; set; }
-            public int type { get; set; }
+            public string type { get; set; }
         }
 
         [HttpGet]
         public ActionResult GetSummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
         {
-            ActivitySummaryInformation s = new ActivitySummaryInformation() { Distance = detail.id.ToString(), Time = DateTime.Now.ToShortTimeString() };
-            return PartialView("_ActivitySummaryInformation", s);
+            int startIndex = 0;
+            int endIndex = 0;
 
-         //   return Ok(s);
+            // depending on whether a lap or power/heartrate/cadence was selected start/end index will be found in a different table.
+            GetStartAndEndIndex(detail, ref startIndex, ref endIndex);
+
+            return PartialView("_ActivitySummaryInformation", _unitOfWork.Activity.BuildSummaryInformation(detail.activityId, startIndex, endIndex));
         }
 
+        /// <summary>
+        /// Lookup start index and end index in the stream depending on whether a lap or power/heart rate/cadence was selected.
+        /// </summary>
+        /// <param name="detail"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="endIndex"></param>
+        private void GetStartAndEndIndex(SummaryInformationRequest detail, ref int startIndex, ref int endIndex)
+        {
+            if (detail.type.ToUpper() == "LAP")
+            {
+                Lap l = _unitOfWork.Activity.GetLap(detail.id);
+                if (l != null)
+                {
+                    startIndex = l.StartIndex;
+                    endIndex = l.EndIndex;
+                }
+            }
+            else
+            {
+                ActivityPeakDetail p = _unitOfWork.Activity.GetActivityPeakDetail(detail.id);
+                if (p != null)
+                {
+                    if (p.StartIndex != null)
+                    {
+                        startIndex = p.StartIndex.Value;
+                        endIndex = p.StartIndex.Value + p.Duration;
+                    }
+                }
+            }
+        }
 
         [Authorize]
         public ActionResult Table()

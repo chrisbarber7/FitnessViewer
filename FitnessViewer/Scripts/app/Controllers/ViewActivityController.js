@@ -2,7 +2,8 @@
     $('ul.laps li').click(function (e) {
         var id = $(this).attr("data-id");
         var type = $(this).attr("data-type");
-        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?id=" + id + "&type=" + type);
+        var activityId = document.getElementById('activityId').value;
+        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId="+activityId+"&id=" + id + "&type=" + type);
     });
 });
 

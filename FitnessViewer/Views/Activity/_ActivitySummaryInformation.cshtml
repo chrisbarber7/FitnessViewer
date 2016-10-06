@@ -1,8 +1,55 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.ActivitySummaryInformation
 
 <h4>Summary Information</h4>
-<div >
-  Time: @Model.Time<br/>
+<div>
+    Time: @Model.Time<br />
     Distance: @Model.Distance
 </div>
 
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th></th>
+            <th class="text-right">Min</th>         
+            <th class="text-right">Ave</th>
+            <th class="text-right">Max</th>
+        </tr>
+        @if (Model.Power != null)
+        {
+            <tr>
+                <td>Power</td>
+                <td class="text-right">@Model.Power.Min</td>           
+                <td class="text-right">@Model.Power.Ave</td>
+                <td class="text-right">@Model.Power.Max</td>
+            </tr>
+        }
+
+        @if (Model.HeartRate != null)
+        {
+            <tr>
+                <td>Heart Rate</td>
+                <td class="text-right">@Model.HeartRate.Min</td>           
+                <td class="text-right">@Model.HeartRate.Ave</td>
+                <td class="text-right">@Model.HeartRate.Max</td>
+            </tr>
+        }
+        @if (Model.Cadence != null)
+        {
+            <tr>
+                <td>Cadence</td>
+                <td class="text-right">@Model.Cadence.Min</td>             
+                <td class="text-right">@Model.Cadence.Ave</td>
+                <td class="text-right">@Model.Cadence.Max</td>
+            </tr>
+        }
+        @if (Model.Elevation != null)
+        {
+            <tr>
+                <td>Elevation</td>
+                <td class="text-right">@Model.Elevation.Min</td>            
+                <td class="text-right">@Model.Elevation.Ave</td>
+                <td class="text-right">@Model.Elevation.Max</td>
+            </tr>
+        }
+    </table>
+</div>
