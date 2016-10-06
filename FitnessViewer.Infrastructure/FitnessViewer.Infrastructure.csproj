@@ -118,6 +118,14 @@
     <Compile Include="Migrations\201610031716409_AddActivityPeakDetail.Designer.cs">
       <DependentUpon>201610031716409_AddActivityPeakDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610060926076_ActivityPeakDetailaddUniqueIndexAndEndIndexColumn.cs" />
+    <Compile Include="Migrations\201610060926076_ActivityPeakDetailaddUniqueIndexAndEndIndexColumn.Designer.cs">
+      <DependentUpon>201610060926076_ActivityPeakDetailaddUniqueIndexAndEndIndexColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610060926520_ActivityPeakDetailRenameStartToStartIndex.cs" />
+    <Compile Include="Migrations\201610060926520_ActivityPeakDetailRenameStartToStartIndex.Designer.cs">
+      <DependentUpon>201610060926520_ActivityPeakDetailRenameStartToStartIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
@@ -361,6 +369,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610031716409_AddActivityPeakDetail.resx">
       <DependentUpon>201610031716409_AddActivityPeakDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060926076_ActivityPeakDetailaddUniqueIndexAndEndIndexColumn.resx">
+      <DependentUpon>201610060926076_ActivityPeakDetailaddUniqueIndexAndEndIndexColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060926520_ActivityPeakDetailRenameStartToStartIndex.resx">
+      <DependentUpon>201610060926520_ActivityPeakDetailRenameStartToStartIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
