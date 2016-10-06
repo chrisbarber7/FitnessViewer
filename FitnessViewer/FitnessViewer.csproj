@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\ValidTime.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\activityLeaflet.css" />
     <Content Include="Content\ActivityView.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -402,6 +403,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\activityLeaflet.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="ApplicationInsights.config">
