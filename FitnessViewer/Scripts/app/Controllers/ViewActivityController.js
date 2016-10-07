@@ -39,21 +39,117 @@
     }).addTo(mymap);
 
     function getCoords(activityId) {
-    var fullRouteLatLng = null;
-    $.ajax({
-        async: false,
-        global: false,
-        dataType: "json",
-        type: "POST",
-        url: "/api/Activity/GetMapCoords/" + activityId,
-        success: function (data) {
-            fullRouteLatLng = data;
-        },
-        error: function () {
-            alert("Error getting coords data!");
+        var fullRouteLatLng = null;
+        $.ajax({
+            async: false,
+            global: false,
+            dataType: "json",
+            type: "POST",
+            url: "/api/Activity/GetActivityCoords/" + activityId,
+            success: function (data) {
+                fullRouteLatLng = data;
+            },
+            error: function () {
+                alert("Error getting coords data!");
+            }
+        });
+        return fullRouteLatLng;
+    };
+
+
+ SetupActivityChart("chartActivity");
+
+   /*
+    * 
+    * 
+    * 
+    */
+
+        function SetupActivityChart(chartName) {
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: "/api/Activity/GetActivityStreams/" + activityId,
+            data: JSON,
+            success: function (data) {
+                BarChart(data);
+            },
+            error: function () {
+                alert("Error loading activity data!");
+            }
+        });
+
+        function BarChart(data) {
+            var barChartData = {
+                labels: data.Time,
+                datasets: [
+                    {
+                        label: 'Power',
+                        data: data.Watts,
+                        radius: 0,            
+                    fill: false,      
+                    borderColor: 'blue',
+                        yAxesID : 'y-axis-0'
+                    },
+                    {
+                        label: 'Heart Rate',
+                        data: data.HeartRate,
+                        radius: 0,
+                        fill: false,
+                        borderColor: 'red',
+                        yAxesID: 'y-axis-0'
+                    },
+                    {
+                        label: 'Elevation',
+                        data: data.Altitude,
+                        radius: 0,
+                        fill: false,
+                        borderColor: 'green',
+                        yAxesID: 'y-axis-1'
+
+                    }
+                ]
+            };
+
+            Chart.defaults.scale.ticks.autoSkipPadding = 100;
+
+            var ctx = document.getElementById(chartName).getContext("2d");
+
+            var myBarChart = Chart.Line(ctx, {
+                data: barChartData,
+                options: {
+                    animation: false,
+                    fill: false,
+                    beizierCurve: false,
+                    responsive: true,
+                
+  
+                    datasetFill: true,
+                    scales: {
+                        yAxes: [{
+                            position: "left",
+                            "id": "y-axis-0"
+                        }, {
+                            position: "right",
+                            "id": "y-axis-1"
+                        }]
+                    }
+       
+                    
+                }
+
+
+
+            }
+
+
+
+            
+            );
+
         }
-    });
-    return fullRouteLatLng;
-};
+    };
+
+
 
 });

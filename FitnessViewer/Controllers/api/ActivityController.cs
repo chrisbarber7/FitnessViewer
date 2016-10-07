@@ -32,11 +32,21 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpPost]
-        public IHttpActionResult GetMapCoords(string id)
+        public IHttpActionResult GetActivityCoords(string id)
         {
             var coords = _unitOfWork.Activity.GetActivityCoords(Convert.ToInt64(id));
             return Ok(
                coords
+            );
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetActivityStreams(string id)
+        {
+            var streams = _unitOfWork.Activity.GetActivityStreams(Convert.ToInt64(id));
+
+            return Json(
+               streams
             );
         }
 

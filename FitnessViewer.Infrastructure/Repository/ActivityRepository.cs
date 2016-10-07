@@ -88,13 +88,42 @@ namespace FitnessViewer.Infrastructure.Repository
         {
             return _context.Stream
                 .Where(s => s.ActivityId == activityId)
+                .OrderBy(s => s.Time)
                 .Select(s => new ActivitityCoords
                 {
                     lat = s.Latitude.Value,
                     lng = s.Longitude.Value
                 })
+
                 .ToList();
         }
+
+       public ActivityGraphStream GetActivityStreams(long activityId)
+        {
+            IEnumerable<Stream> activityStream =  _context.Stream
+                .Where(s => s.ActivityId == activityId)
+                 .OrderBy(s => s.Time)
+                .ToList();
+
+
+            ActivityGraphStream result = new ActivityGraphStream();
+
+            foreach (Stream s in activityStream)
+            {
+                result.Time.Add(s.Time);
+                result.Distance.Add(s.Distance);
+                result.Altitude.Add(s.Altitude);
+                result.Velocity.Add(s.Velocity);
+                result.HeartRate.Add(s.HeartRate);
+                result.Cadence.Add(s.Cadence);
+                result.Watts.Add(s.Watts);
+            }
+
+            return result;
+
+        }
+
+
 
         public IEnumerable<RunningTimes> GetBestTimes(string userId)
         {

@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
+    <Compile Include="Models\Dto\ActivityGraphStream.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
     <Compile Include="Models\Dto\ActivitySummaryInformation.cs" />
     <Compile Include="Models\Lap.cs" />
