@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
 
     var selectedPolyline;
+    var fullRouteLatLng;
 
     // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
     $('ul.laps li').click(function (e) {
@@ -13,10 +14,10 @@
         if (selectedPolyline!=undefined)
             mymap.removeLayer(selectedPolyline);
 
-        // get full route coords and just keep the section we are interested in.
-        var selectedCoors = getCoords(activityId).slice(startIndex, endIndex);
+        // strip the full route coordinated just keeping the section we are interested in.
+        var selectedLatLng = fullRouteLatLng.slice(startIndex, endIndex);
 
-        selectedPolyline = L.polyline(selectedCoors, { color : 'blue' }).addTo(mymap);
+        selectedPolyline = L.polyline(selectedLatLng, { color : 'blue' }).addTo(mymap);
 
         // un-comment to zoom in on selected polyline.  Undecided if I like it or not as hard to see where on route you are!
         //mymap.fitBounds(selectedPolyline.getBounds());
@@ -25,8 +26,8 @@
     var mymap = L.map('mapid');
 	var activityId = document.getElementById('activityId').value;
 
-	var routeCoords = getCoords(activityId);
-	var polyline = L.polyline(routeCoords, { color: 'red' }).addTo(mymap);
+    fullRouteLatLng = getCoords(activityId);
+	var polyline = L.polyline(fullRouteLatLng, { color: 'red' }).addTo(mymap);
 	mymap.fitBounds(polyline.getBounds());
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxcDdnOTAwNGUzbm9hMDNueDBla2IifQ.uCc724sMqgSk316I0XuPlA', {
@@ -38,7 +39,7 @@
     }).addTo(mymap);
 
     function getCoords(activityId) {
-    var routeCoords = null;
+    var fullRouteLatLng = null;
     $.ajax({
         async: false,
         global: false,
@@ -46,13 +47,13 @@
         type: "POST",
         url: "/api/Activity/GetMapCoords/" + activityId,
         success: function (data) {
-            routeCoords = data;
+            fullRouteLatLng = data;
         },
         error: function () {
             alert("Error getting coords data!");
         }
     });
-    return routeCoords;
+    return fullRouteLatLng;
 };
 
 });
