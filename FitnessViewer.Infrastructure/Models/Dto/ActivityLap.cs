@@ -14,8 +14,10 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public bool Selected { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
-        public string Units {
-            get {
+        public string Units
+        {
+            get
+            {
                 if (string.IsNullOrEmpty(Value))
                     return string.Empty;
 
@@ -24,5 +26,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             }
             private set { }
         }
-}
+
+        public int? StartIndex { get; set; }
+        public int? EndIndex { get; set; }
+    }
 }

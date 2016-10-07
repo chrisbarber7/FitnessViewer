@@ -256,7 +256,9 @@ namespace FitnessViewer.Infrastructure.Repository
                       Type = PeakStreamType.Lap,
                       Selected = false,
                       Name = l.Name,
-                      Value = l.ElapsedTime.ToString()
+                      Value = l.ElapsedTime.ToString(),
+                      StartIndex = l.StartIndex,
+                      EndIndex = l.EndIndex
                   });
 
 
@@ -282,7 +284,9 @@ namespace FitnessViewer.Infrastructure.Repository
                   Type = streamType,
                   Selected = false,
                   Name = p.Duration.ToString(),
-                  Value = p.Value.ToString()
+                  Value = p.Value.ToString(),
+                  StartIndex = p.StartIndex.Value,
+                  EndIndex = p.EndIndex.Value
               }).ToList();
 
 
