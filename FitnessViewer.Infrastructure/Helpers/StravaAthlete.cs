@@ -65,8 +65,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             LogActivity("Updating Athlete", fitnessViewerAthlete);
 
-
-            Mapper.Map(stravaAthleteDetails, fitnessViewerAthlete);
+            fitnessViewerAthlete = Mapper.Map<Athlete>(stravaAthleteDetails);
 
             fitnessViewerAthlete.Token = token;
 
