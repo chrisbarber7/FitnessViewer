@@ -77,6 +77,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 StravaDotNetStreams.StreamType.Watts,
                 StravaDotNetStreams.StreamResolution.All);
 
+            fvActivity.StreamSize = stream.Count;
+
             ExtractAndStoreStream(fvActivity.Id, stream);
 
             if (fvActivity.ActivityType.IsRun)
