@@ -71,7 +71,7 @@ namespace FitnessViewer.Infrastructure.Models
         public DateTime StartDate { get; set; }
 
         private DateTime _startDateLocal;
-        public  string DeviceName { get; set; }
+        public string DeviceName { get; set; }
 
 
         // necessay so that we can join to calendar on date only
@@ -108,6 +108,32 @@ namespace FitnessViewer.Infrastructure.Models
 
         public decimal Calories { get; set; }
         public string Description { get; set; }
+
+        private int? _streamSize;
+
+        public int? StreamSize
+        {
+            get
+            { return _streamSize; }
+            set
+            {
+                _streamSize = value;
+                
+                if (_streamSize <= 500)
+                    StreamStep = 1;
+                else if (_streamSize <= 2000)
+                    StreamStep = 2;
+                else if (_streamSize <= 5000)
+                    StreamStep = 5;
+                else if (_streamSize <= 10000)
+                    StreamStep = 10;
+                else if (_streamSize <= 20000)
+                    StreamStep = 20;
+                else
+                    StreamStep = 30;
+            }
+        }
+        public int? StreamStep { get; private set; }
 
         /// <summary>
         /// return distance formatted for the given activity.
