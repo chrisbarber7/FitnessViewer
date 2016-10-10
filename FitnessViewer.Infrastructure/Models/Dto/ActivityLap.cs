@@ -29,5 +29,6 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public int? StartIndex { get; set; }
         public int? EndIndex { get; set; }
+        public int? StreamStep { get; set; }
     }
 }

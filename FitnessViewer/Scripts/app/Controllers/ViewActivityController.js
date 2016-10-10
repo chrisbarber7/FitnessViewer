@@ -4,17 +4,19 @@
     var fullRouteLatLng;
 
     // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
-    $('ul.laps li').click(function (e) {
+    $('ul.laps li').click(function (e) {   
+     
         var startIndex = $(this).attr("data-start-index");
         var endIndex = $(this).attr("data-end-index");
+        var streamStep = $(this).attr("data-stream-step");
         var activityId = document.getElementById('activityId').value;
-        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&startIndex=" + startIndex + "&endIndex=" + endIndex);
+        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&startIndex=" + startIndex*streamStep + "&endIndex=" + endIndex*streamStep);
 
         // if previous selection exists then removeit
         if (selectedPolyline!=undefined)
             mymap.removeLayer(selectedPolyline);
 
-        // strip the full route coordinated just keeping the section we are interested in.
+        // strip the full route coordinated just keeping the section we are interested in (no need for stream step on the map as the map has reduced data points)
         var selectedLatLng = fullRouteLatLng.slice(startIndex, endIndex);
 
         selectedPolyline = L.polyline(selectedLatLng, { color : 'blue' }).addTo(mymap);
@@ -97,7 +99,9 @@
                         radius: 0,
                         fill: false,
                         borderColor: 'red',
-                        yAxesID: 'y-axis-0'
+                        yAxesID: 'y-axis-0',
+                        lineThickness: 0.1
+
                     },
                     {
                         label: 'Elevation',

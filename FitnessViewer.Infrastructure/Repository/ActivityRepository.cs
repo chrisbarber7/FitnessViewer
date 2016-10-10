@@ -87,36 +87,39 @@ namespace FitnessViewer.Infrastructure.Repository
         public IEnumerable<ActivitityCoords> GetActivityCoords(long activityId)
         {
             return _context.Stream
-                .Where(s => s.ActivityId == activityId)
-                .OrderBy(s => s.Time)
-                .Select(s => new ActivitityCoords
-                {
-                    lat = s.Latitude.Value,
-                    lng = s.Longitude.Value
-                })
+                .Include(a=>a.Activity)
+                 .Where(s => s.ActivityId == activityId && s.Time % s.Activity.StreamStep == 0)
+                 .OrderBy(s => s.Time)
+                 .Select(s => new ActivitityCoords
+                 {
+                     lat = s.Latitude.Value,
+                     lng = s.Longitude.Value
+                 })
 
-                .ToList();
+                 .ToList();
         }
 
        public ActivityGraphStream GetActivityStreams(long activityId)
         {
             IEnumerable<Stream> activityStream =  _context.Stream
-                .Where(s => s.ActivityId == activityId)
+                .Include(a=>a.Activity)
+                .Where(s => s.ActivityId == activityId && s.Time % s.Activity.StreamStep == 0)
                  .OrderBy(s => s.Time)
                 .ToList();
-
 
             ActivityGraphStream result = new ActivityGraphStream();
 
             foreach (Stream s in activityStream)
             {
+           
                 result.Time.Add(s.Time);
-                result.Distance.Add(s.Distance);
+            //    result.Distance.Add(s.Distance);
                 result.Altitude.Add(s.Altitude);
-                result.Velocity.Add(s.Velocity);
+          //      result.Velocity.Add(s.Velocity);
                 result.HeartRate.Add(s.HeartRate);
                 result.Cadence.Add(s.Cadence);
                 result.Watts.Add(s.Watts);
+
             }
 
             return result;
@@ -278,7 +281,9 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<ActivityLap> GetLaps(long activityId)
         {
-            var result = _context.Lap.Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
+            var result = _context.Lap
+                .Include(a => a.Activity)
+                .Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
                   .Select(l => new ActivityLap
                   {
                       Id = l.Id,
@@ -286,8 +291,9 @@ namespace FitnessViewer.Infrastructure.Repository
                       Selected = false,
                       Name = l.Name,
                       Value = l.ElapsedTime.ToString(),
-                      StartIndex = l.StartIndex,
-                      EndIndex = l.EndIndex
+                      StartIndex = l.StartIndex / l.Activity.StreamStep,
+                      EndIndex = l.EndIndex / l.Activity.StreamStep,
+                      StreamStep = l.Activity.StreamStep
                   });
 
 
@@ -314,8 +320,9 @@ namespace FitnessViewer.Infrastructure.Repository
                   Selected = false,
                   Name = p.Duration.ToString(),
                   Value = p.Value.ToString(),
-                  StartIndex = p.StartIndex.Value,
-                  EndIndex = p.EndIndex.Value
+                  StartIndex = p.StartIndex.Value / p.Activity.StreamStep,
+                  EndIndex = p.EndIndex.Value / p.Activity.StreamStep,
+                  StreamStep = p.Activity.StreamStep
               }).ToList();
 
 
