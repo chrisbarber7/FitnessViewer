@@ -247,3 +247,4 @@ ModelManifest.xml
 #Keys
 app.keys.config
 connectionStrings.config
+/FitnessViewer/Properties/PublishProfiles/FitnessViewer - Web Deploy.pubxml
