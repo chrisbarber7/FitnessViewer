@@ -146,6 +146,10 @@
     <Compile Include="Migrations\201610061046077_StreamAddUniqueIndex.Designer.cs">
       <DependentUpon>201610061046077_StreamAddUniqueIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610091957303_ActivityAddStreamFields.cs" />
+    <Compile Include="Migrations\201610091957303_ActivityAddStreamFields.Designer.cs">
+      <DependentUpon>201610091957303_ActivityAddStreamFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityGraphStream.cs" />
@@ -411,6 +415,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610061046077_StreamAddUniqueIndex.resx">
       <DependentUpon>201610061046077_StreamAddUniqueIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610091957303_ActivityAddStreamFields.resx">
+      <DependentUpon>201610091957303_ActivityAddStreamFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
