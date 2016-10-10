@@ -47,8 +47,24 @@ namespace FitnessViewer.Infrastructure.Models
 
         public int? Value { get; set; }         // peak
 
-        public int? StartIndex { get; set; }         // starting point in stream for the peak
-        public int? EndIndex { get; set; }
+        private int? _startIndex;
+        public int? StartIndex          // starting point in stream for the peak
+        {
+            get { return _startIndex; }
+            set
+            {
+                _startIndex = value;
+                if (_startIndex == null)
+                    EndIndex = null;
+                else
+                {
+                    EndIndex = _startIndex + Duration;
+                }
+            }
+        }
+        
+        // ending point for the peak  Calculated from startIndex + duration.
+        public int? EndIndex { get; private set; }
 
         [Index("IX_ActivityIdAndDuration", 2, IsUnique = true)]
         public PeakStreamType StreamType { get; set; }
