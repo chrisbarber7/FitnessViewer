@@ -1,9 +1,7 @@
 ﻿$(document).ready(function () {
-
     var selectedPolyline;
     var fullRouteLatLng;
-
-    // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
+// user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
     $('ul.laps li').click(function (e) {   
      
         var startIndex = $(this).attr("data-start-index");
@@ -61,12 +59,6 @@
 
  SetupActivityChart("chartActivity");
 
-   /*
-    * 
-    * 
-    * 
-    */
-
         function SetupActivityChart(chartName) {
         $.ajax({
             dataType: "json",
@@ -101,7 +93,6 @@
                         borderColor: 'red',
                         yAxesID: 'y-axis-0',
                         lineThickness: 0.1
-
                     },
                     {
                         label: 'Elevation',
@@ -110,7 +101,6 @@
                         fill: false,
                         borderColor: 'green',
                         yAxesID: 'y-axis-1'
-
                     }
                 ]
             };
@@ -126,8 +116,6 @@
                     fill: false,
                     beizierCurve: false,
                     responsive: true,
-                
-  
                     datasetFill: true,
                     scales: {
                         yAxes: [{
@@ -138,22 +126,8 @@
                             "id": "y-axis-1"
                         }]
                     }
-       
-                    
                 }
-
-
-
-            }
-
-
-
-            
-            );
-
+            });
         }
     };
-
-
-
 });
