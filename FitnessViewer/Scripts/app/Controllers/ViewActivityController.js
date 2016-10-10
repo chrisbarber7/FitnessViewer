@@ -11,7 +11,7 @@
         $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&startIndex=" + startIndex*streamStep + "&endIndex=" + endIndex*streamStep);
 
         // if previous selection exists then removeit
-        if (selectedPolyline!=undefined)
+        if (selectedPolyline!==undefined)
             mymap.removeLayer(selectedPolyline);
 
         // strip the full route coordinated just keeping the section we are interested in (no need for stream step on the map as the map has reduced data points)
@@ -31,11 +31,11 @@
 	mymap.fitBounds(polyline.getBounds());
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxcDdnOTAwNGUzbm9hMDNueDBla2IifQ.uCc724sMqgSk316I0XuPlA', {
-	    maxZoom: 18,
-	        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			    id: 'mapbox.streets'
+                id: 'mapbox.streets'
     }).addTo(mymap);
 
     function getCoords(activityId) {
