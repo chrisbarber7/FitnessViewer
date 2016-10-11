@@ -103,39 +103,70 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Dummy method to test downloads.
         /// </summary>
         /// <returns></returns>
-        public async Task Download()
+        public  void Download()
         {
 
-            RefreshToken();
+  //          RefreshToken();
 
-            DateTime dateStart = DateTime.Now;//  = Convert.ToDateTime(id);
+            DownloadMetric(TimeSeriesResourceType.Weight, true);
 
-            Weight weight = null;
-        TimeSeriesDataList fatSeries = null;
-            TimeSeriesDataList weightSeries = null;
+            DownloadMetric(TimeSeriesResourceType.Fat, true);
 
+            return ;
+        }
+
+        private void DownloadMetric(TimeSeriesResourceType type, bool fullDownload)
+        {
+            if (!fullDownload)
+                DownloadMetric(type, DateTime.UtcNow);
+            else
+            {
+                // if initial download or a forced refresh then attemt to download last 5 years worth of data.
+                for(int year=0; year>=-5; year--)               
+                    DownloadMetric(type, DateTime.UtcNow.AddYears(year));
+            }
+
+        }
+
+        private async void DownloadMetric(TimeSeriesResourceType type, DateTime dateStart)
+        {
+            TimeSeriesDataList fitbitData = null;
+        
             try
             {
 
-         //       weight = await _client.GetWeightAsync(dateStart, DateRangePeriod.OneYear);
+       
 
-               fatSeries =await  _client.GetTimeSeriesAsync(TimeSeriesResourceType.Fat, DateTime.UtcNow, DateRangePeriod.OneYear);
-                weightSeries = await _client.GetTimeSeriesAsync(TimeSeriesResourceType.Weight, DateTime.UtcNow, DateRangePeriod.OneYear);
+                fitbitData = await _client.GetTimeSeriesAsync(type, dateStart, DateRangePeriod.OneYear);
+                SaveSeries(type, fitbitData);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-                return ;
+                return;
             }
 
-            if (weight == null || weight.Weights == null) //succeeded but no records
-            {
-                weight = new Weight();
-                weight.Weights = new List<WeightLog>();
-            }
-            return ;
         }
 
+        private void SaveSeries(TimeSeriesResourceType type, TimeSeriesDataList fitbitData)
+        {
+            var metricType = MetricTypeConversion.FromFitBitType(type);
+            List<Metric> currentlyStoredMetrics = _unitOfWork.Metrics.GetMetrics(_userId, metricType);
+
+            foreach (Fitbit.Models.TimeSeriesDataList.Data item in fitbitData.DataList)
+            {
+                var existingMetric = currentlyStoredMetrics.Where(m => m.Recorded == item.DateTime).FirstOrDefault();
+
+                if (existingMetric == null)
+                {         
+                    _unitOfWork.Metrics.AddMetric(Metric.CreateMetric(_userId, metricType, item.DateTime, Convert.ToDecimal(item.Value)));
+                }
+                else
+                    existingMetric.Value = Convert.ToDecimal(item.Value);
+
+            }
+            _unitOfWork.Complete();
+        }
     }
 }
 

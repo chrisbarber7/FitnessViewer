@@ -61,7 +61,7 @@ namespace SampleWebMVC.Controllers
         public async Task<ActionResult> Download()
         {
             FitbitHelper fb = new FitbitHelper(this.User.Identity.GetUserId());
-            await fb.Download();
+          fb.Download();
             
             return View();
         }

@@ -31,25 +31,10 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<ActivityPeakDetail> ActivityPeakDetail { get; set; }
 
         public DbSet<FitbitUser> FitbitUser { get; set; }
+        public DbSet<Metric> Metric { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Lap>()
-            //    .HasKey(l=>l.Id)
-            //    .HasRequired(l=>l.Athlete)
-                
-            //    .WithRequiredDependent()
-            //    .WillCascadeOnDelete(false);
-               
-                
-            //modelBuilder.Entity<Activity>()
-            //    .HasRequired<ActivityType>(t => t.ActivityType)
-            // .WithRequiredPrincipal()
-            //    .WillCascadeOnDelete(false); ;
-        
-
-
-
             base.OnModelCreating(modelBuilder);
         }
     }

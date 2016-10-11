@@ -101,8 +101,10 @@
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
+    <Compile Include="enums\MetricType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="Helpers\FitbitHelper.cs" />
+    <Compile Include="Helpers\MetricTypeConversion.cs" />
     <Compile Include="Helpers\StravaActivityDownload.cs" />
     <Compile Include="Helpers\StravaActivityScan.cs" />
     <Compile Include="Helpers\StravaAthlete.cs" />
@@ -159,13 +161,23 @@
     <Compile Include="Migrations\201610101505411_AddFitbitUserTable.Designer.cs">
       <DependentUpon>201610101505411_AddFitbitUserTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610110929320_AddMetricTable.cs" />
+    <Compile Include="Migrations\201610110929320_AddMetricTable.Designer.cs">
+      <DependentUpon>201610110929320_AddMetricTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610111359446_MetricTableAddIndex.cs" />
+    <Compile Include="Migrations\201610111359446_MetricTableAddIndex.Designer.cs">
+      <DependentUpon>201610111359446_MetricTableAddIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityGraphStream.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
     <Compile Include="Models\Dto\ActivitySummaryInformation.cs" />
+    <Compile Include="Models\Dto\WeightByDay.cs" />
     <Compile Include="Models\FitbitUser.cs" />
     <Compile Include="Models\Lap.cs" />
+    <Compile Include="Models\Metric.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
     <Compile Include="Repository\AthleteRepository.cs" />
@@ -431,6 +443,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610101505411_AddFitbitUserTable.resx">
       <DependentUpon>201610101505411_AddFitbitUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610110929320_AddMetricTable.resx">
+      <DependentUpon>201610110929320_AddMetricTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610111359446_MetricTableAddIndex.resx">
+      <DependentUpon>201610111359446_MetricTableAddIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
