@@ -432,6 +432,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\FitnessViewer - Web Deploy.pubxml" />
+    <Content Include="Properties\webjobs-list.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\Controllers\athleteViewController.js" />
