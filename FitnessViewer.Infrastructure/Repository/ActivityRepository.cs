@@ -130,11 +130,26 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<RunningTimes> GetBestTimes(string userId)
         {
+            // temp solution.  Plan is to have a user preferences table which will hold the users favourite distances which will
+            // replace this hard coded list.
+            List<decimal> favouriteDistances = new List<decimal>()
+            {
+                805.00M,
+                1000.00M,
+                1609.00M,
+                5000.00M,
+                10000.00M,
+                21097.00M,
+                42195.00M
+            };
+       
             // get a list of best times
             var times = from t in _context.BestEffort
                         join act in _context.Activity on t.ActivityId equals act.Id
                         join a in _context.Athlete on act.AthleteId equals a.Id
-                        where a.UserId == userId
+                        join fav in favouriteDistances on t.Distance equals fav
+                        where a.UserId == userId 
+                        
                         group t by t.Name into dptgrp
                         let fastestTime = dptgrp.Min(x => x.ElapsedTime)
                         select new
