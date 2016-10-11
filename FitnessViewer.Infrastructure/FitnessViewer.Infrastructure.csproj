@@ -169,6 +169,10 @@
     <Compile Include="Migrations\201610111359446_MetricTableAddIndex.Designer.cs">
       <DependentUpon>201610111359446_MetricTableAddIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610111507344_BestEffortAddIndex.cs" />
+    <Compile Include="Migrations\201610111507344_BestEffortAddIndex.Designer.cs">
+      <DependentUpon>201610111507344_BestEffortAddIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityGraphStream.cs" />
@@ -449,6 +453,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610111359446_MetricTableAddIndex.resx">
       <DependentUpon>201610111359446_MetricTableAddIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610111507344_BestEffortAddIndex.resx">
+      <DependentUpon>201610111507344_BestEffortAddIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
