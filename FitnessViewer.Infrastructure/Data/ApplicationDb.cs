@@ -30,6 +30,8 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<Lap> Lap { get; set; }
         public DbSet<ActivityPeakDetail> ActivityPeakDetail { get; set; }
 
+        public DbSet<FitbitUser> FitbitUser { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Lap>()

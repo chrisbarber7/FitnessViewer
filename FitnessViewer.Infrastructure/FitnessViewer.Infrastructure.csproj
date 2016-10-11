@@ -42,6 +42,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Fitbit.Portable">
+      <HintPath>..\..\Fitbit.NET\Fitbit.Portable\bin\Debug\Fitbit.Portable.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -84,6 +87,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -98,6 +102,7 @@
     <Compile Include="Data\ApplicationUser.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
+    <Compile Include="Helpers\FitbitHelper.cs" />
     <Compile Include="Helpers\StravaActivityDownload.cs" />
     <Compile Include="Helpers\StravaActivityScan.cs" />
     <Compile Include="Helpers\StravaAthlete.cs" />
@@ -150,11 +155,16 @@
     <Compile Include="Migrations\201610091957303_ActivityAddStreamFields.Designer.cs">
       <DependentUpon>201610091957303_ActivityAddStreamFields.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610101505411_AddFitbitUserTable.cs" />
+    <Compile Include="Migrations\201610101505411_AddFitbitUserTable.Designer.cs">
+      <DependentUpon>201610101505411_AddFitbitUserTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityGraphStream.cs" />
     <Compile Include="Models\Dto\ActivityLap.cs" />
     <Compile Include="Models\Dto\ActivitySummaryInformation.cs" />
+    <Compile Include="Models\FitbitUser.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
@@ -418,6 +428,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610091957303_ActivityAddStreamFields.resx">
       <DependentUpon>201610091957303_ActivityAddStreamFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610101505411_AddFitbitUserTable.resx">
+      <DependentUpon>201610101505411_AddFitbitUserTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
