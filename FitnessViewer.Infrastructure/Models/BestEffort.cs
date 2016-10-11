@@ -14,8 +14,14 @@ namespace FitnessViewer.Infrastructure.Models
         public virtual Activity Activity { get; set; }
         
         public int ResourceState { get; set; }
+
+        [Index("IX_BestEffort_Name")]
+        [MaxLength(20)]
         public string Name { get; set; }
+
+        [Index("IX_BestEffort_ElapsedTime")]
         public TimeSpan ElapsedTime { get; set; }
+
         public TimeSpan MovingTime { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime StartDateLocal { get; set; }
