@@ -82,6 +82,13 @@ namespace FitnessViewer.Infrastructure.Repository
 
             DateTime day = DateTime.Now.Date;
 
+
+            if (metrics.Count == 0)
+            {
+                results.Add(new WeightByDay(day));
+                return results;
+            }
+
             while (day >= DateTime.Now.Date.AddDays(days * -1))
             {
                 WeightByDay w = new WeightByDay(day);
