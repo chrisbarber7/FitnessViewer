@@ -14,5 +14,6 @@ namespace FitnessViewer.ViewModels
         public string LastName { get; set; }
         public IEnumerable<AthletePeaks> PowerPeaks { get; set; }
         public IEnumerable<RunningTimes> RunningTime { get; internal set; }
+        public WeightByDay CurrentWeight { get; set; }
     }
 }

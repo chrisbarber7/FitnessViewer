@@ -14,20 +14,33 @@
         @{Html.RenderPartial("_RunningTimes", Model.RunningTime); }
     </div>
     <div class="col-md-4">
+        <h4>Weight</h4>
+   Current Weight: @Model.CurrentWeight.Current<br/>
+        7 Day Average: @Model.CurrentWeight.Average7Day<br/>
+        30 Day Average: @Model.CurrentWeight.Average30Day<br />
+    </div>
+    <div class="col-md-4">
+        @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
         <label for="chart12weekRun">
             <h4>Average Run Distance Per Week</h4>
             <canvas id="chart12weekRun" width="800" height="400"></canvas>
         </label>
+    </div>
+    <div class="col-md-4">
         <label for="chart12weekBike">
             <h4>Average Bike Distance Per Week</h4>
             <canvas id="chart12weekBike" width="800" height="400"></canvas>
         </label>
     </div>
     <div class="col-md-4">
-        @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
+ 
+
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-12">
         <table id="table_id" class="table table table-striped table-hover compact ">
