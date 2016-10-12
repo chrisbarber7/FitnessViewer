@@ -26,13 +26,13 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public static void CreateTrigger()
         {
-            new AzureWebJob().TriggerJob();
+             new AzureWebJob().TriggerJob();
         }
 
         /// <summary>
         /// Send Post request to azure to start the download job.
         /// </summary>
-        private async void TriggerJob()
+        private void TriggerJob()
         {
             AzureWebJobStatus status = AzureWebJobStatus.Invalid;
 
@@ -42,7 +42,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 try
                 {
                     System.Diagnostics.Debug.WriteLine(string.Format("Triggering Job (attempt:{0})", _attempts.ToString()));
-                    status = await Post();
+                    status = Post();
                 }
                 catch (Exception)
                 {
@@ -64,7 +64,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Post method
         /// </summary>
         /// <returns></returns>
-        private async  Task<AzureWebJobStatus> Post()
+        private AzureWebJobStatus Post()
         {
             string url = ConfigurationManager.AppSettings["AzureDownloadWebJobUrl"];
             string username = ConfigurationManager.AppSettings["AzureDownloadWebJobUsername"];
@@ -81,7 +81,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             var values = new Dictionary<string, string> { { "username", username }, { "password", password } };
       
             HttpContent header = new FormUrlEncodedContent(values);
-            var response = await httpClient.PostAsync(url, header);
+            var response = httpClient.PostAsync(url, header).Result;
 
             if (response.IsSuccessStatusCode)
                 return AzureWebJobStatus.Started;
