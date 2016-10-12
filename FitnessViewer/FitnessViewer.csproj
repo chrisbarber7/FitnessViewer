@@ -414,7 +414,7 @@
     </Content>
     <Content Include="..\app.keys.config">
       <Link>app.keys.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\connectionStrings.config">
       <Link>connectionStrings.config</Link>
