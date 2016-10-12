@@ -86,6 +86,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             else if (fvActivity.ActivityType.IsRide)
                 ExtractBikeDetails(stravaActivity);
 
+            fvActivity.DetailsDownloaded = true;
+
             _unitOfWork.Complete();
 
             if (stravaLimitDelay > 100)

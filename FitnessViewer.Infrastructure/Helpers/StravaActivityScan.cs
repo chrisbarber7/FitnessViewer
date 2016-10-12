@@ -148,6 +148,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 s.MapId = item.Map.Id;
                 s.MapPolyline = item.Map.Polyline;
                 s.MapPolylineSummary = item.Map.SummaryPolyline;
+
+                s.DetailsDownloaded = false;
             }
             catch (Exception ex)
             {
