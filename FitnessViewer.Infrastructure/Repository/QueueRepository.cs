@@ -23,8 +23,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public void AddQueueItem(string userId, long? activityId)
         {
-            DownloadQueue q = new DownloadQueue() { UserId = userId, Added = DateTime.Now, Processed = false, ActivityId = activityId };
-            _context.Queue.Add(q);
+            _context.Queue.Add(DownloadQueue.CreateQueueJob(userId, activityId));
         }
 
         public IEnumerable<DownloadQueue> GetQueue()
