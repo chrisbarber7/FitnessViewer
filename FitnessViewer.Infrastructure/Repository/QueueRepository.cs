@@ -29,7 +29,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<DownloadQueue> GetQueue()
         {
-            return _context.Queue.Where(x => !x.Processed).OrderBy(x=>x.Id).ToList();
+            return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).ToList();
         }
 
         public void RemoveQueueItem(int id)
