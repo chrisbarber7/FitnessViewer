@@ -19,15 +19,20 @@ namespace FitnessViewer.Infrastructure.Helpers
         private int _attempts = 0;
         private UnitOfWork _unitOfWork ;
 
-        public AzureWebJob()
+        private AzureWebJob()
         {
             _unitOfWork = new UnitOfWork();
+        }
+
+        public static void CreateTrigger()
+        {
+            new AzureWebJob().TriggerJob();
         }
 
         /// <summary>
         /// Send Post request to azure to start the download job.
         /// </summary>
-        public async void TriggerJob()
+        private async void TriggerJob()
         {
             AzureWebJobStatus status = AzureWebJobStatus.Invalid;
 

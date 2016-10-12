@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -36,6 +37,10 @@ namespace FitnessViewer.Controllers
         {
             _unitOfWork.Queue.AddQueueItem(this.User.Identity.GetUserId());
             _unitOfWork.Complete();
+
+            // trigger web job to download activity details.
+            AzureWebJob.CreateTrigger();
+
             return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
     }

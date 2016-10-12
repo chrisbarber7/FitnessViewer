@@ -68,6 +68,9 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 // write changes to database.
                 _unitOfWork.Complete();
+                
+                // trigger web job to download activity details.
+                AzureWebJob.CreateTrigger();
 
                 if (stravaLimitDelay > 100)
                     LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), a);

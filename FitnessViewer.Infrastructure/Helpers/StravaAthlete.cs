@@ -49,6 +49,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             _unitOfWork.Queue.AddQueueItem(userId);
 
             _unitOfWork.Complete();
+
+            // trigger web job to download activity details.
+            AzureWebJob.CreateTrigger();
         }
 
         /// <summary>
