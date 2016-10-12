@@ -28,10 +28,7 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void Complete()
         {
- 
                 _context.SaveChanges();
-      
- 
         }
     }
 }
