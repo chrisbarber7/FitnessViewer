@@ -103,6 +103,7 @@
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="enums\MetricType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
+    <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\FitbitHelper.cs" />
     <Compile Include="Helpers\MetricTypeConversion.cs" />
     <Compile Include="Helpers\StravaActivityDownload.cs" />
