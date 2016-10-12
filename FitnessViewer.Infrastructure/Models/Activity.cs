@@ -135,6 +135,8 @@ namespace FitnessViewer.Infrastructure.Models
         }
         public int? StreamStep { get; private set; }
 
+        public bool DetailsDownloaded { get; set; }
+
         /// <summary>
         /// return distance formatted for the given activity.
         /// </summary>
