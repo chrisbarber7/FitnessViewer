@@ -182,6 +182,9 @@ namespace FitnessViewer.Infrastructure.Repository
         {
             var stream = _context.Stream.Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex).ToList();
 
+            if (stream.Count == 0)
+                return new ActivitySummaryInformation();
+
             Stream startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
             Stream endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
 
