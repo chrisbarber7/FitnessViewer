@@ -7,21 +7,42 @@ namespace FitnessViewer.Infrastructure.Models
 {
     public class DownloadQueue
     {
-        public int Id { get; set; }
+        private DownloadQueue()
+        { }
+
+        public int Id { get; private set; }
 
         [Required]
         [MaxLength(128)]
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public string UserId { get; private set; }
         public virtual ApplicationUser User { get; set; }
 
-        public DateTime Added { get; set; }
+        public DateTime Added { get; private set; }
         public bool Processed { get; set; }
         public DateTime? ProcessedAt { get; set; }
-
-        public long? ActivityId { get; set; }
+        public long? ActivityId { get; private set; }
         public bool? HasError { get; set; }
-        
+
+        /// <summary>
+        /// Create a new job for the queue.
+        /// </summary>
+        /// <param name="userId">ASP.NET Identity User Id</param>
+        /// <param name="activityId">Optional Strava activity id</param>
+        /// <returns></returns>
+        internal static DownloadQueue CreateQueueJob(string userId, long? activityId)
+        {
+            DownloadQueue q = new DownloadQueue();
+            q.UserId = userId;
+            q.ActivityId = activityId;
+
+            q.Added = DateTime.Now;
+            q.Processed = false;
+            q.ProcessedAt = null;
+            q.HasError = false;
+
+            return q;
+        }
     }
 }
 
