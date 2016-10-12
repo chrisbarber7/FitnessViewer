@@ -21,14 +21,12 @@ namespace FitnessViewer.Controllers
         {
             var userId = this.User.Identity.GetUserId();
 
-            var weight = _unitOfWork.Metrics.GetWeightDetails(userId, 1)[0];
-
             var result = new AthleteViewModel()
             {
                 FirstName = _unitOfWork.Athlete.FindAthleteByUserId(this.User.Identity.GetUserId()).FirstName,
                 PowerPeaks = _unitOfWork.Analysis.GetPeaks(userId, PeakStreamType.Power),
                 RunningTime = _unitOfWork.Activity.GetBestTimes(userId),
-                CurrentWeight = weight
+                CurrentWeight = _unitOfWork.Metrics.GetWeightDetails(userId, 1)[0]
             };
 
             return View(result);
