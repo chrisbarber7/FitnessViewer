@@ -63,7 +63,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                     a.Activities.Add(activity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    _unitOfWork.Queue.AddQueueItem(a.UserId, item.Id);
+                    _unitOfWork.Queue.AddQueueItem(a.UserId, DownloadType.Strava, item.Id);
                 }
 
                 // write changes to database.

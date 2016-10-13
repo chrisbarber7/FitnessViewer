@@ -35,7 +35,7 @@ namespace FitnessViewer.Controllers
 
         public ActionResult ActivityScan()
         {
-            _unitOfWork.Queue.AddQueueItem(this.User.Identity.GetUserId());
+            _unitOfWork.Queue.AddQueueItem(this.User.Identity.GetUserId(), DownloadType.Strava);
             _unitOfWork.Complete();
 
             // trigger web job to download activity details.

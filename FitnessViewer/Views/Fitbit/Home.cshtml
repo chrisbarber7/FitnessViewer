@@ -1,0 +1,33 @@
+﻿@model FitnessViewer.Infrastructure.Models.Dto.FitbitHome
+@{
+    ViewBag.Title = "Fitbit Link";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<img src="~/Content/Images/Fitbit/Fitbit.png" alt="Fitbit" />
+@if (Model.Authorised)
+{   
+        <h2> Fitbit linked</h2>
+    <p>
+        Your FitnessViewer account is currently linked to Fitbit.
+    </p>
+    <p>
+        <button class="btn btn-success" onclick="location.href='@Url.Action("Download", "Fitbit")';return false;">Download Data</button>
+    </p>
+    <p>If you are having issues downloading data from Fitbit please try reauthorising</p>
+    <p>
+        <button class="btn btn-success" onclick="location.href='@Url.Action("Authorize", "Fitbit")';return false;">Reauthorise Fitbit</button>
+    </p>
+}
+else
+{
+    <h2>Fitbit Not linked</h2>
+    <p>
+        Your FitnessViewer account is not currently linked to Fitbit.
+    </p>
+    <p>
+        <button class="btn btn-success" onclick="location.href='@Url.Action("Authorize", "Fitbit")';return false;">Link To Fitbit</button>
+    </p>
+    <p>
+        Linking to Fitbit will redirect you to the Fitbit website where you can authorise FitnessViewer to access your Fitbit data.  Once authorised FitnessViewer will use the Fitbit link to download Weigh, Sleep & Heart rate information.  You can remove access at any time from the Fitbit Dashboard by the <a href="https://www.fitbit.com/user/profile/apps">Settings/Applications</a> option and using the "Revoke Access" option.
+    </p>
+}

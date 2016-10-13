@@ -10,14 +10,38 @@ using Fitbit.Api.Portable.OAuth2;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Helpers;
 using Microsoft.AspNet.Identity;
+using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Models.Dto;
 
 namespace SampleWebMVC.Controllers
 {
     public class FitbitController : Controller
-    {        
+    {
+        private UnitOfWork _unitOfWork;
+
+        public FitbitController()
+        {
+            _unitOfWork = new UnitOfWork();
+        }
+
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Home()
+        {
+            return View(PopulateModel());
+        }
+
+        private FitbitHome PopulateModel()
+        {
+            FitbitUser user = _unitOfWork.Metrics.GetFitbitUser(User.Identity.GetUserId());
+
+            FitbitHome model = new FitbitHome();
+            model.Authorised = user != null ? true : false;
+
+            return model;
         }
 
         /// <summary>
@@ -51,18 +75,25 @@ namespace SampleWebMVC.Controllers
             // save token (user may have previously authorised in which case update)
             FitbitHelper.AddOrUpdateUser(User.Identity.GetUserId(), accessToken);
 
-            return View();
+            return View("Home", PopulateModel());
         }
   
         /// <summary>
         /// Test method for downloading data from fitbit.
         /// </summary>
         /// <returns></returns>
-        public async Task<ActionResult> Download()
+        public ActionResult Download()
         {
-            FitbitHelper fb = new FitbitHelper(this.User.Identity.GetUserId());
-          fb.Download();
-            
+            //  FitbitHelper fb = new FitbitHelper(this.User.Identity.GetUserId());
+            //fb.Download();
+
+            UnitOfWork uow = new UnitOfWork();
+            uow.Queue.AddQueueItem(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit);
+            uow.Complete();
+
+            // trigger web job to download activity details.
+            AzureWebJob.CreateTrigger();
+
             return View();
         }
     }

@@ -41,7 +41,11 @@ namespace FitnessViewer.Infrastructure.Helpers
                 // user doesn't exist in Fitbit table so create
                 FitbitUser u = FitbitUser.Create(userId, accessToken);
                 uow.Metrics.AddFitbitUser(u);
+                uow.Queue.AddQueueItem(userId, enums.DownloadType.Fitbit);
                 uow.Complete();
+
+                // trigger web job to download fitbit metrics.
+                AzureWebJob.CreateTrigger();
             }
             else
             {
@@ -66,9 +70,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <summary>
         /// Refresh expired token 
         /// </summary>
-        public async void RefreshToken()
+        public  void RefreshToken()
         {
-            OAuth2AccessToken refreshedToken = await _client.RefreshOAuth2TokenAsync();
+            OAuth2AccessToken refreshedToken =  _client.RefreshOAuth2TokenAsync().Result;
 
             StoreFitbitToken(refreshedToken);
         }
@@ -82,7 +86,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             FitbitUser fitbitUser = _unitOfWork.Metrics.GetFitbitUser(_userId);
 
             fitbitUser.FitbitUserId = accessToken.UserId;
-            fitbitUser.RefreshToken = accessToken.UserId;
+            fitbitUser.RefreshToken = accessToken.RefreshToken;
             fitbitUser.Token = accessToken.Token;
             fitbitUser.TokenType = accessToken.TokenType;
             _unitOfWork.Complete();
@@ -103,14 +107,14 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Dummy method to test downloads.
         /// </summary>
         /// <returns></returns>
-        public  void Download()
+        public  void Download(bool fullDownload)
         {
 
-  //          RefreshToken();
+           RefreshToken();
 
-            DownloadMetric(TimeSeriesResourceType.Weight, true);
+            DownloadMetric(TimeSeriesResourceType.Weight, fullDownload);
 
-            DownloadMetric(TimeSeriesResourceType.Fat, true);
+          //  DownloadMetric(TimeSeriesResourceType.Fat, true);
 
             return ;
         }
@@ -128,16 +132,13 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         }
 
-        private async void DownloadMetric(TimeSeriesResourceType type, DateTime dateStart)
+        private  void DownloadMetric(TimeSeriesResourceType type, DateTime dateStart)
         {
             TimeSeriesDataList fitbitData = null;
         
             try
             {
-
-       
-
-                fitbitData = await _client.GetTimeSeriesAsync(type, dateStart, DateRangePeriod.OneYear);
+                fitbitData =  _client.GetTimeSeriesAsync(type, dateStart, DateRangePeriod.OneYear).Result;
                 SaveSeries(type, fitbitData);
             }
             catch (Exception ex)
@@ -145,7 +146,6 @@ namespace FitnessViewer.Infrastructure.Helpers
                 System.Diagnostics.Debug.WriteLine(ex.Message);
                 return;
             }
-
         }
 
         private void SaveSeries(TimeSeriesResourceType type, TimeSeriesDataList fitbitData)

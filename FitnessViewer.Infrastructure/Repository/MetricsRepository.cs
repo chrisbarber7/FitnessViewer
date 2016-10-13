@@ -28,7 +28,7 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.FitbitUser.Add(u);
         }
 
-        internal FitbitUser GetFitbitUser(string userId)
+        public FitbitUser GetFitbitUser(string userId)
         {
             return _context.FitbitUser.Where(u => u.UserId == userId).FirstOrDefault();
         }

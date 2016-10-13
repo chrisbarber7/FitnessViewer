@@ -46,7 +46,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             UpdateShoes(a.Id, athlete.Shoes);
 
             // add user to the strava download queue for background downloading of activities.
-            _unitOfWork.Queue.AddQueueItem(userId);
+            _unitOfWork.Queue.AddQueueItem(userId, enums.DownloadType.Strava);
 
             _unitOfWork.Complete();
 

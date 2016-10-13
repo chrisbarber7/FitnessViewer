@@ -31,7 +31,7 @@ namespace FitnessViewer.Download
                 if (jobs.Count() == 0)
                     break;
 
-                ProrcessJobs(_unitOfWork, jobs);
+                ProcessJobs(_unitOfWork, jobs);
             }
         }
 
@@ -40,10 +40,24 @@ namespace FitnessViewer.Download
         /// </summary>
         /// <param name="uow">UnitOfWork</param>
         /// <param name="jobs">list of jobs to process</param>
-        private static void ProrcessJobs(UnitOfWork uow, IEnumerable<DownloadQueue> jobs)
+        private static void ProcessJobs(UnitOfWork uow, IEnumerable<DownloadQueue> jobs)
         {
             foreach (DownloadQueue job in jobs)
+            {
+                if (job.DownloadType == Infrastructure.enums.DownloadType.Invalid)
+                {
+                    uow.Queue.QueueItemMarkHasError(job.Id);
+                    uow.Complete();
+                    continue;
+                }
+
+                // if previously processed and had an error skip it
+                if (job.HasError != null)
+                    if (job.HasError.Value)
+                        continue;
+
                 ProcessJob(uow, job);
+            }
         }
 
         /// <summary>
@@ -55,27 +69,10 @@ namespace FitnessViewer.Download
         {
             try
             {
-                // if previously processed and had an error skip it
-                if (job.HasError != null)
-                    if (job.HasError.Value)
-                        return;
-
-                if (job.ActivityId != null)
-                {
-                    StravaActivityDownload s = new StravaActivityDownload(job.UserId);
-                    s.ActivityDetailsDownload(job.ActivityId.Value);
-                    uow.Queue.RemoveQueueItem(job.Id);
-                    uow.Complete();
-                }
-                else
-                { 
-                    // if job isn't for an individual activity then it must be a request to search for new activities.
-                    StravaActivityScan s = new StravaActivityScan(job.UserId);
-                    s.AddActivitesForAthlete();
-                    uow.Queue.RemoveQueueItem(job.Id);
-                    uow.Complete();
-                }
-           
+                if (job.DownloadType == Infrastructure.enums.DownloadType.Strava)
+                    StravaDownload(uow, job);
+                else if (job.DownloadType == Infrastructure.enums.DownloadType.Fitbit)
+                    FitbitDownload(uow, job);
             }
             catch (Exception ex)
             {
@@ -86,6 +83,43 @@ namespace FitnessViewer.Download
             finally
             {
 
+            }
+        }
+
+        private static void FitbitDownload(UnitOfWork uow, DownloadQueue job)
+        {
+            try
+            {
+                FitbitHelper fitbit = new FitbitHelper(job.UserId);
+                fitbit.Download(false);
+                uow.Queue.RemoveQueueItem(job.Id);
+                uow.Complete();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                uow.Queue.QueueItemMarkHasError(job.Id);
+                uow.Complete();
+            }
+        }
+
+        private static void StravaDownload(UnitOfWork uow, DownloadQueue job)
+        {
+            if (job.ActivityId != null)
+            {
+                // download full details for an individual activity.
+                StravaActivityDownload s = new StravaActivityDownload(job.UserId);
+                s.ActivityDetailsDownload(job.ActivityId.Value);
+                uow.Queue.RemoveQueueItem(job.Id);
+                uow.Complete();
+            }
+            else
+            {
+                // if job isn't for an individual activity then it must be a request to search for new activities.
+                StravaActivityScan s = new StravaActivityScan(job.UserId);
+                s.AddActivitesForAthlete();
+                uow.Queue.RemoveQueueItem(job.Id);
+                uow.Complete();
             }
         }
 
