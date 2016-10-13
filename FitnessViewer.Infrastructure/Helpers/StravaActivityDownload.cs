@@ -16,12 +16,13 @@ using StravaDotNetApi = Strava.Api;
 using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Data;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
     public class StravaActivityDownload : Strava
     {
-        public StravaActivityDownload(string userId) : base(userId)
+        public StravaActivityDownload(UnitOfWork uow, string userId) : base(uow, userId)
         { }
 
 

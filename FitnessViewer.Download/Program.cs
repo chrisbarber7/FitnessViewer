@@ -90,7 +90,7 @@ namespace FitnessViewer.Download
         {
             try
             {
-                FitbitHelper fitbit = new FitbitHelper(job.UserId);
+                FitbitHelper fitbit = new FitbitHelper(uow, job.UserId);
                 fitbit.Download(false);
                 uow.Queue.RemoveQueueItem(job.Id);
                 uow.Complete();
@@ -108,7 +108,7 @@ namespace FitnessViewer.Download
             if (job.ActivityId != null)
             {
                 // download full details for an individual activity.
-                StravaActivityDownload s = new StravaActivityDownload(job.UserId);
+                StravaActivityDownload s = new StravaActivityDownload(uow, job.UserId);
                 s.ActivityDetailsDownload(job.ActivityId.Value);
                 uow.Queue.RemoveQueueItem(job.Id);
                 uow.Complete();
@@ -116,7 +116,7 @@ namespace FitnessViewer.Download
             else
             {
                 // if job isn't for an individual activity then it must be a request to search for new activities.
-                StravaActivityScan s = new StravaActivityScan(job.UserId);
+                StravaActivityScan s = new StravaActivityScan(uow, job.UserId);
                 s.AddActivitesForAthlete();
                 uow.Queue.RemoveQueueItem(job.Id);
                 uow.Complete();

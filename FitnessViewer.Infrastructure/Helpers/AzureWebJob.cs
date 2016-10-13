@@ -19,14 +19,14 @@ namespace FitnessViewer.Infrastructure.Helpers
         private int _attempts = 0;
         private UnitOfWork _unitOfWork ;
 
-        private AzureWebJob()
+        private AzureWebJob(UnitOfWork uow)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = uow;
         }
 
-        public static void CreateTrigger()
+        public static void CreateTrigger(UnitOfWork uow)
         {
-             new AzureWebJob().TriggerJob();
+             new AzureWebJob(uow).TriggerJob();
         }
 
         /// <summary>

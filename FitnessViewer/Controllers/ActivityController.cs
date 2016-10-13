@@ -30,7 +30,7 @@ namespace FitnessViewer.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            StreamHelper.RecalculateSingleActivity(id.Value);
+            StreamHelper.RecalculateSingleActivity(_unitOfWork, id.Value);
 
 
 

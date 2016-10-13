@@ -18,9 +18,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         private UnitOfWork _unitOfWork;
         private string _userId;
 
-        public FitbitHelper(string userId)
+        public FitbitHelper(UnitOfWork uow, string userId)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = uow;
             _client = CreateFitbitClient(userId);
             _userId = userId;
         }
@@ -30,10 +30,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="userId">ASP.NET identity userId</param>
         /// <param name="accessToken">Fitbit access token.</param>
-        public static void AddOrUpdateUser(string userId, OAuth2AccessToken accessToken)
+        public static void AddOrUpdateUser(UnitOfWork uow, string userId, OAuth2AccessToken accessToken)
         {
-            UnitOfWork uow = new UnitOfWork();
-
             FitbitUser fitbitUser = uow.Metrics.GetFitbitUser(userId);
 
             if (fitbitUser == null)
@@ -45,11 +43,11 @@ namespace FitnessViewer.Infrastructure.Helpers
                 uow.Complete();
 
                 // trigger web job to download fitbit metrics.
-                AzureWebJob.CreateTrigger();
+                AzureWebJob.CreateTrigger(uow);
             }
             else
             {
-                FitbitHelper helper = new FitbitHelper(userId);
+                FitbitHelper helper = new FitbitHelper(uow, userId);
                 helper.StoreFitbitToken(accessToken);
             }
         }

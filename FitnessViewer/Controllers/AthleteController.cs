@@ -39,7 +39,7 @@ namespace FitnessViewer.Controllers
             _unitOfWork.Complete();
 
             // trigger web job to download activity details.
-            AzureWebJob.CreateTrigger();
+            AzureWebJob.CreateTrigger(_unitOfWork);
 
             return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }

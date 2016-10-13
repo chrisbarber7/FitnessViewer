@@ -16,12 +16,13 @@ using StravaDotNetApi = Strava.Api;
 using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Data;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
     public class StravaActivityScan : Strava
     {
-        public StravaActivityScan(string userId) : base(userId)
+        public StravaActivityScan(UnitOfWork uow, string userId) : base(uow, userId)
         { }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 _unitOfWork.Complete();
                 
                 // trigger web job to download activity details.
-                AzureWebJob.CreateTrigger();
+                AzureWebJob.CreateTrigger(_unitOfWork);
 
                 if (stravaLimitDelay > 100)
                     LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), a);

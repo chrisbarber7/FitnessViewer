@@ -73,7 +73,7 @@ namespace SampleWebMVC.Controllers
             OAuth2AccessToken accessToken = await authenticator.ExchangeAuthCodeForAccessTokenAsync(code);
 
             // save token (user may have previously authorised in which case update)
-            FitbitHelper.AddOrUpdateUser(User.Identity.GetUserId(), accessToken);
+            FitbitHelper.AddOrUpdateUser(_unitOfWork, User.Identity.GetUserId(), accessToken);
 
             return View("Home", PopulateModel());
         }
@@ -84,15 +84,11 @@ namespace SampleWebMVC.Controllers
         /// <returns></returns>
         public ActionResult Download()
         {
-            //  FitbitHelper fb = new FitbitHelper(this.User.Identity.GetUserId());
-            //fb.Download();
-
-            UnitOfWork uow = new UnitOfWork();
-            uow.Queue.AddQueueItem(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit);
-            uow.Complete();
+            _unitOfWork.Queue.AddQueueItem(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit);
+            _unitOfWork.Complete();
 
             // trigger web job to download activity details.
-            AzureWebJob.CreateTrigger();
+            AzureWebJob.CreateTrigger(_unitOfWork);
 
             return View();
         }

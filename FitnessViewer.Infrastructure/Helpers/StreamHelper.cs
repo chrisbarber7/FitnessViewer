@@ -43,9 +43,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             return string.Format("{0} secs", duration.ToString());
         }
 
-        public static void RecalculateSingleActivity(long activityId)
+        public static void RecalculateSingleActivity(UnitOfWork uow, long activityId)
         {
-            UnitOfWork uow = new UnitOfWork();
             RecalculatePower(uow, activityId);
             RecalculateHeartRate(uow, activityId);
             RecalculateCadence(uow, activityId);
@@ -53,10 +52,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         }
 
 
-        public static void RecalculateAllActivities()
+        public static void RecalculateAllActivities(UnitOfWork uow)
         {
-            UnitOfWork uow = new UnitOfWork();
-
             System.Diagnostics.Debug.WriteLine("Recalc Power");
             var activitiesWithPower = uow.Activity.GetStream().Where(s => s.Watts != null).Select(s => s.ActivityId).Distinct().ToList();
 
