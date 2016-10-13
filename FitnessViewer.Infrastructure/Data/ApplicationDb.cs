@@ -32,6 +32,9 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<FitbitUser> FitbitUser { get; set; }
         public DbSet<Metric> Metric { get; set; }
 
+        public DbSet<Notification> Notification { get; set; }
+        public DbSet<UserNotification> UserNotification { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

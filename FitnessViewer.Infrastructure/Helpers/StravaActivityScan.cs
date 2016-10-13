@@ -41,14 +41,15 @@ namespace FitnessViewer.Infrastructure.Helpers
             const int perPage = 200;
 
             int page = 1;
+            int itemsAdded = 0;
 
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                 var activities = _client.Activities.GetActivities(new DateTime(2016,1,1), DateTime.Now, page++, perPage);
+                var activities = _client.Activities.GetActivities(new DateTime(2016, 1, 1), DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
-                   break;
+                    break;
 
                 foreach (var item in activities)
                 {
@@ -65,18 +66,27 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                     // put the new activity in the queue so that we'll download the full activity details.
                     _unitOfWork.Queue.AddQueueItem(a.UserId, DownloadType.Strava, item.Id);
+
+                    itemsAdded++;
                 }
 
                 // write changes to database.
                 _unitOfWork.Complete();
                 
-                // trigger web job to download activity details.
-                AzureWebJob.CreateTrigger(_unitOfWork);
-
                 if (stravaLimitDelay > 100)
                     LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), a);
 
                 System.Threading.Thread.Sleep(stravaLimitDelay);
+            }
+
+            if (itemsAdded > 0)
+            {
+                // add a notification 
+                _unitOfWork.Notification.Add(new UserNotification(_userId, Notification.StravaActivityScan(itemsAdded)));
+                _unitOfWork.Complete();
+
+                // trigger web job to download activity details.
+                AzureWebJob.CreateTrigger(_unitOfWork);
             }
         }
 

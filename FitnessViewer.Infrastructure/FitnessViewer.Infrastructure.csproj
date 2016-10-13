@@ -103,6 +103,7 @@
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="enums\DownloadType.cs" />
     <Compile Include="enums\MetricType.cs" />
+    <Compile Include="enums\NotificationType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\FitbitHelper.cs" />
@@ -187,6 +188,10 @@
     <Compile Include="Migrations\201610130650455_DownloadQueue.Designer.cs">
       <DependentUpon>201610130650455_DownloadQueue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610132003298_NotificationTables.cs" />
+    <Compile Include="Migrations\201610132003298_NotificationTables.Designer.cs">
+      <DependentUpon>201610132003298_NotificationTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoords.cs" />
     <Compile Include="Models\Dto\ActivityGraphStream.cs" />
@@ -197,10 +202,13 @@
     <Compile Include="Models\FitbitUser.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Metric.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\UserNotification.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
     <Compile Include="Repository\AthleteRepository.cs" />
     <Compile Include="Repository\MetricsRepository.cs" />
+    <Compile Include="Repository\NotificationRepository.cs" />
     <Compile Include="Repository\QueueRepository.cs" />
     <Compile Include="enums\BikeType.cs" />
     <Compile Include="enums\GearType.cs" />
@@ -480,6 +488,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610130650455_DownloadQueue.resx">
       <DependentUpon>201610130650455_DownloadQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610132003298_NotificationTables.resx">
+      <DependentUpon>201610132003298_NotificationTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

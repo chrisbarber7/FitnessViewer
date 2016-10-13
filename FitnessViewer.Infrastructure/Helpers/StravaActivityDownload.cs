@@ -88,7 +88,10 @@ namespace FitnessViewer.Infrastructure.Helpers
                 ExtractBikeDetails(stravaActivity);
 
             fvActivity.DetailsDownloaded = true;
-
+            
+            // add a notification 
+            _unitOfWork.Notification.Add(new UserNotification(_userId, Notification.StravaActivityDownload(fvActivity.Id)));
+            
             _unitOfWork.Complete();
 
             if (stravaLimitDelay > 100)
