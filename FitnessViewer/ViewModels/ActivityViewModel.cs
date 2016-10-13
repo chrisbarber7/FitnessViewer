@@ -14,6 +14,7 @@ namespace FitnessViewer.ViewModels
         }
 
         public long Id { get; set; }
+        public bool DetailsDownloaded { get; set; }
         public string Name { get; set; }
         public string Distance { get; set; }
         public decimal AverageSpeed { get; set; }

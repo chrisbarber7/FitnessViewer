@@ -46,6 +46,17 @@ namespace FitnessViewer.Controllers
 
             Activity a = _unitOfWork.Activity.GetActivity(id.Value);
 
+            if (!a.DetailsDownloaded)
+            {
+                ActivityViewModel model = new ActivityViewModel()
+                {
+                    DetailsDownloaded = false,
+                    Name = a.Name
+                };
+
+                return View(model);
+            }
+
             if (a.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
     
@@ -53,6 +64,7 @@ namespace FitnessViewer.Controllers
             {
                 Id = a.Id,
                 Name = a.Name,
+                DetailsDownloaded = true,
                 Distance = a.GetDistanceByActivityType(),
                 AverageSpeed = 0,
                 ElevationGain = a.ElevationGain,
