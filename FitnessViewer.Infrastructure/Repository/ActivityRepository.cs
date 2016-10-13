@@ -101,17 +101,23 @@ namespace FitnessViewer.Infrastructure.Repository
 
        public ActivityGraphStream GetActivityStreams(long activityId)
         {
-            IEnumerable<Stream> activityStream =  _context.Stream
+           var activityStream =  _context.Stream
                 .Include(a=>a.Activity)
                 .Where(s => s.ActivityId == activityId && s.Time % s.Activity.StreamStep == 0)
+                .Select (s=> new {
+                    Time=s.Time,
+                    Altitude=s.Altitude,
+                    HeartRate = s.HeartRate,
+                    Cadence = s.Cadence,
+                    Watts = s.Watts
+                })
                  .OrderBy(s => s.Time)
                 .ToList();
 
             ActivityGraphStream result = new ActivityGraphStream();
 
-            foreach (Stream s in activityStream)
-            {
-           
+            foreach (var s in activityStream)
+            {           
                 result.Time.Add(s.Time);
             //    result.Distance.Add(s.Distance);
                 result.Altitude.Add(s.Altitude);
@@ -119,14 +125,10 @@ namespace FitnessViewer.Infrastructure.Repository
                 result.HeartRate.Add(s.HeartRate);
                 result.Cadence.Add(s.Cadence);
                 result.Watts.Add(s.Watts);
-
             }
 
             return result;
-
         }
-
-
 
         public IEnumerable<RunningTimes> GetBestTimes(string userId)
         {
@@ -180,13 +182,23 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public ActivitySummaryInformation BuildSummaryInformation(long activityId, int startIndex, int endIndex)
         {
-            var stream = _context.Stream.Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex).ToList();
+            var stream = _context.Stream
+                .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
+                .Select(s => new
+                {
+                    Watts = s.Watts,
+                    HeartRate = s.HeartRate,
+                    Cadence = s.Cadence,
+                    Altitude = s.Altitude,
+                    Distance = s.Distance
+                })
+                .ToList();
 
             if (stream.Count == 0)
                 return new ActivitySummaryInformation();
 
-            Stream startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
-            Stream endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
+            var startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
+            var endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
 
             // need to group by something to get min/max/ave so grouping by a constant.
             var minMaxAveResults = stream.GroupBy(i => 1)

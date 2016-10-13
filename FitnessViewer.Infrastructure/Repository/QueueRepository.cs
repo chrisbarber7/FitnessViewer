@@ -33,6 +33,15 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).ToList();
         }
 
+        /// <summary>
+        /// Queue Count
+        /// </summary>
+        /// <returns>Number of items in queue waiting to be processed</returns>
+        public int GetQueueCount()
+        {
+            return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).Count();
+        }
+
         public void RemoveQueueItem(int id)
         {
             DownloadQueue q = _context.Queue.Find(id);

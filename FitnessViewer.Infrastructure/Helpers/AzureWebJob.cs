@@ -97,9 +97,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <returns></returns>
         private bool OutstandingJobs()
         {
-            int jobs = _unitOfWork.Queue.GetQueue().Count();
-
-            if (jobs == 0)
+            if (_unitOfWork.Queue.GetQueueCount() == 0)
                 return false;
 
             return true;
