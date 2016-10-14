@@ -26,6 +26,8 @@ namespace FitnessViewer.Infrastructure.Configuration
                    .ForMember(dest => dest.MovingTime, opts => opts.MapFrom(src => src.MovingTimeSpan))
                    .ForMember(dest => dest.AthleteId, opts => opts.MapFrom(src => src.Athlete.Id))
                    .ForMember(dest => dest.ActivityId, opts => opts.MapFrom(src => src.Activity.Id));
+
+                CreateMap<Notification, Models.Dto.Notification>().ReverseMap();
             }
         }
     }
