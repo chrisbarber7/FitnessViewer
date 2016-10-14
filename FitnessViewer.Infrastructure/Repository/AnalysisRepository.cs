@@ -83,33 +83,33 @@ namespace FitnessViewer.Infrastructure.Repository
         private static AthletePeaksDto ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)
         {
             // days=int.maxvalue is used for earlist date
-            DateTime earliestDate = days == int.MaxValue ? DateTime.MinValue : DateTime.Now.AddDays(days * -1);
+            DateTime earliestDate = days == int.MaxValue ? DateTime.MinValue.Date : DateTime.Now.AddDays(days * -1).Date;
 
             AthletePeaksDto ap = new AthletePeaksDto();
             ap.PeakType = type;
             ap.Days = days;
 
-            ap.Seconds5 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+            ap.Seconds5 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak5)
                                 .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
-            ap.Minute1 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+            ap.Minute1 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak60)
                                 .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak60, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
-            ap.Minute5 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+            ap.Minute5 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak300)
                                 .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak300, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
-            ap.Minute20 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+            ap.Minute20 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak1200)
                                 .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak1200, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
-            ap.Minute60 = peaks.Where(p => p.Activity.StartDateLocal >= earliestDate)
+            ap.Minute60 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak3600)
                                 .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
