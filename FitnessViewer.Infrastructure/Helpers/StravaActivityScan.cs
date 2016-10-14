@@ -30,12 +30,12 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         public void AddActivitesForAthlete()
         {
-            Athlete a = _unitOfWork.Athlete.FindAthleteByUserId(_userId);
+            Athlete fvAthlete = _unitOfWork.Athlete.FindAthleteByUserId(_userId);
 
-            if (a == null)
+            if (fvAthlete == null)
                 throw new ArgumentException("Invalid UserId");
 
-            LogActivity("Add Activities", a);
+            LogActivity("Add Activities", fvAthlete);
 
             // max activities allowed by strava in each download.
             const int perPage = 200;
@@ -43,10 +43,19 @@ namespace FitnessViewer.Infrastructure.Helpers
             int page = 1;
             int itemsAdded = 0;
 
+            // default to only looking for the last 90 days activities.
+            DateTime startDate = DateTime.Now.AddDays(-90);
+
+            List<long> currentActivities = _unitOfWork.Activity.GetActivities(_userId).Select(a => a.Id ).ToList();
+
+            // if no activites then we're doing a full download (or the last 5 years worth).
+            if (currentActivities.Count == 0)
+                startDate = DateTime.Now.AddYears(-5);
+
             // loop until no activities are downloaded in last request to strava.
             while (true)
             {
-                var activities = _client.Activities.GetActivities(new DateTime(2016, 1, 1), DateTime.Now, page++, perPage);
+                var activities = _client.Activities.GetActivities(startDate, DateTime.Now, page++, perPage);
 
                 if (activities.Count == 0)
                     break;
@@ -54,18 +63,18 @@ namespace FitnessViewer.Infrastructure.Helpers
                 foreach (var item in activities)
                 {
                     // if activity already exists skip it
-                    if (_unitOfWork.Activity.GetActivities(_userId).Any(act => act.Id == item.Id))
+                    if (currentActivities.Contains(item.Id))
                         continue;
 
-                    Models.Activity activity = InsertActivity(a.Id, item);
+                    Models.Activity activity = InsertActivity(fvAthlete.Id, item);
 
                     if (activity == null)
                         continue;
 
-                    a.Activities.Add(activity);
+                    fvAthlete.Activities.Add(activity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    _unitOfWork.Queue.AddQueueItem(a.UserId, DownloadType.Strava, item.Id);
+                    _unitOfWork.Queue.AddQueueItem(fvAthlete.UserId, DownloadType.Strava, item.Id);
 
                     itemsAdded++;
                 }
@@ -74,7 +83,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 _unitOfWork.Complete();
                 
                 if (stravaLimitDelay > 100)
-                    LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), a);
+                    LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), fvAthlete);
 
                 System.Threading.Thread.Sleep(stravaLimitDelay);
             }
