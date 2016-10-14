@@ -11,10 +11,10 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public static class MetreDistance
     {
-        private const decimal METRE_TO_MILE = 0.00062137119M;
-        private const decimal METER_TO_KM = 0.001M;
-        private const decimal METER_TO_FEET = 3.2808399M;
-        private const int PRECISION = 2;
+        public const decimal METRE_TO_MILE = 0.00062137119M;
+        public const decimal METER_TO_KM = 0.001M;
+        public const decimal METER_TO_FEET = 3.2808399M;
+        public const int PRECISION = 2;
 
         /// <summary>
         /// Convert Metre distance to miles
