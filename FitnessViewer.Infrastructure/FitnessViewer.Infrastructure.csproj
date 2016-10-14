@@ -196,6 +196,10 @@
     <Compile Include="Migrations\201610140916361_AlterIndexOnActivityPeakDetail.Designer.cs">
       <DependentUpon>201610140916361_AlterIndexOnActivityPeakDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610140952291_FixActivityTypesRunDescription.cs" />
+    <Compile Include="Migrations\201610140952291_FixActivityTypesRunDescription.Designer.cs">
+      <DependentUpon>201610140952291_FixActivityTypesRunDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoordsDto.cs" />
     <Compile Include="Models\Dto\ActivityGraphStreamDto.cs" />
@@ -499,6 +503,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610140916361_AlterIndexOnActivityPeakDetail.resx">
       <DependentUpon>201610140916361_AlterIndexOnActivityPeakDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610140952291_FixActivityTypesRunDescription.resx">
+      <DependentUpon>201610140952291_FixActivityTypesRunDescription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

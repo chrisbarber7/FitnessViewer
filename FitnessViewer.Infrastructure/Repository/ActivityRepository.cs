@@ -289,7 +289,7 @@ namespace FitnessViewer.Infrastructure.Repository
                         r.Athlete.UserId == userId &&
                         r.Start >= start &&
                         r.Start <= end &&
-                        (r.ActivityTypeId == activityType || activityType == "All"))
+                        (r.ActivityType.Description == activityType || activityType == "All"))
                 .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek, Label = r.Calendar.WeekLabel })
                 .Select(r => new ActivityByPeriodDto
                 {
