@@ -192,6 +192,10 @@
     <Compile Include="Migrations\201610132003298_NotificationTables.Designer.cs">
       <DependentUpon>201610132003298_NotificationTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610140916361_AlterIndexOnActivityPeakDetail.cs" />
+    <Compile Include="Migrations\201610140916361_AlterIndexOnActivityPeakDetail.Designer.cs">
+      <DependentUpon>201610140916361_AlterIndexOnActivityPeakDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoordsDto.cs" />
     <Compile Include="Models\Dto\ActivityGraphStreamDto.cs" />
@@ -492,6 +496,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610132003298_NotificationTables.resx">
       <DependentUpon>201610132003298_NotificationTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610140916361_AlterIndexOnActivityPeakDetail.resx">
+      <DependentUpon>201610140916361_AlterIndexOnActivityPeakDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
