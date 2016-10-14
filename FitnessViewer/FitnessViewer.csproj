@@ -574,7 +574,6 @@
     <Content Include="Views\Activity\Calendar.cshtml" />
     <Content Include="Views\Measurement\Add.cshtml" />
     <Content Include="Views\Activity\_ActivitySummaryInformation.cshtml" />
-    <Content Include="Views\Fitbit\Callback.cshtml" />
     <Content Include="Views\Fitbit\Download.cshtml" />
     <Content Include="Views\Fitbit\Home.cshtml" />
   </ItemGroup>
