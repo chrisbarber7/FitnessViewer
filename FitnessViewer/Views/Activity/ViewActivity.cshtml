@@ -168,6 +168,9 @@ else
             <div class="col-md-12">
                 <h4>Activity Options</h4>
                 <input type="button" value="Recalculate" onclick="location.href='@Url.Action("Recalculate", "Activity", new { id = Model.Id })'" />
+
+
+                <a href="https://www.strava.com/activities/@Model.Id" class="StravaLink">View on Strava</a>
             </div>
         </div>
     </div>

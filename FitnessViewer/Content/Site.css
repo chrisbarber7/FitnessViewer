@@ -99,3 +99,11 @@ h6,
 
 }
 
+.StravaLink {
+   color:#FC4C02;
+}
+
+
+.StravaLink:hover {
+   color:#FC4C02;
+}
