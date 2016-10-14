@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class WeightByDay
+    public class WeightByDayDto
     {
-        public WeightByDay(DateTime date)
+        public WeightByDayDto(DateTime date)
         {
             Date = date;
             Current = null;

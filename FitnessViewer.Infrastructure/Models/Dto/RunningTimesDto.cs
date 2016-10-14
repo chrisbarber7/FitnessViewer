@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class RunningTimes
+    public class RunningTimesDto
     {
      
             public string ActivityName { get; set; }

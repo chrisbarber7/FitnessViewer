@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityByPeriod
+    public class ActivityByPeriodDto
     {
         public string ActivityType { get; set; }
         public string Period { get; set; }

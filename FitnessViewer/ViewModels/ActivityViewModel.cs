@@ -10,7 +10,7 @@ namespace FitnessViewer.ViewModels
     {
         public ActivityViewModel()
         {
-            Laps = new List<ActivityLap>();
+            Laps = new List<ActivityLapDto>();
         }
 
         public long Id { get; set; }
@@ -25,13 +25,13 @@ namespace FitnessViewer.ViewModels
         public TimeSpan ElapsedTime { get; set; }
         public string ActivityTypeId { get; set; }
 
-        public ActivitySummaryInformation SummaryInfo { get; set; }
+        public ActivitySummaryInformationDto SummaryInfo { get; set; }
 
-        public IEnumerable<ActivityLap> Laps { get; set; }
+        public IEnumerable<ActivityLapDto> Laps { get; set; }
 
-        public IEnumerable<ActivityLap> Power { get; set; }
-        public IEnumerable<ActivityLap> HeartRate { get; set; }
-        public IEnumerable<ActivityLap> Cadence { get; set; }
+        public IEnumerable<ActivityLapDto> Power { get; set; }
+        public IEnumerable<ActivityLapDto> HeartRate { get; set; }
+        public IEnumerable<ActivityLapDto> Cadence { get; set; }
     }
 }
 

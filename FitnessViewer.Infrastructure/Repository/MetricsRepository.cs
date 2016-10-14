@@ -62,7 +62,7 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Metric.Add(m);
         }
 
-        public List<WeightByDay> GetWeightDetails(string userId, int days)
+        public List<WeightByDayDto> GetWeightDetails(string userId, int days)
         {
 
             // we'll need to get date for the required number of days + 30 so we've got the data for the 30 day rolling average.
@@ -78,20 +78,20 @@ namespace FitnessViewer.Infrastructure.Repository
                  })
                  .ToList();
 
-            List<WeightByDay> results = new List<WeightByDay>();
+            List<WeightByDayDto> results = new List<WeightByDayDto>();
 
             DateTime day = DateTime.Now.Date;
 
 
             if (metrics.Count == 0)
             {
-                results.Add(new WeightByDay(day));
+                results.Add(new WeightByDayDto(day));
                 return results;
             }
 
             while (day >= DateTime.Now.Date.AddDays(days * -1))
             {
-                WeightByDay w = new WeightByDay(day);
+                WeightByDayDto w = new WeightByDayDto(day);
 
                 // work out 30 day average weight for the current date
                 var Day30Data = metrics.Where(m => m.Recorded >= day.AddDays(-30) && m.Recorded <= day).ToList();

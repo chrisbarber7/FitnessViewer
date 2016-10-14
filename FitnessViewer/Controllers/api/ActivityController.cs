@@ -59,7 +59,7 @@ namespace FitnessViewer.Controllers.api
             List<string> distance = new List<string>();
             List<string> number = new List<string>();
 
-            foreach (ActivityByPeriod a in runData)
+            foreach (ActivityByPeriodDto a in runData)
             {
                 period.Add(a.Label);
                 distance.Add(a.TotalDistance.ToString());

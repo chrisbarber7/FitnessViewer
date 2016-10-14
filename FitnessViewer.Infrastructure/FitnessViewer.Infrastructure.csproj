@@ -193,13 +193,13 @@
       <DependentUpon>201610132003298_NotificationTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
-    <Compile Include="Models\Dto\ActivitityCoords.cs" />
-    <Compile Include="Models\Dto\ActivityGraphStream.cs" />
-    <Compile Include="Models\Dto\ActivityLap.cs" />
-    <Compile Include="Models\Dto\ActivitySummaryInformation.cs" />
-    <Compile Include="Models\Dto\FitbitHome.cs" />
-    <Compile Include="Models\Dto\Notification.cs" />
-    <Compile Include="Models\Dto\WeightByDay.cs" />
+    <Compile Include="Models\Dto\ActivitityCoordsDto.cs" />
+    <Compile Include="Models\Dto\ActivityGraphStreamDto.cs" />
+    <Compile Include="Models\Dto\ActivityLapDto.cs" />
+    <Compile Include="Models\Dto\ActivitySummaryInformationDto.cs" />
+    <Compile Include="Models\Dto\FitbitHomeDto.cs" />
+    <Compile Include="Models\Dto\NotificationDto.cs" />
+    <Compile Include="Models\Dto\WeightByDayDto.cs" />
     <Compile Include="Models\FitbitUser.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Metric.cs" />
@@ -332,11 +332,11 @@
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\Athlete.cs" />
     <Compile Include="Models\Calendar.cs" />
-    <Compile Include="Models\Dto\ActivityByPeriod.cs" />
-    <Compile Include="Models\Dto\AthletePeaks.cs" />
+    <Compile Include="Models\Dto\ActivityByPeriodDto.cs" />
+    <Compile Include="Models\Dto\AthletePeaksDto.cs" />
     <Compile Include="Models\BestEffort.cs" />
     <Compile Include="Models\DownloadQueue.cs" />
-    <Compile Include="Models\Dto\RunningTimes.cs" />
+    <Compile Include="Models\Dto\RunningTimesDto.cs" />
     <Compile Include="Models\Gear.cs" />
     <Compile Include="Models\Measurement.cs" />
     <Compile Include="Models\Stream.cs" />

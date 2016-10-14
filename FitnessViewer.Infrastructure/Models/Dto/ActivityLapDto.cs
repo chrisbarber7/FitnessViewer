@@ -7,7 +7,7 @@ using System.Web;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityLap
+    public class ActivityLapDto
     {
         public long Id { get; set; }
         public PeakStreamType Type { get; set; }

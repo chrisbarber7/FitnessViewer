@@ -84,13 +84,13 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Gear.AddOrUpdate(g);
         }
 
-        public IEnumerable<ActivitityCoords> GetActivityCoords(long activityId)
+        public IEnumerable<ActivitityCoordsDto> GetActivityCoords(long activityId)
         {
             return _context.Stream
                 .Include(a=>a.Activity)
                  .Where(s => s.ActivityId == activityId && s.Time % s.Activity.StreamStep == 0)
                  .OrderBy(s => s.Time)
-                 .Select(s => new ActivitityCoords
+                 .Select(s => new ActivitityCoordsDto
                  {
                      lat = s.Latitude.Value,
                      lng = s.Longitude.Value
@@ -99,7 +99,7 @@ namespace FitnessViewer.Infrastructure.Repository
                  .ToList();
         }
 
-       public ActivityGraphStream GetActivityStreams(long activityId)
+       public ActivityGraphStreamDto GetActivityStreams(long activityId)
         {
            var activityStream =  _context.Stream
                 .Include(a=>a.Activity)
@@ -114,7 +114,7 @@ namespace FitnessViewer.Infrastructure.Repository
                  .OrderBy(s => s.Time)
                 .ToList();
 
-            ActivityGraphStream result = new ActivityGraphStream();
+            ActivityGraphStreamDto result = new ActivityGraphStreamDto();
 
             foreach (var s in activityStream)
             {           
@@ -130,7 +130,7 @@ namespace FitnessViewer.Infrastructure.Repository
             return result;
         }
 
-        public IEnumerable<RunningTimes> GetBestTimes(string userId)
+        public IEnumerable<RunningTimesDto> GetBestTimes(string userId)
         {
             // temp solution.  Plan is to have a user preferences table which will hold the users favourite distances which will
             // replace this hard coded list.
@@ -167,7 +167,7 @@ namespace FitnessViewer.Infrastructure.Repository
                           join e in _context.BestEffort on t.BestEffortId equals e.Id
                           join a in _context.Activity on e.ActivityId equals a.Id
                           orderby t.Time
-                          select new RunningTimes
+                          select new RunningTimesDto
                           {
                               ActivityName = a.Name,
                               ActivityDate = a.StartDateLocal,
@@ -180,7 +180,7 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
-        public ActivitySummaryInformation BuildSummaryInformation(long activityId, int startIndex, int endIndex)
+        public ActivitySummaryInformationDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
         {
             var stream = _context.Stream
                 .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
@@ -195,7 +195,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .ToList();
 
             if (stream.Count == 0)
-                return new ActivitySummaryInformation();
+                return new ActivitySummaryInformationDto();
 
             var startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
             var endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
@@ -220,7 +220,7 @@ namespace FitnessViewer.Infrastructure.Repository
               distance = g.Sum(s => s.Distance)
           }).First();
 
-            ActivitySummaryInformation info = new ActivitySummaryInformation();
+            ActivitySummaryInformationDto info = new ActivitySummaryInformationDto();
             if (minMaxAveResults.powerMin == null)
             {
                 info.Power = null;
@@ -279,7 +279,7 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.ActivityPeakDetail.Where(p => p.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<ActivityByPeriod> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
+        public IEnumerable<ActivityByPeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
             return _context.Activity
                 .Include(r => r.Calendar)
@@ -291,7 +291,7 @@ namespace FitnessViewer.Infrastructure.Repository
                         r.Start <= end &&
                         (r.ActivityTypeId == activityType || activityType == "All"))
                 .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek, Label = r.Calendar.WeekLabel })
-                .Select(r => new ActivityByPeriod
+                .Select(r => new ActivityByPeriodDto
                 {
                     ActivityType = r.Key.ActivityType,
                     Period = r.Key.YearWeek,
@@ -309,12 +309,12 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        public IEnumerable<ActivityLap> GetLaps(long activityId)
+        public IEnumerable<ActivityLapDto> GetLaps(long activityId)
         {
             var result = _context.Lap
                 .Include(a => a.Activity)
                 .Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
-                  .Select(l => new ActivityLap
+                  .Select(l => new ActivityLapDto
                   {
                       Id = l.Id,
                       Type = PeakStreamType.Lap,
@@ -336,14 +336,14 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Lap.Where(l => l.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<ActivityLap> GetLapStream(long activityId, PeakStreamType streamType)
+        public IEnumerable<ActivityLapDto> GetLapStream(long activityId, PeakStreamType streamType)
         {
             string units = StreamHelper.StreamTypeUnits(streamType);
 
             var result = _context.ActivityPeakDetail
               .Where(p => p.ActivityId == activityId && p.StreamType == streamType)
               .OrderBy(p => p.Duration)
-              .Select(p => new ActivityLap
+              .Select(p => new ActivityLapDto
               {
                   Id = p.Id,
                   Type = streamType,
@@ -356,7 +356,7 @@ namespace FitnessViewer.Infrastructure.Repository
               }).ToList();
 
 
-            foreach (ActivityLap l in result)
+            foreach (ActivityLapDto l in result)
             {
                 l.Name = StreamHelper.StreamDurationForDisplay(Convert.ToInt32(l.Name));
             }

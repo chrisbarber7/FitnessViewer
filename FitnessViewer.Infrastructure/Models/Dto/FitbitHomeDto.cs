@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivitityCoords
+    public class FitbitHomeDto
     {
-        public double lat { get; set; }
-        public double lng { get; set; }
+        public bool Authorised { get; set; }
     }
 }

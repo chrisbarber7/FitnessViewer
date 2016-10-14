@@ -34,11 +34,11 @@ namespace SampleWebMVC.Controllers
             return View(PopulateModel());
         }
 
-        private FitbitHome PopulateModel()
+        private FitbitHomeDto PopulateModel()
         {
             FitbitUser user = _unitOfWork.Metrics.GetFitbitUser(User.Identity.GetUserId());
 
-            FitbitHome model = new FitbitHome();
+            FitbitHomeDto model = new FitbitHomeDto();
             model.Authorised = user != null ? true : false;
 
             return model;

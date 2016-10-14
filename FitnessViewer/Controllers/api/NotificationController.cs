@@ -20,7 +20,7 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
-        public IEnumerable<Notification> GetNewNotifications()
+        public IEnumerable<NotificationDto> GetNewNotifications()
         {
             var userId = User.Identity.GetUserId();
             return _unitOfWork.Notification.GetUserNotifications(userId);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class Notification
+    public class NotificationDto
     {
         public int Id { get; set; }
         public NotificationType Type { get; set; }

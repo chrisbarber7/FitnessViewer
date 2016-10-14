@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class AthletePeaks
+    public class AthletePeaksDto
     {
-        public AthletePeaks()
+        public AthletePeaksDto()
         {
             Seconds5 = new AthletePeaksDetails();
             Minute1 = new AthletePeaksDetails();

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivitySummaryInformation
+    public class ActivitySummaryInformationDto
     {
-        public ActivitySummaryInformation()
+        public ActivitySummaryInformationDto()
         {
             Power = new MinMaxAve();
             HeartRate = new MinMaxAve();
