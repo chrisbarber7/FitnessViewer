@@ -50,7 +50,7 @@ namespace FitnessViewer.Controllers.api
             );
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
             var runData = _unitOfWork.Activity.ActivityByWeek(this.User.Identity.GetUserId(), id, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);

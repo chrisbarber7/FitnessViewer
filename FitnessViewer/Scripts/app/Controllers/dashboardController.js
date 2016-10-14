@@ -8,9 +8,7 @@
     var setupWeeklyReport = function (chartName, api) {
         $.ajax({
             dataType: "json",
-            type: "POST",
             url: "/api/Activity/GetRunDistancePerWeek/" + api,
-            data: JSON,
             success: function (data) {
                 BarChart(data);
             },
