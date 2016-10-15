@@ -18,6 +18,8 @@
    Current Weight: @Model.CurrentWeight.Current<br/>
         7 Day Average: @Model.CurrentWeight.Average7Day<br/>
         30 Day Average: @Model.CurrentWeight.Average30Day<br />
+        7 Day Change: @Model.CurrentWeight.Change7Day<br/>
+        30 Day Change: @Model.CurrentWeight.Change30Day<br/>
     </div>
     <div class="col-md-4">
         @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }

@@ -107,7 +107,28 @@ namespace FitnessViewer.Infrastructure.Repository
 
                 w.Current = metrics
                       .Where(m => m.Recorded <= day)
-                      .OrderByDescending(m => m.Recorded).First().Value;
+                      .OrderByDescending(m => m.Recorded)
+                      .First()
+                      .Value;
+
+                decimal? weight7daysAgo = metrics
+                      .Where(m => m.Recorded <= day.AddDays(-7))
+                      .OrderByDescending(m => m.Recorded)
+                      .First()
+                      .Value;
+
+                decimal? weight30daysAgo = metrics
+                     .Where(m => m.Recorded <= day.AddDays(-30))
+                     .OrderByDescending(m => m.Recorded)
+                     .First()
+                     .Value;
+
+                if ((weight7daysAgo != null) && (w.Current != null))
+                    w.Change7Day = w.Current.Value - weight7daysAgo.Value;
+
+                if ((weight30daysAgo != null) && (w.Current != null))
+                    w.Change30Day = w.Current.Value - weight30daysAgo.Value;
+
 
                 results.Add(w);
 

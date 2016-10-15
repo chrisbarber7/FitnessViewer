@@ -18,6 +18,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public DateTime Date { get; set; }   
         public decimal? Current { get; set; }
+        public decimal? Change7Day { get; set; }
+        public decimal? Change30Day { get; set; }
         public decimal? Average7Day { get; set; }
         public decimal? Average30Day { get; set; }
     }
