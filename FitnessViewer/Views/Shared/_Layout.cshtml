@@ -26,11 +26,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+  
                 @Html.ActionLink("Fitness Viewer", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
 
@@ -39,7 +35,34 @@
                 @if (Request.IsAuthenticated)
             {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Dashboard", "Dashboard", "Athlete")</li>
+
+                        <li class="dropdown">
+                            @*@Html.ActionLink("Dashboard", "Dashboard", "Athlete")*@
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dashboard<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Summary", "Dashboard", "Athlete")</li>
+
+                                <li>@Html.ActionLink("Bike", "Index", "Bike")</li>
+                                <li>@Html.ActionLink("Run", "Index", "Run")</li>
+                                <li>@Html.ActionLink("Swim", "Index", "Swim")</li>
+                                <li>@Html.ActionLink("Metrics", "Index", "Metrics")</li>
+
+
+                             
+                      
+                            </ul>
+                        </li>
+
+           
+                    
+
+
+
+
+
+
+
+
                         <li>@Html.ActionLink("Fitbit", "Home", "Fitbit")</li>
                         <li>@Html.ActionLink("Activities", "Table", "Activity")</li>
                         <li>@Html.ActionLink("Calendar", "Calendar", "Activity")</li>
