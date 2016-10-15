@@ -80,16 +80,21 @@ namespace FitnessViewer.Infrastructure.Repository
 
             List<WeightByDayDto> results = new List<WeightByDayDto>();
 
-            DateTime day = DateTime.Now.Date;
+           
 
 
             if (metrics.Count == 0)
             {
-                results.Add(new WeightByDayDto(day));
+                results.Add(new WeightByDayDto(DateTime.Now));
                 return results;
             }
 
-            while (day >= DateTime.Now.Date.AddDays(days * -1))
+            DateTime day = DateTime.Now.Date.AddDays(days * -1);
+
+            if (days == 1)
+                day = DateTime.Now.Date;
+
+            while (day <= DateTime.Now.Date)
             {
                 WeightByDayDto w = new WeightByDayDto(day);
 
@@ -97,13 +102,20 @@ namespace FitnessViewer.Infrastructure.Repository
                 var Day30Data = metrics.Where(m => m.Recorded >= day.AddDays(-30) && m.Recorded <= day).ToList();
 
                 if (Day30Data.Count != 0)
-                    w.Average30Day = Math.Round(Day30Data.Sum(d => d.Value) / Day30Data.Count,2);
-
+                {
+                    w.Low30Day = Day30Data.Min(d => d.Value);
+                    w.Average30Day = Math.Round(Day30Data.Sum(d => d.Value) / Day30Data.Count, 2);
+                    w.High30Day = Day30Data.Max(d => d.Value);
+                }
                 // work out 7 day average weight for the current date
                 var Day7Data = metrics.Where(m => m.Recorded >= day.AddDays(-7) && m.Recorded <= day).ToList();
 
                 if (Day7Data.Count != 0)
-                    w.Average7Day =Math.Round( Day7Data.Sum(d => d.Value) / Day7Data.Count,2);
+                {
+                    w.Low7Day = Day7Data.Min(d => d.Value);
+                    w.Average7Day = Math.Round(Day7Data.Sum(d => d.Value) / Day7Data.Count, 2);
+                    w.High7Day = Day7Data.Max(d => d.Value);
+                }
 
                 w.Current = metrics
                       .Where(m => m.Recorded <= day)
@@ -132,7 +144,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
                 results.Add(w);
 
-                day = day.AddDays(-1);
+                day = day.AddDays(1);
             }
             return results;
         }

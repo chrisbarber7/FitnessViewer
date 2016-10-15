@@ -12,8 +12,6 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         {
             Date = date;
             Current = null;
-            Average7Day = null;
-            Average30Day = null;
         }
 
         public DateTime Date { get; set; }   
@@ -22,5 +20,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public decimal? Change30Day { get; set; }
         public decimal? Average7Day { get; set; }
         public decimal? Average30Day { get; set; }
+        public decimal? Low7Day { get; set; }
+        public decimal? Low30Day { get; set; }
+        public decimal? High7Day { get; set; }
+        public decimal? High30Day { get; set; }
     }
 }

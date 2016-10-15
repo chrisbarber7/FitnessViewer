@@ -14,15 +14,42 @@
         @{Html.RenderPartial("_RunningTimes", Model.RunningTime); }
     </div>
     <div class="col-md-4">
-        <h4>Weight</h4>
-   Current Weight: @Model.CurrentWeight.Current<br/>
-        7 Day Average: @Model.CurrentWeight.Average7Day<br/>
-        30 Day Average: @Model.CurrentWeight.Average30Day<br />
-        7 Day Change: @Model.CurrentWeight.Change7Day<br/>
-        30 Day Change: @Model.CurrentWeight.Change30Day<br/>
+        @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
+
     </div>
     <div class="col-md-4">
-        @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
+
+
+        <h4>Weight</h4>
+        <p>
+            <strong>Current:</strong> @Model.CurrentWeight.Current (@Model.CurrentWeight.Date.ToShortDateString())
+        </p>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Low</th>
+                    <th>Average</th>
+                    <th>High</th>
+                    <th>Change</th>
+                </tr>
+                <tr>
+                    <td>7 Day</td>
+                    <td>@Model.CurrentWeight.Low7Day</td>
+                    <td>@Model.CurrentWeight.Average7Day</td>
+                    <td>@Model.CurrentWeight.High7Day</td>
+                    <td>@Model.CurrentWeight.Change7Day</td>
+                </tr>
+                <tr>
+                    <td>30 Day</td>
+                    <td>@Model.CurrentWeight.Low30Day</td>
+                    <td>@Model.CurrentWeight.Average30Day</td>
+                    <td>@Model.CurrentWeight.High30Day</td>
+                    <td>@Model.CurrentWeight.Change30Day</td>
+                </tr>
+            </table>
+        </div>
+        <canvas id="chartWeight" width="800" height="400"></canvas>
     </div>
 </div>
 <div class="row">
@@ -39,7 +66,7 @@
         </label>
     </div>
     <div class="col-md-4">
- 
+     
 
     </div>
 </div>

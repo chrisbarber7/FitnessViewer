@@ -3,6 +3,7 @@
         setupActivitiesDataTable();
         setupWeeklyReport("chart12weekRun", "Run");
         setupWeeklyReport("chart12weekBike", "Ride");
+        setupWeightChart();
     };
 
     var setupWeeklyReport = function (chartName, api) {
@@ -23,13 +24,15 @@
                 datasets: [
                     {
                         label: 'Distance',
-                        data: data.distance
+                        data: data.distance,
+                        borderColor: '#3a8904',
+                        fill: false
                     }]
             };
 
             var ctx = document.getElementById(chartName).getContext("2d");
 
-            var myBarChart = Chart.Bar(ctx, {
+            var myBarChart = Chart.Line(ctx, {
                 data: barChartData,
                 options: {
                     animation: false
@@ -65,6 +68,54 @@
             { "width": "60%", "targets": 0 }]
         });
     };
+
+
+
+    var setupWeightChart = function (chartName, api) {
+        $.ajax({
+            dataType: "json",
+            url: "/api/Metric/Get30dayweight/",
+            success: function (data) {
+                WeightChart(data);
+            },
+            error: function () {
+                alert("Error loading weight data!");
+            }
+        });
+
+        function WeightChart(data) {
+            var barChartData = {
+                labels: data.Date,
+                datasets: [
+                    {
+                        label: 'Weight',
+                        data: data.Weight,
+                        lineThickness:0.1,
+                        fill: false,                       
+                        borderColor: '#3a8904'
+                    },
+                    {
+                        label: '7 Day Ave',
+                        data: data.Ave7Day,
+                        radius:0,
+                        fill: false,
+                        borderColor: '#c0ef95'
+                    },
+                ]
+            };
+
+            var ctx = document.getElementById("chartWeight").getContext("2d");
+
+            var myBarChart = Chart.Line(ctx, {
+                data: barChartData,
+                options: {
+                    animation: false
+                }
+            });
+        }
+    };
+
+
 
     return {
         init: init
