@@ -58,7 +58,7 @@
                 { "data": "activityTypeId" },
                 { "data": "distance" },
                 { "data": "elevationGain" },
-                { "data": "elapsedTime" }
+                { "data": "movingTime" }
             ],
             "columnDefs": [
                 { "className": "dt-right", "targets": [3, 4] },

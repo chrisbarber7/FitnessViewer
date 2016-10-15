@@ -23,7 +23,6 @@ namespace FitnessViewer.Controllers
             _unitOfWork = new Infrastructure.Data.UnitOfWork();
         }
 
-
         [Authorize]
         public ActionResult Recalculate(long? id)
         {
@@ -31,12 +30,8 @@ namespace FitnessViewer.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             StreamHelper.RecalculateSingleActivity(_unitOfWork, id.Value);
-
-
-
             return RedirectToAction("ViewActivity", new { id = id });
         }
-
 
         [Authorize]
         public ActionResult ViewActivity(long? id)
@@ -44,40 +39,23 @@ namespace FitnessViewer.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Activity a = _unitOfWork.Activity.GetActivity(id.Value);
+            Activity fvActivity = _unitOfWork.Activity.GetActivity(id.Value);
 
-            if (!a.DetailsDownloaded)
+            if (!fvActivity.DetailsDownloaded)
             {
                 ActivityViewModel model = new ActivityViewModel()
                 {
                     DetailsDownloaded = false,
-                    Name = a.Name
+                    Name = fvActivity.Name
                 };
 
                 return View(model);
             }
 
-            if (a.Athlete.UserId != User.Identity.GetUserId())
+            if (fvActivity.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-    
-            ActivityViewModel m = new ActivityViewModel()
-            {
-                Id = a.Id,
-                Name = a.Name,
-                DetailsDownloaded = true,
-                Distance = a.GetDistanceByActivityType(),
-                AverageSpeed = 0,
-                ElevationGain = a.ElevationGain,
-                ActivityTypeId = a.ActivityTypeId,
-                Date = a.StartDateLocal.ToShortDateString(),
-                ElapsedTime = a.ElapsedTime.Value,
-                Laps = _unitOfWork.Activity.GetLaps(id.Value),
-                Power = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Power),
-                HeartRate = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.HeartRate),
-                Cadence = _unitOfWork.Activity.GetLapStream(id.Value, PeakStreamType.Cadence),
-                SummaryInfo = _unitOfWork.Activity.BuildSummaryInformation(id.Value, 0, int.MaxValue)
-        };
-            return View(m);
+
+            return View(ActivityViewModel.CreateFromActivity(_unitOfWork, fvActivity));
         }
 
         public class SummaryInformationRequest
@@ -104,7 +82,5 @@ namespace FitnessViewer.Controllers
         {
             return View();
         }
-
-
     }
 }
