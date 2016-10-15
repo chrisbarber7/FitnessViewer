@@ -97,13 +97,13 @@ namespace FitnessViewer.Infrastructure.Repository
                 var Day30Data = metrics.Where(m => m.Recorded >= day.AddDays(-30) && m.Recorded <= day).ToList();
 
                 if (Day30Data.Count != 0)
-                    w.Average30Day = Day30Data.Sum(d => d.Value) / Day30Data.Count;
+                    w.Average30Day = Math.Round(Day30Data.Sum(d => d.Value) / Day30Data.Count,2);
 
                 // work out 7 day average weight for the current date
                 var Day7Data = metrics.Where(m => m.Recorded >= day.AddDays(-7) && m.Recorded <= day).ToList();
 
                 if (Day7Data.Count != 0)
-                    w.Average7Day = Day7Data.Sum(d => d.Value) / Day7Data.Count;
+                    w.Average7Day =Math.Round( Day7Data.Sum(d => d.Value) / Day7Data.Count,2);
 
                 w.Current = metrics
                       .Where(m => m.Recorded <= day)
