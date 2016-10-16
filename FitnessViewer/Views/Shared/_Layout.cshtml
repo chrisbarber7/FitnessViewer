@@ -10,6 +10,7 @@
     @Scripts.Render("~/bundles/jquery")
 
 
+
     <script type="text/javascript">
         var appInsights = window.appInsights || function (config) {
             function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace", "Ajax"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
@@ -86,11 +87,34 @@
             </div>
         </footer>
     </div>
-
- 
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/app")
+    @Scripts.Render("~/bundles/underscore")
     @RenderSection("scripts", required: false)
+    <script type="text/x-template" id="notifications-template">
+        <ul class="notifications">
+            <%
+            _.each(notifications, function(notification){
+            if (notification.type == 1) { %>
+            <li><span class="highlight">Error</span></li>
+            <% }
+            else if (notification.type == 2) {
+            %>
+            <li><span class="highlight">Strava Activity Scan Complete</span></li>
+            <% }
+            else if (notification.type == 3) {
+            %>
+            <li><span class="highlight">Strava Activity Download Complete</span></li>
+            <% }
+            else if (notification.type == 4) {
+%>
+            <li><span class="highlight">Fitbit Metric Download Complete</span></li>
+            <%
+            }
+            })
+            %>
+        </ul>
+    </script>
     <script>
         $(document).ready(function () {
             $.getJSON("/api/notifications/GetNewNotifications", function (notifications) {
@@ -100,6 +124,35 @@
                 $(".js-notifications-count")
                     .text(notifications.length)
                     .removeClass("hide");
+
+                $(".notifications").popover({
+                    html: true,
+                    title: "Notifications",
+                    content: function () {
+                        var compiled = _.template($("#notifications-template").html());
+                        return compiled({ notifications: notifications });
+                    },
+                    placement: "bottom",
+                    template: '\
+                                <div class="popover popover-notifications" role="tooltip">\
+                                <div class="arrow">\
+                                </div>\
+                                <h3 class="popover-title">\
+                                </h3>\
+                                <div class="popover-content">\
+                                </div>\
+                                </div>'
+                }).on("shown.bs.popover", function () {
+                    $.post("/api/notifications/MarkAsRead")
+                        .done(function () {
+                            $(".js-notifications-count")
+                                .text("")
+                                .addClass("hide");
+                        });
+                });
+
+
+
             });
         });
     </script>

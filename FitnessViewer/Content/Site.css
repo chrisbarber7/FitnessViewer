@@ -108,15 +108,12 @@ h6,
    color:#FC4C02;
 }
 
-.glyphicon.glyphicon-bell {
-    font-size:20px;
-}
 .navbar-inverse .notifications {
   position: relative;
 }
 .navbar-inverse .notifications .badge {
   position: absolute;
   top: 8px;
-  right: -1px;
+  right: -6px;
   background: #c0ef95;
 }
