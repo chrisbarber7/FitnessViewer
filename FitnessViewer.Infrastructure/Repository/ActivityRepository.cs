@@ -281,26 +281,71 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<ActivityByPeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
-            return _context.Activity
+            
+
+            // get list of weeks in the period (to ensure we get full weeks date where the start and/or end date may be in the 
+            // middle of a week
+            var weeks = _context.Calendar
+                .OrderBy(c => c.YearWeek)
+                .Where(c => c.Date >= start && c.Date <= end)
+                .Select(c =>c.YearWeek)
+                .Distinct()
+                .ToList();
+
+            // get activities which fall into the selected weeks.
+            var activities = _context.Activity
                 .Include(r => r.Calendar)
                 .Include(r => r.ActivityType)
                 .Include(r => r.Athlete)
-                .Where(r =>
-                        r.Athlete.UserId == userId &&
-                        r.Start >= start &&
-                        r.Start <= end &&
-                        (r.ActivityType.Description == activityType || activityType == "All"))
-                .GroupBy(r => new { ActivityType = r.ActivityType.Description, YearWeek = r.Calendar.YearWeek, Label = r.Calendar.WeekLabel })
-                .Select(r => new ActivityByPeriodDto
+                .Where(r => r.Athlete.UserId == userId &&
+                      weeks.Contains(r.Calendar.YearWeek) &&
+                      (r.ActivityType.Description == activityType || activityType == "All"))
+                .Select(r => new
                 {
-                    ActivityType = r.Key.ActivityType,
-                    Period = r.Key.YearWeek,
-                    TotalDistance = Math.Round(r.Sum(d => d.DistanceInMiles), 1),
-                    Number = r.Select(i => i.Id).Distinct().Count(),
-                    Label = r.Key.Label
+                    Id = r.Id,
+                    ActivityType = r.ActivityType.Description,
+                    Period = r.Calendar.YearWeek,
+                    Distance = r.Distance,
+                    Label = r.Calendar.WeekLabel,
                 })
-                .OrderBy(r => r.Period)
                 .ToList();
+
+
+            // group the activities by week.
+            var weeklyTotals = activities
+                .GroupBy(r => new { ActivityType = r.ActivityType, Period = r.Period, Label = r.Label })
+                .Select(a => new ActivityByPeriodDto
+                {
+                    Period = a.Key.Period,
+                    TotalDistance = Math.Round(a.Sum(d => d.Distance).ToMiles(), 1),
+                    Number = a.Select(i => i.Id).Distinct().Count(),
+                    Label = a.Key.Label
+                })
+                .ToList();
+            
+            // get list of weeks in the period which we'l use to check for weeks with zero activities which won't be
+            // included in weeklyTotals.
+            var dummyWeeks = _context.Calendar
+                .OrderBy(c => c.YearWeek)
+                .Where(c => c.Date >= start && c.Date <= end)
+                .Select(c => new ActivityByPeriodDto
+                {
+                    Period = c.YearWeek,
+                    TotalDistance = 0,
+                    Number = 0,
+                    Label = c.WeekLabel
+                }
+                )
+                .Distinct()
+                .ToList();
+
+            // merge to ensure we include weeks with no activities.
+            var result = weeklyTotals
+                .Union(dummyWeeks
+                .Where(e => !weeklyTotals.Select(x => x.Period).Contains(e.Period)))
+                .OrderBy(x => x.Period);
+            
+            return result;
         }
 
         internal void AddLap(Lap lap)
