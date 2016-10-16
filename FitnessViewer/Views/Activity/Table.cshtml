@@ -1,8 +1,31 @@
 ﻿
 @{
-    ViewBag.Title = "Table";
+    ViewBag.Title = "Activities";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@Styles.Render("~/Content/dataTables")
 <h2>Activity Table</h2>
-
+<div class="row">
+    <div class="col-md-12">
+        <table id="table_id" class="table table table-striped table-hover compact ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Dist mi</th>
+                    <th>Ele</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+@section scripts {
+    @Scripts.Render("~/bundles/dataTables")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            DashboardController.init();
+        }) </script>
+}

@@ -4,8 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/dataTables")
+@*@Styles.Render("~/Content/dataTables")*@
 @Scripts.Render("~/bundles/chart")
+
 
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
 
@@ -54,41 +55,27 @@
 </div>
 <div class="row">
     <div class="col-md-4">
+        <h4>Average Run Distance Per Week</h4>
         <label for="chart12weekRun">
-            <h4>Average Run Distance Per Week</h4>
+
             <canvas id="chart12weekRun" width="800" height="400"></canvas>
         </label>
     </div>
     <div class="col-md-4">
+        <h4>Average Bike Distance Per Week</h4>
         <label for="chart12weekBike">
-            <h4>Average Bike Distance Per Week</h4>
+
             <canvas id="chart12weekBike" width="800" height="400"></canvas>
         </label>
     </div>
     <div class="col-md-4">
-     
+
 
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <table id="table_id" class="table table table-striped table-hover compact ">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Dist mi</th>
-                    <th>Ele</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-</div>
+
 @section scripts {
-    @Scripts.Render("~/bundles/dataTables")
+    <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             DashboardController.init();
