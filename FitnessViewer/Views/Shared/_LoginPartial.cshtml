@@ -4,21 +4,18 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
-
-        @*<ul class="nav navbar-nav navbar-right ">
-                <li>
-                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                </li>
-                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                <li></li>
-            </ul>*@
-
         <ul class="nav navbar-nav navbar-right">
+            <li class="notifications">
+                <a href="#">
+                    <i class="glyphicon glyphicon-bell"></i>
+                    <span class="badge js-notifications-count hide"></span>
+                </a>
+            </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.GetUserName() <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="@Url.Action("", "")">Settings</a></li>
-                    <li role="separator" class="divider"></li>               
+                    <li role="separator" class="divider"></li>
                     <li>@Html.ActionLink("Add Manual Measurement", "Add", "Measurement")</li>
                     <li role="separator" class="divider"></li>
                     <li>@Html.ActionLink("New Strava Activity Scan", "ActivityScan", "Athlete")</li>
@@ -31,25 +28,15 @@
 }
 else
 {
-    @*<ul class="nav navbar-nav navbar-right">
-            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-
-
-        </ul>*@
-
     <div class="nav navbar-right">
         @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = "" }))
                 {
             @Html.AntiForgeryToken()
             {
-
                 <button type="submit" class="login-button" id="Strava" name="provider" value="Strava" title="Log in using your Strava account">
-
                     <img class="login-image" src="~/Content/Images/Strava/btn_strava_connectwith_light.png" alt="Connect with Strava" />
                 </button>
             }
-
         }
     </div>
 }

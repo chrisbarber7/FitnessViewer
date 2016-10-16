@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
@@ -23,7 +24,21 @@ namespace FitnessViewer.Controllers.api
         public IEnumerable<NotificationDto> GetNewNotifications()
         {
             var userId = User.Identity.GetUserId();
-            return _unitOfWork.Notification.GetUserNotifications(userId);
+            return _unitOfWork.Notification.GetUnreadNotifications(userId);
+        }
+
+        [HttpPost]
+        public IHttpActionResult MarkAsRead()
+        {
+            var userId = User.Identity.GetUserId();
+            var notifications = _unitOfWork.Notification.GetUserNotifications(userId);
+
+            foreach (UserNotification un in notifications)
+                un.MarkAsRead();
+
+            _unitOfWork.Complete();
+
+            return Ok();
         }
     }
 }

@@ -95,7 +95,7 @@ h6,
 .login-button{
     border:0;
     padding:0;
-    background-color:#3a8904;;
+    background-color:#3a8904;
 
 }
 
@@ -106,4 +106,17 @@ h6,
 
 .StravaLink:hover {
    color:#FC4C02;
+}
+
+.glyphicon.glyphicon-bell {
+    font-size:20px;
+}
+.navbar-inverse .notifications {
+  position: relative;
+}
+.navbar-inverse .notifications .badge {
+  position: absolute;
+  top: 8px;
+  right: -1px;
+  background: #c0ef95;
 }

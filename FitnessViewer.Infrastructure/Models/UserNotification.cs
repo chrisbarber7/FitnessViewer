@@ -40,5 +40,10 @@ namespace FitnessViewer.Infrastructure.Models
             UserId = userId;
             Notification = notification;
         }
+
+        public void MarkAsRead()
+        {
+            this.IsRead = true;
+        }
     }
 }

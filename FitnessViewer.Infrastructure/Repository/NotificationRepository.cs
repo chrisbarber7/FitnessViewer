@@ -26,30 +26,33 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.UserNotification.Add(un);
         }
 
-        public IEnumerable<Models.Dto.NotificationDto> GetUserNotifications(string userId)
+        public IEnumerable<Models.Dto.NotificationDto> GetUnreadNotifications(string userId)
         {
             var notifications = _context.UserNotification
-
                 .Include(n=>n.Notification)
-              .Include(n => n.Notification.Activity)
+                .Include(n => n.Notification.Activity)
                 .Where(un => un.UserId == userId && !un.IsRead)
-              .Select(un => new Models.Dto.NotificationDto
-              {
-                  Id = un.Id,
-                  ActivityName = un.Notification.Activity.Name,
-                  ItemsAdded = un.Notification.ItemsAdded,
-                  Type = un.Notification.Type,
-                  Message =""
-              })
-              
-              .ToList();
-
-
+                .Select(un => new Models.Dto.NotificationDto
+                {
+                    Id = un.Id,
+                    ActivityName = un.Notification.Activity.Name,
+                    ItemsAdded = un.Notification.ItemsAdded,
+                    Type = un.Notification.Type,
+                    Message =""
+                })
+                .ToList();
+            
             foreach (var notification in notifications)
                 notification.Message = NotificationTypeConversion.EnumToString(notification.Type);
             
+            return notifications;
+        }
 
-            return notifications;// notifications.Select(Mapper.Map<Notification, Models.Dto.Notification>);
+        public IEnumerable<Models.UserNotification> GetUserNotifications(string userId)
+        {
+            return _context.UserNotification
+                .Where(un => un.UserId == userId && !un.IsRead)
+                .ToList();
         }
     }
 }
