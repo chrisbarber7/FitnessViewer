@@ -12,66 +12,57 @@
 
 <div class="row">
     <div class="col-md-4">
+        <h4>Average Run Distance Per Week</h4>
+                <label for="chart12weekRun">
+                    <canvas id="chart12weekRun" width="800" height="400"></canvas>
+                </label>
+        </div>
+        <div class="col-md-4">
+            <h4>Average Bike Distance Per Week</h4>
+            <label for="chart12weekBike">
+
+                <canvas id="chart12weekBike" width="800" height="400"></canvas>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <h4>Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToShortDateString()</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th>Low</th>
+                        <th>Average</th>
+                        <th>High</th>
+                        <th>Change</th>
+                    </tr>
+                    <tr>
+                        <td>7 Day</td>
+                        <td>@Model.CurrentWeight.Low7Day</td>
+                        <td>@Model.CurrentWeight.Average7Day</td>
+                        <td>@Model.CurrentWeight.High7Day</td>
+                        <td>@Model.CurrentWeight.Change7Day</td>
+                    </tr>
+                    <tr>
+                        <td>30 Day</td>
+                        <td>@Model.CurrentWeight.Low30Day</td>
+                        <td>@Model.CurrentWeight.Average30Day</td>
+                        <td>@Model.CurrentWeight.High30Day</td>
+                        <td>@Model.CurrentWeight.Change30Day</td>
+                    </tr>
+                </table>
+            </div>
+            <canvas id="chartWeight" width="800" height="400"></canvas>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-8">
         @{Html.RenderPartial("_RunningTimes", Model.RunningTime); }
+        <
     </div>
     <div class="col-md-4">
         @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
-
     </div>
-    <div class="col-md-4">
 
-
-        <h4>Weight</h4>
-        <p>
-            <strong>Current:</strong> @Model.CurrentWeight.Current (@Model.CurrentWeight.Date.ToShortDateString())
-        </p>
-        <div class="table-responsive">
-            <table class="table">
-                <tr>
-                    <th></th>
-                    <th>Low</th>
-                    <th>Average</th>
-                    <th>High</th>
-                    <th>Change</th>
-                </tr>
-                <tr>
-                    <td>7 Day</td>
-                    <td>@Model.CurrentWeight.Low7Day</td>
-                    <td>@Model.CurrentWeight.Average7Day</td>
-                    <td>@Model.CurrentWeight.High7Day</td>
-                    <td>@Model.CurrentWeight.Change7Day</td>
-                </tr>
-                <tr>
-                    <td>30 Day</td>
-                    <td>@Model.CurrentWeight.Low30Day</td>
-                    <td>@Model.CurrentWeight.Average30Day</td>
-                    <td>@Model.CurrentWeight.High30Day</td>
-                    <td>@Model.CurrentWeight.Change30Day</td>
-                </tr>
-            </table>
-        </div>
-        <canvas id="chartWeight" width="800" height="400"></canvas>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h4>Average Run Distance Per Week</h4>
-        <label for="chart12weekRun">
-
-            <canvas id="chart12weekRun" width="800" height="400"></canvas>
-        </label>
-    </div>
-    <div class="col-md-4">
-        <h4>Average Bike Distance Per Week</h4>
-        <label for="chart12weekBike">
-
-            <canvas id="chart12weekBike" width="800" height="400"></canvas>
-        </label>
-    </div>
-    <div class="col-md-4">
-
-
-    </div>
 </div>
 
 @section scripts {

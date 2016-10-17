@@ -1,24 +1,24 @@
 ﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.RunningTimesDto>
 
-<h4>Running Times</h4>
+<h4>Best Running Times</h4>
 <div class="table-responsive">
     <table class="table">
         <tr>
-
             <th>Distance</th>
             <th>Time</th>
+            <th>Average Pace</th>
             <th>Description</th>
             <th>Date</th>
-                    </tr>
+        </tr>
         @foreach (var p in Model)
         {
             <tr>
                 <td>@p.DistanceName</td>
                 <td>@p.Time</td>
-                <td>@Html.ActionLink(p.ActivityName.ToString(), "ViewActivity", "Activity",new { Id = p.ActivityId },null)</td>
+                <td>@p.AveragePace</td>
+                <td>@Html.ActionLink(p.ActivityName.ToString(), "ViewActivity", "Activity", new { Id = p.ActivityId }, null)</td>
                 <td>@p.ActivityDate.ToShortDateString()</td>
             </tr>
         }
     </table>
 </div>
-
