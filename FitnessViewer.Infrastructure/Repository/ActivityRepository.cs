@@ -259,13 +259,12 @@ namespace FitnessViewer.Infrastructure.Repository
             }
             else
             {
-
                 info.Elevation.Min = Convert.ToInt32(minMaxAveResults.elevationMin.Value);
                 info.Elevation.Ave = Convert.ToInt32(minMaxAveResults.elevationAve.Value);
                 info.Elevation.Max = Convert.ToInt32(minMaxAveResults.elevationMax.Value);
             }
 
-            if (minMaxAveResults.distance != null)
+            if ((startDetails.Distance!=null)&&(endDetails.Distance != null))
                 info.Distance = MetreDistance.ToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
 
             info.Time = TimeSpan.FromSeconds(endIndex - startIndex);
