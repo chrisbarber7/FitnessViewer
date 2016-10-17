@@ -12,6 +12,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int Id { get; set; }
         public NotificationType Type { get; set; }
         public string ActivityName { get; set; }
+        public long? ActivityId { get; set;}
+        public string ActivityLink { get; set; }
         public int ItemsAdded { get; set; }
         public string Message { get; set; }
     }

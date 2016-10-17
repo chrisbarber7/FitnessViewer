@@ -36,7 +36,9 @@ namespace FitnessViewer.Infrastructure.Repository
                 {
                     Id = un.Id,
                     ActivityName = un.Notification.Activity.Name,
+                    ActivityId = un.Notification.ActivityId,
                     ItemsAdded = un.Notification.ItemsAdded,
+                    ActivityLink = "/Activity/ViewActivity/" + un.Notification.ActivityId,
                     Type = un.Notification.Type,
                     Message =""
                 })

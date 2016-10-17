@@ -44,7 +44,6 @@ namespace FitnessViewer.Infrastructure.Models
             return n;
         }
 
-
         public static Notification FitbitDownload(int metricsAdded)
         {
             Notification n = new Notification();
@@ -53,6 +52,15 @@ namespace FitnessViewer.Infrastructure.Models
             n.ActivityId = null;
             n.ItemsAdded = metricsAdded;
             return n;
+        }
+
+        public string GetLinkAddress()
+        {
+            if (ActivityId == null)
+                return "";
+
+            return string.Format("/Activity/ViewActivity/{0}", ActivityId.ToString());
+
         }
     }
 }

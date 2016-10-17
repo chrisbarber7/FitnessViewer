@@ -8,9 +8,6 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-
-
-
     <script type="text/javascript">
         var appInsights = window.appInsights || function (config) {
             function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace", "Ajax"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
@@ -26,12 +23,9 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-  
+            <div class="navbar-header">  
                 @Html.ActionLink("Fitness Viewer", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-
-
             <div class="navbar-collapse collapse">
                 @if (Request.IsAuthenticated)
             {
@@ -47,32 +41,14 @@
                                 <li>@Html.ActionLink("Run", "Index", "Run")</li>
                                 <li>@Html.ActionLink("Swim", "Index", "Swim")</li>
                                 <li>@Html.ActionLink("Metrics", "Index", "Metrics")</li>
-
-
-                             
-                      
                             </ul>
-                        </li>
-
-           
-                    
-
-
-
-
-
-
-
-
-                        <li>@Html.ActionLink("Fitbit", "Home", "Fitbit")</li>
+                        </li><li>@Html.ActionLink("Fitbit", "Home", "Fitbit")</li>
                         <li>@Html.ActionLink("Activities", "Table", "Activity")</li>
                         <li>@Html.ActionLink("Calendar", "Calendar", "Activity")</li>
                     </ul>
                 }
                 @Html.Partial("_LoginPartial")
             </div>
-
-
         </div>
     </div>
     <div class="container body-content">
@@ -100,14 +76,17 @@
             <% }
             else if (notification.type == 2) {
             %>
-            <li><span class="highlight">Strava Activity Scan Complete</span></li>
+            <li><span class="highlight">Strava Activity Scan Complete.  Found <%= notification.itemsAdded %> new activities.</span></li>
             <% }
             else if (notification.type == 3) {
             %>
-            <li><span class="highlight">Strava Activity Download Complete</span></li>
+            <li>
+            Added:
+                <a href=<%= notification.activityLink %>><%= notification.activityName %></a>
+            </li>
             <% }
             else if (notification.type == 4) {
-%>
+            %>
             <li><span class="highlight">Fitbit Metric Download Complete</span></li>
             <%
             }
