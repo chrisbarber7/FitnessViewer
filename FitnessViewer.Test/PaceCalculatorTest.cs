@@ -7,10 +7,17 @@ namespace FitnessViewer.Test
     [TestClass]
     public class PaceCalculatorTest
     {
+        public const int MARATHON_DISTANCE = 42195;
+        public const int TEN_KM = 10000;
+        public const int FIFTEEN_HUNDRED_M = 1500;
+        public const int TWO_HUNDRED_M = 200;
+        public const int MILE_IN_METRES = 1609;
+        public const int NO_DISTANCE = 0;
+
         [TestMethod]
         public void MarathonTestMinPerMile()
         {
-            const int MARATHON_DISTANCE = 42195;
+         
             Assert.AreEqual(new TimeSpan(0, 5, 0), PaceCalculator.RunMinuteMiles(MARATHON_DISTANCE, new TimeSpan(2, 11, 6)));
             Assert.AreEqual(new TimeSpan(0, 5, 30), PaceCalculator.RunMinuteMiles(MARATHON_DISTANCE, new TimeSpan(2, 24, 12)));
             Assert.AreEqual(new TimeSpan(0, 6, 0), PaceCalculator.RunMinuteMiles(MARATHON_DISTANCE, new TimeSpan(2, 37, 19)));
@@ -25,7 +32,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void TenKmTestMinPerMile()
         {
-            const int TEN_KM = 10000;
+        
             Assert.AreEqual(new TimeSpan(0, 5, 0), PaceCalculator.RunMinuteMiles(TEN_KM, new TimeSpan(0, 31, 04)));
             Assert.AreEqual(new TimeSpan(0, 5, 30), PaceCalculator.RunMinuteMiles(TEN_KM, new TimeSpan(0, 34, 11)));
             Assert.AreEqual(new TimeSpan(0, 6, 0), PaceCalculator.RunMinuteMiles(TEN_KM, new TimeSpan(0, 37, 17)));
@@ -41,7 +48,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void FifteenHundredMetreTestMinPerMile()
         {
-            const int FIFTEEN_HUNDRED_M = 1500;
+
 
             Assert.AreEqual(new TimeSpan(0, 4, 0), PaceCalculator.RunMinuteMiles(FIFTEEN_HUNDRED_M, new TimeSpan(0, 3, 44)));
             Assert.AreEqual(new TimeSpan(0, 4, 30), PaceCalculator.RunMinuteMiles(FIFTEEN_HUNDRED_M, new TimeSpan(0, 4, 12)));
@@ -59,7 +66,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void TwoHundredMetreTestMinPerMile()
         {
-            const int TWO_HUNDRED_M = 200;
+          
 
             Assert.AreEqual(new TimeSpan(0, 4, 1), PaceCalculator.RunMinuteMiles(TWO_HUNDRED_M, new TimeSpan(0, 0, 30)));
             Assert.AreEqual(new TimeSpan(0, 4, 42), PaceCalculator.RunMinuteMiles(TWO_HUNDRED_M, new TimeSpan(0, 0, 35)));
@@ -74,17 +81,29 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void MileTest()
         {
-            const int MILE_IN_METRES = 1609;
+          
 
             // test from 210 seconds (3:30min/mile to 600 seconds (10min/mile).  Result shoudl equal input time.
             for (int seconds = 210; seconds <= 600; seconds++)
             {
                 Assert.AreEqual(TimeSpan.FromSeconds(seconds), PaceCalculator.RunMinuteMiles(MILE_IN_METRES, TimeSpan.FromSeconds(seconds)));
-
-
             }
+        }
 
+        [TestMethod]
+        public void NoDistance()
+        {
+            Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(NO_DISTANCE, new TimeSpan(0, 1, 00)));
+            Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(NO_DISTANCE, new TimeSpan(1, 0, 00)));
+            Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(NO_DISTANCE, new TimeSpan(0, 0, 30)));
+        }
 
+        [TestMethod]
+        public void NoTime()
+        {
+            Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(TEN_KM, new TimeSpan(0, 0, 0)));
+            Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(MILE_IN_METRES, new TimeSpan(0, 0, 0)));
+            Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(TWO_HUNDRED_M, new TimeSpan(0, 0, 0)));
         }
     }
 }

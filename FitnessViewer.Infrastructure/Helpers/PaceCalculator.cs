@@ -12,6 +12,10 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             double totalSeconds = time.TotalSeconds;
             double distanceInMiles = Convert.ToDouble(distance*MetreDistance.METRE_TO_MILE);
+
+            if (distanceInMiles <= 0)
+                return new TimeSpan(0, 0, 0);
+
             double averagePaceInSecondsPerMile = Math.Round(totalSeconds/ distanceInMiles) ;
 
             TimeSpan minPerMile = TimeSpan.FromSeconds(averagePaceInSecondsPerMile);
