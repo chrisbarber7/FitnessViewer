@@ -7,7 +7,7 @@ namespace FitnessViewer.Infrastructure.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Activities", "DistanceInMiles", c => c.Single(nullable: false));
+            AddColumn("dbo.Activities", "DistanceInMiles", c => c.Single(nullable: true));
 
             Sql("update dbo.activities set distanceinmiles=distance*0.00062137119");
         }
