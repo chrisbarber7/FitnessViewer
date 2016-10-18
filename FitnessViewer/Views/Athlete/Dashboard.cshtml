@@ -16,6 +16,7 @@
                 <label for="chart12weekRun">
                     <canvas id="chart12weekRun" width="800" height="400"></canvas>
                 </label>
+   
         </div>
         <div class="col-md-4">
             <h4>Average Bike Distance Per Week</h4>
@@ -54,6 +55,14 @@
             <canvas id="chartWeight" width="800" height="400"></canvas>
         </div>
     </div>
+<div class="row">
+    <div class="col-md-8">
+        <h4>Recent Activities</h4>
+    </div>
+    <div class="col-md-4">
+        <h4>12 week time breadown</h4>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-8">
         @{Html.RenderPartial("_RunningTimes", Model.RunningTime); }

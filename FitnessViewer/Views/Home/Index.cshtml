@@ -3,10 +3,28 @@
 }
 
 <div class="jumbotron">
-    <h1></h1>
+    <h1>Fitness Viewer</h1>
 
 </div>
 
 <div class="row">
+    <div class="col-md-9">
+        FitnessViewer uses your activity data from Strava combined with health information from Fitbit to provide detailed
+        information about about your past/current fitness.  To get start you need to authorise FitnessViewer to access your
+        activity information on Strava.  Once authorised FitnessViewer you can optionally connect with Fitbit.
 
+    </div>
+    <div class="col-md-3">
+
+
+        @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = "" }))
+        {
+            @Html.AntiForgeryToken()
+            {
+                <button type="submit" class="login-button" id="Strava" name="provider" value="Strava" title="Log in using your Strava account">
+                    <img class="login-image" src="~/Content/Images/Strava/btn_strava_connectwith_orange.png" alt="Connect with Strava" />
+                </button>
+            }
+        }
+    </div>
 </div>
