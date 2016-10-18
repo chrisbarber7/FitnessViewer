@@ -35,10 +35,26 @@
             var myBarChart = Chart.Line(ctx, {
                 data: barChartData,
                 options: {
-                    animation: false
+                    animation: false,
+                    onClick: handleClick
                 }
+
+
+
             });
-        }
+
+            function handleClick(evt) {
+                var activeElement = myBarChart.getElementAtEvent(evt);
+
+
+ 
+            };
+
+
+        };
+    
+      
+    
     };
 
     var setupWeightChart = function (chartName, api) {
@@ -65,7 +81,7 @@
                         borderColor: '#3a8904'
                     },
                     {
-                        label: '7 Day Ave',
+                        label: 'Rolling 7 Day Average',
                         data: data.Ave7Day,
                         radius:0,
                         fill: false,
