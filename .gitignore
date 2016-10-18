@@ -249,3 +249,4 @@ app.keys.config
 connectionStrings.config
 /FitnessViewer/Properties/PublishProfiles/FitnessViewer - Web Deploy.pubxml
 /FitnessViewer.Download/Properties/PublishProfiles/FitnessViewer - Web Deploy.pubxml
+*.pubxml
