@@ -26,6 +26,9 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public static void CreateTrigger(UnitOfWork uow)
         {
+            if (ConfigurationManager.AppSettings["AzureWebJobTriggerEnabled"].ToUpper() != "TRUE")
+                   return;
+
              new AzureWebJob(uow).TriggerJob();
         }
 
