@@ -28,6 +28,11 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Queue.Add(DownloadQueue.CreateQueueJob(userId, type, activityId));
         }
 
+        internal DownloadQueue Find(int jobId)
+        {
+            return _context.Queue.Find(jobId);
+        }
+
         public IEnumerable<DownloadQueue> GetQueue(int count)
         {
             return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).Take(count).ToList();
@@ -42,19 +47,8 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).Count();
         }
 
-        public void RemoveQueueItem(int id)
-        {
-            DownloadQueue q = _context.Queue.Find(id);
-            q.Processed = true;
-            q.ProcessedAt = DateTime.Now;
-            q.HasError = false;
-        }
+    
 
-        public void QueueItemMarkHasError(int id)
-        {
-            DownloadQueue q = _context.Queue.Find(id);
-            q.HasError = true;
-        }
 
         public IEnumerable<DownloadQueue> FindQueueItemByUserId(string userId)
         {

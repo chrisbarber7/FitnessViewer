@@ -118,6 +118,7 @@
     <Compile Include="Helpers\FitbitHelper.cs" />
     <Compile Include="Helpers\MetricTypeConversion.cs" />
     <Compile Include="Helpers\PaceCalculator.cs" />
+    <Compile Include="Helpers\ProcessQueueJob.cs" />
     <Compile Include="Helpers\StravaActivityDownload.cs" />
     <Compile Include="Helpers\StravaActivityScan.cs" />
     <Compile Include="Helpers\StravaAthlete.cs" />

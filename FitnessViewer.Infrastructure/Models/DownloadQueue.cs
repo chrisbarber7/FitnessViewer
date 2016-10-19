@@ -24,7 +24,7 @@ namespace FitnessViewer.Infrastructure.Models
         public DateTime? ProcessedAt { get; set; }
         public long? ActivityId { get; private set; }
         public bool? HasError { get; set; }
-        public DownloadType DownloadType { get; set; } 
+        public DownloadType DownloadType { get; set; }
 
         /// <summary>
         /// Create a new job for the queue.
@@ -46,6 +46,23 @@ namespace FitnessViewer.Infrastructure.Models
 
             return q;
         }
+
+        public void JobHasError()
+        {
+
+            HasError = true;
+
+
+        }
+
+        public void MarkJobComplete()
+        {
+
+            Processed = true;
+            ProcessedAt = DateTime.Now;
+            HasError = false;
+        }
+
     }
 }
 

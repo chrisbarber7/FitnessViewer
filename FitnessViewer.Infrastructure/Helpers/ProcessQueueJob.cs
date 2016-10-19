@@ -35,7 +35,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (_jobDetails.HasError.HasValue)
                 if (_jobDetails.HasError.Value)
                     return false;
-
+            
             return true;                    
         }
 
