@@ -8,6 +8,8 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using EntityFramework.BulkInsert.Extensions;
+using System.Data.SqlClient;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
@@ -62,6 +64,22 @@ namespace FitnessViewer.Infrastructure.Repository
 
         }
 
+
+        public bool DeleteActivityDetails(long activityId)
+        {
+            try
+            {
+                _context.Database.ExecuteSqlCommand("dbo.ActivityDeleteDetails @activityId", new SqlParameter("activityid", activityId));
+            }
+            catch(SqlException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
         #endregion
 
         #region Best Effort
@@ -77,9 +95,14 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Stream.AddRange(s);
         }
 
-        #endregion
+        public void AddStreamBulk(IEnumerable<Stream> s)
+        {
+            _context.BulkInsert(s);
+        }
 
-        public void AddOrUpdateGear(Gear g)
+    #endregion
+
+    public void AddOrUpdateGear(Gear g)
         {
             _context.Gear.AddOrUpdate(g);
         }

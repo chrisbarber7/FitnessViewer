@@ -32,6 +32,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="activityId">Strava activity Id</param>
         public void ActivityDetailsDownload(long activityId)
         {
+            if (!_unitOfWork.Activity.DeleteActivityDetails(activityId))
+                throw new Exception("Error Details Existing Details.");
+
             Models.Activity fvActivity = _unitOfWork.Activity.GetActivity(activityId);
 
             if (fvActivity == null)
@@ -52,6 +55,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             // splits_standard
 
 
+            _unitOfWork.Complete();
+
             // heart rate/power zones
             //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
 
@@ -60,6 +65,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             foreach (StravaDotNetActivities.ActivityLap stravaLap in _client.Activities.GetActivityLaps(activityId.ToString()))
                 _unitOfWork.Activity.AddLap(Mapper.Map<Lap>(stravaLap));
 
+            _unitOfWork.Complete();
 
             LogActivity("Download Stream", fvActivity);
 
@@ -78,15 +84,19 @@ namespace FitnessViewer.Infrastructure.Helpers
                 StravaDotNetStreams.StreamType.Watts,
                 StravaDotNetStreams.StreamResolution.All);
 
-            fvActivity.StreamSize = stream.Count;
 
             ExtractAndStoreStream(fvActivity.Id, stream);
+
+            _unitOfWork.Complete();
 
             if (fvActivity.ActivityType.IsRun)
                 ExtractRunDetails(fvActivity, stravaActivity);
             else if (fvActivity.ActivityType.IsRide)
                 ExtractBikeDetails(stravaActivity);
 
+            _unitOfWork.Complete();
+
+            fvActivity.StreamSize = stream[0].Data.Count;
             fvActivity.DetailsDownloaded = true;
             
             // add a notification 
@@ -129,21 +139,31 @@ namespace FitnessViewer.Infrastructure.Helpers
                 convertedStream.Add(s);
             }
 
-
+            // write all details to database.
+            _unitOfWork.Activity.AddStreamBulk(convertedStream);
+       
             List<ActivityPeakDetail> powerPeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.Watts).ToList(), PeakStreamType.Power);
             if (powerPeaks != null)
+            {
                 _unitOfWork.Analysis.AddPeak(activityId, PeakStreamType.Power, powerPeaks);
+                _unitOfWork.Complete();
+            }
+
 
             List<ActivityPeakDetail> cadencePeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.Cadence).ToList(), PeakStreamType.Cadence);
             if (cadencePeaks != null)
+            {
                 _unitOfWork.Analysis.AddPeak(activityId, PeakStreamType.Cadence, cadencePeaks);
+                _unitOfWork.Complete();
+            }
 
             List<ActivityPeakDetail> heartRatePeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, convertedStream.Select(s => s.HeartRate).ToList(), PeakStreamType.HeartRate);
             if (heartRatePeaks != null)
+            {
                 _unitOfWork.Analysis.AddPeak(activityId, PeakStreamType.HeartRate, heartRatePeaks);
-
-            // write all details to database.
-            _unitOfWork.Activity.AddStream(convertedStream);
+                _unitOfWork.Complete();
+            }
+     
         }
 
 
