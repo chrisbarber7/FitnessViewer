@@ -28,9 +28,9 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Queue.Add(DownloadQueue.CreateQueueJob(userId, type, activityId));
         }
 
-        public IEnumerable<DownloadQueue> GetQueue()
+        public IEnumerable<DownloadQueue> GetQueue(int count)
         {
-            return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).ToList();
+            return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).Take(count).ToList();
         }
 
         /// <summary>
