@@ -26,7 +26,7 @@ namespace FitnessViewer.Download
 
             while (true)
             {
-                var jobs = _unitOfWork.Queue.GetQueue();
+                var jobs = _unitOfWork.Queue.GetQueue(20);
 
                 if (jobs.Count() == 0)
                     break;
@@ -73,38 +73,28 @@ namespace FitnessViewer.Download
                     StravaDownload(uow, job);
                 else if (job.DownloadType == Infrastructure.enums.DownloadType.Fitbit)
                     FitbitDownload(uow, job);
-            }
+        }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
                 uow.Queue.QueueItemMarkHasError(job.Id);
                 uow.Complete();
-                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
-            finally
-            {
-
-            }
-        }
+}
 
         private static void FitbitDownload(UnitOfWork uow, DownloadQueue job)
         {
-            try
-            {
+         
                 FitbitHelper fitbit = new FitbitHelper(uow, job.UserId);
                 fitbit.Download(false);
                 uow.Queue.RemoveQueueItem(job.Id);
                 uow.Complete();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                uow.Queue.QueueItemMarkHasError(job.Id);
-                uow.Complete();
-            }
+    
         }
 
         private static void StravaDownload(UnitOfWork uow, DownloadQueue job)
         {
+            
             if (job.ActivityId != null)
             {
                 // download full details for an individual activity.
