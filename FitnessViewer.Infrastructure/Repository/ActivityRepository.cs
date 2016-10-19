@@ -303,8 +303,11 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<ActivityByPeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
+            bool isRide = activityType == "Ride" || activityType == "All" ? true : false;
+            bool isRun = activityType == "Run" || activityType == "All" ? true : false;
+            bool isSwim = activityType == "Swim" || activityType == "All" ? true : false;
+            bool isOther = activityType == "All" ? true : false;
             
-
             // get list of weeks in the period (to ensure we get full weeks date where the start and/or end date may be in the 
             // middle of a week
             var weeks = _context.Calendar
@@ -321,7 +324,10 @@ namespace FitnessViewer.Infrastructure.Repository
                 .Include(r => r.Athlete)
                 .Where(r => r.Athlete.UserId == userId &&
                       weeks.Contains(r.Calendar.YearWeek) &&
-                      (r.ActivityType.Description == activityType || activityType == "All"))
+                    ( isRide ? r.ActivityType.IsRide : false ||
+                      isRun ? r.ActivityType.IsRun : false ||
+                      isSwim ? r.ActivityType.IsSwim : false ||
+                      isOther ? r.ActivityType.IsOther : false) )
                 .Select(r => new
                 {
                     Id = r.Id,
@@ -330,12 +336,11 @@ namespace FitnessViewer.Infrastructure.Repository
                     Distance = r.Distance,
                     Label = r.Calendar.WeekLabel,
                 })
-                .ToList();
-
+            .ToList();
 
             // group the activities by week.
             var weeklyTotals = activities
-                .GroupBy(r => new { ActivityType = r.ActivityType, Period = r.Period, Label = r.Label })
+                .GroupBy(r => new { Period = r.Period, Label = r.Label })
                 .Select(a => new ActivityByPeriodDto
                 {
                     Period = a.Key.Period,
