@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace FitnessViewer.Infrastructure.Repository
 
         #region Queue
 
-        public void AddQueueItem(string userId, DownloadType type)
-        {
-            this.AddQueueItem(userId, type, null);
-        }
 
-        public void AddQueueItem(string userId, DownloadType type, long? activityId)
+        public void AddQueueItem(DownloadQueue newJob)
         {
-            _context.Queue.Add(DownloadQueue.CreateQueueJob(userId, type, activityId));
+         
+            _context.Queue.Add(newJob);
+
+     
+
         }
 
         internal DownloadQueue Find(int jobId)
