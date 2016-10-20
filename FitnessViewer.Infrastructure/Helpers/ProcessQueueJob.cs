@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -42,6 +43,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public  void ProcessJob()
         {
+            Console.WriteLine(string.Format("Processing Job: {0} ActivityId:{1}", _jobDetails.Id, _jobDetails.ActivityId));
             try
             {
                 if (_jobDetails.DownloadType == DownloadType.Strava)
@@ -52,9 +54,11 @@ namespace FitnessViewer.Infrastructure.Helpers
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 _jobDetails.JobHasError();
                 _uow.Complete();
             }
+            Console.WriteLine(string.Format("Finished sharonProcessing Job: {0} ActivityId:{1}", _jobDetails.Id, _jobDetails.ActivityId));
         }
 
         private  void FitbitDownload()

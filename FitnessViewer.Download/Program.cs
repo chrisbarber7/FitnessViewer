@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using static FitnessViewer.Infrastructure.Configuration.AutoMapperConfig;
 using FitnessViewer.Infrastructure.Data;
+using System.IO;
 
 namespace FitnessViewer.Download
 {
@@ -20,9 +21,6 @@ namespace FitnessViewer.Download
 
             UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
 
-            // un-comment to force recalculation of peak information from stream table.
-            //     StreamHelper.RecalculateAllActivities();
-            //    StreamHelper.RecalculateSingleActivity(95887633);
 
             while (true)
             {
@@ -31,7 +29,7 @@ namespace FitnessViewer.Download
                 if (jobs.Count() == 0)
                     break;
 
-                ProcessJobs(_unitOfWork, jobs);
+               ProcessJobs(_unitOfWork, jobs);
             }
         }
 

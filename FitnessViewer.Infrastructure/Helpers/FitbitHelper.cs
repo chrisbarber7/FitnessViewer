@@ -39,8 +39,11 @@ namespace FitnessViewer.Infrastructure.Helpers
                 // user doesn't exist in Fitbit table so create
                 FitbitUser u = FitbitUser.Create(userId, accessToken);
                 uow.Metrics.AddFitbitUser(u);
-                uow.Queue.AddQueueItem(userId, enums.DownloadType.Fitbit);
+
+                DownloadQueue job = DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Fitbit);
+                uow.Queue.AddQueueItem(job);
                 uow.Complete();
+                AzureWebJob.AddToAzureQueue(job.Id);
 
                 // trigger web job to download fitbit metrics.
                 AzureWebJob.CreateTrigger(uow);

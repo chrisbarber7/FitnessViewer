@@ -44,10 +44,13 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             UpdateBikes(a.Id, athlete.Bikes);
             UpdateShoes(a.Id, athlete.Shoes);
-
+            
             // add user to the strava download queue for background downloading of activities.
-            _unitOfWork.Queue.AddQueueItem(userId, enums.DownloadType.Strava);
-
+            DownloadQueue job = DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Strava);
+            _unitOfWork.Queue.AddQueueItem(job);
+            _unitOfWork.Complete();
+            AzureWebJob.AddToAzureQueue(job.Id);
+            
             _unitOfWork.Complete();
 
             // trigger web job to download activity details.

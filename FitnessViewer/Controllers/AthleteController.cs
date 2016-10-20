@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -35,8 +36,13 @@ namespace FitnessViewer.Controllers
 
         public ActionResult ActivityScan()
         {
-            _unitOfWork.Queue.AddQueueItem(this.User.Identity.GetUserId(), DownloadType.Strava);
+
+
+
+            DownloadQueue job = DownloadQueue.CreateQueueJob(this.User.Identity.GetUserId(), DownloadType.Strava);
+            _unitOfWork.Queue.AddQueueItem(job);
             _unitOfWork.Complete();
+            AzureWebJob.AddToAzureQueue(job.Id);
 
             // trigger web job to download activity details.
             AzureWebJob.CreateTrigger(_unitOfWork);

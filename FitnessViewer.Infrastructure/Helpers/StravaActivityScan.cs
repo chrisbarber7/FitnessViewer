@@ -60,6 +60,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 if (activities.Count == 0)
                     break;
 
+                List<DownloadQueue> jobs = new List<DownloadQueue>();
+
                 foreach (var item in activities)
                 {
                     // if activity already exists skip it
@@ -74,14 +76,21 @@ namespace FitnessViewer.Infrastructure.Helpers
                     fvAthlete.Activities.Add(activity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    _unitOfWork.Queue.AddQueueItem(fvAthlete.UserId, DownloadType.Strava, item.Id);
-
+                    DownloadQueue job = DownloadQueue.CreateQueueJob(fvAthlete.UserId, DownloadType.Strava, item.Id);
+                    _unitOfWork.Queue.AddQueueItem(job);
+                    jobs.Add(job);
+                    
+          
                     itemsAdded++;
                 }
 
                 // write changes to database.
                 _unitOfWork.Complete();
-                
+
+
+                foreach (DownloadQueue job in jobs)
+                    job.AddToAzureQueue();
+       
                 if (stravaLimitDelay > 100)
                     LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), fvAthlete);
 

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Download", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Test", "FitnessViewer.Test\FitnessViewer.Test.csproj", "{33732335-8325-4201-B2AB-31204A481E44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.DownloadWebJob", "FitnessViewer.DownloadWebJob\FitnessViewer.DownloadWebJob.csproj", "{BD747D5A-82A1-4F6E-B3FB-989BEDBDE989}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{33732335-8325-4201-B2AB-31204A481E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33732335-8325-4201-B2AB-31204A481E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33732335-8325-4201-B2AB-31204A481E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD747D5A-82A1-4F6E-B3FB-989BEDBDE989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD747D5A-82A1-4F6E-B3FB-989BEDBDE989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD747D5A-82A1-4F6E-B3FB-989BEDBDE989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD747D5A-82A1-4F6E-B3FB-989BEDBDE989}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

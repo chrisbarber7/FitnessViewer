@@ -84,9 +84,11 @@ namespace SampleWebMVC.Controllers
         /// <returns></returns>
         public ActionResult Download()
         {
-            _unitOfWork.Queue.AddQueueItem(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit);
+            DownloadQueue job = DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit);
+            _unitOfWork.Queue.AddQueueItem(job);
             _unitOfWork.Complete();
-
+            AzureWebJob.AddToAzureQueue(job.Id);
+            
             // trigger web job to download activity details.
             AzureWebJob.CreateTrigger(_unitOfWork);
 
