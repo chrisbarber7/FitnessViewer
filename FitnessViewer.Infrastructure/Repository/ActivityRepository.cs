@@ -408,6 +408,53 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Lap.Where(l => l.Id == id).FirstOrDefault();
         }
 
+      
+        public IEnumerable<TimeDistanceBySportDto> GetTimeDistanceBySport(string userId, DateTime start, DateTime end)
+        {
+            // get activities which fall into the selected weeks.
+            var activities = _context.Activity
+                .Include(r => r.Calendar)
+                .Include(r => r.ActivityType)
+                .Include(r => r.Athlete)
+                .Where(r => r.Athlete.UserId == userId &&
+                r.Start >= start &&
+                r.Start <= end &&
+                r.MovingTime != null)
+                .Select(r => new
+                {
+                    Duration = r.MovingTime.Value,
+                    Distance=r.Distance,
+                    Sport = r.ActivityType.IsRun ? "Run" : r.ActivityType.IsRide ? "Ride" : r.ActivityType.IsSwim ? "Swim" : "Other"
+                })
+                    
+            .ToList();
+
+            // group the activities by week.
+            var totalsBySport = activities
+             .GroupBy(r => new { Sport = r.Sport })
+                .Select(r => new TimeDistanceBySportDto
+                {
+                    Sport = r.Key.Sport,
+                    Distance=r.Sum(d=>d.Distance),
+                    Duration=r.Sum(e=>Convert.ToDecimal(e.Duration.TotalMinutes))
+                })
+                   
+                .ToList();
+
+
+            foreach (TimeDistanceBySportDto t in totalsBySport)
+            {
+                TimeSpan duration = TimeSpan.FromMinutes((double)t.Duration);
+
+                t.Sport = string.Format("{0} {1}:{2}:{3}", t.Sport,
+                                                         (duration.Days * 24) + duration.Hours.ToString(),
+                                                         duration.Minutes.ToString().PadLeft(2, '0'),
+                                                         duration.Seconds.ToString().PadLeft(2, '0'));
+            }
+
+            return totalsBySport;
+        }
+
         public IEnumerable<ActivityLapDto> GetLapStream(long activityId, PeakStreamType streamType)
         {
             string units = StreamHelper.StreamTypeUnits(streamType);

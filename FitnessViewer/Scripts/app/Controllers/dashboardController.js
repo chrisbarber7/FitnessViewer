@@ -4,6 +4,7 @@
         setupWeeklyReport("chart12weekRun", "Run");
         setupWeeklyReport("chart12weekBike", "Ride");
         setupWeightChart();
+        setupTimeBySportChart();
     };
 
     var setupWeeklyReport = function (chartName, api) {
@@ -48,10 +49,10 @@
 
 
  
-            };
+            }
 
 
-        };
+        }
     
       
     
@@ -86,7 +87,7 @@
                         radius:0,
                         fill: false,
                         borderColor: '#c0ef95'
-                    },
+                    }
                 ]
             };
 
@@ -100,6 +101,72 @@
             });
         }
     };
+
+
+
+
+    var setupTimeBySportChart = function () {
+        $.ajax({
+            dataType: "json",
+            url: "/api/Activity/GetTimeAndDistanceBySport/",
+            success: function (data) {
+                TimeBySportChart(data);
+            },
+            error: function () {
+                alert("Error loading time/distance data!");
+            }
+        });
+
+        function TimeBySportChart(dataSet) {
+            var pieChartData = {
+              
+                labels: dataSet.Sport,
+
+
+                datasets: [
+                    {
+                        data: dataSet.Duration,
+
+
+
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#3498db"
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#3498db"
+                        ]
+                    }]
+            };
+
+            var options = {
+                options: {
+                    legend: {
+                        display: true,
+                        poisition: 'bottom',
+                        fullWidth: false
+                    }
+                }
+            };
+
+
+            var ctx = document.getElementById("chartTimeBySport").getContext("2d");
+
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: pieChartData,
+        options: options
+            });
+        }
+    };
+
+
+
 
 
 
