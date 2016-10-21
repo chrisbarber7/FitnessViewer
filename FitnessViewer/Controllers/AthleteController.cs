@@ -1,9 +1,11 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Web.Mvc;
 
 namespace FitnessViewer.Controllers
@@ -22,6 +24,9 @@ namespace FitnessViewer.Controllers
         public ActionResult Dashboard()
         {
             var userId = this.User.Identity.GetUserId();
+
+            SportSummaryDto summ = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Run", DateTime.Now.AddDays(-7), DateTime.Now);
+
 
             var result = new AthleteViewModel()
             {

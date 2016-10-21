@@ -54,7 +54,7 @@
             }
         });
         return fullRouteLatLng;
-    };
+    }
 
 
  SetupActivityChart("chartActivity");
@@ -129,5 +129,5 @@
                 }
             });
         }
-    };
+    }
 });

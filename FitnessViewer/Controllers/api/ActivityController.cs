@@ -51,6 +51,31 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
+        public IHttpActionResult GetTimeAndDistanceBySport()
+        {
+            var data = _unitOfWork.Activity.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
+                                            DateTime.Now.AddDays(-90), DateTime.Now);
+
+            List<string> sport = new List<string>();
+            List<string> distance = new List<string>();
+            List<int> duration = new List<int>();
+
+            foreach (TimeDistanceBySportDto t in data)
+            {
+                sport.Add(t.Sport);
+                duration.Add(Convert.ToInt32( t.Duration));
+            }
+
+            var chart = new
+            {
+                Sport = sport,
+                Duration= duration
+            };
+
+            return Json(chart);
+        }
+
+        [HttpGet]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
             var runData = _unitOfWork.Activity.ActivityByWeek(this.User.Identity.GetUserId(), id, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
