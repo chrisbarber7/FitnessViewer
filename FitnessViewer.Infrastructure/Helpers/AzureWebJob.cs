@@ -46,24 +46,32 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="jobId"></param>
         public static void AddToAzureQueue(int jobId)
         {
-            // get storage account from connection string (held in WebApp settings/connection strings)
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                    ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
+            try
+            {
+                // get storage account from connection string (held in WebApp settings/connection strings)
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                        ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
 
-            // Create a queue client
-            CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+                // Create a queue client
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
 
-            // Retrieve a reference to a queue
-            CloudQueue queue = queueClient.GetQueueReference("fitness-viewer-download-queue");
+                // Retrieve a reference to a queue
+                CloudQueue queue = queueClient.GetQueueReference("fitness-viewer-download-queue");
 
-            // Create the queue if it doesn’t already exist (it should exists)
-            queue.CreateIfNotExists();
+                // Create the queue if it doesn’t already exist (it should exists)
+                queue.CreateIfNotExists();
 
-            // Pcreate a message and add it to the queue.
-            CloudQueueMessage message = new CloudQueueMessage(jobId.ToString());
+                // Pcreate a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage(jobId.ToString());
 
-            // add message to the queue
-            queue.AddMessage(message);
+                // add message to the queue
+                queue.AddMessage(message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                
+            }
         }
 
         /// <summary>
