@@ -12,7 +12,7 @@ namespace FitnessViewer.ViewModels
         public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public IEnumerable<AthletePeaksDto> PowerPeaks { get; set; }
+        public IEnumerable<PeaksDto> PowerPeaks { get; set; }
         public IEnumerable<RunningTimesDto> RunningTime { get; internal set; }
         public WeightByDayDto CurrentWeight { get; set; }
     }

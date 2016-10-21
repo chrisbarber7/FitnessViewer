@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivitityCoordsDto
+    public class CoordsDto
     {
         public double lat { get; set; }
         public double lng { get; set; }

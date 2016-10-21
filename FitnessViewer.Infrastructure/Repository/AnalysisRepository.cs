@@ -65,13 +65,13 @@ namespace FitnessViewer.Infrastructure.Repository
         /// <param name="userId">Indentity</param>
         /// <param name="type">Stream Type to analyse</param>
         /// <returns></returns>
-        public IEnumerable<AthletePeaksDto> GetPeaks(string userId, PeakStreamType type)
+        public IEnumerable<PeaksDto> GetPeaks(string userId, PeakStreamType type)
         {
             var peaks = _context.ActivityPeak
                   .Where(p => p.Activity.Athlete.UserId == userId && p.StreamType == type)
                   .Include(p => p.Activity);
 
-            List<AthletePeaksDto> ap = new List<AthletePeaksDto>();
+            List<PeaksDto> ap = new List<PeaksDto>();
             ap.Add(ExtractPeaksByDays(type, peaks, 7));
             ap.Add(ExtractPeaksByDays(type, peaks, 30));
             ap.Add(ExtractPeaksByDays(type, peaks, 90));
@@ -80,38 +80,38 @@ namespace FitnessViewer.Infrastructure.Repository
             return ap;
         }
 
-        private static AthletePeaksDto ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)
+        private static PeaksDto ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)
         {
             // days=int.maxvalue is used for earlist date
             DateTime earliestDate = days == int.MaxValue ? DateTime.MinValue.Date : DateTime.Now.AddDays(days * -1).Date;
 
-            AthletePeaksDto ap = new AthletePeaksDto();
+            PeaksDto ap = new PeaksDto();
             ap.PeakType = type;
             ap.Days = days;
 
             ap.Seconds5 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak5)
-                                .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
             ap.Minute1 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak60)
-                                .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak60, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak60, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
             ap.Minute5 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak300)
-                                .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak300, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak300, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
             ap.Minute20 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak1200)
-                                .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak1200, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak1200, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
             ap.Minute60 = peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak3600)
-                                .Select(p => new AthletePeaksDto.AthletePeaksDetails() { Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
                                 .FirstOrDefault();
 
             return ap;

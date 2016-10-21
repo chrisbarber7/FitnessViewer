@@ -107,13 +107,13 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Gear.AddOrUpdate(g);
         }
 
-        public IEnumerable<ActivitityCoordsDto> GetActivityCoords(long activityId)
+        public IEnumerable<CoordsDto> GetActivityCoords(long activityId)
         {
             return _context.Stream
                 .Include(a => a.Activity)
                  .Where(s => s.ActivityId == activityId && s.Time % s.Activity.StreamStep == 0)
                  .OrderBy(s => s.Time)
-                 .Select(s => new ActivitityCoordsDto
+                 .Select(s => new CoordsDto
                  {
                      lat = s.Latitude.Value,
                      lng = s.Longitude.Value
@@ -122,7 +122,7 @@ namespace FitnessViewer.Infrastructure.Repository
                  .ToList();
         }
 
-        public ActivityGraphStreamDto GetActivityStreams(long activityId)
+        public GraphStreamDto GetActivityStreams(long activityId)
         {
             var activityStream = _context.Stream
                  .Include(a => a.Activity)
@@ -138,7 +138,7 @@ namespace FitnessViewer.Infrastructure.Repository
                   .OrderBy(s => s.Time)
                  .ToList();
 
-            ActivityGraphStreamDto result = new ActivityGraphStreamDto();
+            GraphStreamDto result = new GraphStreamDto();
 
             foreach (var s in activityStream)
             {
@@ -204,7 +204,7 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
-        public ActivityMinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
+        public MinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
         {
             var stream = _context.Stream
                 .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
@@ -219,7 +219,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .ToList();
 
             if (stream.Count == 0)
-                return new ActivityMinMaxDto();
+                return new MinMaxDto();
 
             var startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
             var endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
@@ -244,7 +244,7 @@ namespace FitnessViewer.Infrastructure.Repository
               distance = g.Sum(s => s.Distance)
           }).First();
 
-            ActivityMinMaxDto info = new ActivityMinMaxDto();
+            MinMaxDto info = new MinMaxDto();
             if (minMaxAveResults.powerMin == null)
             {
                 info.Power = null;
@@ -305,7 +305,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
 
 
-        public IEnumerable<ActivityByPeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
+        public IEnumerable<PeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
             //bool isRide = activityType == "Ride" || activityType == "All" ? true : false;
             //bool isRun = activityType == "Run" || activityType == "All" ? true : false;
@@ -338,7 +338,7 @@ namespace FitnessViewer.Infrastructure.Repository
             // group the activities by week.
             var weeklyTotals = activities
                 .GroupBy(r => new { Period = r.Period, Label = r.Label })
-                .Select(a => new ActivityByPeriodDto
+                .Select(a => new PeriodDto
                 {
                     Period = a.Key.Period,
                     TotalDistance = Math.Round(a.Sum(d => d.Distance).ToMiles(), 1),
@@ -352,7 +352,7 @@ namespace FitnessViewer.Infrastructure.Repository
             var dummyWeeks = _context.Calendar
                 .OrderBy(c => c.YearWeek)
                 .Where(c => c.Date >= start && c.Date <= end)
-                .Select(c => new ActivityByPeriodDto
+                .Select(c => new PeriodDto
                 {
                     Period = c.YearWeek,
                     TotalDistance = 0,
@@ -372,18 +372,18 @@ namespace FitnessViewer.Infrastructure.Repository
             return result;
         }
 
-        internal void AddLap(Lap lap)
+        internal void AddLap(Models.Lap lap)
         {
             _context.Lap.Add(lap);
         }
 
 
-        public IEnumerable<ActivityLapDto> GetLaps(long activityId)
+        public IEnumerable<LapDto> GetLaps(long activityId)
         {
             var result = _context.Lap
                 .Include(a => a.Activity)
                 .Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
-                  .Select(l => new ActivityLapDto
+                  .Select(l => new LapDto
                   {
                       Id = l.Id,
                       Type = PeakStreamType.Lap,
@@ -453,14 +453,14 @@ namespace FitnessViewer.Infrastructure.Repository
             return totalsBySport;
         }
 
-        public IEnumerable<ActivityLapDto> GetLapStream(long activityId, PeakStreamType streamType)
+        public IEnumerable<LapDto> GetLapStream(long activityId, PeakStreamType streamType)
         {
             string units = StreamHelper.StreamTypeUnits(streamType);
 
             var result = _context.ActivityPeakDetail
               .Where(p => p.ActivityId == activityId && p.StreamType == streamType)
               .OrderBy(p => p.Duration)
-              .Select(p => new ActivityLapDto
+              .Select(p => new LapDto
               {
                   Id = p.Id,
                   Type = streamType,
@@ -473,7 +473,7 @@ namespace FitnessViewer.Infrastructure.Repository
               }).ToList();
 
 
-            foreach (ActivityLapDto l in result)
+            foreach (LapDto l in result)
             {
                 l.Name = StreamHelper.StreamDurationForDisplay(Convert.ToInt32(l.Name));
             }

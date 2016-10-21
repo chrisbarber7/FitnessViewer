@@ -15,7 +15,7 @@ namespace FitnessViewer.ViewModels
    
         public ActivityViewModel()
         {
-            Laps = new List<ActivityLapDto>();
+            Laps = new List<LapDto>();
         }
 
         public static ActivityViewModel CreateFromActivity(UnitOfWork uow, Activity fvActivity)
@@ -54,11 +54,11 @@ namespace FitnessViewer.ViewModels
 
         public string ActivityTypeId { get; set; }
 
-        public ActivityMinMaxDto SummaryInfo { get; set; }
-        public IEnumerable<ActivityLapDto> Laps { get; set; }
-        public IEnumerable<ActivityLapDto> Power { get; set; }
-        public IEnumerable<ActivityLapDto> HeartRate { get; set; }
-        public IEnumerable<ActivityLapDto> Cadence { get; set; }
+        public MinMaxDto SummaryInfo { get; set; }
+        public IEnumerable<LapDto> Laps { get; set; }
+        public IEnumerable<LapDto> Power { get; set; }
+        public IEnumerable<LapDto> HeartRate { get; set; }
+        public IEnumerable<LapDto> Cadence { get; set; }
     }
 }
 

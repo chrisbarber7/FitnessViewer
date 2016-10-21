@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityByPeriodDto
+    public class PeriodDto
     {
         public string Period { get; set; }
         public decimal TotalDistance { get; set; }

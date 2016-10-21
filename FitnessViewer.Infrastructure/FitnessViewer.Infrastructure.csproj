@@ -248,10 +248,11 @@
       <DependentUpon>201610211123526_AddStreamsToActivityDeleteDetailsSP.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
-    <Compile Include="Models\Dto\ActivitityCoordsDto.cs" />
-    <Compile Include="Models\Dto\ActivityGraphStreamDto.cs" />
-    <Compile Include="Models\Dto\ActivityLapDto.cs" />
-    <Compile Include="Models\Dto\ActivityMinMaxDto.cs" />
+    <Compile Include="Models\Dto\CoordsDto.cs" />
+    <Compile Include="Models\Dto\ActivityBaseDto.cs" />
+    <Compile Include="Models\Dto\GraphStreamDto.cs" />
+    <Compile Include="Models\Dto\LapDto.cs" />
+    <Compile Include="Models\Dto\MinMaxDto.cs" />
     <Compile Include="Models\Dto\FitbitHomeDto.cs" />
     <Compile Include="Models\Dto\NotificationDto.cs" />
     <Compile Include="Models\Dto\SportSummaryDto.cs" />
@@ -389,8 +390,8 @@
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\Athlete.cs" />
     <Compile Include="Models\Calendar.cs" />
-    <Compile Include="Models\Dto\ActivityByPeriodDto.cs" />
-    <Compile Include="Models\Dto\AthletePeaksDto.cs" />
+    <Compile Include="Models\Dto\PeriodDto.cs" />
+    <Compile Include="Models\Dto\PeaksDto.cs" />
     <Compile Include="Models\BestEffort.cs" />
     <Compile Include="Models\DownloadQueue.cs" />
     <Compile Include="Models\Dto\RunningTimesDto.cs" />

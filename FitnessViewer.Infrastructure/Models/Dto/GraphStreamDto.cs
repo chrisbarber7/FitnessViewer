@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityGraphStreamDto
+    public class GraphStreamDto
     {
-        public ActivityGraphStreamDto()
+        public GraphStreamDto()
         {
             Time = new List<int>();
             Distance = new List<double?>();
