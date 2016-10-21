@@ -243,6 +243,10 @@
     <Compile Include="Migrations\201610190822002_CreateClearActivityStoredProc.Designer.cs">
       <DependentUpon>201610190822002_CreateClearActivityStoredProc.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610211123526_AddStreamsToActivityDeleteDetailsSP.cs" />
+    <Compile Include="Migrations\201610211123526_AddStreamsToActivityDeleteDetailsSP.Designer.cs">
+      <DependentUpon>201610211123526_AddStreamsToActivityDeleteDetailsSP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivitityCoordsDto.cs" />
     <Compile Include="Models\Dto\ActivityGraphStreamDto.cs" />
@@ -558,6 +562,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610190822002_CreateClearActivityStoredProc.resx">
       <DependentUpon>201610190822002_CreateClearActivityStoredProc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211123526_AddStreamsToActivityDeleteDetailsSP.resx">
+      <DependentUpon>201610211123526_AddStreamsToActivityDeleteDetailsSP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
