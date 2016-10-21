@@ -248,6 +248,7 @@
       <DependentUpon>201610211123526_AddStreamsToActivityDeleteDetailsSP.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
+    <Compile Include="Models\Dto\ActivityLapsDto.cs" />
     <Compile Include="Models\Dto\CoordsDto.cs" />
     <Compile Include="Models\Dto\ActivityBaseDto.cs" />
     <Compile Include="Models\Dto\GraphStreamDto.cs" />

@@ -239,7 +239,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AccountViewModels.cs" />
-    <Compile Include="ViewModels\ActivityViewModel.cs" />
     <Compile Include="ViewModels\AthleteViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

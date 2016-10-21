@@ -26,8 +26,11 @@ namespace FitnessViewer.Controllers.api
         {
             return Ok(new
             {
-                data =
-                Mapper.Map<IEnumerable<ActivityViewModel>>(_unitOfWork.Activity.GetActivities(this.User.Identity.GetUserId())).ToList()
+                //data =
+                //Mapper.Map<IEnumerable<ActivityLapsDto>>(_unitOfWork.Activity.GetActivities(this.User.Identity.GetUserId())).ToList()
+
+                data = _unitOfWork.Activity.GetActivityDto(this.User.Identity.GetUserId())
+
             });
         }
 

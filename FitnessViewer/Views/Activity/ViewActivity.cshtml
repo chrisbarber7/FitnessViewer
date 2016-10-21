@@ -1,4 +1,4 @@
-﻿@model FitnessViewer.ViewModels.ActivityViewModel
+﻿@model FitnessViewer.Infrastructure.Models.Dto.ActivityLapsDto
 @{
     ViewBag.Title = "Activity";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -16,11 +16,10 @@
 <h1>@Model.Name</h1>
 
 @if (!Model.DetailsDownloaded)
-{
+{   
     <div class="alert alert-info">
         <strong>Warning!</strong> Waiting for full activity details to be downloaded.  Please try again in a minute or two.
     </div>
-
 }
 else
 {

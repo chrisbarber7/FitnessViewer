@@ -17,7 +17,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.Name = fvActivity.Name;
             m.ActivityTypeId = fvActivity.ActivityTypeId;
             m.DetailsDownloaded = true;
-            m.Distance = fvActivity.ActivityType.IsSwim ? fvActivity.Distance : fvActivity.Distance.ToMiles();
+            m.Distance = fvActivity.Distance.ToMiles();
             m.AverageSpeed = 0;
             m.AveragePace = PaceCalculator.RunMinuteMiles(fvActivity.Distance, fvActivity.ElapsedTime.Value);
             m.ElevationGain = fvActivity.ElevationGain.ToFeet();

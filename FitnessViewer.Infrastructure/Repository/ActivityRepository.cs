@@ -63,7 +63,21 @@ namespace FitnessViewer.Infrastructure.Repository
                   .ToList();
 
         }
+        public IEnumerable<ActivityBaseDto> GetActivityDto(string userId)
+        {
+            var activities =  _context.Activity
+                  .Where(a => a.Athlete.UserId == userId)
+                  .Include(a => a.ActivityType)
+                 
+                  .ToList();
 
+            List<ActivityBaseDto> results = new List<ActivityBaseDto>();
+
+            foreach (Activity a in activities)
+                results.Add(ActivityBaseDto.CreateFromActivity(a));
+
+            return results;
+        }
 
         public bool DeleteActivityDetails(long activityId)
         {

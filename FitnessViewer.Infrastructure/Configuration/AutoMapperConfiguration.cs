@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.Dto;
 
 namespace FitnessViewer.Infrastructure.Configuration
 {
@@ -27,12 +28,17 @@ namespace FitnessViewer.Infrastructure.Configuration
                    .ForMember(dest => dest.AthleteId, opts => opts.MapFrom(src => src.Athlete.Id))
                    .ForMember(dest => dest.ActivityId, opts => opts.MapFrom(src => src.Activity.Id));
 
-                CreateMap<Notification, Models.Dto.NotificationDto>().ReverseMap();
+                CreateMap<Notification, NotificationDto>().ReverseMap();
+
+                CreateMap<ActivityBaseDto, ActivityLapsDto>();
+
+               CreateMap<Activity, ActivityLapsDto>()
+                            .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.StartDateLocal.Date.ToShortDateString()));
+                
             }
         }
     }
 }
-
 
 
 

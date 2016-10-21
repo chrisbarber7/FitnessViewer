@@ -43,7 +43,7 @@ namespace FitnessViewer.Controllers
 
             if (!fvActivity.DetailsDownloaded)
             {
-                ActivityViewModel model = new ActivityViewModel()
+                ActivityLapsDto model = new ActivityLapsDto()
                 {
                     DetailsDownloaded = false,
                     Name = fvActivity.Name
@@ -54,8 +54,8 @@ namespace FitnessViewer.Controllers
 
             if (fvActivity.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            return View(ActivityViewModel.CreateFromActivity(_unitOfWork, fvActivity));
+            
+            return View(ActivityLapsDto.CreateFromActivity(_unitOfWork, fvActivity));
         }
 
         public class SummaryInformationRequest
