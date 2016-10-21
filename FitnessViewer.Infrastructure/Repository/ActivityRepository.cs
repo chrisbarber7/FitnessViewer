@@ -204,7 +204,7 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
-        public ActivitySummaryInformationDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
+        public ActivityMinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
         {
             var stream = _context.Stream
                 .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
@@ -219,7 +219,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .ToList();
 
             if (stream.Count == 0)
-                return new ActivitySummaryInformationDto();
+                return new ActivityMinMaxDto();
 
             var startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
             var endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
@@ -244,7 +244,7 @@ namespace FitnessViewer.Infrastructure.Repository
               distance = g.Sum(s => s.Distance)
           }).First();
 
-            ActivitySummaryInformationDto info = new ActivitySummaryInformationDto();
+            ActivityMinMaxDto info = new ActivityMinMaxDto();
             if (minMaxAveResults.powerMin == null)
             {
                 info.Power = null;

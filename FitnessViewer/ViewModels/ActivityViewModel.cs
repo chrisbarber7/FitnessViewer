@@ -54,7 +54,7 @@ namespace FitnessViewer.ViewModels
 
         public string ActivityTypeId { get; set; }
 
-        public ActivitySummaryInformationDto SummaryInfo { get; set; }
+        public ActivityMinMaxDto SummaryInfo { get; set; }
         public IEnumerable<ActivityLapDto> Laps { get; set; }
         public IEnumerable<ActivityLapDto> Power { get; set; }
         public IEnumerable<ActivityLapDto> HeartRate { get; set; }

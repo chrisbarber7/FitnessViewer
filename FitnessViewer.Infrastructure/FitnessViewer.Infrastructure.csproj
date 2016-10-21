@@ -251,7 +251,7 @@
     <Compile Include="Models\Dto\ActivitityCoordsDto.cs" />
     <Compile Include="Models\Dto\ActivityGraphStreamDto.cs" />
     <Compile Include="Models\Dto\ActivityLapDto.cs" />
-    <Compile Include="Models\Dto\ActivitySummaryInformationDto.cs" />
+    <Compile Include="Models\Dto\ActivityMinMaxDto.cs" />
     <Compile Include="Models\Dto\FitbitHomeDto.cs" />
     <Compile Include="Models\Dto\NotificationDto.cs" />
     <Compile Include="Models\Dto\SportSummaryDto.cs" />
