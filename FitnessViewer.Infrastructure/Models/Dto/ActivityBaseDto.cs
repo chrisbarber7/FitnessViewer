@@ -23,7 +23,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.ElevationGain = fvActivity.ElevationGain.ToFeet();
             m.Date = fvActivity.StartDateLocal.ToShortDateString();
             m.MovingTime = fvActivity.MovingTime.Value;
-       
+            m.StartDateLocal = fvActivity.StartDateLocal;
+
             return m;
         }
 
