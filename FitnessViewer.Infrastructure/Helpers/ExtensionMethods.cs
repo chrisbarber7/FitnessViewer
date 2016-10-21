@@ -12,6 +12,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             return MetreDistance.ToMiles(distanceInMetres);
         }
+
+        public static decimal ToFeet(this decimal distanceInMetres)
+        {
+            return MetreDistance.ToFeet(distanceInMetres);
+        }
     }
 }
 
