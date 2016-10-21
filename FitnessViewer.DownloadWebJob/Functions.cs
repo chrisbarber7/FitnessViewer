@@ -30,7 +30,7 @@ namespace FitnessViewer.DownloadWebJob
                 return;
             }
 
-            job.ProcessJob(log);
+            job.ProcessJob();
 
         }
 
