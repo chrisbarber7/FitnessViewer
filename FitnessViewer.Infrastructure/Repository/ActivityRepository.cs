@@ -445,7 +445,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 TimeSpan duration = TimeSpan.FromMinutes((double)t.Duration);
 
                 t.Sport = string.Format("{0} {1}:{2}:{3}", t.Sport,
-                                                         (duration.Days * 24) + duration.Hours.ToString(),
+                                                         ((duration.Days * 24) + duration.Hours).ToString(),
                                                          duration.Minutes.ToString().PadLeft(2, '0'),
                                                          duration.Seconds.ToString().PadLeft(2, '0'));
             }
