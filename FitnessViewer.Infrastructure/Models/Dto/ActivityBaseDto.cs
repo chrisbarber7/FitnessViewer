@@ -24,7 +24,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.Date = fvActivity.StartDateLocal.ToShortDateString();
             m.MovingTime = fvActivity.MovingTime.Value;
             m.StartDateLocal = fvActivity.StartDateLocal;
-
+            m.SufferScore = fvActivity.SufferScore.HasValue ? fvActivity.SufferScore.Value : 0;
+            m.Calories = fvActivity.Calories;
             return m;
         }
 
@@ -41,7 +42,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public TimeSpan MovingTime { get; set; }
 
         public string ActivityTypeId { get; set; }
-
+        public int SufferScore { get; set; }
+        public decimal Calories { get; set; }
     }
 }
 

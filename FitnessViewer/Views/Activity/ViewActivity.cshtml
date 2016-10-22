@@ -25,19 +25,19 @@ else
 {
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
             <div class="summaryBox">
                 <div class="SummaryValue">@Model.Distance</div>
                 <div class="SummaryTitle">Distance</div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
             <div class="summaryBox">
                 <div class="SummaryValue">@Model.MovingTime</div>
                 <div class="SummaryTitle">Moving Time</div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
             <div class="summaryBox">
                 <div class="SummaryValue">
                     @if (Model.ActivityTypeId == "Run")
@@ -52,21 +52,21 @@ else
                 <div class="SummaryTitle">Pace</div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
             <div class="summaryBox">
                 <div class="SummaryValue">@Model.ElevationGain<span class="SummaryTitle">ft</span></div>
                 <div class="SummaryTitle">Elevation</div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
             <div class="summaryBox">
-                <div class="SummaryValue">54</div>
+                <div class="SummaryValue">@Model.SufferScore.ToString("N0")</div>
                 <div class="SummaryTitle">Suffer Score</div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
             <div class="summaryBox">
-                <div class="SummaryValue">12323</div>
+                <div class="SummaryValue">@Model.Calories.ToString("N0")</div>
                 <div class="SummaryTitle">Calories</div>
             </div>
         </div>
