@@ -33,7 +33,7 @@ namespace FitnessViewer.Controllers.api
             foreach (WeightByDayDto w in metrics)
             {
                 weight.Add(w.Current.ToString());
-                date.Add(w.Date.ToShortDateString());
+                date.Add(w.Date.ToString("dd MMM"));
                 ave7day.Add(w.Average7Day.ToString());
                 ave30day.Add(w.Average30Day.ToString());
             }
