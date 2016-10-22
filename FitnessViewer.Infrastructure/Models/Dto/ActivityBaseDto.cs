@@ -26,6 +26,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.StartDateLocal = fvActivity.StartDateLocal;
             m.SufferScore = fvActivity.SufferScore.HasValue ? fvActivity.SufferScore.Value : 0;
             m.Calories = fvActivity.Calories;
+            m.HasMap = fvActivity.StartLatitude !=null ? true : false;
+
             return m;
         }
 
@@ -44,6 +46,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public string ActivityTypeId { get; set; }
         public int SufferScore { get; set; }
         public decimal Calories { get; set; }
+        public bool HasMap { get; set; }
     }
 }
 

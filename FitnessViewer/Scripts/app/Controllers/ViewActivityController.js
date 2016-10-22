@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     var selectedPolyline;
     var fullRouteLatLng;
-// user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
+    // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
     $('ul.laps li').click(function (e) {   
      
         var startIndex = $(this).attr("data-start-index");
@@ -24,20 +24,22 @@
     });
 
     var mymap = L.map('mapid');
-	var activityId = document.getElementById('activityId').value;
+    var activityId = document.getElementById('activityId').value;
+    var hasMap = document.getElementById('hasMap').value;
 
-    fullRouteLatLng = getCoords(activityId);
-	var polyline = L.polyline(fullRouteLatLng, { color: 'red' }).addTo(mymap);
-	mymap.fitBounds(polyline.getBounds());
+    if (hasMap === "True") {
+        fullRouteLatLng = getCoords(activityId);
+        var polyline = L.polyline(fullRouteLatLng, { color: 'red' }).addTo(mymap);
+        mymap.fitBounds(polyline.getBounds());
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxcDdnOTAwNGUzbm9hMDNueDBla2IifQ.uCc724sMqgSk316I0XuPlA', {
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxcDdnOTAwNGUzbm9hMDNueDBla2IifQ.uCc724sMqgSk316I0XuPlA', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                id: 'mapbox.streets'
-    }).addTo(mymap);
-
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'mapbox.streets'
+        }).addTo(mymap);
+    }
     function getCoords(activityId) {
         var fullRouteLatLng = null;
         $.ajax({

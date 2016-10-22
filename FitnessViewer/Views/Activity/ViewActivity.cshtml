@@ -12,11 +12,12 @@
 <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 
 @Html.Hidden("activityId", Model.Id)
+@Html.Hidden("hasMap", Model.HasMap)
 
 <h1>@Model.Name</h1>
 
 @if (!Model.DetailsDownloaded)
-{   
+{
     <div class="alert alert-info">
         <strong>Warning!</strong> Waiting for full activity details to be downloaded.  Please try again in a minute or two.
     </div>
@@ -74,7 +75,16 @@ else
     <div class="row">
         <div class="col-md-8">
             <div class="col-md-12">
-                <div id="mapid"></div>
+                @if (Model.HasMap)
+                {
+                    <div id="mapid"></div>
+                }
+                else
+                {
+                    <div id="nomap" class="alert alert-info">
+                       Activity has no route details.
+                    </div>
+                }
             </div>
             <div class="col-md-12">
                 <canvas id="chartActivity" width="800" height="400"></canvas>
@@ -182,7 +192,7 @@ else
             </div>
         </div>
     </div>
-}
+                        }
 @section scripts {
-<script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>
+    <script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>
 }

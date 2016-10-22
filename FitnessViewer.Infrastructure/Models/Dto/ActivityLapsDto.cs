@@ -30,5 +30,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<LapDto> Power { get; set; }
         public IEnumerable<LapDto> HeartRate { get; set; }
         public IEnumerable<LapDto> Cadence { get; set; }
+
+
     }
 }
