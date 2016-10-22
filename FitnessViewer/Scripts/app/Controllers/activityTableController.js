@@ -1,7 +1,6 @@
-﻿var DashboardController = function () {
+﻿var ActivityTableController = function () {
     var init = function () {
-        setupActivitiesDataTable();
-   
+        setupActivitiesDataTable();   
     };
 
     var setupActivitiesDataTable = function () {

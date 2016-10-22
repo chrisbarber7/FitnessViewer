@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@Styles.Render("~/Content/dataTables")*@
 @Scripts.Render("~/bundles/chart")
 
 
@@ -13,17 +12,11 @@
 <div class="row">
     <div class="col-md-4">
         <h4>Average Run Distance Per Week</h4>
-                <label for="chart12weekRun">
                     <canvas id="chart12weekRun" width="800" height="400"></canvas>
-                </label>
-   
         </div>
         <div class="col-md-4">
             <h4>Average Bike Distance Per Week</h4>
-            <label for="chart12weekBike">
-
                 <canvas id="chart12weekBike" width="800" height="400"></canvas>
-            </label>
         </div>
         <div class="col-md-4">
             <h4>Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToShortDateString()</h4>

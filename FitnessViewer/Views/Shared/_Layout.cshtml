@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,8 +8,6 @@
     <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript">
         var appInsights = window.appInsights || function (config) {
             function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace", "Ajax"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
@@ -21,18 +21,23 @@
     <meta name="description" content="Fitness Viewer" />
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top ">
         <div class="container">
-            <div class="navbar-header">  
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 @Html.ActionLink("Fitness Viewer", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav"></ul>
                 @if (Request.IsAuthenticated)
             {
-                    <ul class="nav navbar-nav">
-
+                    <ul class="nav navbar-nav navbar-left">
                         <li class="dropdown">
-                            @*@Html.ActionLink("Dashboard", "Dashboard", "Athlete")*@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dashboard<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("Summary", "Dashboard", "Athlete")</li>
@@ -42,21 +47,48 @@
                                 <li>@Html.ActionLink("Swim", "Index", "Swim")</li>
                                 <li>@Html.ActionLink("Metrics", "Index", "Metrics")</li>
                             </ul>
-                        </li><li>@Html.ActionLink("Fitbit", "Home", "Fitbit")</li>
+                        </li>
+                        <li>@Html.ActionLink("Fitbit", "Home", "Fitbit")</li>
                         <li>@Html.ActionLink("Activities", "Table", "Activity")</li>
                         <li>@Html.ActionLink("Calendar", "Calendar", "Activity")</li>
                     </ul>
                 }
-                @Html.Partial("_LoginPartial")
+                @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                        @Html.AntiForgeryToken()
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="notifications">
+                                <a href="#">
+                                    <i class="glyphicon glyphicon-bell"></i>
+                                    <span class="badge js-notifications-count hide"></span>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.GetUserName() <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("", "")">Settings</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink("Add Manual Measurement", "Add", "Measurement")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink("New Strava Activity Scan", "ActivityScan", "Athlete")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                }
             </div>
         </div>
-    </div>
+    </nav>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
             <div>
-            
                 <div class="footer-logo">
                     <a href="https://www.strava.com/dashboard" target="_blank">
                         <img src="~/Content/Images/Strava/api_logo_pwrdBy_strava_horiz_light.png" alt="Powered by Strava" />
@@ -65,9 +97,7 @@
             </div>
         </footer>
     </div>
-    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/app")
-    @Scripts.Render("~/bundles/underscore")
     @RenderSection("scripts", required: false)
     <script type="text/x-template" id="notifications-template">
         <ul class="notifications">
@@ -83,8 +113,8 @@
             else if (notification.type == 3) {
             %>
             <li>
-            Added:
-                <a href=<%= notification.activityLink %>><%= notification.activityName %></a>
+                Added:
+                <a href=<%= notification.activityLink %><%= notification.activityName %></a>
             </li>
             <% }
             else if (notification.type == 4) {
@@ -96,46 +126,7 @@
             %>
         </ul>
     </script>
-    <script>
-        $(document).ready(function () {
-            $.getJSON("/api/notifications/GetNewNotifications", function (notifications) {
-                if (notifications.length == 0)
-                    return;
 
-                $(".js-notifications-count")
-                    .text(notifications.length)
-                    .removeClass("hide");
-
-                $(".notifications").popover({
-                    html: true,
-                    title: "Notifications",
-                    content: function () {
-                        var compiled = _.template($("#notifications-template").html());
-                        return compiled({ notifications: notifications });
-                    },
-                    placement: "bottom",
-                    template: '\
-                                <div class="popover popover-notifications" role="tooltip">\
-                                <div class="arrow">\
-                                </div>\
-                                <h3 class="popover-title">\
-                                </h3>\
-                                <div class="popover-content">\
-                                </div>\
-                                </div>'
-                }).on("shown.bs.popover", function () {
-                    $.post("/api/notifications/MarkAsRead")
-                        .done(function () {
-                            $(".js-notifications-count")
-                                .text("")
-                                .addClass("hide");
-                        });
-                });
-
-
-
-            });
-        });
-    </script>
 </body>
+
 </html>

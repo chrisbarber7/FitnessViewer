@@ -24,8 +24,9 @@
 </div>
 @section scripts {
     @Scripts.Render("~/bundles/dataTables")
+    <script src="~/Scripts/app/Controllers/activityTableController.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            DashboardController.init();
+            ActivityTableController.init();
         }) </script>
 }

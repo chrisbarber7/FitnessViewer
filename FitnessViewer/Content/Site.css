@@ -72,6 +72,11 @@ a{
     font-weight: 700;    
 }
 
+.navbar-nav .navbar-fixed-top .navbar-collapse
+{
+    max-height:90%;
+}
+
 body,
 h1,
 h2,
