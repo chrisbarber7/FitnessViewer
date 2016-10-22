@@ -94,6 +94,14 @@ namespace FitnessViewer.Infrastructure.Repository
             return true;
         }
 
+        internal void UpdateActivity(Activity amended)
+        {
+            _context.Activity.Attach(amended);
+            _context.Entry(amended).State = EntityState.Modified;
+        }
+
+    
+
         #endregion
 
         #region Best Effort
