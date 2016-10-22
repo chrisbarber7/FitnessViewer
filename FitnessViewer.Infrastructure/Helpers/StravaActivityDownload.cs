@@ -121,8 +121,15 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             LogActivity("Download Laps", fvActivity);
             foreach (StravaDotNetActivities.ActivityLap stravaLap in _client.Activities.GetActivityLaps(activityId.ToString()))
-                _unitOfWork.Activity.AddLap(Mapper.Map<Lap>(stravaLap));
+            {
+                Lap l = Mapper.Map<Lap>(stravaLap);
 
+                // occassionally strava will download a negative moving time which we need to fix.
+                if (l.MovingTime < new TimeSpan(0, 0, 0))
+                    l.MovingTime = l.ElapsedTime;
+
+                _unitOfWork.Activity.AddLap(l);
+            }
             _unitOfWork.Complete();
         }
 
