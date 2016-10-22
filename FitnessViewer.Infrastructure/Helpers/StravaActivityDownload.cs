@@ -60,15 +60,40 @@ namespace FitnessViewer.Infrastructure.Helpers
             // heart rate/power zones
             //List<ActivityZone> zones = _client.Activities.GetActivityZones(activity.Id.ToString());
 
+            if (!stravaActivity.IsManual)
+            {
+                DownloadLaps(activityId, fvActivity);
 
-            LogActivity("Download Laps", fvActivity);
-            foreach (StravaDotNetActivities.ActivityLap stravaLap in _client.Activities.GetActivityLaps(activityId.ToString()))
-                _unitOfWork.Activity.AddLap(Mapper.Map<Lap>(stravaLap));
+                LogActivity("Download Stream", fvActivity);
 
+                List<StravaDotNetStreams.ActivityStream> stream = DownloadStream(fvActivity);
+
+                if (fvActivity.ActivityType.IsRun)
+                    ExtractRunDetails(fvActivity, stravaActivity);
+                else if (fvActivity.ActivityType.IsRide)
+                    ExtractBikeDetails(stravaActivity);
+
+                _unitOfWork.Complete();
+
+                fvActivity.StreamSize = stream[0].Data.Count;
+
+            }
+
+            fvActivity.DetailsDownloaded = true;
+            
+            // add a notification 
+            _unitOfWork.Notification.Add(new UserNotification(_userId, Notification.StravaActivityDownload(fvActivity.Id)));
+            
             _unitOfWork.Complete();
 
-            LogActivity("Download Stream", fvActivity);
+            if (stravaLimitDelay > 100)
+                LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), fvActivity);
 
+            System.Threading.Thread.Sleep(stravaLimitDelay);
+        }
+
+        private List<StravaDotNetStreams.ActivityStream> DownloadStream(Activity fvActivity)
+        {
             // detailed information
             List<StravaDotNetStreams.ActivityStream> stream = _client.Streams.GetActivityStream(fvActivity.Id.ToString(),
                 StravaDotNetStreams.StreamType.Altitude |
@@ -89,25 +114,16 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             _unitOfWork.Complete();
 
-            if (fvActivity.ActivityType.IsRun)
-                ExtractRunDetails(fvActivity, stravaActivity);
-            else if (fvActivity.ActivityType.IsRide)
-                ExtractBikeDetails(stravaActivity);
+            return stream;
+        }
+
+        private void DownloadLaps(long activityId, Activity fvActivity)
+        {
+            LogActivity("Download Laps", fvActivity);
+            foreach (StravaDotNetActivities.ActivityLap stravaLap in _client.Activities.GetActivityLaps(activityId.ToString()))
+                _unitOfWork.Activity.AddLap(Mapper.Map<Lap>(stravaLap));
 
             _unitOfWork.Complete();
-
-            fvActivity.StreamSize = stream[0].Data.Count;
-            fvActivity.DetailsDownloaded = true;
-            
-            // add a notification 
-            _unitOfWork.Notification.Add(new UserNotification(_userId, Notification.StravaActivityDownload(fvActivity.Id)));
-            
-            _unitOfWork.Complete();
-
-            if (stravaLimitDelay > 100)
-                LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), fvActivity);
-
-            System.Threading.Thread.Sleep(stravaLimitDelay);
         }
 
         public void Complete()
