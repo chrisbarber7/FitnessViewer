@@ -33,7 +33,8 @@ namespace FitnessViewer.Controllers
                 FirstName = _unitOfWork.Athlete.FindAthleteByUserId(this.User.Identity.GetUserId()).FirstName,
                 PowerPeaks = _unitOfWork.Analysis.GetPeaks(userId, PeakStreamType.Power),
                 RunningTime = _unitOfWork.Activity.GetBestTimes(userId),
-                CurrentWeight = _unitOfWork.Metrics.GetWeightDetails(userId, 1)[0]
+                CurrentWeight = _unitOfWork.Metrics.GetWeightDetails(userId, 1)[0],
+                RecentActivity = _unitOfWork.Activity.GetActivityDto(userId, 7)
             };
 
             return View(result);

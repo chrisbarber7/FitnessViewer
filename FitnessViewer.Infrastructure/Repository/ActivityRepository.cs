@@ -63,12 +63,23 @@ namespace FitnessViewer.Infrastructure.Repository
                   .ToList();
 
         }
+
         public IEnumerable<ActivityBaseDto> GetActivityDto(string userId)
         {
-            var activities =  _context.Activity
+            return GetActivityDto(userId, null);
+        }
+
+
+        public IEnumerable<ActivityBaseDto> GetActivityDto(string userId, int? returnedRows)
+        {
+            if (returnedRows == null)
+                returnedRows = int.MaxValue;
+
+            var activities = _context.Activity
                   .Where(a => a.Athlete.UserId == userId)
                   .Include(a => a.ActivityType)
-                 
+                 .OrderByDescending(a => a.Start)
+                 .Take(returnedRows.Value)
                   .ToList();
 
             List<ActivityBaseDto> results = new List<ActivityBaseDto>();

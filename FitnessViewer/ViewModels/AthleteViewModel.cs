@@ -15,5 +15,6 @@ namespace FitnessViewer.ViewModels
         public IEnumerable<PeaksDto> PowerPeaks { get; set; }
         public IEnumerable<RunningTimesDto> RunningTime { get; internal set; }
         public WeightByDayDto CurrentWeight { get; set; }
+        public IEnumerable<ActivityBaseDto> RecentActivity { get; set; }
     }
 }

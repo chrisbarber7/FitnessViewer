@@ -588,6 +588,7 @@
     <Content Include="Views\Run\Index.cshtml" />
     <Content Include="Views\Swim\Index.cshtml" />
     <Content Include="Scripts\underscore.min.map" />
+    <Content Include="Views\Athlete\_RecentActivity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

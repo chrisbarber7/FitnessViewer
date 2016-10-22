@@ -1,0 +1,30 @@
+﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.ActivityBaseDto>
+
+<h4>Recent Activities</h4>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+
+            <th>Name</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Distance</th>
+            <th>Time</th>
+        
+        </tr>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>                    
+                    @Html.ActionLink(a.Name, "ViewActivity", "Activity", new { Id =a.Id }, null )
+            </td>
+                <td>@a.Date</td>
+                <td>@a.ActivityTypeId</td>
+                <td>@a.Distance</td>
+                <td>@a.MovingTime</td>
+            </tr>
+        }
+    </table>
+</div>
+
