@@ -122,3 +122,7 @@ h6,
   right: -6px;
   background: #c0ef95;
 }
+
+.align-right {
+    text-align: right;
+}

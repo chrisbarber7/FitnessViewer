@@ -3,14 +3,14 @@
 <h4>Recent Activities</h4>
 
 <div class="table-responsive">
-    <table class="table">
+    <table id="recent-activity-table" class="table">
         <tr>
 
             <th>Name</th>
             <th>Date</th>
             <th>Type</th>
-            <th>Distance</th>
-            <th>Time</th>
+            <th class="align-right">Distance</th>
+            <th class="align-right">Time</th>
         
         </tr>
         @foreach (var a in Model)
@@ -21,8 +21,8 @@
             </td>
                 <td>@a.Date</td>
                 <td>@a.ActivityTypeId</td>
-                <td>@a.Distance</td>
-                <td>@a.MovingTime</td>
+                <td class="align-right">@a.Distance</td>
+                <td class="align-right">@a.MovingTime</td>
             </tr>
         }
     </table>
