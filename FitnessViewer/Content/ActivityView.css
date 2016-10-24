@@ -1,22 +1,4 @@
-﻿.summaryBox {
-    border-style: solid;
-    border-color: #c0ef95;
-    border-width: 1px;
-    background-color: #f6feee;
-}
-
-.SummaryTitle {
-    font-size: 11px;
-    text-align: center;
-    color:lightgrey;
-}
-
-.SummaryValue {
-    font-size: 24px;
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: -6px;
-}
+﻿
 
 .map {
     height: 500px;

@@ -16,5 +16,21 @@ namespace FitnessViewer.ViewModels
         public IEnumerable<RunningTimesDto> RunningTime { get; internal set; }
         public WeightByDayDto CurrentWeight { get; set; }
         public IEnumerable<ActivityBaseDto> RecentActivity { get; set; }
+
+        public SportSummaryDto Run7Day { get; set; }
+        public SportSummaryDto Run30Day { get; set; }
+
+        public SportSummaryDto Bike7Day { get; set; }
+        public SportSummaryDto Bike30Day { get; set; }
+
+        public SportSummaryDto Swim7Day { get; set; }
+        public SportSummaryDto Swim30Day { get; set; }
+
+        public SportSummaryDto Other7Day { get; set; }
+        public SportSummaryDto Other30Day { get; set; }
+
+        public SportSummaryDto All7Day { get; set; }
+        public SportSummaryDto All30Day { get; set; }
+
     }
 }

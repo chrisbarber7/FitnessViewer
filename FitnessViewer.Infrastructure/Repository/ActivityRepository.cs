@@ -538,29 +538,35 @@ namespace FitnessViewer.Infrastructure.Repository
             sportSummary.SufferScore = activities.Sum(r => r.SufferScore);
             sportSummary.Calories = activities.Sum(r => r.Calories);
             sportSummary.ElevationGain = activities.Sum(r => r.ElevationGain).ToFeet();
+            sportSummary.ActivityCount = activities.Count();
 
             return sportSummary;
         }
 
         public IQueryable<Activity> ActivitiesBySport(string userId, string sport)
         {
-            bool isRide = sport == "Ride" || sport == "All" ? true : false;
-            bool isRun = sport == "Run" || sport == "All" ? true : false;
-            bool isSwim = sport == "Swim" || sport == "All" ? true : false;
-            bool isOther = sport == "All" ? true : false;
+            //bool isRide = sport == "Ride" || sport == "All" ? true : false;
+            //bool isRun = sport == "Run" || sport == "All" ? true : false;
+            //bool isSwim = sport == "Swim" || sport == "All" ? true : false;
+            //bool isOther = sport == "Other" || sport == "All" ? true : false;
 
             // get activities which fall into the selected weeks.
             var activitiesQuery = _context.Activity
                 .Include(r => r.ActivityType)
                 .Include(r => r.Athlete)
-                .Where(r => r.Athlete.UserId == userId &&
-                    (isRide ? r.ActivityType.IsRide : false ||
-                      isRun ? r.ActivityType.IsRun : false ||
-                      isSwim ? r.ActivityType.IsSwim : false ||
-                      isOther ? r.ActivityType.IsOther : false));
+                .Where(r => r.Athlete.UserId == userId);
 
-
+            if (sport == "Ride")
+                return activitiesQuery.Where(r => r.ActivityType.IsRide);
+            else if (sport == "Run")
+                return activitiesQuery.Where(r => r.ActivityType.IsRun);
+            else if (sport == "Swim")
+                return activitiesQuery.Where(r => r.ActivityType.IsSwim);
+            else if(sport == "Other")
+                return activitiesQuery.Where(r => r.ActivityType.IsOther);
+            else
             return activitiesQuery;
+            
         }
     }
 }

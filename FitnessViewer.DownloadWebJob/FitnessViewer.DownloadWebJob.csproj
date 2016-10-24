@@ -105,6 +105,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\app.keys.config">
+      <Link>app.keys.config</Link>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

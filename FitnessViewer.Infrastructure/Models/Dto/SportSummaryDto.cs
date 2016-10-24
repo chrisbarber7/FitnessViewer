@@ -14,5 +14,6 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int SufferScore { get; set; }
         public decimal Calories { get; set; }
         public decimal ElevationGain { get; set; }
+        public int ActivityCount { get; set; }
     }
 }

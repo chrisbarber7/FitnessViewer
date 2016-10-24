@@ -1,0 +1,19 @@
+﻿@model FitnessViewer.Infrastructure.Models.Dto.SportSummaryDto
+<div class="row">
+    <div class="col-xs-3">
+        <div class="SummaryValue">@Model.ActivityCount</div>
+        <div class="SummaryTitle">Workouts</div>
+    </div>
+    <div class="col-xs-3">
+        <div class="SummaryValue">@Model.Duration.ToString(@"hh\:mm")</div>
+        <div class="SummaryTitle">Time</div>
+    </div>
+    <div class="col-xs-3">
+        <div class="SummaryValue">@Model.Distance</div>
+        <div class="SummaryTitle">Distance</div>
+    </div>
+    <div class="col-xs-3">
+        <div class="SummaryValue">@Model.SufferScore</div>
+        <div class="SummaryTitle">SufferScore</div>
+    </div>
+</div>

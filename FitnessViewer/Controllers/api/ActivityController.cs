@@ -54,10 +54,17 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
-        public IHttpActionResult GetTimeAndDistanceBySport()
+        public IHttpActionResult GetTimeAndDistanceBySport(string id)
         {
+
+            int daysValue;
+
+            if (!int.TryParse(id, out daysValue))
+                return BadRequest("Invalid Days Parameter");
+
+
             var data = _unitOfWork.Activity.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
-                                            DateTime.Now.AddDays(-90), DateTime.Now);
+                                            DateTime.Now.AddDays(daysValue*-1), DateTime.Now);
 
             List<string> sport = new List<string>();
             List<string> distance = new List<string>();

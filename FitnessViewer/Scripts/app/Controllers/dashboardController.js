@@ -3,8 +3,10 @@
 
         setupWeeklyReport("chart12weekRun", "Run");
         setupWeeklyReport("chart12weekBike", "Ride");
+        setupWeeklyReport("chart12weekSwim", "Swim");
         setupWeightChart();
-        setupTimeBySportChart();
+        setupTimeBySportChart("chartTimeBySport7Day", 7);
+        setupTimeBySportChart("chartTimeBySport30Day", 30);
     };
 
     var setupWeeklyReport = function (chartName, api) {
@@ -33,7 +35,7 @@
 
             var ctx = document.getElementById(chartName).getContext("2d");
 
-            var myBarChart = Chart.Line(ctx, {
+            var myBarChart = Chart.Bar(ctx, {
                 data: barChartData,
                 options: {
                     animation: false,
@@ -114,10 +116,10 @@
 
 
 
-    var setupTimeBySportChart = function () {
+    var setupTimeBySportChart = function (chartName, days) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetTimeAndDistanceBySport/",
+            url: "/api/Activity/GetTimeAndDistanceBySport/" + days,
             success: function (data) {
                 TimeBySportChart(data);
             },
@@ -164,7 +166,7 @@
             };
 
 
-            var ctx = document.getElementById("chartTimeBySport").getContext("2d");
+            var ctx = document.getElementById(chartName).getContext("2d");
 
             var myPieChart = new Chart(ctx, {
                 type: 'pie',

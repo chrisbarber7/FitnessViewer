@@ -25,7 +25,18 @@ namespace FitnessViewer.Controllers
         {
             var userId = this.User.Identity.GetUserId();
 
-            SportSummaryDto summ = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Run", DateTime.Now.AddDays(-7), DateTime.Now);
+            SportSummaryDto run7DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Run", DateTime.Now.AddDays(-7), DateTime.Now);
+            SportSummaryDto bike7DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Ride", DateTime.Now.AddDays(-7), DateTime.Now);
+            SportSummaryDto swim7DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Swim", DateTime.Now.AddDays(-7), DateTime.Now);
+            SportSummaryDto other7DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Other", DateTime.Now.AddDays(-7), DateTime.Now);
+            SportSummaryDto all7DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "All", DateTime.Now.AddDays(-7), DateTime.Now);
+
+
+            SportSummaryDto run30DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Run", DateTime.Now.AddDays(-30), DateTime.Now);
+            SportSummaryDto bike30DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Ride", DateTime.Now.AddDays(-30), DateTime.Now);
+            SportSummaryDto swim30DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Swim", DateTime.Now.AddDays(-30), DateTime.Now);
+            SportSummaryDto other30DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "Other", DateTime.Now.AddDays(-30), DateTime.Now);
+            SportSummaryDto all30DayStats = _unitOfWork.Activity.GetSportSummary(this.User.Identity.GetUserId(), "All", DateTime.Now.AddDays(-30), DateTime.Now);
 
 
             var result = new AthleteViewModel()
@@ -34,7 +45,17 @@ namespace FitnessViewer.Controllers
                 PowerPeaks = _unitOfWork.Analysis.GetPeaks(userId, PeakStreamType.Power),
                 RunningTime = _unitOfWork.Activity.GetBestTimes(userId),
                 CurrentWeight = _unitOfWork.Metrics.GetWeightDetails(userId, 1)[0],
-                RecentActivity = _unitOfWork.Activity.GetActivityDto(userId, 7)
+                RecentActivity = _unitOfWork.Activity.GetActivityDto(userId, 7),
+                Run7Day = run7DayStats,
+                Bike7Day = bike7DayStats,
+                Swim7Day = swim7DayStats,
+                Other7Day = other7DayStats,
+                All7Day = all7DayStats,
+                Run30Day = run30DayStats,
+                Bike30Day = bike30DayStats,
+                Swim30Day = swim30DayStats,
+                Other30Day = other30DayStats,
+                All30Day = all30DayStats,
             };
 
             return View(result);
