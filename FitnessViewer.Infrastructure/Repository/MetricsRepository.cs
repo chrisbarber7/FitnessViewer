@@ -64,13 +64,21 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public List<WeightByDayDto> GetWeightDetails(string userId, int days)
         {
+            days = days - 1;
 
-            // we'll need to get date for the required number of days + 30 so we've got the data for the 30 day rolling average.
-            DateTime lowerDate = DateTime.Now.Date.AddDays((days + 30) * -1);
+            return GetWeightDetails(userId, DateTime.Now.Date.AddDays(days * -1), DateTime.Now);
+        }
 
+        public List<WeightByDayDto> GetWeightDetails(string userId, DateTime from, DateTime to)
+
+        {
+            DateTime dataFrom = from.AddDays(-30);
             // grab a copy of the needed data from database once then we'll work out figures from local list.
             var metrics = _context.Metric
-                 .Where(m => m.UserId == userId && m.MetricType == enums.MetricType.Weight && m.Recorded >= lowerDate)
+                 .Where(m => m.UserId == userId && 
+                            m.MetricType == enums.MetricType.Weight && 
+                            m.Recorded >= dataFrom && 
+                            m.Recorded <= to)
                  .Select(m => new
                  {
                      Recorded = m.Recorded,
@@ -80,21 +88,15 @@ namespace FitnessViewer.Infrastructure.Repository
 
             List<WeightByDayDto> results = new List<WeightByDayDto>();
 
-           
-
-
             if (metrics.Count == 0)
             {
                 results.Add(new WeightByDayDto(DateTime.Now));
                 return results;
             }
 
-            DateTime day = DateTime.Now.Date.AddDays(days * -1);
+            DateTime day = from; 
 
-            if (days == 1)
-                day = DateTime.Now.Date;
-
-            while (day <= DateTime.Now.Date)
+            while (day <= to)
             {
                 WeightByDayDto w = new WeightByDayDto(day);
 
@@ -117,23 +119,36 @@ namespace FitnessViewer.Infrastructure.Repository
                     w.High7Day = Day7Data.Max(d => d.Value);
                 }
 
-                w.Current = metrics
-                      .Where(m => m.Recorded <= day)
-                      .OrderByDescending(m => m.Recorded)
-                      .First()
-                      .Value;
+                var currentQuery = metrics
+                        .Where(m => m.Recorded <= day)
+                        .OrderByDescending(m => m.Recorded)
+                        .FirstOrDefault();
 
-                decimal? weight7daysAgo = metrics
-                      .Where(m => m.Recorded <= day.AddDays(-7))
-                      .OrderByDescending(m => m.Recorded)
-                      .First()
-                      .Value;
 
-                decimal? weight30daysAgo = metrics
-                     .Where(m => m.Recorded <= day.AddDays(-30))
-                     .OrderByDescending(m => m.Recorded)
-                     .First()
-                     .Value;
+                if (currentQuery == null)
+                    w.Current = null;
+                else
+                    w.Current = currentQuery.Value;
+
+                var weight7daysAgoQuery = metrics
+                       .Where(m => m.Recorded <= day.AddDays(-7))
+                       .OrderByDescending(m => m.Recorded)
+                       .FirstOrDefault();
+
+                decimal? weight7daysAgo = null;
+                if (weight7daysAgoQuery != null)
+                    weight7daysAgo = weight7daysAgoQuery.Value;
+                    
+
+                var weight30daysAgoQuery = metrics
+                      .Where(m => m.Recorded <= day.AddDays(-30))
+                      .OrderByDescending(m => m.Recorded)
+                      .FirstOrDefault();
+
+
+                decimal? weight30daysAgo = null;
+                if (weight30daysAgoQuery != null)
+                    weight30daysAgo = weight30daysAgoQuery.Value;
 
                 if ((weight7daysAgo != null) && (w.Current != null))
                     w.Change7Day = w.Current.Value - weight7daysAgo.Value;

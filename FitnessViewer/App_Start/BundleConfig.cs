@@ -15,6 +15,7 @@ namespace FitnessViewer
                             "~/Scripts/bootstrap.min.js",
                             "~/Scripts/respond.min.js",
                             "~/Scripts/underscore.min.js",
+                            "~/Scripts/moment.min.js",
                             "~/Scripts/app/app.js"));
             
             bundles.Add(new StyleBundle("~/Content/css").Include(

@@ -125,4 +125,28 @@ h6,
 
 .align-right {
     text-align: right;
+
 }
+
+.date-selector{
+     float: right;
+}
+
+.btn-date-selector {
+   
+    color: #3a8904;
+    background-color: #c0ef95;
+    border-color: #3a8904;
+    display: inline;
+    padding: 2px 12px;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid;
+    border-radius: 0px;
+}
+

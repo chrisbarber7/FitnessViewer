@@ -445,6 +445,7 @@
     <Content Include="Scripts\app\Controllers\athleteViewController.js" />
     <Content Include="Scripts\app\Controllers\activityTableController.js" />
     <Content Include="Scripts\app\Controllers\dashboardController.js" />
+    <Content Include="Scripts\app\Controllers\metricsIndexController.js" />
     <Content Include="Scripts\app\Controllers\ViewActivityController.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -532,6 +533,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\underscore.js" />

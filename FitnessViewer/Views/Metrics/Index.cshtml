@@ -1,8 +1,39 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Metrics";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@Scripts.Render("~/bundles/chart")
 <h2>Metrics</h2>
+<div class="date-selector">
+    <button type="button" id="date-1" class="btn btn-date-selector btn-date-selector-middle" onclick="refreshWeightChart(this.id, -1)">All</button>
+    <button type="button" id="date12" class="btn btn-date-selector btn-date-selector-middle" onclick="refreshWeightChart(this.id, 12)">Last Year</button>
+    <button type="button" id="date6" class="btn btn-date-selector btn-date-selector-middle" onclick="refreshWeightChart(this.id, 6)">6 Months</button>
+    <button type="button" id="date3" class="btn btn-date-selector btn-date-selector-middle" onclick="refreshWeightChart(this.id, 3)">3 Months</button>
+    <button type="button" id="date1" class="btn btn-date-selector" onclick="refreshWeightChart(this.id, 1)">1 Month</button>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <canvas id="chartDetailedWeight" width="800" height="400"></canvas>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/app/Controllers/metricsIndexController.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            refreshWeightChart('date3', 3);
+        })
 
+        function refreshWeightChart(id, period) {
+            // reset colours for all buttons
+            $(".btn-date-selector").css('background-color', '#c0ef95');
+            $(".btn-date-selector").css('color', '#3a8904');
+
+            // reset colour for selected button.
+            $("#" + id).css('background-color', '#3a8904');
+            $("#" + id).css('color', '#c0ef95');
+
+            // refresh chart.
+            MetricsIndexController.init(period);
+        };
+    </script>
+}

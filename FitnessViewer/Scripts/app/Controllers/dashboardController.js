@@ -59,9 +59,18 @@
     };
 
     var setupWeightChart = function (chartName, api) {
+        
+
+
+
+            var from = moment().add(-30, 'days').utc().format("X");
+        var to = moment().utc().format("X");
+        
+
+        
         $.ajax({
             dataType: "json",
-            url: "/api/Metric/Get30dayweight/",
+            url: "/api/Metric/GetWeightMetrics/?From="+from+"&To="+to,
             success: function (data) {
                 WeightChart(data);
             },

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using static FitnessViewer.Infrastructure.Helpers.DateHelpers;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -20,10 +21,17 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
-        public IHttpActionResult Get30DayWeight()
+        public IHttpActionResult GetWeightMetrics([FromUri] DateRange dates)
         {
             string userId = this.User.Identity.GetUserId();
-            var metrics = _unitOfWork.Metrics.GetWeightDetails(userId, 30);
+
+            if (!dates.FromDateTime.HasValue)
+                return BadRequest("Invalid From Date");
+
+            if (!dates.ToDateTime.HasValue)
+                return BadRequest("Invalid To Date");
+            
+            var metrics = _unitOfWork.Metrics.GetWeightDetails(userId, dates.FromDateTime.Value, dates.ToDateTime.Value);
 
             List<string> date = new List<string>();
             List<string> weight = new List<string>();
@@ -32,10 +40,22 @@ namespace FitnessViewer.Controllers.api
 
             foreach (WeightByDayDto w in metrics)
             {
-                weight.Add(w.Current.ToString());
+                if ((w.Current != null) && (w.Current != 0))
+                    weight.Add(w.Current.ToString());
+                else
+                    weight.Add(null);
+
                 date.Add(w.Date.ToString("dd MMM"));
-                ave7day.Add(w.Average7Day.ToString());
-                ave30day.Add(w.Average30Day.ToString());
+
+                if ((w.Average7Day != null) && (w.Average7Day != 0))
+                    ave7day.Add(w.Average7Day.ToString());
+                else
+                    ave7day.Add(null);
+
+                if ((w.Average30Day != null) && (w.Average30Day != 0))
+                    ave30day.Add(w.Average30Day.ToString());
+                else
+                    ave30day.Add(null);
             }
 
             var chart = new
