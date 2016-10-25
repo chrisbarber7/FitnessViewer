@@ -169,3 +169,18 @@ h6,
     font-weight: 700;
     margin-bottom: -6px;
 }
+
+
+
+.fvTab .tab-content {
+    padding: 4px 16px;
+}
+
+.fvTab .nav-pills > li.active > a {
+    border-radius: 1px;
+    background-color: #c0ef95;
+    color: #3a8904;
+
+}
+
+
