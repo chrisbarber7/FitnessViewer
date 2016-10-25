@@ -39,7 +39,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<PeaksDto> PowerPeaks { get; set; }
         public IEnumerable<RunningTimesDto> RunningTime { get; internal set; }
         public WeightByDayDto CurrentWeight { get; set; }
-        public IEnumerable<ActivityBaseDto> RecentActivity { get; set; }
+        public IEnumerable<ActivityDto> RecentActivity { get; set; }
 
         public SportSummaryDto Run7Day { get; set; }
         public SportSummaryDto Run30Day { get; set; }

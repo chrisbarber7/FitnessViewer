@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityLapsDto : ActivityBaseDto
+    public class ActivityLapsDto : ActivityDto
     {
 
         public static ActivityLapsDto CreateFromActivity(UnitOfWork uow, Activity fvActivity)
         {
-            ActivityLapsDto m = Mapper.Map<ActivityLapsDto>(ActivityBaseDto.CreateFromActivity(fvActivity));
+            ActivityLapsDto m = Mapper.Map<ActivityLapsDto>(ActivityDto.CreateFromActivity(fvActivity));
 
             m.Laps = uow.Activity.GetLaps(fvActivity.Id);
             m.Power = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Power);

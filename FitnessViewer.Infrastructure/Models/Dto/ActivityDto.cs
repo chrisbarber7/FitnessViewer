@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityBaseDto
+    public class ActivityDto
     {
-        public static ActivityBaseDto CreateFromActivity( Activity fvActivity)
+        public static ActivityDto CreateFromActivity( Activity fvActivity)
         {
-            ActivityBaseDto m = new ActivityBaseDto();
+            ActivityDto m = new ActivityDto();
 
             m.Id = fvActivity.Id;
             m.Name = fvActivity.Name;

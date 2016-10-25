@@ -30,7 +30,7 @@ namespace FitnessViewer.Infrastructure.Configuration
 
                 CreateMap<Notification, NotificationDto>().ReverseMap();
 
-                CreateMap<ActivityBaseDto, ActivityLapsDto>();
+                CreateMap<ActivityDto, ActivityLapsDto>();
 
                 CreateMap<AthleteDto, AthleteDashboardDto>();
 

@@ -64,13 +64,13 @@ namespace FitnessViewer.Infrastructure.Repository
 
         }
 
-        public IEnumerable<ActivityBaseDto> GetActivityDto(string userId)
+        public IEnumerable<ActivityDto> GetActivityDto(string userId)
         {
             return GetRecentActivity(userId, null);
         }
 
 
-        public IEnumerable<ActivityBaseDto> GetRecentActivity(string userId, int? returnedRows)
+        public IEnumerable<ActivityDto> GetRecentActivity(string userId, int? returnedRows)
         {
             if (returnedRows == null)
                 returnedRows = int.MaxValue;
@@ -82,15 +82,15 @@ namespace FitnessViewer.Infrastructure.Repository
                  .Take(returnedRows.Value)
                  .ToList();
 
-            List<ActivityBaseDto> results = new List<ActivityBaseDto>();
+            List<ActivityDto> results = new List<ActivityDto>();
 
             foreach (Activity a in activities)
-                results.Add(ActivityBaseDto.CreateFromActivity(a));
+                results.Add(ActivityDto.CreateFromActivity(a));
 
             return results;
         }
 
-        internal IEnumerable<ActivityBaseDto> GetRecentActivity(List<ActivityBaseDto> summaryActivities, int returnedRows)
+        internal IEnumerable<ActivityDto> GetRecentActivity(List<ActivityDto> summaryActivities, int returnedRows)
         {
             return summaryActivities            
                  .OrderByDescending(a => a.Start)
@@ -529,13 +529,13 @@ namespace FitnessViewer.Infrastructure.Repository
         /// <param name="start">Beginning of date range</param>
         /// <param name="end">End of date range</param>
         /// <returns></returns>
-        public IQueryable<ActivityBaseDto> GetSportSummaryQuery(string userId, string sport, DateTime start, DateTime end)
+        public IQueryable<ActivityDto> GetSportSummaryQuery(string userId, string sport, DateTime start, DateTime end)
         {
-            IQueryable<ActivityBaseDto> activityQuery = this.ActivitiesBySport(userId, sport)
+            IQueryable<ActivityDto> activityQuery = this.ActivitiesBySport(userId, sport)
                 .Include(r => r.ActivityType)
                 .Include(r => r.Athlete)
                 .Where(r => r.Start >= start && r.Start <= end)
-                    .Select(r => new ActivityBaseDto
+                    .Select(r => new ActivityDto
                     {
                         Id = r.Id,
                         Name = r.Name,
@@ -562,9 +562,9 @@ namespace FitnessViewer.Infrastructure.Repository
             return GetSportSummary(userId, sport, start, end, null);
         }
    
-        public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end, List<ActivityBaseDto> fullActivityList)
+        public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end, List<ActivityDto> fullActivityList)
         {
-            IEnumerable<ActivityBaseDto> activities;
+            IEnumerable<ActivityDto> activities;
 
             if (fullActivityList == null)
                 activities = GetSportSummaryQuery(userId, sport, start, end).ToList();
