@@ -23,10 +23,15 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.ElevationGain = fvActivity.ElevationGain.ToFeet();
             m.Date = fvActivity.StartDateLocal.ToShortDateString();
             m.MovingTime = fvActivity.MovingTime.Value;
+            m.Start = fvActivity.Start;
             m.StartDateLocal = fvActivity.StartDateLocal;
             m.SufferScore = fvActivity.SufferScore.HasValue ? fvActivity.SufferScore.Value : 0;
             m.Calories = fvActivity.Calories;
             m.HasMap = fvActivity.StartLatitude !=null ? true : false;
+            m.IsRide = fvActivity.ActivityType.IsRide;
+            m.IsRun = fvActivity.ActivityType.IsRun;
+            m.IsSwim = fvActivity.ActivityType.IsSwim;
+            m.IsOther = fvActivity.ActivityType.IsOther;
 
             return m;
         }
@@ -39,6 +44,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public TimeSpan AveragePace { get; set; }
         public decimal ElevationGain { get; set; }
         public string Date { get; set; }
+        public DateTime Start { get; set; }
         public DateTime StartDateLocal { get; set; }
 
         public TimeSpan MovingTime { get; set; }
@@ -47,6 +53,11 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int SufferScore { get; set; }
         public decimal Calories { get; set; }
         public bool HasMap { get; set; }
+
+        public bool IsRide { get; set; }
+        public bool IsRun { get; set; }
+        public bool IsSwim { get; set; }
+        public bool IsOther { get; set; }
     }
 }
 

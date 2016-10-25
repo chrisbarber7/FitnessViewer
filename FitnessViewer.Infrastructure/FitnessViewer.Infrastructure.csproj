@@ -250,6 +250,8 @@
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivityLapsDto.cs" />
+    <Compile Include="Models\Dto\AthleteDto.cs" />
+    <Compile Include="Models\Dto\AthleteDashboardDto.cs" />
     <Compile Include="Models\Dto\CoordsDto.cs" />
     <Compile Include="Models\Dto\ActivityBaseDto.cs" />
     <Compile Include="Models\Dto\GraphStreamDto.cs" />

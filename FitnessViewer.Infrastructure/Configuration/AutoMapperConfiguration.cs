@@ -32,7 +32,9 @@ namespace FitnessViewer.Infrastructure.Configuration
 
                 CreateMap<ActivityBaseDto, ActivityLapsDto>();
 
-               CreateMap<Activity, ActivityLapsDto>()
+                CreateMap<AthleteDto, AthleteDashboardDto>();
+
+                CreateMap<Activity, ActivityLapsDto>()
                             .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.StartDateLocal.Date.ToShortDateString()));
                 
             }

@@ -1,14 +1,10 @@
-﻿@model FitnessViewer.ViewModels.AthleteViewModel
+﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDashboardDto
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @Scripts.Render("~/bundles/chart")
-
-
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
-
 <div class="row">
     <div class="col-md-4">
         <h4>Average Run Distance Per Week</h4>
@@ -23,12 +19,9 @@
         <canvas id="chart12weekSwim" width="800" height="400"></canvas>
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-4">
-
-
-        <div id="daySummaryTab"  class="fvTab">
+        <div id="daySummaryTab" class="fvTab">
             <ul class="nav nav-pills">
                 <li class="active">
                     <a href="#Day7Tab" data-toggle="tab">7 Day</a>
@@ -39,33 +32,27 @@
                 <li>
                     <a href="#Day90Tab" data-toggle="tab">90 Day</a>
                 </li>
-
             </ul>
             <div class="tab-content clearfix">
                 <div class="tab-pane active" id="Day7Tab">
-
-
-
-
-                    <h4>7 Day Run Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Run7Day); }
-                    <h4>7 Day Bike Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Bike7Day); }
-                    <h4>7 Day Swim Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Swim7Day); }
-                    <h4>7 Day Other Sport Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Other7Day); }
-                    <h4>7 Day All Sport</h4>        @{Html.RenderPartial("_SportSummary", Model.All7Day); }
+                    <h4>Run Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Run7Day); }
+                    <h4>Bike Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Bike7Day); }
+                    <h4>Swim Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Swim7Day); }
+                    <h4>Other Sport Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Other7Day); }
+                    <h4>Total</h4>@{Html.RenderPartial("_SportSummary", Model.All7Day); }
                 </div>
                 <div class="tab-pane active" id="Day30Tab">
-                    <h4>30 Day Run Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Run30Day); }
-                    <h4>30 Day Bike Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Bike30Day); }
-                    <h4>30 Day Swim Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Swim30Day); }
-                    <h4>30 Day Other Sport Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.Other30Day); }
-                    <h4>30 Day All Sport Stats</h4>        @{Html.RenderPartial("_SportSummary", Model.All30Day); }
+                    <h4>Run Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Run30Day); }
+                    <h4>Bike Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Bike30Day); }
+                    <h4>Swim Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Swim30Day); }
+                    <h4>Other Sport Stats</h4>@{Html.RenderPartial("_SportSummary", Model.Other30Day); }
+                    <h4>Total</h4>@{Html.RenderPartial("_SportSummary", Model.All30Day); }
                 </div>
                 <div class="tab-pane active" id="Day30Tab">
                 </div>
             </div>
         </div>
     </div>
-
     <div class="col-md-4">
         <div class="row">
             <div class="col-md-6">
@@ -78,13 +65,7 @@
             </div>
         </div>
     </div>
-
-
-
-
     <div class="col-md-4">
-
-
         <h4>Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToShortDateString()</h4>
         <div class="table-responsive">
             <table class="table">
@@ -112,23 +93,13 @@
             </table>
         </div>
         <canvas id="chartWeight" width="800" height="400"></canvas>
-
-
-        </div>
-
-
     </div>
-
-
-
-
+</div>
 <div class="row">
     <div class="col-md-8">
         @{Html.RenderPartial("_RecentActivity", Model.RecentActivity); }
     </div>
     <div class="col-md-4">
-
-
     </div>
 </div>
 <div class="row">
@@ -139,9 +110,7 @@
     <div class="col-md-4">
         @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
     </div>
-
 </div>
-
 @section scripts {
     <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
     <script type="text/javascript">

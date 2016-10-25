@@ -66,21 +66,21 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<ActivityBaseDto> GetActivityDto(string userId)
         {
-            return GetActivityDto(userId, null);
+            return GetRecentActivity(userId, null);
         }
 
 
-        public IEnumerable<ActivityBaseDto> GetActivityDto(string userId, int? returnedRows)
+        public IEnumerable<ActivityBaseDto> GetRecentActivity(string userId, int? returnedRows)
         {
             if (returnedRows == null)
                 returnedRows = int.MaxValue;
 
             var activities = _context.Activity
-                  .Where(a => a.Athlete.UserId == userId)
-                  .Include(a => a.ActivityType)
-                 .OrderByDescending(a => a.Start)
+                 .Where(a => a.Athlete.UserId == userId)
+                 .Include(a => a.ActivityType)
+                 .OrderByDescending(a => a.StartDateLocal)
                  .Take(returnedRows.Value)
-                  .ToList();
+                 .ToList();
 
             List<ActivityBaseDto> results = new List<ActivityBaseDto>();
 
@@ -88,6 +88,14 @@ namespace FitnessViewer.Infrastructure.Repository
                 results.Add(ActivityBaseDto.CreateFromActivity(a));
 
             return results;
+        }
+
+        internal IEnumerable<ActivityBaseDto> GetRecentActivity(List<ActivityBaseDto> summaryActivities, int returnedRows)
+        {
+            return summaryActivities            
+                 .OrderByDescending(a => a.Start)
+                 .Take(returnedRows)
+                 .ToList();
         }
 
         public bool DeleteActivityDetails(long activityId)
@@ -513,27 +521,68 @@ namespace FitnessViewer.Infrastructure.Repository
             return result;
         }
 
-        public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end)
+        /// <summary>
+        /// Query to generate a list of activities which match given criteria
+        /// </summary>
+        /// <param name="userId">ASP.NET Identity Id</param>
+        /// <param name="sport">Run, Ride, Swim, Other, All</param>
+        /// <param name="start">Beginning of date range</param>
+        /// <param name="end">End of date range</param>
+        /// <returns></returns>
+        public IQueryable<ActivityBaseDto> GetSportSummaryQuery(string userId, string sport, DateTime start, DateTime end)
         {
-            IQueryable<Activity> activityQuery = this.ActivitiesBySport(userId, sport);
-
-            var activities = activityQuery
-                                .Include(r => r.ActivityType)
+            IQueryable<ActivityBaseDto> activityQuery = this.ActivitiesBySport(userId, sport)
+                .Include(r => r.ActivityType)
                 .Include(r => r.Athlete)
                 .Where(r => r.Start >= start && r.Start <= end)
-                .Select(r => new
-                {
-                    Sport = sport,
-                    Duration = r.MovingTime != null ? r.MovingTime.Value : new TimeSpan(0, 0, 0),
-                    Distance = r.Distance,
-                    SufferScore = r.SufferScore != null ? r.SufferScore.Value : 0,
-                    Calories = r.Calories,
-                    ElevationGain = r.ElevationGain
-                }).ToList();
+                    .Select(r => new ActivityBaseDto
+                    {
+                        Id = r.Id,
+                        Name = r.Name,
+                         ActivityTypeId = r.ActivityTypeId,
+                         MovingTime = r.MovingTime != null ? r.MovingTime.Value : new TimeSpan(0, 0, 0),
+                         Distance = r.Distance,
+                         SufferScore = r.SufferScore != null ? r.SufferScore.Value : 0,
+                         Calories = r.Calories,
+                         ElevationGain = r.ElevationGain,
+                         Start = r.Start,
+                         StartDateLocal = r.StartDateLocal,
+                         IsRide = r.ActivityType.IsRide,
+                         IsRun = r.ActivityType.IsRun,
+                         IsSwim = r.ActivityType.IsSwim,
+                         IsOther = r.ActivityType.IsOther
+                     });
+
+            return activityQuery;
+        }
+
+
+        public SportSummaryDto GetSportSummary( string userId, string sport, DateTime start, DateTime end)
+        {
+            return GetSportSummary(userId, sport, start, end, null);
+        }
+   
+        public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end, List<ActivityBaseDto> fullActivityList)
+        {
+            IEnumerable<ActivityBaseDto> activities;
+
+            if (fullActivityList == null)
+                activities = GetSportSummaryQuery(userId, sport, start, end).ToList();
+            else if (sport == "Ride")
+                activities = fullActivityList.Where(r => r.IsRide && r.Start >= start && r.Start <= end).ToList();
+            else if (sport == "Run")
+                activities = fullActivityList.Where(r => r.IsRun && r.Start >= start && r.Start <= end).ToList();
+            else if (sport == "Swim")
+                activities = fullActivityList.Where(r => r.IsSwim && r.Start >= start && r.Start <= end).ToList();
+            else if (sport == "Other")
+                activities = fullActivityList.Where(r => r.IsOther && r.Start >= start && r.Start <= end).ToList();
+            else
+                activities = fullActivityList.Where(r => r.Start >= start && r.Start <= end).ToList();
+
 
             SportSummaryDto sportSummary = new SportSummaryDto();
             sportSummary.Sport = sport;
-            sportSummary.Duration = TimeSpan.FromSeconds(activities.Sum(r => r.Duration.TotalSeconds));
+            sportSummary.Duration = TimeSpan.FromSeconds(activities.Sum(r => r.MovingTime.TotalSeconds));
             sportSummary.Distance = activities.Sum(r => r.Distance).ToMiles();
             sportSummary.SufferScore = activities.Sum(r => r.SufferScore);
             sportSummary.Calories = activities.Sum(r => r.Calories);
