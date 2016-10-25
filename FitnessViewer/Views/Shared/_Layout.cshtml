@@ -73,8 +73,14 @@
                                     <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                                 </ul>
                             </li>
+                            <li>
+                          
+                                <a href="#" data-toggle="modal" data-target="#modalAddMetricSelector">Add</a>
+                            </li>
                         </ul>
                     }
+         
+
                 }
             </div>
         </div>
@@ -93,6 +99,32 @@
             </div>
         </footer>
     </div>
+
+    <!-- Modal -->
+    <div id="modalAddMetricSelector" class="modal" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span class="modal-title">Add Metric</span>
+                </div>
+                <div class="modal-body">
+                 <ul>
+                     <li>@Html.ActionLink("Weight", "AddWeight", "Metrics")</li>
+                     <li>@Html.ActionLink("Heart Rate", "AddHearRate", "Metrics")</li>
+                     <li>@Html.ActionLink("Sleep", "AddSleep", "Metrics")</li>
+
+                 </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     @Scripts.Render("~/bundles/app")
     @RenderSection("scripts", required: false)
     <script type="text/x-template" id="notifications-template">

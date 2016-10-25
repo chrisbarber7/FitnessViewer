@@ -18,11 +18,6 @@ namespace FitnessViewer.Infrastructure.Repository
             _context = context;
         }
 
-        public void AddMeasurement(Measurement m)
-        {
-            _context.Measurement.Add(m);
-        }
-
         public void AddFitbitUser(FitbitUser u)
         {
             _context.FitbitUser.Add(u);

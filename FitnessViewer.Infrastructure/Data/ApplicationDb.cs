@@ -25,7 +25,6 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<ActivityType> ActivityType { get; set; }
         public DbSet<Gear> Gear { get; set; }
         public DbSet<Calendar> Calendar { get; set; }
-        public DbSet<Measurement> Measurement { get; set; }
         public DbSet<Lap> Lap { get; set; }
         public DbSet<ActivityPeakDetail> ActivityPeakDetail { get; set; }
 

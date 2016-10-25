@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201610251359550_MetricTableAddIsManualColumn.Designer.cs">
       <DependentUpon>201610251359550_MetricTableAddIsManualColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610251447219_RemoveMeasurementTable.cs" />
+    <Compile Include="Migrations\201610251447219_RemoveMeasurementTable.Designer.cs">
+      <DependentUpon>201610251447219_RemoveMeasurementTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivityLapsDto.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
@@ -404,7 +408,6 @@
     <Compile Include="Models\DownloadQueue.cs" />
     <Compile Include="Models\Dto\RunningTimesDto.cs" />
     <Compile Include="Models\Gear.cs" />
-    <Compile Include="Models\Measurement.cs" />
     <Compile Include="Models\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\FindPeak.cs" />
@@ -577,6 +580,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610251359550_MetricTableAddIsManualColumn.resx">
       <DependentUpon>201610251359550_MetricTableAddIsManualColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610251447219_RemoveMeasurementTable.resx">
+      <DependentUpon>201610251447219_RemoveMeasurementTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
