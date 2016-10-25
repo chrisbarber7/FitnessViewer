@@ -248,6 +248,10 @@
     <Compile Include="Migrations\201610211123526_AddStreamsToActivityDeleteDetailsSP.Designer.cs">
       <DependentUpon>201610211123526_AddStreamsToActivityDeleteDetailsSP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610251359550_MetricTableAddIsManualColumn.cs" />
+    <Compile Include="Migrations\201610251359550_MetricTableAddIsManualColumn.Designer.cs">
+      <DependentUpon>201610251359550_MetricTableAddIsManualColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivityLapsDto.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
@@ -570,6 +574,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610211123526_AddStreamsToActivityDeleteDetailsSP.resx">
       <DependentUpon>201610211123526_AddStreamsToActivityDeleteDetailsSP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610251359550_MetricTableAddIsManualColumn.resx">
+      <DependentUpon>201610251359550_MetricTableAddIsManualColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

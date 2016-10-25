@@ -160,7 +160,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 if (existingMetric == null)
                 {         
-                    _unitOfWork.Metrics.AddMetric(Metric.CreateMetric(_userId, metricType, item.DateTime, Convert.ToDecimal(item.Value)));
+                    _unitOfWork.Metrics.AddMetric(Metric.CreateMetric(_userId, metricType, item.DateTime, Convert.ToDecimal(item.Value), false));
                 }
                 else
                     existingMetric.Value = Convert.ToDecimal(item.Value);

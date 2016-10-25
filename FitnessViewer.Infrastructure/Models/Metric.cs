@@ -29,9 +29,9 @@ namespace FitnessViewer.Infrastructure.Models
         public DateTime Recorded { get; set; }
         public decimal Value { get; set; }
 
+        public bool IsManual { get; set; }
 
-
-        internal static Metric CreateMetric(string userId, MetricType type, DateTime dateTime, decimal value)
+        public static Metric CreateMetric(string userId, MetricType type, DateTime dateTime, decimal value, bool isManual)
         {
             if (type == MetricType.Invalid)
                 throw new ArgumentException("Invalid MetricType.");
@@ -41,6 +41,7 @@ namespace FitnessViewer.Infrastructure.Models
             m.MetricType = type;
             m.Recorded = dateTime;
             m.Value = value;
+            m.IsManual = isManual;
 
             return m;
         }

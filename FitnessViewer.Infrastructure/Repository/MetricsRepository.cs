@@ -57,7 +57,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .ToList();
         }
 
-        internal void AddMetric(Metric m)
+        public void AddMetric(Metric m)
         {
             _context.Metric.Add(m);
         }
