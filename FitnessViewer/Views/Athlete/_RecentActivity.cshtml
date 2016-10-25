@@ -1,25 +1,21 @@
 ﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.ActivityBaseDto>
-
 <h4>Recent Activities</h4>
-
 <div class="table-responsive">
     <table  class="table">
         <tr>
-
             <th>Name</th>
             <th>Date</th>
             <th>Type</th>
             <th class="align-right">Distance</th>
             <th class="align-right">Time</th>
-        
-        </tr>
+         </tr>
         @foreach (var a in Model)
         {
             <tr>
                 <td>                    
                     @Html.ActionLink(a.Name, "ViewActivity", "Activity", new { Id =a.Id }, null )
             </td>
-                <td>@a.Date</td>
+                <td>@a.Start.ToShortDateString()</td>
                 <td>@a.ActivityTypeId</td>
                 <td class="align-right">@a.Distance</td>
                 <td class="align-right">@a.MovingTime</td>
@@ -27,4 +23,3 @@
         }
     </table>
 </div>
-
