@@ -118,22 +118,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="duration">number of data points to examine in stream</param>
         private void CheckDuration(int startDataPoint, int duration)
         {
-            int totalForDuration = 0;
-            int pointsCounted = 0;
-            for (int i = 0; i <= duration - 1; i++)
-            {
-                // for cadence peaks we ignore 0 values to exclude times when stationary.
-                if (_streamType == PeakStreamType.Cadence && _data[startDataPoint + i] == 0)
-                    continue;
+            // for cadence peaks we ignore 0 values to exclude times when stationary.
+            var dataPoints = _data.Skip(startDataPoint).Take(duration)
+                .Where(d=> _streamType == PeakStreamType.Cadence ? d > 0 : true)
+                .ToList();
 
-                totalForDuration += _data[startDataPoint + i];
-                pointsCounted++;
-            }
-
-            if (pointsCounted == 0)
+            if (dataPoints.Count == 0)
                 return;
 
-            int loopPeak = totalForDuration / pointsCounted;
+            int loopPeak = dataPoints.Sum() / dataPoints.Count();
+
 
             if (loopPeak > _peakInformation.Value)
             {
