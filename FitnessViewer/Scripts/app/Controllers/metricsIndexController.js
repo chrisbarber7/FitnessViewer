@@ -1,13 +1,10 @@
 ﻿var MetricsIndexController = function () {
     var init = function (period) {
-
-        setupWeightDetailedChart(period);
-      
-   
-
+        setupWeightDetailedChart(period, 'Weight', 'chartDetailedWeight');
+        setupWeightDetailedChart(period, 'HeartRate', 'chartDetailedHRV');  
     };
 
-    var setupWeightDetailedChart = function (period) {
+    var setupWeightDetailedChart = function (period, metricType, chartName) {
 
         // dates in unix format.
         var from = moment().add(period*-1, 'months').utc().format("X");
@@ -15,7 +12,7 @@
         
         $.ajax({
             dataType: "json",
-            url: "/api/Metric/GetWeightMetrics/?From="+from+"&To="+to,
+            url: "/api/Metric/GetMetrics/"+metricType+"/?From="+from+"&To="+to,
             success: function (data) {
                 WeightDetailedChart(data);
             },
@@ -29,8 +26,8 @@
                 labels: data.Date,
                 datasets: [
                     {
-                        label: 'Weight',
-                        data: data.Weight,
+                        label: metricType,
+                        data: data.MetricValue,
                         lineThickness: 0.1,
                         fill: false,
                         borderColor: '#3a8904'
@@ -45,7 +42,7 @@
                 ]
             };
 
-            var ctx = document.getElementById("chartDetailedWeight").getContext("2d");
+            var ctx = document.getElementById(chartName).getContext("2d");
 
             var myBarChart = Chart.Line(ctx, {
                 data: barChartData,
@@ -55,9 +52,6 @@
             });
         }
     };
-
-
-
     return {
         init: init
     };

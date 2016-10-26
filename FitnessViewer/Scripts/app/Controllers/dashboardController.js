@@ -41,38 +41,20 @@
                     animation: false,
                     onClick: handleClick
                 }
-
-
-
             });
 
             function handleClick(evt) {
-                var activeElement = myBarChart.getElementAtEvent(evt);
-
-
- 
+                var activeElement = myBarChart.getElementAtEvent(evt); 
             }
-
-
         }
-    
-      
-    
     };
 
     var setupWeightChart = function (chartName, api) {
-        
-
-
-
-            var from = moment().add(-30, 'days').utc().format("X");
+        var from = moment().add(-30, 'days').utc().format("X");
         var to = moment().utc().format("X");
-        
-
-        
         $.ajax({
             dataType: "json",
-            url: "/api/Metric/GetWeightMetrics/?From="+from+"&To="+to,
+            url: "/api/Metric/GetMetrics/Weight/?From="+from+"&To="+to,
             success: function (data) {
                 WeightChart(data);
             },
@@ -87,7 +69,7 @@
                 datasets: [
                     {
                         label: 'Weight',
-                        data: data.Weight,
+                        data: data.MetricValue,
                         lineThickness:0.1,
                         fill: false,                       
                         borderColor: '#3a8904'
@@ -113,9 +95,6 @@
         }
     };
 
-
-
-
     var setupTimeBySportChart = function (chartName, days) {
         $.ajax({
             dataType: "json",
@@ -129,17 +108,11 @@
         });
 
         function TimeBySportChart(dataSet) {
-            var pieChartData = {
-              
+            var pieChartData = {              
                 labels: dataSet.Sport,
-
-
                 datasets: [
                     {
                         data: dataSet.Duration,
-
-
-
                         backgroundColor: [
                             "#FF6384",
                             "#36A2EB",
@@ -165,7 +138,6 @@
                 }
             };
 
-
             var ctx = document.getElementById(chartName).getContext("2d");
 
             var myPieChart = new Chart(ctx, {
@@ -175,12 +147,6 @@
             });
         }
     };
-
-
-
-
-
-
     return {
         init: init
     };

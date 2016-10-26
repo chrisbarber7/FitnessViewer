@@ -52,28 +52,41 @@ namespace FitnessViewer.Infrastructure.Repository
                 .ToList();
         }
 
-        public void AddMetric(Metric m)
+
+        public void AddOrUpdateMetric(Metric metric)
         {
-            _context.Metric.Add(m);
+            // check if metric already exists?
+            Metric existing = _context.Metric
+                                        .Where(m => m.UserId == metric.UserId && 
+                                                    m.Recorded == metric.Recorded && 
+                                                    m.MetricType == metric.MetricType)
+                                        .FirstOrDefault();
+
+            if (existing == null)
+                _context.Metric.Add(metric);
+            else
+                existing.Value = metric.Value;
         }
 
-        public List<WeightByDayDto> GetWeightDetails(string userId, int days)
+        public List<WeightByDayDto> GetMetricDetails(string userId, MetricType type, int days)
         {
-            days = days - 1;
+            // to return requested number of days we need to subtract one (i.e. if days is 30 we need to go back 29 days to return 30 days values).
+            DateTime fromDate = DateTime.Now.Date.AddDays((days - 1) * -1);
 
-            return GetWeightDetails(userId, DateTime.Now.Date.AddDays(days * -1), DateTime.Now);
+            return GetMetricDetails(userId, type, fromDate, DateTime.Now);
         }
 
-        public List<WeightByDayDto> GetWeightDetails(string userId, DateTime from, DateTime to)
-
+        public List<WeightByDayDto> GetMetricDetails(string userId, MetricType type, DateTime from, DateTime to)
         {
+            DateTime upperDateTime = to.AddHours(23).AddMinutes(59).AddSeconds(59);
+
             DateTime dataFrom = from.AddDays(-30);
             // grab a copy of the needed data from database once then we'll work out figures from local list.
             var metrics = _context.Metric
                  .Where(m => m.UserId == userId && 
-                            m.MetricType == enums.MetricType.Weight && 
+                            m.MetricType == type && 
                             m.Recorded >= dataFrom && 
-                            m.Recorded <= to)
+                            m.Recorded <= upperDateTime)
                  .Select(m => new
                  {
                      Recorded = m.Recorded,
@@ -93,10 +106,14 @@ namespace FitnessViewer.Infrastructure.Repository
 
             while (day <= to)
             {
+                // need to ensure that we include records which also have a time element.
+                DateTime toCompareAgainst = day.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+
                 WeightByDayDto w = new WeightByDayDto(day);
 
                 // work out 30 day average weight for the current date
-                var Day30Data = metrics.Where(m => m.Recorded >= day.AddDays(-30) && m.Recorded <= day).ToList();
+                var Day30Data = metrics.Where(m => m.Recorded >= day.AddDays(-30) && m.Recorded <= toCompareAgainst).ToList();
 
                 if (Day30Data.Count != 0)
                 {
@@ -105,7 +122,7 @@ namespace FitnessViewer.Infrastructure.Repository
                     w.High30Day = Day30Data.Max(d => d.Value);
                 }
                 // work out 7 day average weight for the current date
-                var Day7Data = metrics.Where(m => m.Recorded >= day.AddDays(-7) && m.Recorded <= day).ToList();
+                var Day7Data = metrics.Where(m => m.Recorded >= day.AddDays(-7) && m.Recorded <= toCompareAgainst).ToList();
 
                 if (Day7Data.Count != 0)
                 {
@@ -115,7 +132,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 }
 
                 var currentQuery = metrics
-                        .Where(m => m.Recorded <= day)
+                        .Where(m => m.Recorded <= toCompareAgainst)
                         .OrderByDescending(m => m.Recorded)
                         .FirstOrDefault();
 

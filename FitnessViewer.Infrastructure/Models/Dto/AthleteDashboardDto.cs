@@ -20,7 +20,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
             dashboard.PowerPeaks = uow.Analysis.GetPeaks(userId, PeakStreamType.Power);
             dashboard.RunningTime = uow.Activity.GetBestTimes(userId);
-            dashboard.CurrentWeight = uow.Metrics.GetWeightDetails(userId, 1)[0];
+            dashboard.CurrentWeight = uow.Metrics.GetMetricDetails(userId, MetricType.Weight, 1)[0];
             dashboard.RecentActivity = uow.Activity.GetRecentActivity(summaryActivities, 7);
             dashboard.Run7Day = uow.Activity.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
             dashboard.Bike7Day = uow.Activity.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);

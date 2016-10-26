@@ -1,12 +1,12 @@
-﻿@model FitnessViewer.ViewModels.WeightViewModel
+﻿@model FitnessViewer.ViewModels.HeartRateViewModel
 @{
-    ViewBag.Title = "Add Weight";
+    ViewBag.Title = "Add Resting Heart Rate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add Weight</h2>
+<h2>Add Resting Heart Rate</h2>
 
-@using (Html.BeginForm("AddWeight", "Metrics"))
+@using (Html.BeginForm("AddHeartRate", "Metrics"))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.DateRecorded)
@@ -20,15 +20,11 @@
         @Html.ValidationMessageFor(m => m.TimeRecorded)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Weight)
-        @Html.TextBoxFor(m => m.Weight, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Weight)
+        @Html.LabelFor(m => m.RestingHeartRate)
+        @Html.TextBoxFor(m => m.RestingHeartRate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RestingHeartRate)
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Bodyfat)
-        @Html.TextBoxFor(m => m.Bodyfat, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Bodyfat)
-    </div>
+
     <button type="submit" class="btn btn-primary">Save</button>
 
 }

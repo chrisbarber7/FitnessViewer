@@ -238,12 +238,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\HeartRateViewModel.cs" />
+    <Compile Include="ViewModels\HRVViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\MeaasurementViewModel.cs" />
+    <Compile Include="ViewModels\MeasurementViewModel.cs" />
     <Compile Include="ViewModels\ValidDate.cs" />
     <Compile Include="ViewModels\ValidTime.cs" />
+    <Compile Include="ViewModels\WeightViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\activityLeaflet.css" />
@@ -593,6 +596,8 @@
     <Content Include="Views\Athlete\_RecentActivity.cshtml" />
     <Content Include="Views\Athlete\_SportSummary.cshtml" />
     <Content Include="Views\Metrics\AddWeight.cshtml" />
+    <Content Include="Views\Metrics\AddHeartRate.cshtml" />
+    <Content Include="Views\Metrics\AddHRV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

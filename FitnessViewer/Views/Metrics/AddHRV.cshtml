@@ -1,0 +1,70 @@
+﻿@model FitnessViewer.ViewModels.HRVViewModel
+@{
+    ViewBag.Title = "Add HRV recording";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add HRV recording</h2>
+
+@using (Html.BeginForm("AddHRV", "Metrics"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateRecorded)
+        @Html.TextBoxFor(m => m.DateRecorded, new { @class = "form-control", placeholder = "eg 29 Sep 2016" })
+        @Html.ValidationMessageFor(m => m.DateRecorded)
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TimeRecorded)
+        @Html.TextBoxFor(m => m.TimeRecorded, new { @class = "form-control", placeholder = "eg 07:15" })
+        @Html.ValidationMessageFor(m => m.TimeRecorded)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.RestingHeartRate)
+        @Html.TextBoxFor(m => m.RestingHeartRate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RestingHeartRate)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRV)
+        @Html.TextBoxFor(m => m.HRV, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRV)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRVReadiness)
+        @Html.TextBoxFor(m => m.HRVReadiness, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRVReadiness)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRVRMSSD)
+        @Html.TextBoxFor(m => m.HRVRMSSD, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRVRMSSD)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRVLnRMSSD)
+        @Html.TextBoxFor(m => m.HRVLnRMSSD, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRVLnRMSSD)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRVSDNN)
+        @Html.TextBoxFor(m => m.HRVSDNN, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRVSDNN)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRVNN50)
+        @Html.TextBoxFor(m => m.HRVNN50, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRVNN50)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HRVPNN50)
+        @Html.TextBoxFor(m => m.HRVPNN50, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HRVPNN50)
+    </div>
+  <button type = "submit" class="btn btn-primary">Save</button>
+
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

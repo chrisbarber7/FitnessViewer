@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Models.Dto;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Models.Dto;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
-        public IHttpActionResult GetWeightMetrics([FromUri] DateRange dates)
+        [Route("api/Metric/GetMetrics/{type}/")]
+        public IHttpActionResult GetMetrics(string type, [FromUri] DateRange dates)
         {
             string userId = this.User.Identity.GetUserId();
 
@@ -30,20 +32,30 @@ namespace FitnessViewer.Controllers.api
 
             if (!dates.ToDateTime.HasValue)
                 return BadRequest("Invalid To Date");
-            
-            var metrics = _unitOfWork.Metrics.GetWeightDetails(userId, dates.FromDateTime.Value, dates.ToDateTime.Value);
+
+            MetricType metricType = MetricType.Invalid;
+
+            if (type.ToUpper() == "WEIGHT")
+                metricType = MetricType.Weight;
+            else if (type.ToUpper() == "HEARTRATE")
+                metricType = MetricType.RestingHeartRate;
+
+            if (metricType == MetricType.Invalid)
+                return BadRequest("Invalid Metric Type");
+
+            var metrics= _unitOfWork.Metrics.GetMetricDetails(userId, metricType, dates.FromDateTime.Value, dates.ToDateTime.Value);
 
             List<string> date = new List<string>();
-            List<string> weight = new List<string>();
+            List<string> metricValue = new List<string>();
             List<string> ave7day = new List<string>();
             List<string> ave30day = new List<string>();
 
             foreach (WeightByDayDto w in metrics)
             {
                 if ((w.Current != null) && (w.Current != 0))
-                    weight.Add(w.Current.ToString());
+                    metricValue.Add(w.Current.ToString());
                 else
-                    weight.Add(null);
+                    metricValue.Add(null);
 
                 date.Add(w.Date.ToString("dd MMM"));
 
@@ -61,7 +73,7 @@ namespace FitnessViewer.Controllers.api
             var chart = new
             {
                 Date = date,
-                Weight = weight,
+                MetricValue = metricValue,
                 Ave7Day = ave7day,
                 Ave30day = ave30day
             };
