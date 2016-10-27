@@ -113,6 +113,22 @@ namespace FitnessViewer.Infrastructure.Repository
             return true;
         }
 
+        public bool DeleteActivityStream(long activityId)
+        {
+            try
+            {
+                _context.Database.ExecuteSqlCommand("dbo.ActivityStreamDelete @activityId", new SqlParameter("activityid", activityId));
+            }
+            catch (SqlException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+
         internal void UpdateActivity(Activity amended)
         {
             _context.Activity.Attach(amended);

@@ -52,7 +52,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
 
             UpdateActivityDetails();
-            AddNotification();
+            AddNotification(Notification.StravaActivityDownload(_activityId));
             StravaPause(_fvActivity);
         }
 
@@ -76,11 +76,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 throw new ArgumentException(string.Format("Activity Not Found: {0}", _activityId.ToString()));
         }
 
-        private void AddNotification()
-        {
-            _unitOfWork.Notification.Add(new UserNotification(_userId, Notification.StravaActivityDownload(_activityId)));
-            _unitOfWork.Complete();
-        }
+   
 
         private void UpdateActivityDetails()
         {

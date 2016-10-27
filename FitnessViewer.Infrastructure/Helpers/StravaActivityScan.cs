@@ -67,7 +67,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                     // if activity already exists then update details incase any have changed on strava.
                     if (currentActivities.Contains(stravaActivitySummary.Id))
                     {
-                      CheckActivityDetailsForChanges(stravaActivitySummary);                        
+                        CheckActivityDetailsForChanges(stravaActivitySummary);
                         continue;
                     }
 
@@ -92,18 +92,13 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 foreach (DownloadQueue job in jobs)
                     job.AddToAzureQueue();
-       
-                if (_stravaLimitDelay > 100)
-                    LogActivity(string.Format("Pausing for {0}ms", _stravaLimitDelay.ToString()), fvAthlete);
 
-                System.Threading.Thread.Sleep(_stravaLimitDelay);
+                StravaPause(fvAthlete);          
             }
 
             if (itemsAdded > 0)
             {
-                // add a notification 
-                _unitOfWork.Notification.Add(new UserNotification(_userId, Notification.StravaActivityScan(itemsAdded)));
-                _unitOfWork.Complete();
+                AddNotification(Notification.StravaActivityScan(itemsAdded));
 
                 // trigger web job to download activity details.
                 AzureWebJob.CreateTrigger(_unitOfWork);

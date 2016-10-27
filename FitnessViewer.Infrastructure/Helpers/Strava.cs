@@ -103,6 +103,15 @@ namespace FitnessViewer.Infrastructure.Helpers
             Console.WriteLine(log);
         }
 
+        protected void StravaPause(Athlete fvAthelete)
+        {
+            if (_stravaLimitDelay > 100)
+                LogActivity(string.Format("Pausing for {0}ms", _stravaLimitDelay.ToString()), fvAthelete);
+
+            System.Threading.Thread.Sleep(_stravaLimitDelay);
+        }
+
+
         protected void StravaPause(Activity fvActivity)
         {
             if (_stravaLimitDelay > 100)
@@ -111,7 +120,10 @@ namespace FitnessViewer.Infrastructure.Helpers
             System.Threading.Thread.Sleep(_stravaLimitDelay);
         }
 
-    
-
+        protected void AddNotification(Notification n)
+        {
+            _unitOfWork.Notification.Add(new UserNotification(_userId, n));
+            _unitOfWork.Complete();
+        }
     }
 }
