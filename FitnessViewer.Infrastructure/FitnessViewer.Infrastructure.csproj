@@ -142,6 +142,7 @@
     <Compile Include="enums\NotificationType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
+    <Compile Include="Helpers\ActivityAnalytics.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\FitbitHelper.cs" />
@@ -255,6 +256,10 @@
     <Compile Include="Migrations\201610251447219_RemoveMeasurementTable.cs" />
     <Compile Include="Migrations\201610251447219_RemoveMeasurementTable.Designer.cs">
       <DependentUpon>201610251447219_RemoveMeasurementTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610270925114_CreateSPToRemoveStreamForActivity.cs" />
+    <Compile Include="Migrations\201610270925114_CreateSPToRemoveStreamForActivity.Designer.cs">
+      <DependentUpon>201610270925114_CreateSPToRemoveStreamForActivity.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivityLapsDto.cs" />
@@ -583,6 +588,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610251447219_RemoveMeasurementTable.resx">
       <DependentUpon>201610251447219_RemoveMeasurementTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610270925114_CreateSPToRemoveStreamForActivity.resx">
+      <DependentUpon>201610270925114_CreateSPToRemoveStreamForActivity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
