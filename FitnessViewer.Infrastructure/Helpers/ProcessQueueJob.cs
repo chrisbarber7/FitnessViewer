@@ -58,7 +58,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 _jobDetails.JobHasError();
                 _uow.Complete();
             }
-            Console.WriteLine(string.Format("Finished sharonProcessing Job: {0} ActivityId:{1}", _jobDetails.Id, _jobDetails.ActivityId));
+            Console.WriteLine(string.Format("Finished Processing Job: {0} ActivityId:{1}", _jobDetails.Id, _jobDetails.ActivityId));
         }
 
         private  void FitbitDownload()
