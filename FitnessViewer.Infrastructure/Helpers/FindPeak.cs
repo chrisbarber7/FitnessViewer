@@ -2,6 +2,7 @@
 using FitnessViewer.Infrastructure.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -27,16 +28,18 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="activityId">Activity Id.</param>
         public PeakValueFinder(List<int> stream, PeakStreamType type, long activityId)
         {
-            _data = stream;
             _streamType = type;
             _activityId = activityId;
-
+            
+            // for cadence peaks we ignore 0 values to exclude times when stationary.
+            _data = stream.Where(d => _streamType == PeakStreamType.Cadence ? d > 0 : true).ToList();
+           
             // set standard reporting durations (in seconds)
             switch (type)
             {
                 case PeakStreamType.Power:
                     {
-                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
+                 _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
                         break;
                     }
                 case PeakStreamType.HeartRate:
@@ -51,6 +54,41 @@ namespace FitnessViewer.Infrastructure.Helpers
                     };
             }
         }
+
+        public void SetupPowerCurveDurations()
+        {
+            List<int> durations = new List<int>();
+
+            // under 3 minutes = every second
+            for (int x = 1; x <= 179; x++)
+                durations.Add(x);
+
+            // 3 mins to 5 mins = every 2 seconds
+            for (int x = 180; x <= 299; x = x + 2)
+                durations.Add(x);
+
+            // 5 mins to 30 mins = every 5 seconds
+            for (int x = 300; x <= (30 * 60) - 1; x = x + 5)
+                durations.Add(x);
+
+            // 30 mins to 1 hour = every 30 seconds.
+            for (int x = (30 * 60); x <= (60 * 60) - 1; x = x + 30)
+                durations.Add(x);
+
+            // one hour to two hours = every 60 seconds.
+            for (int x = (60 * 60); x <= (2 * 60 * 60) - 1; x = x + 60)
+                durations.Add(x);
+
+            // anything over every 5 mins
+            for (int x = (2 * 60 * 60); x <= (3 * 60 * 60) - 1; x = x + 300)
+                durations.Add(x);
+            
+            durations.Add(int.MaxValue);
+
+            // include any duration less than event time (and int.MaxValue for full event).
+            _standardDurations = durations.Where(d=>d <= _data.Count() || d == int.MaxValue).ToArray();
+        }
+
 
         public static List<ActivityPeakDetail> ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
         {
@@ -76,67 +114,55 @@ namespace FitnessViewer.Infrastructure.Helpers
             List<ActivityPeakDetail> peaks = new List<ActivityPeakDetail>();
 
             foreach (int duration in _standardDurations)
-                peaks.Add(FindPeakForDuration(duration));
+                peaks.Add(new ActivityPeakDetail(_activityId, _streamType, duration));
+
+            // loop over the data for each possible starting point 
+            for (int startDataPoint = 0; startDataPoint <= _data.Count; startDataPoint++)
+            {
+                List<int> remainingData = _data.Skip(startDataPoint).ToList();
+
+                Parallel.ForEach(peaks, p =>
+                {           
+                    var dataPoints = remainingData.Take(p.Duration).ToList();
+
+                    if (dataPoints.Count() == 0)
+                        return;
+
+                    if (p.Duration == int.MaxValue)
+                    {
+                        if (dataPoints.Count() != _data.Count)
+                            return;
+                    }
+
+                    else if (dataPoints.Count() < p.Duration)
+                        return;
+
+                    int loopPeak = dataPoints.Sum() / dataPoints.Count();
+
+                    if (p.Value == null || loopPeak > p.Value)
+                    {
+                        p.Value = loopPeak;
+                        p.StartIndex = startDataPoint;
+                    }
+                });
+            }
+       
 
             return peaks;
         }
 
-        /// <summary>
-        /// Find peak in stream for a single duration
-        /// </summary>
-        /// <param name="duration">Time to find peak for (in seconds)</param>
-        /// <returns></returns>
         public ActivityPeakDetail FindPeakForDuration(int duration)
         {
-            // if there isn't enough data for the duration then we can't find a peak
-            // ie looking for 60 minute peak in a 30 minute activity
-            if ((_data.Count < duration) && (duration != int.MaxValue))
-                return new ActivityPeakDetail(_activityId, _streamType, duration);
+            // override default duration as we're only interested in this one!
+            _standardDurations = new int[] { duration };
 
-            _peakFound = false;
+            List<ActivityPeakDetail> peaks = FindPeaks();
 
-            _peakInformation = new ActivityPeakDetail(_activityId, _streamType) { Duration = duration, Value = 0, StartIndex = 0 };
+            // we should only get back one result as we only asked for one duration.
+            if (peaks.Count() != 1)
+                return null;
 
-            // if duration is full activity then change duration to full list size to process.
-            if (duration == int.MaxValue)
-                duration = _data.Count;
-
-            // loop over the data for each possible starting point for the given duration
-            for (int startDataPoint = 0; startDataPoint <= _data.Count - duration; startDataPoint++)
-                CheckDuration(startDataPoint, duration);
-
-            if (!_peakFound)
-                _peakInformation.Value = _peakInformation.StartIndex = null;
-
-            return _peakInformation;
-        }
-
-        /// <summary>
-        /// Find peak for a given duration
-        /// </summary>
-        /// <param name="startDataPoint">Starting data point in stream</param>
-        /// <param name="duration">number of data points to examine in stream</param>
-        private void CheckDuration(int startDataPoint, int duration)
-        {
-            // for cadence peaks we ignore 0 values to exclude times when stationary.
-            var dataPoints = _data.Skip(startDataPoint).Take(duration)
-                .Where(d=> _streamType == PeakStreamType.Cadence ? d > 0 : true)
-                .ToList();
-
-            if (dataPoints.Count == 0)
-                return;
-
-            int loopPeak = dataPoints.Sum() / dataPoints.Count();
-
-
-            if (loopPeak > _peakInformation.Value)
-            {
-                _peakFound = true;
-                _peakInformation.Value = loopPeak;
-                _peakInformation.StartIndex = startDataPoint;
-            }
-
-            return;
+            return peaks[0];
         }
     }
 }

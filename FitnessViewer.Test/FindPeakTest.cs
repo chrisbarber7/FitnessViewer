@@ -271,8 +271,8 @@ namespace FitnessViewer.Test
             {
                 switch (p.Duration)
                 {
-                    case 5: { Assert.AreEqual(102, p.Value); break; }
-                    case 10: { Assert.AreEqual(102, p.Value); break; }
+                    case 5: { Assert.AreEqual(101, p.Value); break; }
+                    case 10: { Assert.AreEqual(96, p.Value); break; }
                     case 30: { Assert.AreEqual(92, p.Value); break; }
                     case 60: { Assert.AreEqual(91, p.Value); break; }
                     case 120: { Assert.AreEqual(88, p.Value); break; }
