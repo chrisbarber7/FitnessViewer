@@ -29,7 +29,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         protected StravaDotNetClient.StravaClient _client;
         protected string _userId;
         protected long _stravaId;
-        protected int stravaLimitDelay;
+        protected int _stravaLimitDelay;
        
         public Strava()
         {
@@ -41,13 +41,13 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
              // if getting close to short term limit introduce delays.
             if (e.Usage.ShortTerm < 550)
-                stravaLimitDelay = 100;
+                _stravaLimitDelay = 100;
             else if (e.Usage.ShortTerm <=575)
-                stravaLimitDelay = 30000;
+                _stravaLimitDelay = 30000;
             else if (e.Usage.ShortTerm <= 590)
-                stravaLimitDelay = 45000;
+                _stravaLimitDelay = 45000;
             else
-                stravaLimitDelay = 60000;
+                _stravaLimitDelay = 60000;
         }
         
         /// <summary>
@@ -101,6 +101,14 @@ namespace FitnessViewer.Infrastructure.Helpers
                                                                                 
             System.Diagnostics.Debug.WriteLine(log);
             Console.WriteLine(log);
+        }
+
+        protected void StravaPause(Activity fvActivity)
+        {
+            if (_stravaLimitDelay > 100)
+                LogActivity(string.Format("Pausing for {0}ms", _stravaLimitDelay.ToString()), fvActivity);
+
+            System.Threading.Thread.Sleep(_stravaLimitDelay);
         }
 
     

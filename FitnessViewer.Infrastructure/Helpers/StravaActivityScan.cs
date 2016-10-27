@@ -93,10 +93,10 @@ namespace FitnessViewer.Infrastructure.Helpers
                 foreach (DownloadQueue job in jobs)
                     job.AddToAzureQueue();
        
-                if (stravaLimitDelay > 100)
-                    LogActivity(string.Format("Pausing for {0}ms", stravaLimitDelay.ToString()), fvAthlete);
+                if (_stravaLimitDelay > 100)
+                    LogActivity(string.Format("Pausing for {0}ms", _stravaLimitDelay.ToString()), fvAthlete);
 
-                System.Threading.Thread.Sleep(stravaLimitDelay);
+                System.Threading.Thread.Sleep(_stravaLimitDelay);
             }
 
             if (itemsAdded > 0)
