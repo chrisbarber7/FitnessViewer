@@ -32,7 +32,13 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             dashboard.Swim30Day = uow.Activity.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
             dashboard.Other30Day = uow.Activity.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
             dashboard.All30Day = uow.Activity.GetSportSummary(userId, "All", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
-            
+            dashboard.Run90Day = uow.Activity.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.Bike90Day = uow.Activity.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.Swim90Day = uow.Activity.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.Other90Day = uow.Activity.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.All90Day = uow.Activity.GetSportSummary(userId, "All", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+
+
             return dashboard;
         }
 
@@ -43,18 +49,23 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public SportSummaryDto Run7Day { get; set; }
         public SportSummaryDto Run30Day { get; set; }
+        public SportSummaryDto Run90Day { get; set; }
 
         public SportSummaryDto Bike7Day { get; set; }
         public SportSummaryDto Bike30Day { get; set; }
+        public SportSummaryDto Bike90Day { get; set; }
 
         public SportSummaryDto Swim7Day { get; set; }
         public SportSummaryDto Swim30Day { get; set; }
+        public SportSummaryDto Swim90Day { get; set; }
 
         public SportSummaryDto Other7Day { get; set; }
         public SportSummaryDto Other30Day { get; set; }
+        public SportSummaryDto Other90Day { get; set; }
 
         public SportSummaryDto All7Day { get; set; }
         public SportSummaryDto All30Day { get; set; }
+        public SportSummaryDto All90Day { get; set; }
     }
 }
 

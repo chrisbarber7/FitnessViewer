@@ -92,7 +92,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         internal IEnumerable<ActivityDto> GetRecentActivity(List<ActivityDto> summaryActivities, int returnedRows)
         {
-            return summaryActivities            
+            return summaryActivities
                  .OrderByDescending(a => a.Start)
                  .Take(returnedRows)
                  .ToList();
@@ -135,7 +135,7 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Entry(amended).State = EntityState.Modified;
         }
 
-    
+
 
         #endregion
 
@@ -179,11 +179,22 @@ namespace FitnessViewer.Infrastructure.Repository
                  .ToList();
         }
 
+
         public GraphStreamDto GetActivityStreams(long activityId)
         {
+            // by default unless told otherwise by parameter we'll use the steps set-up with the activity (so pass false).
+            return GetActivityStreams(activityId, false);
+        }
+
+
+        public GraphStreamDto GetActivityStreams(long activityId, bool ignoreStep)
+        {
+
+
+
             var activityStream = _context.Stream
                  .Include(a => a.Activity)
-                 .Where(s => s.ActivityId == activityId && s.Time % s.Activity.StreamStep == 0)
+                 .Where(s => s.ActivityId == activityId && (ignoreStep ? true : s.Time % s.Activity.StreamStep == 0))
                  .Select(s => new
                  {
                      Time = s.Time,
@@ -555,29 +566,29 @@ namespace FitnessViewer.Infrastructure.Repository
                     {
                         Id = r.Id,
                         Name = r.Name,
-                         ActivityTypeId = r.ActivityTypeId,
-                         MovingTime = r.MovingTime != null ? r.MovingTime.Value : new TimeSpan(0, 0, 0),
-                         Distance = r.Distance,
-                         SufferScore = r.SufferScore != null ? r.SufferScore.Value : 0,
-                         Calories = r.Calories,
-                         ElevationGain = r.ElevationGain,
-                         Start = r.Start,
-                         StartDateLocal = r.StartDateLocal,
-                         IsRide = r.ActivityType.IsRide,
-                         IsRun = r.ActivityType.IsRun,
-                         IsSwim = r.ActivityType.IsSwim,
-                         IsOther = r.ActivityType.IsOther
-                     });
+                        ActivityTypeId = r.ActivityTypeId,
+                        MovingTime = r.MovingTime != null ? r.MovingTime.Value : new TimeSpan(0, 0, 0),
+                        Distance = r.Distance,
+                        SufferScore = r.SufferScore != null ? r.SufferScore.Value : 0,
+                        Calories = r.Calories,
+                        ElevationGain = r.ElevationGain,
+                        Start = r.Start,
+                        StartDateLocal = r.StartDateLocal,
+                        IsRide = r.ActivityType.IsRide,
+                        IsRun = r.ActivityType.IsRun,
+                        IsSwim = r.ActivityType.IsSwim,
+                        IsOther = r.ActivityType.IsOther
+                    });
 
             return activityQuery;
         }
 
 
-        public SportSummaryDto GetSportSummary( string userId, string sport, DateTime start, DateTime end)
+        public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end)
         {
             return GetSportSummary(userId, sport, start, end, null);
         }
-   
+
         public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end, List<ActivityDto> fullActivityList)
         {
             IEnumerable<ActivityDto> activities;
@@ -627,11 +638,11 @@ namespace FitnessViewer.Infrastructure.Repository
                 return activitiesQuery.Where(r => r.ActivityType.IsRun);
             else if (sport == "Swim")
                 return activitiesQuery.Where(r => r.ActivityType.IsSwim);
-            else if(sport == "Other")
+            else if (sport == "Other")
                 return activitiesQuery.Where(r => r.ActivityType.IsOther);
             else
-            return activitiesQuery;
-            
+                return activitiesQuery;
+
         }
     }
 }
