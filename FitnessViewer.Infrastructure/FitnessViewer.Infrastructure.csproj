@@ -261,6 +261,10 @@
     <Compile Include="Migrations\201610270925114_CreateSPToRemoveStreamForActivity.Designer.cs">
       <DependentUpon>201610270925114_CreateSPToRemoveStreamForActivity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610280651007_StreamsAddActivityIdIndex.cs" />
+    <Compile Include="Migrations\201610280651007_StreamsAddActivityIdIndex.Designer.cs">
+      <DependentUpon>201610280651007_StreamsAddActivityIdIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivityLapsDto.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
@@ -591,6 +595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610270925114_CreateSPToRemoveStreamForActivity.resx">
       <DependentUpon>201610270925114_CreateSPToRemoveStreamForActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610280651007_StreamsAddActivityIdIndex.resx">
+      <DependentUpon>201610280651007_StreamsAddActivityIdIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

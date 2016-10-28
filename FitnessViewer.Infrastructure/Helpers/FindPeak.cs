@@ -13,13 +13,9 @@ namespace FitnessViewer.Infrastructure.Helpers
     {
         private List<int> _data;
         private int[] _standardDurations;
-        private ActivityPeakDetail _peakInformation;
-        private bool _peakFound = false;
         private PeakStreamType _streamType;
         private long _activityId;
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -31,7 +27,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             _streamType = type;
             _activityId = activityId;
             
-            // for cadence peaks we ignore 0 values to exclude times when stationary.
+            // for cadence peaks we ignore 0 values to exclude times when stationary so strip out now.
             _data = stream.Where(d => _streamType == PeakStreamType.Cadence ? d > 0 : true).ToList();
            
             // set standard reporting durations (in seconds)
@@ -114,30 +110,30 @@ namespace FitnessViewer.Infrastructure.Helpers
             List<ActivityPeakDetail> peaks = new List<ActivityPeakDetail>();
 
             foreach (int duration in _standardDurations)
-                peaks.Add(new ActivityPeakDetail(_activityId, _streamType, duration));
+            {
+                ActivityPeakDetail d = new ActivityPeakDetail(_activityId, _streamType, duration);
+
+                // if full duration peak then just calculate the average now and it'll be skipped out of the main loop.
+                if (d.Duration == int.MaxValue)
+                {
+                    d.StartIndex = 0; 
+                    d.Value = (int)_data.Average();
+                }
+                  
+                peaks.Add(d);
+            }
+
+            int dataCount = _data.Count;
 
             // loop over the data for each possible starting point 
-            for (int startDataPoint = 0; startDataPoint <= _data.Count; startDataPoint++)
+            for (int startDataPoint = 0; startDataPoint <= dataCount; startDataPoint++)
             {
-                List<int> remainingData = _data.Skip(startDataPoint).ToList();
+                int remainingDataCount = dataCount - startDataPoint;
 
-                Parallel.ForEach(peaks, p =>
-                {           
-                    var dataPoints = remainingData.Take(p.Duration).ToList();
-
-                    if (dataPoints.Count() == 0)
-                        return;
-
-                    if (p.Duration == int.MaxValue)
-                    {
-                        if (dataPoints.Count() != _data.Count)
-                            return;
-                    }
-
-                    else if (dataPoints.Count() < p.Duration)
-                        return;
-
-                    int loopPeak = dataPoints.Sum() / dataPoints.Count();
+                // loop around each duration for which we have enough data left.
+                Parallel.ForEach(peaks.Where(d=>d.Duration <= remainingDataCount), p =>
+                {
+                    int loopPeak = (int)_data.Skip(startDataPoint).Take(p.Duration).Average();
 
                     if (p.Value == null || loopPeak > p.Value)
                     {
@@ -145,8 +141,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                         p.StartIndex = startDataPoint;
                     }
                 });
-            }
-       
+            }       
 
             return peaks;
         }

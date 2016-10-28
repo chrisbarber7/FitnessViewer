@@ -14,6 +14,7 @@ namespace FitnessViewer.Infrastructure.Models
 
         [Required]
         [ForeignKey("Activity")]
+        [Index("IX_Stream_ActivityId", 1)]
         [Index("IX_Stream_ActivityIdAndStream", 1, IsUnique = true)]
         public long ActivityId { get; set; }
         public virtual Activity Activity { get; set; }

@@ -13,6 +13,7 @@ namespace FitnessViewer.Infrastructure.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            CommandTimeout = 900000;
         }
 
         protected override void Seed(FitnessViewer.Infrastructure.Data.ApplicationDb context)
