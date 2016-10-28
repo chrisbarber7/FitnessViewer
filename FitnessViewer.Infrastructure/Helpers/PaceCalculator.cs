@@ -8,19 +8,20 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public class PaceCalculator
     {
-        public static TimeSpan RunMinuteMiles(decimal distance, TimeSpan time)
+        /// <summary>
+        /// Convert a distance/duration into minute pace per mile
+        /// </summary>
+        /// <param name="distanceInMetres">Run Distance (meters)</param>
+        /// <param name="runDuration">Run Time</param>
+        /// <returns></returns>
+        public static TimeSpan RunMinuteMiles(decimal distanceInMetres, TimeSpan runDuration)
         {
-            double totalSeconds = time.TotalSeconds;
-            double distanceInMiles = Convert.ToDouble(distance*MetreDistance.METRE_TO_MILE);
+            double distanceInMiles = Convert.ToDouble(distanceInMetres * MetreDistance.METRE_TO_MILE);
 
             if (distanceInMiles <= 0)
                 return new TimeSpan(0, 0, 0);
 
-            double averagePaceInSecondsPerMile = Math.Round(totalSeconds/ distanceInMiles) ;
-
-            TimeSpan minPerMile = TimeSpan.FromSeconds(averagePaceInSecondsPerMile);
-
-            return minPerMile;
+            return TimeSpan.FromSeconds(Math.Round(runDuration.TotalSeconds / distanceInMiles));
         }
     }
 }
