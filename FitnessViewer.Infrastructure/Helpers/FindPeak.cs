@@ -35,7 +35,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             {
                 case PeakStreamType.Power:
                     {
-                 _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
+                        //      _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
+                        SetupPowerCurveDurations();
                         break;
                     }
                 case PeakStreamType.HeartRate:
@@ -116,8 +117,13 @@ namespace FitnessViewer.Infrastructure.Helpers
                 // if full duration peak then just calculate the average now and it'll be skipped out of the main loop.
                 if (d.Duration == int.MaxValue)
                 {
+                    // need to set the duration to the stream length so that the end index is calculated correctly from the start index.
+                    d.Duration = _data.Count;
                     d.StartIndex = 0; 
                     d.Value = (int)_data.Average();
+
+                    // reset to int.maxValue now we've updated the startIndex so it's easy to find the full duration peaks.
+                    d.Duration = int.MaxValue;
                 }
                   
                 peaks.Add(d);
