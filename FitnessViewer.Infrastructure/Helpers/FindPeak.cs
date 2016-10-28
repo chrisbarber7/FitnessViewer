@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public class PeakValueFinder
     {
-        private List<int> _data;
+        private int[] _data;
         private int[] _standardDurations;
         private PeakStreamType _streamType;
         private long _activityId;
@@ -34,7 +35,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             _activityId = activityId;
             
             // for cadence peaks we ignore 0 values to exclude times when stationary so strip out now.
-            _data = stream.Where(d => _streamType == PeakStreamType.Cadence ? d > 0 : true).ToList();
+            _data = stream.Where(d => _streamType == PeakStreamType.Cadence ? d > 0 : true).ToArray();
            
             // set standard reporting durations (in seconds)
             switch (type)
@@ -44,17 +45,17 @@ namespace FitnessViewer.Infrastructure.Helpers
                         if (usePowerCurveDurations)
                             SetupPowerCurveDurations();
                         else
-                            _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
+                            _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600 };//, int.MaxValue };
                         break;
                     }
                 case PeakStreamType.HeartRate:
                     {
-                        _standardDurations = new int[] { 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
+                        _standardDurations = new int[] { 60, 120, 300, 360, 600, 720, 1200, 1800, 3600 };//, int.MaxValue };
                         break;
                     }
                 case PeakStreamType.Cadence:
                     {
-                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
+                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600 };//, int.MaxValue };
                         break;
                     };
             }
@@ -88,7 +89,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             for (int x = (2 * 60 * 60); x <= (3 * 60 * 60) - 1; x = x + 300)
                 durations.Add(x);
             
-            durations.Add(int.MaxValue);
+        //    durations.Add(int.MaxValue);
 
             // include any duration less than event time (and int.MaxValue for full event).
             _standardDurations = durations.Where(d=>d <= _data.Count() || d == int.MaxValue).ToArray();
@@ -99,12 +100,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             if (stream.Contains(null))
                 return null;
-
-
+            
             PeakValueFinder finder = new PeakValueFinder(
                 stream.Select(s => s.Value).ToList(),
                 type,
-                activityId);
+                activityId, false);
 
             return finder.FindPeaks();
         }
@@ -120,24 +120,34 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             foreach (int duration in _standardDurations)
             {
-                ActivityPeakDetail d = new ActivityPeakDetail(_activityId, _streamType, duration);
+                // default value to -1 so first value found will be higher and therefore used.
+                peaks.Add(new ActivityPeakDetail(_activityId, _streamType, duration)
+                {                   
+                    Value = -1
+                });
+            }            
 
-                // if full duration peak then just calculate the average now and it'll be skipped out of the main loop.
-                if (d.Duration == int.MaxValue)
-                {
-                    // need to set the duration to the stream length so that the end index is calculated correctly from the start index.
-                    d.Duration = _data.Count;
-                    d.StartIndex = 0; 
-                    d.Value = (int)_data.Average();
 
-                    // reset to int.maxValue now we've updated the startIndex so it's easy to find the full duration peaks.
-                    d.Duration = int.MaxValue;
-                }
-                  
-                peaks.Add(d);
-            }
+         //   //  foreach (int l in _standardDurations)
+         //   Parallel.ForEach(peaks, p =>
+         //   {
+         //       var xs = from n in Enumerable.Range(0, data.Length)
+         //                let subseq = data.Skip(n).Take(p.Duration).Average()
+         //                orderby subseq descending
+         //                select new
+         //                {
+         //                    Start = n,
+         //                    Duration =p.Duration,
+         //                    Average = subseq
+         //                };
 
-            int dataCount = _data.Count;
+         //       var results = xs.First();
+         //       Console.WriteLine(results.Duration);
+         //       Console.WriteLine(results.Average);
+         //   });
+
+
+        int dataCount = _data.Length;
 
             // loop over the data for each possible starting point 
             for (int startDataPoint = 0; startDataPoint <= dataCount; startDataPoint++)
@@ -146,16 +156,33 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 // loop around each duration for which we have enough data left.
                 Parallel.ForEach(peaks.Where(d=>d.Duration <= remainingDataCount), p =>
+            
                 {
-                    int loopPeak = (int)_data.Skip(startDataPoint).Take(p.Duration).Average();
+                    double loopPeak = _data.Skip(startDataPoint).Take(p.Duration).Average();
 
-                    if (p.Value == null || loopPeak > p.Value)
+                    if (loopPeak > p.Value)
                     {
-                        p.Value = loopPeak;
+                        p.Value = (int)loopPeak;
                         p.StartIndex = startDataPoint;
                     }
+                
                 });
-            }       
+            }
+
+            ActivityPeakDetail fullDuration = new ActivityPeakDetail(_activityId, _streamType, _data.Length)
+            {
+                StartIndex = 0,
+                Value = (int)_data.Average()
+            };
+
+            // reset to int.maxValue now we've updated the startIndex so it's easy to find the full duration peaks.
+            fullDuration.Duration = int.MaxValue;
+
+            peaks.Add(fullDuration);
+
+            foreach (ActivityPeakDetail p in peaks)
+                if (p.Value == -1)
+                    p.Value = null;
 
             return peaks;
         }
@@ -167,8 +194,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             List<ActivityPeakDetail> peaks = FindPeaks();
 
-            // we should only get back one result as we only asked for one duration.
-            if (peaks.Count() != 1)
+            // we should only get back two results as we only asked for one duration and it'll also include full duration.
+            if (peaks.Count() != 2)
                 return null;
 
             return peaks[0];

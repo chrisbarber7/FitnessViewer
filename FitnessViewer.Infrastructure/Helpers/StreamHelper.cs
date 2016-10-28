@@ -43,7 +43,13 @@ namespace FitnessViewer.Infrastructure.Helpers
             return string.Format("{0} secs", duration.ToString());
         }
 
-        public static void RecalculateSingleActivity(UnitOfWork uow, long activityId)
+
+        public static void RecalculateSingleActivity(long activityId)
+        {
+            UnitOfWork uow = new UnitOfWork();
+            RecalculateSingleActivity(uow, activityId);
+        }
+        public static void RecalculateSingleActivity(UnitOfWork uow ,long activityId)
         {
             Console.WriteLine("Recalculating Peaks");
             RecalculatePower(uow, activityId);
@@ -55,29 +61,12 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public static void RecalculateAllActivities(UnitOfWork uow)
         {
-            Console.WriteLine("Recalc Power");
-            var activitiesWithPower = uow.Activity.GetStream().Where(s => s.Watts != null).Select(s => s.ActivityId).Distinct().ToList();
+            string userId = "e0113fcc-7546-4c88-872f-c27e196c4d5c";
 
-            foreach (long activityId in activitiesWithPower)
-                RecalculatePower(uow, activityId);
+            var activities = uow.Activity.GetActivities(userId).Select(a => a.Id);
 
-            uow.Complete();
-
-            Console.WriteLine("Recalc Heart Rate");
-            var activitiesWithHeartRate = uow.Activity.GetStream().Where(s => s.HeartRate != null).Select(s => s.ActivityId).Distinct().ToList();
-
-            foreach (long activityId in activitiesWithHeartRate)
-                RecalculateHeartRate(uow, activityId);
-
-            uow.Complete();
-
-            Console.WriteLine("Recalc Cadence");
-            var activitiesWithCadence = uow.Activity.GetStream().Where(s => s.Cadence != null).Select(s => s.ActivityId).Distinct().ToList();
-
-            foreach (long activityId in activitiesWithCadence)
-                RecalculateCadence(uow, activityId);
-
-            uow.Complete();
+            foreach (long activityId in activities)
+                RecalculateSingleActivity(activityId);
         }
 
         private static void RecalculateCadence(UnitOfWork uow, long activityId)
