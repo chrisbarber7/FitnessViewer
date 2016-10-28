@@ -15,14 +15,20 @@ namespace FitnessViewer.Infrastructure.Helpers
         private int[] _standardDurations;
         private PeakStreamType _streamType;
         private long _activityId;
-        
+
+        public PeakValueFinder(List<int> stream, PeakStreamType type, long activityIds)
+            : this (stream, type, activityIds, false)
+        {
+            
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="stream">Stream to be analysed for peaks.</param>
         /// <param name="type">Type of stream (power, HR, cadence)</param>
         /// <param name="activityId">Activity Id.</param>
-        public PeakValueFinder(List<int> stream, PeakStreamType type, long activityId)
+        public PeakValueFinder(List<int> stream, PeakStreamType type, long activityId, bool usePowerCurveDurations)
         {
             _streamType = type;
             _activityId = activityId;
@@ -35,8 +41,10 @@ namespace FitnessViewer.Infrastructure.Helpers
             {
                 case PeakStreamType.Power:
                     {
-                        //      _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
-                        SetupPowerCurveDurations();
+                        if (usePowerCurveDurations)
+                            SetupPowerCurveDurations();
+                        else
+                            _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600, int.MaxValue };
                         break;
                     }
                 case PeakStreamType.HeartRate:
