@@ -50,6 +50,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                     StravaDownload();
                 else if (_jobDetails.DownloadType == DownloadType.Fitbit)
                     FitbitDownload();
+                else if (_jobDetails.DownloadType == DownloadType.CalculateActivityStats)
+                    CalculateStats();
             }
             catch (Exception ex)
             {
@@ -92,6 +94,11 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
         }
 
-
+        private void CalculateStats()
+        {
+            StreamHelper.RecalculateSingleActivity(_uow, _jobDetails.ActivityId.Value);
+            _jobDetails.MarkJobComplete();
+            _uow.Complete();
+        }
     }
 }

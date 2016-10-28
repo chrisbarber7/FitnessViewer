@@ -52,6 +52,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
 
             UpdateActivityDetails();
+
+  //          StreamHelper.RecalculateSingleActivity(_unitOfWork, _activityId);
+
             AddNotification(Notification.StravaActivityDownload(_activityId));
             StravaPause(_fvActivity);
         }
@@ -130,8 +133,6 @@ namespace FitnessViewer.Infrastructure.Helpers
                 StravaDotNetStreams.StreamResolution.All);
             
             ConvertStream(stream);
-            StreamHelper.RecalculateSingleActivity(_unitOfWork, _activityId);   
-
             _streamSize = stream[0].Data.Count;
 
             return ;

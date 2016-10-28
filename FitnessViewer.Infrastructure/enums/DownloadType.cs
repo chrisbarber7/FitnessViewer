@@ -11,8 +11,9 @@ namespace FitnessViewer.Infrastructure.enums
     /// </summary>
     public enum DownloadType
     {
-        Invalid,
-        Strava,
-        Fitbit
+        Invalid =0,
+        Strava=1,
+        Fitbit=2,
+        CalculateActivityStats=3
     }
 }
