@@ -61,7 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CyclePowerUtilsTest.cs" />
+    <Compile Include="ActivityAnalyticsTest.cs" />
     <Compile Include="FindPeakTest.cs" />
     <Compile Include="PaceCalculatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
