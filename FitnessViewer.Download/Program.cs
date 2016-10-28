@@ -10,6 +10,7 @@ using AutoMapper;
 using static FitnessViewer.Infrastructure.Configuration.AutoMapperConfig;
 using FitnessViewer.Infrastructure.Data;
 using System.IO;
+using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Download
 {
@@ -21,6 +22,19 @@ namespace FitnessViewer.Download
 
             UnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
 
+            //string userId = "e0113fcc-7546-4c88-872f-c27e196c4d5c";
+
+            //var activities = _unitOfWork.Activity.GetActivities(userId);
+
+            //foreach (Activity a in activities)
+            //{
+            //    DownloadQueue job = DownloadQueue.CreateQueueJob(userId, DownloadType.Strava, a.Id);
+            //    _unitOfWork.Queue.AddQueueItem(job);
+            //    _unitOfWork.Complete();
+            //    AzureWebJob.AddToAzureQueue(job.Id);
+
+            //StreamHelper.RecalculateAllActivities(_unitOfWork);
+            //}
 
             while (true)
             {
