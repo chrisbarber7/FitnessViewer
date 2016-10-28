@@ -3598,7 +3598,7 @@ namespace FitnessViewer.Test
         /// power stream for https://www.strava.com/activities/718678832
         /// </summary>
         /// <returns></returns>
-        public List<int> GetActivityPowerStream()
+        public static List<int> GetActivityPowerStream()
         {
 
             return new List<int>()
