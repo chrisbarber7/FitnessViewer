@@ -45,6 +45,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public static void RecalculateSingleActivity(UnitOfWork uow, long activityId)
         {
+            Console.WriteLine("Recalculating Peaks");
             RecalculatePower(uow, activityId);
             RecalculateHeartRate(uow, activityId);
             RecalculateCadence(uow, activityId);
@@ -54,7 +55,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public static void RecalculateAllActivities(UnitOfWork uow)
         {
-            System.Diagnostics.Debug.WriteLine("Recalc Power");
+            Console.WriteLine("Recalc Power");
             var activitiesWithPower = uow.Activity.GetStream().Where(s => s.Watts != null).Select(s => s.ActivityId).Distinct().ToList();
 
             foreach (long activityId in activitiesWithPower)
@@ -62,7 +63,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             uow.Complete();
 
-            System.Diagnostics.Debug.WriteLine("Recalc Heart Rate");
+            Console.WriteLine("Recalc Heart Rate");
             var activitiesWithHeartRate = uow.Activity.GetStream().Where(s => s.HeartRate != null).Select(s => s.ActivityId).Distinct().ToList();
 
             foreach (long activityId in activitiesWithHeartRate)
@@ -70,7 +71,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             uow.Complete();
 
-            System.Diagnostics.Debug.WriteLine("Recalc Cadence");
+            Console.WriteLine("Recalc Cadence");
             var activitiesWithCadence = uow.Activity.GetStream().Where(s => s.Cadence != null).Select(s => s.ActivityId).Distinct().ToList();
 
             foreach (long activityId in activitiesWithCadence)
