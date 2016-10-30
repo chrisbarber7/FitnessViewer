@@ -265,6 +265,18 @@
     <Compile Include="Migrations\201610280651007_StreamsAddActivityIdIndex.Designer.cs">
       <DependentUpon>201610280651007_StreamsAddActivityIdIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610291409330_DownloadQueueAddDurationField.cs" />
+    <Compile Include="Migrations\201610291409330_DownloadQueueAddDurationField.Designer.cs">
+      <DependentUpon>201610291409330_DownloadQueueAddDurationField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610291957488_AddStreamTypeDuration.cs" />
+    <Compile Include="Migrations\201610291957488_AddStreamTypeDuration.Designer.cs">
+      <DependentUpon>201610291957488_AddStreamTypeDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.cs" />
+    <Compile Include="Migrations\201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.Designer.cs">
+      <DependentUpon>201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Dto\ActivityLapsDto.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
@@ -273,7 +285,7 @@
     <Compile Include="Models\Dto\ActivityDto.cs" />
     <Compile Include="Models\Dto\GraphStreamDto.cs" />
     <Compile Include="Models\Dto\LapDto.cs" />
-    <Compile Include="Models\Dto\MinMaxDto.cs" />
+    <Compile Include="Models\Dto\ActivityMinMaxDto.cs" />
     <Compile Include="Models\Dto\FitbitHomeDto.cs" />
     <Compile Include="Models\Dto\NotificationDto.cs" />
     <Compile Include="Models\Dto\SportSummaryDto.cs" />
@@ -283,6 +295,7 @@
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Metric.cs" />
     <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\PeakStreamTypeDuration.cs" />
     <Compile Include="Models\UserNotification.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
@@ -426,6 +439,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="Models\Dto\ActivityAnalyticsDto.cs" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -598,6 +612,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610280651007_StreamsAddActivityIdIndex.resx">
       <DependentUpon>201610280651007_StreamsAddActivityIdIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610291409330_DownloadQueueAddDurationField.resx">
+      <DependentUpon>201610291409330_DownloadQueueAddDurationField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610291957488_AddStreamTypeDuration.resx">
+      <DependentUpon>201610291957488_AddStreamTypeDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.resx">
+      <DependentUpon>201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

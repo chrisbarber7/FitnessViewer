@@ -53,7 +53,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             UpdateActivityDetails();
 
-  //          StreamHelper.RecalculateSingleActivity(_unitOfWork, _activityId);
+            StreamHelper.RecalculateSingleActivity(_unitOfWork, _activityId);
 
             AddNotification(Notification.StravaActivityDownload(_activityId));
             StravaPause(_fvActivity);

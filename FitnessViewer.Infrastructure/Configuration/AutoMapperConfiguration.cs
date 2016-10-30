@@ -19,6 +19,7 @@ namespace FitnessViewer.Infrastructure.Configuration
             public InfrasturtureProfile()
             {
                 CreateMap<Athlete, Strava.Athletes.Athlete>().ReverseMap();
+                CreateMap<AthleteDto, Athlete>().ReverseMap();
 
                 CreateMap<Strava.Activities.ActivityLap, Lap>()
                    .ForMember(src => src.Athlete, opt => opt.Ignore())

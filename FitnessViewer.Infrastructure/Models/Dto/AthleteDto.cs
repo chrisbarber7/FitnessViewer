@@ -25,6 +25,11 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return dto;
         }
 
+        public static AthleteDto CreateFromAthlete(Athlete fvAthlete)
+        {
+            return AutoMapper.Mapper.Map<AthleteDto>(fvAthlete);
+        }
+
         public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

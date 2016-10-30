@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.enums;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,19 @@ namespace FitnessViewer.Infrastructure.Helpers
         private int[] _standardDurations;
         private PeakStreamType _streamType;
         private long _activityId;
+        private bool _includeFullDuration = true;
+
+        public bool IncludeFullDuration
+        {
+            get { return _includeFullDuration; }
+            set { _includeFullDuration = value; }
+        }
+
 
         public PeakValueFinder(List<int> stream, PeakStreamType type, long activityIds)
-            : this (stream, type, activityIds, false)
+            : this(stream, type, activityIds, false)
         {
-            
+
         }
 
         /// <summary>
@@ -33,35 +42,26 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _streamType = type;
             _activityId = activityId;
-            
+
             // for cadence peaks we ignore 0 values to exclude times when stationary so strip out now.
             _data = stream.Where(d => _streamType == PeakStreamType.Cadence ? d > 0 : true).ToArray();
-           
-            // set standard reporting durations (in seconds)
-            switch (type)
+
+            if (usePowerCurveDurations)
+                SetupPowerCurveDurations();
+            else
             {
-                case PeakStreamType.Power:
-                    {
-                        if (usePowerCurveDurations)
-                            SetupPowerCurveDurations();
-                        else
-                            _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600 };//, int.MaxValue };
-                        break;
-                    }
-                case PeakStreamType.HeartRate:
-                    {
-                        _standardDurations = new int[] { 60, 120, 300, 360, 600, 720, 1200, 1800, 3600 };//, int.MaxValue };
-                        break;
-                    }
-                case PeakStreamType.Cadence:
-                    {
-                        _standardDurations = new int[] { 5, 10, 30, 60, 120, 300, 360, 600, 720, 1200, 1800, 3600 };//, int.MaxValue };
-                        break;
-                    };
+                UnitOfWork uow = new UnitOfWork();
+                _standardDurations = uow.Analysis.GetPeakStreamTypeDuration(type);
             }
         }
+        
 
-        public void SetupPowerCurveDurations()
+        public int[] StandardDurations
+        {
+            get { return _standardDurations; }
+        }
+
+        private int[] SetupPowerCurveDurations()
         {
             List<int> durations = new List<int>();
 
@@ -93,6 +93,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             // include any duration less than event time (and int.MaxValue for full event).
             _standardDurations = durations.Where(d=>d <= _data.Count() || d == int.MaxValue).ToArray();
+
+            return _standardDurations;
         }
 
 
@@ -169,16 +171,20 @@ namespace FitnessViewer.Infrastructure.Helpers
                 });
             }
 
-            ActivityPeakDetail fullDuration = new ActivityPeakDetail(_activityId, _streamType, _data.Length)
+
+            if (_includeFullDuration)
             {
-                StartIndex = 0,
-                Value = (int)_data.Average()
-            };
+                ActivityPeakDetail fullDuration = new ActivityPeakDetail(_activityId, _streamType, _data.Length)
+                {
+                    StartIndex = 0,
+                    Value = (int)_data.Average()
+                };
 
-            // reset to int.maxValue now we've updated the startIndex so it's easy to find the full duration peaks.
-            fullDuration.Duration = int.MaxValue;
+                // reset to int.maxValue now we've updated the startIndex so it's easy to find the full duration peaks.
+                fullDuration.Duration = int.MaxValue;
 
-            peaks.Add(fullDuration);
+                peaks.Add(fullDuration);
+            }
 
             foreach (ActivityPeakDetail p in peaks)
                 if (p.Value == -1)
@@ -192,10 +198,14 @@ namespace FitnessViewer.Infrastructure.Helpers
             // override default duration as we're only interested in this one!
             _standardDurations = new int[] { duration };
 
+
+            this.IncludeFullDuration = false;
+
             List<ActivityPeakDetail> peaks = FindPeaks();
 
-            // we should only get back two results as we only asked for one duration and it'll also include full duration.
-            if (peaks.Count() != 2)
+
+            // we should only get back one result as that's all we asked for.
+            if (peaks.Count() != 1)
                 return null;
 
             return peaks[0];

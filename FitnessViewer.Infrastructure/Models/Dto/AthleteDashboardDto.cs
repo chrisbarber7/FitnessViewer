@@ -15,6 +15,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         {
             AthleteDashboardDto dashboard = Mapper.Map<AthleteDashboardDto>(AthleteDto.Create(uow, userId));
 
+            if (dashboard == null)
+                return null;
+
             // get a list of activities for the past 90 days which will be used to extract various summary information details.
             var summaryActivities = uow.Activity.GetSportSummaryQuery(userId, "All", DateTime.Now.AddDays(-90), DateTime.Now).ToList();
 

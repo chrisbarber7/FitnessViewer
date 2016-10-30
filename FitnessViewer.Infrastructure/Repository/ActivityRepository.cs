@@ -42,6 +42,16 @@ namespace FitnessViewer.Infrastructure.Repository
                 .FirstOrDefault();
         }
 
+        public IEnumerable<ActivityPeakDetail> GetActivityPeakDetails(long id, PeakStreamType streamType)
+        {
+            return _context.ActivityPeakDetail.Where(a => a.ActivityId == id && a.StreamType == streamType).ToList();
+        }
+
+        public IEnumerable<ActivityPeaks> GetActivityPeaks(long id)
+        {
+            return _context.ActivityPeak.Where(p => p.ActivityId == id).ToList();
+        }
+
         internal IQueryable<Stream> GetStream()
         {
             return _context.Stream;
@@ -272,8 +282,11 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
-        public MinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
+        public ActivityMinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
         {
+            var activity = _context.Activity.Find(activityId);
+
+
             var stream = _context.Stream
                 .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
                 .Select(s => new
@@ -282,12 +295,16 @@ namespace FitnessViewer.Infrastructure.Repository
                     HeartRate = s.HeartRate,
                     Cadence = s.Cadence,
                     Altitude = s.Altitude,
-                    Distance = s.Distance
+                    Distance = s.Distance,
+                    Velocity = s.Velocity
                 })
                 .ToList();
 
             if (stream.Count == 0)
-                return new MinMaxDto();
+                return new ActivityMinMaxDto();
+
+            if (endIndex == int.MaxValue)
+                endIndex = stream.Count;
 
             var startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
             var endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
@@ -312,7 +329,17 @@ namespace FitnessViewer.Infrastructure.Repository
               distance = g.Sum(s => s.Distance)
           }).First();
 
-            MinMaxDto info = new MinMaxDto();
+            ActivityMinMaxDto info = ActivityMinMaxDto.Create();
+            
+            if (activity.ActivityType.IsRide)
+                info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream.Select(w => w.Watts).ToList(), 295);
+            else if (activity.ActivityType.IsRun)
+                info.Analytics = ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(stream.Select(w => w.Velocity).ToList(), stream.Select(w => w.HeartRate).ToList());
+            else if (activity.ActivityType.IsSwim)
+                info.Analytics = ActivityAnalyticsDto.SwimCreateFromPaceStream(stream.Select(w => w.Velocity).ToList());
+            else
+                info.Analytics = ActivityAnalyticsDto.OtherUnknown();
+
             if (minMaxAveResults.powerMin == null)
             {
                 info.Power = null;
@@ -361,6 +388,8 @@ namespace FitnessViewer.Infrastructure.Repository
                 info.Distance = MetreDistance.ToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
 
             info.Time = TimeSpan.FromSeconds(endIndex - startIndex);
+
+          
 
             return info;
 
@@ -526,7 +555,13 @@ namespace FitnessViewer.Infrastructure.Repository
             string units = StreamHelper.StreamTypeUnits(streamType);
 
             var result = _context.ActivityPeakDetail
-              .Where(p => p.ActivityId == activityId && p.StreamType == streamType)
+              .Where(p => p.ActivityId == activityId && p.StreamType == streamType && 
+                            _context.PeakStreamTypeDuration
+                                .Where(d=>d.PeakStreamType == p.StreamType)
+                                .Select(d=>d.Duration)
+                                .ToList()
+                                .Contains(p.Duration)
+                    )
               .OrderBy(p => p.Duration)
               .Select(p => new LapDto
               {

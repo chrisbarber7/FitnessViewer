@@ -104,8 +104,17 @@ h6,
 
 }
 
+.ActivityTitle{
+   display:inline-block;    
+   font-size: 24px;    
+   margin-top: 4px;
+}
+
+
 .StravaLink {
    color:#FC4C02;
+   float:right; 
+   margin-top:6px;
 }
 
 

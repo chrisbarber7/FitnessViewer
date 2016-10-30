@@ -49,6 +49,50 @@ namespace FitnessViewer.Infrastructure.Helpers
             UnitOfWork uow = new UnitOfWork();
             RecalculateSingleActivity(uow, activityId);
         }
+
+        public static void CalculatePowerCurveForDuration(long activityId, int duration)
+        {
+            UnitOfWork uow = new UnitOfWork();
+
+            var powerData = uow.Activity.GetStreamForActivity(activityId).OrderBy(s => s.Time).Select(s => s.Watts).ToList();
+
+            if (powerData.Contains(null))
+                return;
+
+            PeakValueFinder f = new PeakValueFinder(powerData.Select(w => w.Value).ToList(), PeakStreamType.Power, activityId, true);
+            
+            ActivityPeakDetail peak = f.FindPeakForDuration(duration);
+
+            if (peak.Value != null)
+            {
+                uow.Analysis.AddPeakDetail(peak);
+                uow.Complete();
+            }
+        }
+
+        public static void AddPowerCurveCalculationJobs(string userId, long activityId)
+        {
+            UnitOfWork uow = new UnitOfWork();
+
+            var powerData = uow.Activity.GetStreamForActivity(activityId).OrderBy(s => s.Time).Select(s => s.Watts).ToList();
+
+            if (powerData.Contains(null))
+                return;
+
+            PeakValueFinder f = new PeakValueFinder(powerData.Select(w=>w.Value).ToList(), PeakStreamType.Power, activityId, true);
+
+            int[] durations = f.StandardDurations;
+            foreach (int d in durations)
+            {
+
+                DownloadQueue job = DownloadQueue.CreateQueueJob(userId, enums.DownloadType.CalculateActivityStats, activityId, d);
+                uow.Queue.AddQueueItem(job);
+                uow.Complete();
+                AzureWebJob.AddToAzureQueue(job.Id);
+            }
+        }
+
+
         public static void RecalculateSingleActivity(UnitOfWork uow ,long activityId)
         {
             Console.WriteLine("Recalculating Peaks");
@@ -58,23 +102,12 @@ namespace FitnessViewer.Infrastructure.Helpers
             uow.Complete();
         }
 
-
-        public static void RecalculateAllActivities(UnitOfWork uow)
-        {
-            string userId = "e0113fcc-7546-4c88-872f-c27e196c4d5c";
-
-            var activities = uow.Activity.GetActivities(userId).Select(a => a.Id);
-
-            foreach (long activityId in activities)
-                RecalculateSingleActivity(activityId);
-        }
-
         private static void RecalculateCadence(UnitOfWork uow, long activityId)
         {
             var cadenceData = uow.Activity.GetStream().Where(s => s.ActivityId == activityId).OrderBy(s => s.Time).Select(s => s.Cadence);
             List<ActivityPeakDetail> cadencePeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, cadenceData.ToList(), PeakStreamType.Cadence);
             if (cadencePeaks != null)
-                uow.Analysis.AddPeak(activityId, PeakStreamType.Cadence, cadencePeaks);
+                uow.Analysis.AddPeaks(activityId, PeakStreamType.Cadence, cadencePeaks);
         }
 
         private static void RecalculateHeartRate(UnitOfWork uow, long activityId)
@@ -82,7 +115,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             var hrData = uow.Activity.GetStream().Where(s => s.ActivityId == activityId).OrderBy(s => s.Time).Select(s => s.HeartRate);
             List<ActivityPeakDetail> hrPeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, hrData.ToList(), PeakStreamType.HeartRate);
             if (hrPeaks != null)
-                uow.Analysis.AddPeak(activityId, PeakStreamType.HeartRate, hrPeaks);
+                uow.Analysis.AddPeaks(activityId, PeakStreamType.HeartRate, hrPeaks);
 
         }
 
@@ -92,7 +125,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             List<ActivityPeakDetail> powerPeaks = PeakValueFinder.ExtractPeaksFromStream(activityId, powerData, PeakStreamType.Power);
             if (powerPeaks != null)
-                uow.Analysis.AddPeak(activityId, PeakStreamType.Power, powerPeaks);
+                uow.Analysis.AddPeaks(activityId, PeakStreamType.Power, powerPeaks);
 
         }
     }

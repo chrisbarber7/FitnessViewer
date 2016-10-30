@@ -96,7 +96,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         private void CalculateStats()
         {
-            StreamHelper.RecalculateSingleActivity(_uow, _jobDetails.ActivityId.Value);
+            StreamHelper.CalculatePowerCurveForDuration(_jobDetails.ActivityId.Value, _jobDetails.Duration.Value);
             _jobDetails.MarkJobComplete();
             _uow.Complete();
         }

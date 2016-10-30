@@ -34,6 +34,8 @@ namespace FitnessViewer.Infrastructure.Data
         public DbSet<Notification> Notification { get; set; }
         public DbSet<UserNotification> UserNotification { get; set; }
 
+        public DbSet<PeakStreamTypeDuration> PeakStreamTypeDuration { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

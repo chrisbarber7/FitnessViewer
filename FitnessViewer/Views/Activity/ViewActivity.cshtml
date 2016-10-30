@@ -14,7 +14,13 @@
 @Html.Hidden("activityId", Model.Id)
 @Html.Hidden("hasMap", Model.HasMap)
 
-<h1>@Model.Name</h1>
+<div>
+    <div class="ActivityTitle">@Model.Name</div>
+    <a href="https://www.strava.com/activities/@Model.Id" class="StravaLink">View on Strava</a>
+    <div>
+        @Model.ActivityTypeId by @Model.Athlete.FirstName @Model.Athlete.LastName on @Model.Start.ToLongDateString()
+    </div>
+</div>
 
 @if (!Model.DetailsDownloaded)
 {
@@ -25,53 +31,53 @@
 else
 {
 
-    <div class="row">
-        <div class="col-md-2 col-xs-4">
-            <div class="summaryBox">
-                <div class="SummaryValue">@Model.Distance</div>
-                <div class="SummaryTitle">Distance</div>
-            </div>
-        </div>
-        <div class="col-md-2 col-xs-4">
-            <div class="summaryBox">
-                <div class="SummaryValue">@Model.MovingTime</div>
-                <div class="SummaryTitle">Moving Time</div>
-            </div>
-        </div>
-        <div class="col-md-2 col-xs-4">
-            <div class="summaryBox">
-                <div class="SummaryValue">
-                    @if (Model.ActivityTypeId == "Run")
-                    {
-                        @Model.AveragePace<span class="SummaryTitle">mi</span>
-                    }
-                    else
-                    {
-                        @Model.AverageSpeed
-                    }
+    @*<div class="row">
+            <div class="col-md-2 col-xs-4">
+                <div class="summaryBox">
+                    <div class="SummaryValue">@Model.Distance</div>
+                    <div class="SummaryTitle">Distance</div>
                 </div>
-                <div class="SummaryTitle">Pace</div>
             </div>
-        </div>
-        <div class="col-md-2 col-xs-4">
-            <div class="summaryBox">
-                <div class="SummaryValue">@Model.ElevationGain<span class="SummaryTitle">ft</span></div>
-                <div class="SummaryTitle">Elevation</div>
+            <div class="col-md-2 col-xs-4">
+                <div class="summaryBox">
+                    <div class="SummaryValue">@Model.MovingTime</div>
+                    <div class="SummaryTitle">Moving Time</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2 col-xs-4">
-            <div class="summaryBox">
-                <div class="SummaryValue">@Model.SufferScore.ToString("N0")</div>
-                <div class="SummaryTitle">Suffer Score</div>
+            <div class="col-md-2 col-xs-4">
+                <div class="summaryBox">
+                    <div class="SummaryValue">
+                        @if (Model.ActivityTypeId == "Run")
+                        {
+                            @Model.AveragePace<span class="SummaryTitle">mi</span>
+                        }
+                        else
+                        {
+                            @Model.AverageSpeed
+                        }
+                    </div>
+                    <div class="SummaryTitle">Pace</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2 col-xs-4">
-            <div class="summaryBox">
-                <div class="SummaryValue">@Model.Calories.ToString("N0")</div>
-                <div class="SummaryTitle">Calories</div>
+            <div class="col-md-2 col-xs-4">
+                <div class="summaryBox">
+                    <div class="SummaryValue">@Model.ElevationGain<span class="SummaryTitle">ft</span></div>
+                    <div class="SummaryTitle">Elevation</div>
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="summaryBox">
+                    <div class="SummaryValue">@Model.SufferScore.ToString("N0")</div>
+                    <div class="SummaryTitle">Suffer Score</div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="summaryBox">
+                    <div class="SummaryValue">@Model.Calories.ToString("N0")</div>
+                    <div class="SummaryTitle">Calories</div>
+                </div>
+            </div>
+        </div>*@
     <div class="row">
         <div class="col-md-8">
             <div class="col-md-12">
@@ -82,7 +88,7 @@ else
                 else
                 {
                     <div id="nomap" class="alert alert-info">
-                       Activity has no route details.
+                        Activity has no route details.
                     </div>
                 }
             </div>
@@ -188,7 +194,7 @@ else
                 <input type="button" value="Recalculate" onclick="location.href='@Url.Action("Recalculate", "Activity", new { id = Model.Id })'" />
 
 
-                <a href="https://www.strava.com/activities/@Model.Id" class="StravaLink">View on Strava</a>
+
             </div>
         </div>
     </div>

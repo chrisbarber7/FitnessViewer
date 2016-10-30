@@ -23,7 +23,21 @@ namespace FitnessViewer.Infrastructure.Repository
 
         #region peaks
 
-        public void AddPeak(long activityId, PeakStreamType type, List<ActivityPeakDetail> peaks)
+
+        public void AddPeakDetail(ActivityPeakDetail peak)
+        {
+            var existingPeakDetail = _context.ActivityPeakDetail
+                .Where(a => a.ActivityId == peak.ActivityId && a.StreamType == peak.StreamType && a.Duration == peak.Duration)
+                .FirstOrDefault();
+
+            if (existingPeakDetail != null)
+                existingPeakDetail.Value = peak.Value;
+            else
+                _context.ActivityPeakDetail.Add(peak);
+        }
+
+
+        public void AddPeaks(long activityId, PeakStreamType type, List<ActivityPeakDetail> peaks)
         {
             var existingPeaks = _context.ActivityPeak.Where(a => a.ActivityId == activityId && a.StreamType == type).ToList();
             if (existingPeaks.Count > 0)
@@ -59,6 +73,16 @@ namespace FitnessViewer.Infrastructure.Repository
 
             _context.ActivityPeak.Add(stravaPeak);
         }
+
+        internal int[] GetPeakStreamTypeDuration(PeakStreamType type)
+        {
+            return _context.PeakStreamTypeDuration
+                            .Where(p => p.PeakStreamType == type)
+                            .OrderBy(p => p.Duration)
+                            .Select(p => p.Duration)
+                            .ToArray();
+        }
+
         /// <summary>
         /// Return Peak information for common time duration
         /// </summary>

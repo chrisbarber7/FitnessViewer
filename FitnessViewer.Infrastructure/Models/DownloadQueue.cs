@@ -26,11 +26,16 @@ namespace FitnessViewer.Infrastructure.Models
         public long? ActivityId { get; private set; }
         public bool? HasError { get; set; }
         public DownloadType DownloadType { get; set; }
-
+        public int? Duration { get; set; }
 
         public static DownloadQueue CreateQueueJob(string userId, DownloadType type)
         {
             return DownloadQueue.CreateQueueJob(userId, type, null);
+        }
+
+        public static DownloadQueue CreateQueueJob(string userId, DownloadType type, long? activityId)
+        {
+                return CreateQueueJob(userId, type, activityId, null);
         }
 
         /// <summary>
@@ -39,7 +44,7 @@ namespace FitnessViewer.Infrastructure.Models
         /// <param name="userId">ASP.NET Identity User Id</param>
         /// <param name="activityId">Optional Strava activity id</param>
         /// <returns></returns>
-        public static DownloadQueue CreateQueueJob(string userId, DownloadType type, long? activityId)
+        public static DownloadQueue CreateQueueJob(string userId, DownloadType type, long? activityId, int? duration)
         {
             DownloadQueue q = new DownloadQueue();
             q.UserId = userId;
@@ -50,7 +55,7 @@ namespace FitnessViewer.Infrastructure.Models
             q.Processed = false;
             q.ProcessedAt = null;
             q.HasError = false;
-
+            q.Duration = duration;
             return q;
         }
 

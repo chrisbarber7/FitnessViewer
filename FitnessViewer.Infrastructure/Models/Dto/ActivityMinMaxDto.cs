@@ -6,23 +6,28 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class MinMaxDto
+    public class ActivityMinMaxDto : ActivityDto
     {
-        public MinMaxDto()
+        public static ActivityMinMaxDto Create()
         {
-            Power = new MinMaxAve();
-            HeartRate = new MinMaxAve();
-            Cadence = new MinMaxAve();
-            Elevation = new MinMaxAve();
+            ActivityMinMaxDto a = new ActivityMinMaxDto();
+
+            a.Power = new MinMaxAve();
+            a.HeartRate = new MinMaxAve();
+            a.Cadence = new MinMaxAve();
+            a.Elevation = new MinMaxAve();
+
+            return a;
         }
 
         public TimeSpan Time { get; set; }
-        public decimal? Distance { get; set; }
+
         public MinMaxAve Power { get; set; }
         public MinMaxAve HeartRate { get; set; }
         public MinMaxAve Cadence { get; set; }
         public MinMaxAve Elevation { get; set; }
 
+        public ActivityAnalyticsDto Analytics {get;set;}
 
         public class MinMaxAve
         {
