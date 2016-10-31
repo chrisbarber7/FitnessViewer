@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.ActivityDto>
+﻿
+@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.ActivityDto>
 <h4>Recent Activities</h4>
 <div class="table-responsive">
     <table  class="table">
@@ -17,7 +18,7 @@
             </td>
                 <td>@a.Start.ToShortDateString()</td>
                 <td>@a.ActivityTypeId</td>
-                <td class="align-right">@a.Distance</td>
+                <td class="align-right">@FitnessViewer.Infrastructure.Helpers.ExtensionMethods.ToMiles(a.Distance)</td>
                 <td class="align-right">@a.MovingTime</td>
             </tr>
         }
