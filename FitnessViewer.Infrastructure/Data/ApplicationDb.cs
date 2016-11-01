@@ -36,6 +36,9 @@ namespace FitnessViewer.Infrastructure.Data
 
         public DbSet<PeakStreamTypeDuration> PeakStreamTypeDuration { get; set; }
 
+        public DbSet<Zone> Zone { get; set; }
+        public DbSet<ZoneRange> ZoneRange { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -64,7 +64,7 @@ namespace FitnessViewer.Test
             // results rounded to match values shown on Training Peaks.
             ActivityAnalytics cal = new ActivityAnalytics(testData, ftp);
             Assert.AreEqual(227, Math.Round(cal.NP(), 0));
-            Assert.AreEqual(52.80M, Math.Round(cal.TSS(), 2));
+            Assert.AreEqual(52.8M, Math.Round(cal.TSS(), 1));
             Assert.AreEqual(0.77M, Math.Round(cal.IntensityFactor(), 2));
         }
     }

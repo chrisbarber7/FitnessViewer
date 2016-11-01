@@ -35,13 +35,18 @@ namespace FitnessViewer.Infrastructure.Repository
             _context.Activity.AddRange(activities);
         }
 
+
         public Activity GetActivity(long activityId)
         {
+
             return _context.Activity.Where(a => a.Id == activityId)
                 .Include(a => a.ActivityType)
                 .FirstOrDefault();
         }
 
+
+
+        
         public IEnumerable<ActivityPeakDetail> GetActivityPeakDetails(long id, PeakStreamType streamType)
         {
             return _context.ActivityPeakDetail.Where(a => a.ActivityId == id && a.StreamType == streamType).ToList();
@@ -282,23 +287,42 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
+        public List<Stream> GetActivityStream(long activityId)
+        {
+            return _context.Stream
+                       .Where(s => s.ActivityId == activityId)
+                       .OrderBy(s=>s.Time)
+                       .ToList();           
+        }
+
         public ActivityMinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
         {
             var activity = _context.Activity.Find(activityId);
 
-
-            var stream = _context.Stream
-                .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
-                .Select(s => new
-                {
-                    Watts = s.Watts,
-                    HeartRate = s.HeartRate,
-                    Cadence = s.Cadence,
-                    Altitude = s.Altitude,
-                    Distance = s.Distance,
-                    Velocity = s.Velocity
-                })
+            var stream = GetActivityStream(activityId)
+                .Where(s => s.Time >= startIndex && s.Time <= endIndex)
                 .ToList();
+
+            return BuildSummaryInformation(activity, stream, startIndex, endIndex);
+        }
+
+
+
+        public ActivityMinMaxDto BuildSummaryInformation(Activity activity, List<Stream> stream, int startIndex, int endIndex)
+        {
+
+            //var stream = _context.Stream
+            //    .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
+            //    .Select(s => new
+            //    {
+            //        Watts = s.Watts,
+            //        HeartRate = s.HeartRate,
+            //        Cadence = s.Cadence,
+            //        Altitude = s.Altitude,
+            //        Distance = s.Distance,
+            //        Velocity = s.Velocity
+            //    })
+            //    .ToList();
 
             if (stream.Count == 0)
                 return new ActivityMinMaxDto();
@@ -332,7 +356,9 @@ namespace FitnessViewer.Infrastructure.Repository
             ActivityMinMaxDto info = ActivityMinMaxDto.Create();
             
             if (activity.ActivityType.IsRide)
-                info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream.Select(w => w.Watts).ToList(), 295);
+           //     info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream.Select(w => w.Watts).ToList(), 295);
+            info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream, 295);
+
             else if (activity.ActivityType.IsRun)
                 info.Analytics = ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(stream.Select(w => w.Velocity).ToList(), stream.Select(w => w.HeartRate).ToList());
             else if (activity.ActivityType.IsSwim)
@@ -641,7 +667,6 @@ namespace FitnessViewer.Infrastructure.Repository
             else
                 activities = fullActivityList.Where(r => r.Start >= start && r.Start <= end).ToList();
 
-
             SportSummaryDto sportSummary = new SportSummaryDto();
             sportSummary.Sport = sport;
             sportSummary.Duration = TimeSpan.FromSeconds(activities.Sum(r => r.MovingTime.TotalSeconds));
@@ -656,11 +681,6 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IQueryable<Activity> ActivitiesBySport(string userId, string sport)
         {
-            //bool isRide = sport == "Ride" || sport == "All" ? true : false;
-            //bool isRun = sport == "Run" || sport == "All" ? true : false;
-            //bool isSwim = sport == "Swim" || sport == "All" ? true : false;
-            //bool isOther = sport == "Other" || sport == "All" ? true : false;
-
             // get activities which fall into the selected weeks.
             var activitiesQuery = _context.Activity
                 .Include(r => r.ActivityType)
@@ -677,7 +697,6 @@ namespace FitnessViewer.Infrastructure.Repository
                 return activitiesQuery.Where(r => r.ActivityType.IsOther);
             else
                 return activitiesQuery;
-
         }
     }
 }

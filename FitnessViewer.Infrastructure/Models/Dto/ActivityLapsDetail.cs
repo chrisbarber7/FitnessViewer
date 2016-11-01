@@ -10,18 +10,25 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityLapsDto : ActivityDto
+    public class ActivityDetailDto : ActivityDto
     {
 
-        public static ActivityLapsDto CreateFromActivity(UnitOfWork uow, Activity fvActivity)
+        public static ActivityDetailDto CreateFromActivity(UnitOfWork uow, Activity fvActivity)
         {
-            ActivityLapsDto m = Mapper.Map<ActivityLapsDto>(ActivityDto.CreateFromActivity(fvActivity));
+            ActivityDetailDto m = Mapper.Map<ActivityDetailDto>(ActivityDto.CreateFromActivity(fvActivity));
+
+                m.Stream = uow.Activity.GetActivityStream(fvActivity.Id);
             
             m.Laps = uow.Activity.GetLaps(fvActivity.Id);
-            m.Power = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Power);
             m.HeartRate = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.HeartRate);
             m.Cadence = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Cadence);
-            m.SummaryInfo = uow.Activity.BuildSummaryInformation(fvActivity.Id, 0, int.MaxValue);
+            m.SummaryInfo = uow.Activity.BuildSummaryInformation(fvActivity, m.Stream, 0, int.MaxValue);
+
+            if (m.HasPowerMeter)
+            {
+                m.Power = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Power);
+                m.PowerZones = uow.Settings.GetZoneValues(m, ZoneType.BikePower);
+            }
             return m;
         }
 
@@ -30,6 +37,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<LapDto> Power { get; set; }
         public IEnumerable<LapDto> HeartRate { get; set; }
         public IEnumerable<LapDto> Cadence { get; set; }
+
+        public IEnumerable<ZoneValueDto> PowerZones { get; set; }
+        public List<Stream> Stream { get; set; }
 
 
     }

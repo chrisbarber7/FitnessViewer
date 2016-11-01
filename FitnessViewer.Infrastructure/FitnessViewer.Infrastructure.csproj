@@ -141,6 +141,7 @@
     <Compile Include="enums\MetricType.cs" />
     <Compile Include="enums\NotificationType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
+    <Compile Include="enums\ZoneType.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\ActivityAnalytics.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
@@ -277,8 +278,12 @@
     <Compile Include="Migrations\201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.Designer.cs">
       <DependentUpon>201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610311401040_ZoneTables.cs" />
+    <Compile Include="Migrations\201610311401040_ZoneTables.Designer.cs">
+      <DependentUpon>201610311401040_ZoneTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
-    <Compile Include="Models\Dto\ActivityLapsDto.cs" />
+    <Compile Include="Models\Dto\ActivityLapsDetail.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
     <Compile Include="Models\Dto\AthleteDashboardDto.cs" />
     <Compile Include="Models\Dto\CoordsDto.cs" />
@@ -291,12 +296,15 @@
     <Compile Include="Models\Dto\SportSummaryDto.cs" />
     <Compile Include="Models\Dto\TimeDistanceBySportDto.cs" />
     <Compile Include="Models\Dto\WeightByDayDto.cs" />
+    <Compile Include="Models\Dto\ZoneValueDto.cs" />
     <Compile Include="Models\FitbitUser.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Metric.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PeakStreamTypeDuration.cs" />
     <Compile Include="Models\UserNotification.cs" />
+    <Compile Include="Models\Zone.cs" />
+    <Compile Include="Models\ZoneRange.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\AnalysisRepository.cs" />
     <Compile Include="Repository\AthleteRepository.cs" />
@@ -434,6 +442,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\FindPeak.cs" />
     <Compile Include="Helpers\Strava.cs" />
+    <Compile Include="Repository\SettingsRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -621,6 +630,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.resx">
       <DependentUpon>201610292026483_renameStreamTypeDurationToPeakStreamTypeDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610311401040_ZoneTables.resx">
+      <DependentUpon>201610311401040_ZoneTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

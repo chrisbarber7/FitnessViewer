@@ -8,7 +8,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 {
     public class ActivityAnalyticsDto
     {
-        public static ActivityAnalyticsDto RideCreateFromPowerStream(List<int?> stream, decimal ftp)
+        public static ActivityAnalyticsDto RideCreateFromPowerStream(List<Stream> stream, decimal ftp)
         {
             Helpers.ActivityAnalytics calc = new Helpers.ActivityAnalytics(stream, ftp);
 

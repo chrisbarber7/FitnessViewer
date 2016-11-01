@@ -33,6 +33,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.IsSwim = fvActivity.ActivityType.IsSwim;
             m.IsOther = fvActivity.ActivityType.IsOther;
 
+            m.HasPowerMeter = fvActivity.HasPowerMeter;
+
             m.Athlete = AthleteDto.CreateFromAthlete(fvActivity.Athlete);
 
             return m;
@@ -60,6 +62,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public bool IsRun { get; set; }
         public bool IsSwim { get; set; }
         public bool IsOther { get; set; }
+        public bool HasPowerMeter { get; set; }
         
         public AthleteDto Athlete { get; set; }
 

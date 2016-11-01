@@ -29,10 +29,10 @@ namespace FitnessViewer.Controllers
             // invalid user credentials so force a log off 
             if (athleteDetails == null)
             {
-      HttpContext.GetOwinContext().Authentication.SignOut();
-       
+                HttpContext.GetOwinContext().Authentication.SignOut();
                 return RedirectToAction("Index", "Home");
             }
+
 
             return View(athleteDetails);
         }

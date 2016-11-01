@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-sm-3 col-md-2">
+    <ul>
+        <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+        <li>@Html.ActionLink("Bike Power Zones", "Power", "Settings")</li>
+        <li>@Html.ActionLink("Run Pace Zones", "Pace", "Settings")</li>
+        <li>@Html.ActionLink("Bike Heart Rate Zones", "HeartRate/Bike", "Settings")</li>
+        <li>@Html.ActionLink("Run Heart Rate Zones", "HeartRate/Run", "Settings")</li>
+    </ul>
+
+</div>
+<div class="col-sm-9 col-md-10">
+    @RenderBody()
+</div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,26 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public class ActivityAnalytics
     {
+        /// <summary>
+        /// Data can either be held as a list of values(_powerStream) or full Stream information 
+        /// (_stream) depending on which constructor is used.
+        /// </summary>
         private IEnumerable<int> _powerStream;
+        private IEnumerable<Stream> _stream;
+
         private decimal _normalisedPower;
         private decimal _FTP;
+
+        public ActivityAnalytics(IEnumerable<Stream> stream, decimal ftp)
+        {
+            Setup(stream, ftp);
+        }
 
         public ActivityAnalytics(IEnumerable<int> powerStream, decimal ftp)
         {
             Setup(powerStream, ftp);
         }
-
-
+        
         public ActivityAnalytics(IEnumerable<int?> powerStream, decimal ftp)
         {
             if (powerStream.Contains(null))
@@ -32,7 +43,15 @@ namespace FitnessViewer.Infrastructure.Helpers
             _normalisedPower = this.CalculateNormalisedPower();
             _FTP = ftp;
         }
-     
+
+        private void Setup(IEnumerable<Stream> stream, decimal ftp)
+        {
+            _powerStream = null;
+            _stream = stream;
+            _normalisedPower = this.CalculateNormalisedPower();
+            _FTP = ftp;
+        }
+
 
         private decimal CalculateNormalisedPower()
         {
@@ -45,22 +64,46 @@ namespace FitnessViewer.Infrastructure.Helpers
               
               */
            
-            List<double> averageRaisedTo4thPower = new List<double>();
 
-            for (int count = 29; count <= _powerStream.Count(); count++)
+            double runningAverage = 0;
+            int recordsAveraged = 0;
+
+            Queue<int> rollingValues = new Queue<int>();
+
+            // calcualte based on which whether values held in Stream collection or just values as int collection
+            if (_powerStream != null)
+            {   
+                foreach (int i in _powerStream)
+                {
+                    rollingValues.Enqueue(i);
+
+                    if (rollingValues.Count < 30)
+                        continue;
+
+                    runningAverage += Math.Pow(rollingValues.Average(), 4);
+                    recordsAveraged++;
+
+                    rollingValues.Dequeue();
+                }
+            }
+            else
             {
-                // get the averagge for the past 30 seconds (step 1)
-                double rollingAve = _powerStream.Skip(count - 30).Take(30).Average();
+                foreach (Stream s in _stream)
+                {
+                    rollingValues.Enqueue(s.Watts.HasValue ? s.Watts.Value : 0);
 
-                // raised to 4th Power (step 2)
-                double averageRaisedToPower4 = Math.Pow(rollingAve, 4);
+                    if (rollingValues.Count < 30)
+                        continue;
 
-                // store.
-                averageRaisedTo4thPower.Add(averageRaisedToPower4);
+                    runningAverage += Math.Pow(rollingValues.Average(), 4);
+                    recordsAveraged++;
+
+                    rollingValues.Dequeue();
+                }
             }
 
             // get the average of all values stored (step 3)
-            double ave = averageRaisedTo4thPower.Sum() / averageRaisedTo4thPower.Count();
+             double ave = runningAverage / recordsAveraged;
 
             // step 4 (4th root).
             double result = Math.Pow(ave, 0.25);
@@ -88,7 +131,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             
              */
 
-            int sec = _powerStream.Count();
+            int sec = _powerStream != null ? _powerStream.Count() : _stream.Count();
             decimal intensityFactor = IntensityFactor();
             decimal tss = (sec * _normalisedPower * IntensityFactor()) / (_FTP * 3600) * 100;
 

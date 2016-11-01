@@ -31,11 +31,11 @@ namespace FitnessViewer.Infrastructure.Configuration
 
                 CreateMap<Notification, NotificationDto>().ReverseMap();
 
-                CreateMap<ActivityDto, ActivityLapsDto>();
+                CreateMap<ActivityDto, ActivityDetailDto>();
 
                 CreateMap<AthleteDto, AthleteDashboardDto>();
 
-                CreateMap<Activity, ActivityLapsDto>()
+                CreateMap<Activity, ActivityDetailDto>()
                             .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.StartDateLocal.Date.ToShortDateString()));
                 
             }

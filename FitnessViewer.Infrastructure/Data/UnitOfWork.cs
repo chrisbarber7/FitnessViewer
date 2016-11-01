@@ -16,6 +16,7 @@ namespace FitnessViewer.Infrastructure.Data
         public MetricsRepository Metrics { get; private set; }
         public QueueRepository Queue { get; private set; }
         public NotificationRepository Notification { get; private set; }
+        public SettingsRepository Settings { get; private set; }
 
         public UnitOfWork()
         {
@@ -26,6 +27,7 @@ namespace FitnessViewer.Infrastructure.Data
             Metrics = new MetricsRepository(_context);
             Queue = new QueueRepository(_context);
             Notification = new NotificationRepository(_context);
+            Settings = new SettingsRepository(_context);
         }
 
         public void Complete()

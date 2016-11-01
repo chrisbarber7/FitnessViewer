@@ -233,6 +233,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MetricsController.cs" />
     <Compile Include="Controllers\RunController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SwimController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -578,7 +579,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
-    <Content Include="Views\Athlete.cshtml" />
     <Content Include="Views\Athlete\Dashboard.cshtml" />
     <Content Include="Views\Activity\ViewActivity.cshtml" />
     <Content Include="Views\Athlete\_PeakPowerSummary.cshtml" />
@@ -598,6 +598,11 @@
     <Content Include="Views\Metrics\AddWeight.cshtml" />
     <Content Include="Views\Metrics\AddHeartRate.cshtml" />
     <Content Include="Views\Metrics\AddHRV.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Shared\_SettingsLayout.cshtml" />
+    <Content Include="Views\Settings\Power.cshtml" />
+    <Content Include="Views\Settings\Pace.cshtml" />
+    <Content Include="Views\Settings\HeartRate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
