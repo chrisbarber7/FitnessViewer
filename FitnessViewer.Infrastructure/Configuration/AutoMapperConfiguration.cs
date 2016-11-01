@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 
@@ -20,6 +21,8 @@ namespace FitnessViewer.Infrastructure.Configuration
             {
                 CreateMap<Athlete, Strava.Athletes.Athlete>().ReverseMap();
                 CreateMap<AthleteDto, Athlete>().ReverseMap();
+
+                CreateMap<ActivityPeakDetailCalculator, ActivityPeakDetail>();
 
                 CreateMap<Strava.Activities.ActivityLap, Lap>()
                    .ForMember(src => src.Athlete, opt => opt.Ignore())

@@ -4,12 +4,16 @@ using System.Linq;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
+using AutoMapper;
 
 namespace FitnessViewer.Test
 {
     [TestClass]
     public class FindPeakTest
     {
+
+    
+
         private List<int> _30SecondData;
         private const long TEST_ACTIVITY_ID = long.MaxValue;
 
@@ -29,6 +33,12 @@ namespace FitnessViewer.Test
 
             for (int i = 1000; i <= 0; i--)
                 _30SecondData.Add(i);
+
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile<Infrastructure.Configuration.AutoMapperConfig.InfrasturtureProfile>();
+            });
         }
 
         [TestMethod]
