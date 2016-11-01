@@ -112,7 +112,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             PeakValueFinder finder = new PeakValueFinder(
                 stream.Select(s => s.Value).ToList(),
                 type,
-                activityId, true);
+                activityId, type == PeakStreamType.Power ? true: false);
 
             return finder.FindPeaks();
         }
