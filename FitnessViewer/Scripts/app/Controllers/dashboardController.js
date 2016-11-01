@@ -1,15 +1,15 @@
 ﻿var DashboardController = function () {
     var init = function () {
 
-        setupWeeklyReport("chart12weekRun", "Run");
-        setupWeeklyReport("chart12weekBike", "Ride");
-        setupWeeklyReport("chart12weekSwim", "Swim");
+        setupWeeklyReport("chart12weekRun", "Run", "blue");
+        setupWeeklyReport("chart12weekBike", "Ride", "red");
+        setupWeeklyReport("chart12weekSwim", "Swim", "green");
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport7Day", 7);
         setupTimeBySportChart("chartTimeBySport30Day", 30);
     };
 
-    var setupWeeklyReport = function (chartName, api) {
+    var setupWeeklyReport = function (chartName, api, colour) {
         $.ajax({
             dataType: "json",
             url: "/api/Activity/GetRunDistancePerWeek/" + api,
@@ -23,12 +23,13 @@
 
         function BarChart(data) {
             var barChartData = {
-                labels: data.Period,
+               labels: data.Period,
                 datasets: [
                     {
                         label: 'Distance',
                         data: data.distance,
                         borderColor: '#3a8904',
+                        backgroundColor :'#3a8904', 
                         fill: false
                     }]
             };
@@ -38,9 +39,17 @@
             var myBarChart = Chart.Bar(ctx, {
                 data: barChartData,
                 options: {
-                    animation: false,
-                    onClick: handleClick
-                }
+                    legend: {
+                        display: false
+                    },
+           
+                    onClick: handleClick,
+                    scales:
+                         {
+                             xAxes: [{
+                                 display: false
+                             }]
+                         }                }
             });
 
             function handleClick(evt) {
