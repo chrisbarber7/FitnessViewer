@@ -306,23 +306,9 @@ namespace FitnessViewer.Infrastructure.Repository
             return BuildSummaryInformation(activity, stream, startIndex, endIndex);
         }
 
-
-
         public ActivityMinMaxDto BuildSummaryInformation(Activity activity, List<Stream> stream, int startIndex, int endIndex)
         {
 
-            //var stream = _context.Stream
-            //    .Where(s => s.ActivityId == activityId && s.Time >= startIndex && s.Time <= endIndex)
-            //    .Select(s => new
-            //    {
-            //        Watts = s.Watts,
-            //        HeartRate = s.HeartRate,
-            //        Cadence = s.Cadence,
-            //        Altitude = s.Altitude,
-            //        Distance = s.Distance,
-            //        Velocity = s.Velocity
-            //    })
-            //    .ToList();
 
             if (stream.Count == 0)
                 return new ActivityMinMaxDto();
@@ -356,9 +342,7 @@ namespace FitnessViewer.Infrastructure.Repository
             ActivityMinMaxDto info = ActivityMinMaxDto.Create();
             
             if (activity.ActivityType.IsRide)
-           //     info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream.Select(w => w.Watts).ToList(), 295);
-            info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream, 295);
-
+              info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream, 295);
             else if (activity.ActivityType.IsRun)
                 info.Analytics = ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(stream.Select(w => w.Velocity).ToList(), stream.Select(w => w.HeartRate).ToList());
             else if (activity.ActivityType.IsSwim)
