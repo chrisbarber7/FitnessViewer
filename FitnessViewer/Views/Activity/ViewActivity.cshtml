@@ -13,9 +13,13 @@
 
 @Html.Hidden("activityId", Model.Id)
 @Html.Hidden("hasMap", Model.HasMap)
-
 <div>
+
     <div class="ActivityTitle">@Model.Name</div>
+    <div class="ActivityTitle">@Model.MovingTime</div>
+    <div class="ActivityTitle">@Model.Distance<span class="ActivityTitleSuffix">mi</span></div>
+    <div class="ActivityTitle">@Model.Analytics.TSS<span class="ActivityTitleSuffix">TSS</span></div>
+
     <a href="https://www.strava.com/activities/@Model.Id" class="StravaLink">View on Strava</a>
     <div>
         @Model.ActivityTypeId by @Model.Athlete.FirstName @Model.Athlete.LastName on @Model.Start.ToLongDateString()
@@ -91,52 +95,74 @@ else
                             </ul>
                         </div>
                         <div class="tab-pane" id="powerTabData">
-                            <ul class="laps">
-                                @foreach (var p in Model.Power)
+                            @if (Model.Power != null)
+                            {
+                                foreach (var p in Model.Power)
                                 {
-                                    <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                        <div class="lapDetails">
-                                            <span class="lapName">@p.Name</span>
-                                            <span class="lapValue">
-                                                @p.Value
-                                                <span class="lapUnits">@p.Units</span>
-                                            </span>
-                                        </div>
-                                    </li>
+                                    <ul class="laps">
+                                        <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
+                                            <div class="lapDetails">
+                                                <span class="lapName">@p.Name</span>
+                                                <span class="lapValue">
+                                                    @p.Value
+                                                    <span class="lapUnits">@p.Units</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 }
-                            </ul>
+                            }
+                            else
+                            {
+                                <span>Activity has no power data.</span>
+                            }
+
                         </div>
                         <div class="tab-pane" id="heartTabData">
-                            <ul class="laps">
-                                @foreach (var p in Model.HeartRate)
-                                {
-                                    <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                        <div class="lapDetails">
-                                            <span class="lapName">@p.Name</span>
-                                            <span class="lapValue">
-                                                @p.Value
-                                                <span class="lapUnits">@p.Units</span>
-                                            </span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
+                            @if (Model.HeartRate != null)
+                            {
+                                <ul class="laps">
+                                    @foreach (var p in Model.HeartRate)
+                                    {
+                                        <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
+                                            <div class="lapDetails">
+                                                <span class="lapName">@p.Name</span>
+                                                <span class="lapValue">
+                                                    @p.Value
+                                                    <span class="lapUnits">@p.Units</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>Activity has no heart rate data.</span>
+                            }
                         </div>
                         <div class="tab-pane" id="cadenceTabData">
-                            <ul class="laps">
-                                @foreach (var p in Model.Cadence)
-                                {
-                                    <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                        <div class="lapDetails">
-                                            <span class="lapName">@p.Name</span>
-                                            <span class="lapValue">
-                                                @p.Value
-                                                <span class="lapUnits">@p.Units</span>
-                                            </span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
+                            @if (Model.Cadence != null)
+                            {
+                                <ul class="laps">
+                                    @foreach (var p in Model.Cadence)
+                                    {
+                                        <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
+                                            <div class="lapDetails">
+                                                <span class="lapName">@p.Name</span>
+                                                <span class="lapValue">
+                                                    @p.Value
+                                                    <span class="lapUnits">@p.Units</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>Activity has no heart rate data.</span>
+                            }
                         </div>
                     </div>
                 </div>
@@ -149,13 +175,22 @@ else
 
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                @if (Model.PowerZones != null && Model.PowerZones.Count() > 0)
+                {
+                    foreach (var pz in Model.PowerZones)
+                    {
+                        @pz.ZoneLabel @pz.Duration < br />
+                    }
+                }
 
-    foreach (var pz in Model.PowerZones)
-    {
-    @pz.ZoneLabel  @pz.Duration <br/>
-    }
-}
+
+            </div>
+        </div>
+    </div>
+                        }
+
 @section scripts {
     <script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>
 }

@@ -11,6 +11,9 @@ namespace FitnessViewer.Test
     [TestClass]
     public class ActivityAnalyticsTest
     {
+
+
+
         /// <summary>
         /// Test using test data from spreadsheet at 
         /// http://www.timetriallingforum.co.uk/?showtopic=50454

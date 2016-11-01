@@ -654,7 +654,7 @@ namespace FitnessViewer.Infrastructure.Repository
             SportSummaryDto sportSummary = new SportSummaryDto();
             sportSummary.Sport = sport;
             sportSummary.Duration = TimeSpan.FromSeconds(activities.Sum(r => r.MovingTime.TotalSeconds));
-            sportSummary.Distance = activities.Sum(r => r.Distance).ToMiles();
+            sportSummary.Distance = activities.Sum(r => r.Distance);
             sportSummary.SufferScore = activities.Sum(r => r.SufferScore);
             sportSummary.Calories = activities.Sum(r => r.Calories);
             sportSummary.ElevationGain = activities.Sum(r => r.ElevationGain).ToFeet();

@@ -47,5 +47,16 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             }
             private set { }
         }
+
+        internal static ZoneValueDto CreateDefault(ZoneType zoneType)
+        {
+            return new ZoneValueDto()
+            {
+                ZoneType = zoneType,
+                ZoneName = "Default",
+                StartValue = 0,
+                EndValue = int.MaxValue
+            };
+        }
     }
 }

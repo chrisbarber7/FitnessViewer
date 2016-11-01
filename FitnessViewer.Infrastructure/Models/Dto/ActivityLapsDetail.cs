@@ -23,6 +23,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.HeartRate = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.HeartRate);
             m.Cadence = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Cadence);
             m.SummaryInfo = uow.Activity.BuildSummaryInformation(fvActivity, m.Stream, 0, int.MaxValue);
+            m.Analytics = m.SummaryInfo.Analytics;
 
             if (m.HasPowerMeter)
             {
@@ -40,6 +41,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public IEnumerable<ZoneValueDto> PowerZones { get; set; }
         public List<Stream> Stream { get; set; }
+
+        public ActivityAnalyticsDto Analytics { get; set; }
 
 
     }

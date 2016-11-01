@@ -42,10 +42,15 @@ namespace FitnessViewer.Infrastructure.Repository
         /// <returns>List of ZoneRanges</returns>
         public List<ZoneRange> GetUserZoneRanges(string userId, ZoneType zone)
         {
-            return _context.ZoneRange
+            var zones = _context.ZoneRange
                   .Where(z => z.UserId == userId && z.ZoneType == zone)
                   .OrderBy(z => z.ZoneStart)
                   .ToList();
+
+            if (zones.Count > 0)
+                return zones;
+            else
+                return new List<ZoneRange>() { ZoneRange.CreateDefault() };
         }
 
         /// <summary>
@@ -73,13 +78,7 @@ namespace FitnessViewer.Infrastructure.Repository
             if (ValueOnDate == null)
                 return new List<ZoneValueDto>()
                 {
-                    new ZoneValueDto()
-                    {
-                        ZoneType = zone,
-                        ZoneName = "Default",
-                        StartValue = 0,
-                        EndValue = int.MaxValue
-                    }
+                    ZoneValueDto.CreateDefault(zone)
                 };
 
             // populate zones with the start value.
@@ -94,13 +93,19 @@ namespace FitnessViewer.Infrastructure.Repository
                 .OrderBy(z=>z.StartValue)
                 .ToList();
 
-            // calculate the EndValue for the zone based on the start value of the next zone up.
-            for (int z=0; z<=zoneValues.Count-2; z++)     
-                zoneValues[z].EndValue = zoneValues[z + 1].StartValue - 1;
+            if (zoneValues.Count > 1)
+            {        
+                // calculate the EndValue for the zone based on the start value of the next zone up.
+                for (int z = 0; z <= zoneValues.Count - 2; z++)
+                    zoneValues[z].EndValue = zoneValues[z + 1].StartValue - 1;
+            }
 
-            // for the last zone the max value will have no upper limit.
-            zoneValues[zoneValues.Count - 1].EndValue = int.MaxValue;
-
+            else if (zoneValues.Count == 1)
+            {
+                // for the last zone the max value will have no upper limit.
+                zoneValues[zoneValues.Count - 1].EndValue = int.MaxValue;
+            }
+  
             return zoneValues;
         }
 

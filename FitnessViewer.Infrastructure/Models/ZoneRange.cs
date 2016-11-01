@@ -2,6 +2,7 @@
 using FitnessViewer.Infrastructure.enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace FitnessViewer.Infrastructure.Models
 {
@@ -30,5 +31,14 @@ namespace FitnessViewer.Infrastructure.Models
         /// Percenage of Zone value where the zone starts. Zone.Value (FTP) =300, ZoneStart=25 = 25% of 300 = 75 watts  is where this range starts.
         /// </summary>
         public  byte ZoneStart { get; set; }
+
+        internal static ZoneRange CreateDefault()
+        {
+            return new ZoneRange()
+            {
+                ZoneName = "Default",
+                ZoneStart = 0
+            };
+        }
     }
 }
