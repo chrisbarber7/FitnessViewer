@@ -26,17 +26,4 @@
         </ul>
     }
 }
-@*else
-{
-    <div class="nav navbar-right">
-        @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = "" }))
-                {
-            @Html.AntiForgeryToken()
-            {
-                <button type="submit" class="login-button" id="Strava" name="provider" value="Strava" title="Log in using your Strava account">
-                    <img class="login-image" src="~/Content/Images/Strava/btn_strava_connectwith_light.png" alt="Connect with Strava" />
-                </button>
-            }
-        }
-    </div>
-}*@
+
