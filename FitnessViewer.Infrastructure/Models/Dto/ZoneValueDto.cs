@@ -32,18 +32,35 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                     case ZoneType.BikePower: { suffix = "w"; break; }
                     case ZoneType.RunPace: { suffix = "m/mi"; break; }
                 }
-
-                if (this.EndValue != int.MaxValue)
-                    return string.Format("{0} ({1}-{2}{3})",
-                        this.ZoneName,
-                        this.StartValue.ToString(),
-                        this.EndValue.ToString(),
-                        suffix);
+                if (ZoneType == ZoneType.RunPace)
+                {
+                    if (this.EndValue != int.MaxValue)
+                        return string.Format("{0} ({1}-{2}{3})",
+                            this.ZoneName,
+                           TimeSpan.FromSeconds(this.StartValue).ToString(),
+                          TimeSpan.FromSeconds(this.EndValue).ToString(),
+                            suffix);
+                    else
+                        return string.Format("{0} ({1}{2}+)",
+                            this.ZoneName,
+                          TimeSpan.FromSeconds(this.StartValue).ToString(),
+                            suffix);
+                }
                 else
-                    return string.Format("{0} ({1}{2}+)",
-                        this.ZoneName,
-                        this.StartValue.ToString(),
-                        suffix);
+                {
+
+                    if (this.EndValue != int.MaxValue)
+                        return string.Format("{0} ({1}-{2}{3})",
+                            this.ZoneName,
+                            this.StartValue.ToString(),
+                            this.EndValue.ToString(),
+                            suffix);
+                    else
+                        return string.Format("{0} ({1}{2}+)",
+                            this.ZoneName,
+                            this.StartValue.ToString(),
+                            suffix);
+                }
             }
             private set { }
         }

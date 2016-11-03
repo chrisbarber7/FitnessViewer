@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
@@ -33,7 +34,7 @@ namespace FitnessViewer.Infrastructure.Repository
                         .ToList();
         }
 
-     
+
         /// <summary>
         /// List of Zone ranges for a given user/sport
         /// </summary>
@@ -64,7 +65,7 @@ namespace FitnessViewer.Infrastructure.Repository
         {
             // remove the time.
             date = date.Date;
-            
+
             // get a list of the zones for the user/type.
             var zoneRanges = GetUserZoneRanges(userId, zone);
 
@@ -84,17 +85,18 @@ namespace FitnessViewer.Infrastructure.Repository
             // populate zones with the start value.
             var zoneValues = zoneRanges
                 .Select(r => new ZoneValueDto
-                    {
-                        ZoneType = zone,
-                        ZoneName = r.ZoneName,
-                        StartValue = r.ZoneStart * ValueOnDate.Value / 100
+                {
+                    ZoneType = zone,
+                    ZoneName = r.ZoneName,
+                    StartValue = r.ZoneStart * ValueOnDate.Value / 100
 
-                    })
-                .OrderBy(z=>z.StartValue)
+                })
+                .OrderBy(z => z.StartValue)
                 .ToList();
 
+
             if (zoneValues.Count > 1)
-            {        
+            {
                 // calculate the EndValue for the zone based on the start value of the next zone up.
                 for (int z = 0; z <= zoneValues.Count - 2; z++)
                     zoneValues[z].EndValue = zoneValues[z + 1].StartValue - 1;
@@ -105,7 +107,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 // for the last zone the max value will have no upper limit.
                 zoneValues[zoneValues.Count - 1].EndValue = int.MaxValue;
             }
-  
+
             return zoneValues;
         }
 
@@ -130,7 +132,14 @@ namespace FitnessViewer.Infrastructure.Repository
                             .Select(s => s.HeartRate)
                             .ToArray();
             else if (zoneType == ZoneType.RunPace)
-                throw new Exception("Run Pace zones not implemented");
+                stream = GetSecondsPerMileFromVelocity(
+                    _context.Stream
+                            .Where(s => s.ActivityId == fvActivity.Id && s.Velocity.HasValue)
+                            .Select(s => s.Velocity).ToArray());
+
+
+
+          
 
             return GetZoneValues(fvActivity.Athlete.UserId, fvActivity.Start, stream, zoneType);
 
@@ -158,22 +167,47 @@ namespace FitnessViewer.Infrastructure.Repository
                             .Select(s => s.HeartRate)
                             .ToArray();
             else if (zoneType == ZoneType.RunPace)
-                throw new Exception("Run Pace zones not implemented");
+                stream = GetSecondsPerMileFromVelocity(activity.Stream);
 
             return GetZoneValues(activity.Athlete.UserId, activity.Start, stream, zoneType);
         }
 
 
         internal IEnumerable<ZoneValueDto> GetZoneValues(string userId, DateTime activityDate, int?[] stream, ZoneType zone)
-        { 
-        var zoneValues = GetUserZoneValues(userId, zone, activityDate);
+        {
+            var zoneValues = GetUserZoneValues(userId, zone, activityDate);
 
             // calculate number of seconds in each zone.
-            foreach(ZoneValueDto z in zoneValues)
+            foreach (ZoneValueDto z in zoneValues)
                 z.DurationInSeconds = stream.Where(w => w.Value >= z.StartValue && w.Value <= z.EndValue).Count();
 
             return zoneValues;
         }
 
-}
+        internal int?[] GetSecondsPerMileFromVelocity(IEnumerable<Stream> stream)
+        {
+            List<int> secsPerMile = new List<int>();
+
+            foreach (Stream s in stream)
+            {
+                if (s.Velocity.HasValue && s.Velocity.Value > 0)
+                    secsPerMile.Add(MetreDistance.MetrePerSecondToSecondPerMile(s.Velocity.Value));
+            }
+
+            return secsPerMile.Select(s => (int?)s).ToArray();
+        }
+
+        internal int?[] GetSecondsPerMileFromVelocity(double?[] metrePerSecondStream)
+        {
+            List<int> secsPerMile = new List<int>();
+
+            foreach (double? s in metrePerSecondStream)
+            {
+                if (s != null && s > 0)
+                    secsPerMile.Add(MetreDistance.MetrePerSecondToSecondPerMile(s.Value));
+            }
+
+            return secsPerMile.Select(s => (int?)s).ToArray();
+        }
+    }
 }

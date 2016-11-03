@@ -14,6 +14,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         public const decimal METRE_TO_MILE = 0.00062137119M;
         public const decimal METER_TO_KM = 0.001M;
         public const decimal METER_TO_FEET = 3.2808399M;
+        public const decimal METER_PER_SEC_TO_SECONDS_PER_MILE = 26.8224M;
         public const int PRECISION = 2;
 
         /// <summary>
@@ -45,5 +46,26 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             return Math.Round(metres * METER_TO_FEET, PRECISION);
         }
+
+        /// <summary>
+        /// Convert Metres per second (Stream.Velocity) to Seconds per mile
+        /// </summary>
+        /// <param name="metresPerSecond">Velocity (metres per second)</param>
+        /// <returns></returns>
+        public static int MetrePerSecondToSecondPerMile(decimal metresPerSecond)
+        {
+            return Convert.ToInt32(METER_PER_SEC_TO_SECONDS_PER_MILE / metresPerSecond * 60);
+        }
+
+        /// <summary>
+        /// Convert Metres per second (Stream.Velocity) to Seconds per mile
+        /// </summary>
+        /// <param name="metresPerSecond">Velocity (metres per second)</param>
+        /// <returns></returns>
+        public static int MetrePerSecondToSecondPerMile(double metresPerSecond)
+        {
+            return MetrePerSecondToSecondPerMile(Convert.ToDecimal(metresPerSecond));
+        }
+
     }
 }

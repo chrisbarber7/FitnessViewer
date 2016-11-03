@@ -7,7 +7,17 @@
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport7Day", 7);
         setupTimeBySportChart("chartTimeBySport30Day", 30);
+
+
+
+        //jQuery("#date-7day").click(function (e) {
+        //    alert("7 day");
+        //    e.preventDefault();
+        //});
+
+
     };
+
 
     var setupWeeklyReport = function (chartName, api, colour) {
         $.ajax({

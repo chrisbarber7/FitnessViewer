@@ -9,10 +9,6 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
-
-
-
-
     /// <summary>
     /// Find peak values for a duration in a stream (ie 30 second peak power)
     /// </summary>
@@ -112,7 +108,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             PeakValueFinder finder = new PeakValueFinder(
                 stream.Select(s => s.Value).ToList(),
                 type,
-                activityId, type == PeakStreamType.Power ? true: false);
+                activityId, type == PeakStreamType.Power ? true : false);
 
             return finder.FindPeaks();
         }
@@ -214,18 +210,12 @@ namespace FitnessViewer.Infrastructure.Helpers
                 peaks.Add(fullDuration);
             }
 
-            List<ActivityPeakDetail> details = new List<ActivityPeakDetail>();
+            // where no peak found and value remains at the starting value of -1 reset to null
+            // to indicate that no value was found.
+            foreach (var peak in peaks.Where(p => p.Value == -1))
+                peak.Value = null;
 
-            foreach (ActivityPeakDetailCalculator p in peaks)
-            {
-                if (p.Value == -1)
-                    p.Value = null;
-
-                details.Add(AutoMapper.Mapper.Map<ActivityPeakDetail>(p));
-            }
-
-
-            return details;
+            return peaks.Select(p => AutoMapper.Mapper.Map<ActivityPeakDetail>(p)).ToList();
         }
 
         public ActivityPeakDetail FindPeakForDuration(int duration)
@@ -244,25 +234,21 @@ namespace FitnessViewer.Infrastructure.Helpers
                 return null;
 
             return peaks[0];
-        }  
+        }
     }
 
-   /// <summary>
-   /// Add a Queue collection to base class which will be used to hold values used to 
-   /// calculate the average.
-   /// </summary>
-          [NotMapped]
-        public class ActivityPeakDetailCalculator : ActivityPeakDetail
+    /// <summary>
+    /// Add a Queue collection to base class which will be used to hold values used to 
+    /// calculate the average.
+    /// </summary>
+    [NotMapped]
+    public class ActivityPeakDetailCalculator : ActivityPeakDetail
+    {
+        public Queue<int> rollingValues = new Queue<int>();
+
+        public ActivityPeakDetailCalculator(long activityId, PeakStreamType type, int duration) : base(activityId, type, duration)
         {
-            public Queue<int> rollingValues = new Queue<int>();
-
-            public ActivityPeakDetailCalculator(long activityId, PeakStreamType type, int duration) : base(activityId, type, duration)
-            {
-            }
-
         }
-
-   
-
+    }
 
 }
