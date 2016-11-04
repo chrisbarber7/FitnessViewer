@@ -95,12 +95,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
 
             if (itemsAdded > 0)
-            {
                 AddNotification(Notification.StravaActivityScan(itemsAdded));
-
-                // trigger web job to download activity details.
-                AzureWebJob.CreateTrigger(_unitOfWork);
-            }
         }
 
         /// <summary>

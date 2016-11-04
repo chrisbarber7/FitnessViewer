@@ -88,7 +88,7 @@ namespace FitnessViewer.Infrastructure.Models
 
             uow.Queue.AddQueueItem(this);
             uow.Complete();
-   //         AddToAzureQueue();
+            AddToAzureQueue();
         }
     }
 }

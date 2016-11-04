@@ -41,9 +41,6 @@ namespace FitnessViewer.Infrastructure.Helpers
                 uow.Metrics.AddFitbitUser(u);
 
                 DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Fitbit).Save();
-               
-                // trigger web job to download fitbit metrics.
-                AzureWebJob.CreateTrigger(uow);
             }
             else
             {

@@ -39,14 +39,7 @@ namespace FitnessViewer.Controllers
 
         public ActionResult ActivityScan()
         {
-            DownloadQueue job = DownloadQueue.CreateQueueJob(this.User.Identity.GetUserId(), DownloadType.Strava);
-            _unitOfWork.Queue.AddQueueItem(job);
-            _unitOfWork.Complete();
-            AzureWebJob.AddToAzureQueue(job.Id);
-
-            // trigger web job to download activity details.
-            AzureWebJob.CreateTrigger(_unitOfWork);
-
+            DownloadQueue.CreateQueueJob(this.User.Identity.GetUserId(), DownloadType.Strava).Save();
             return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
     }

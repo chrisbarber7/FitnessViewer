@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
-using Fitbit.Api;
-using System.Configuration;
-using Fitbit.Models;
 using Fitbit.Api.Portable;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;
@@ -84,14 +80,7 @@ namespace SampleWebMVC.Controllers
         /// <returns></returns>
         public ActionResult Download()
         {
-            DownloadQueue job = DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit);
-            _unitOfWork.Queue.AddQueueItem(job);
-            _unitOfWork.Complete();
-            AzureWebJob.AddToAzureQueue(job.Id);
-            
-            // trigger web job to download activity details.
-            AzureWebJob.CreateTrigger(_unitOfWork);
-
+            DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), FitnessViewer.Infrastructure.enums.DownloadType.Fitbit).Save();
             return View();
         }
     }
