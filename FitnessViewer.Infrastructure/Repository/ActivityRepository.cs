@@ -41,6 +41,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
             return _context.Activity.Where(a => a.Id == activityId)
                 .Include(a => a.ActivityType)
+                .Include(a=> a.Athlete)
                 .FirstOrDefault();
         }
 
@@ -295,116 +296,9 @@ namespace FitnessViewer.Infrastructure.Repository
                        .ToList();           
         }
 
-        public ActivityMinMaxDto BuildSummaryInformation(long activityId, int startIndex, int endIndex)
-        {
-            var activity = _context.Activity.Find(activityId);
-
-            var stream = GetActivityStream(activityId)
-                .Where(s => s.Time >= startIndex && s.Time <= endIndex)
-                .ToList();
-
-            return BuildSummaryInformation(activity, stream, startIndex, endIndex);
-        }
-
-        public ActivityMinMaxDto BuildSummaryInformation(Activity activity, List<Stream> stream, int startIndex, int endIndex)
-        {
 
 
-            if (stream.Count == 0)
-                return new ActivityMinMaxDto();
-
-            if (endIndex == int.MaxValue)
-                endIndex = stream.Count;
-
-            var startDetails = stream.First();//.Where(s => s.Time == startIndex).First();
-            var endDetails = stream.Last(); // .Where(s => s.Time == endIndex).First();
-
-            // need to group by something to get min/max/ave so grouping by a constant.
-            var minMaxAveResults = stream.GroupBy(i => 1)
-          .Select(g => new
-          {
-              powerMin = g.Min(s => s.Watts),
-              powerAve = g.Average(s => s.Watts),
-              powerMax = g.Max(s => s.Watts),
-              heartRateMin = g.Min(s => s.HeartRate),
-              heartRateAve = g.Average(s => s.HeartRate),
-              heartRateMax = g.Max(s => s.HeartRate),
-              cadenceMin = g.Min(s => s.Cadence),
-              cadenceAve = g.Average(s => s.Cadence),
-              cadenceMax = g.Max(s => s.Cadence),
-              elevationMin = g.Min(s => s.Altitude),
-              elevationAve = g.Average(s => s.Altitude),
-              elevationMax = g.Max(s => s.Altitude),
-              time = g.Count(),
-              distance = g.Sum(s => s.Distance)
-          }).First();
-
-            ActivityMinMaxDto info = ActivityMinMaxDto.Create();
-            
-            if (activity.ActivityType.IsRide)
-              info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(stream, 295);
-            else if (activity.ActivityType.IsRun)
-                info.Analytics = ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(stream.Select(w => w.Velocity).ToList(), stream.Select(w => w.HeartRate).ToList());
-            else if (activity.ActivityType.IsSwim)
-                info.Analytics = ActivityAnalyticsDto.SwimCreateFromPaceStream(stream.Select(w => w.Velocity).ToList());
-            else
-                info.Analytics = ActivityAnalyticsDto.OtherUnknown();
-
-            if (minMaxAveResults.powerMin == null)
-            {
-                info.Power = null;
-            }
-            else
-            {
-                info.Power.Min = minMaxAveResults.powerMin.Value;
-                info.Power.Max = minMaxAveResults.powerMax.Value;
-                info.Power.Ave = Convert.ToInt32(minMaxAveResults.powerAve.Value);
-            }
-
-            if (minMaxAveResults.heartRateMin == null)
-            {
-                info.HeartRate = null;
-            }
-            else
-            {
-                info.HeartRate.Min = minMaxAveResults.heartRateMin.Value;
-                info.HeartRate.Max = minMaxAveResults.heartRateMax.Value;
-                info.HeartRate.Ave = Convert.ToInt32(minMaxAveResults.heartRateAve.Value);
-            }
-
-            if (minMaxAveResults.cadenceMin == null)
-            {
-                info.Cadence = null;
-            }
-            else
-            {
-                info.Cadence.Min = minMaxAveResults.cadenceMin.Value;
-                info.Cadence.Max = minMaxAveResults.cadenceMax.Value;
-                info.Cadence.Ave = Convert.ToInt32(minMaxAveResults.cadenceAve.Value);
-            }
-
-            if (minMaxAveResults.elevationMin == null)
-            {
-                info.Elevation = null;
-            }
-            else
-            {
-                info.Elevation.Min = Convert.ToInt32(minMaxAveResults.elevationMin.Value);
-                info.Elevation.Ave = Convert.ToInt32(minMaxAveResults.elevationAve.Value);
-                info.Elevation.Max = Convert.ToInt32(minMaxAveResults.elevationMax.Value);
-            }
-
-            if ((startDetails.Distance != null) && (endDetails.Distance != null))
-                info.Distance = MetreDistance.ToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
-
-            info.Time = TimeSpan.FromSeconds(endIndex - startIndex);
-
-          
-
-            return info;
-
-        }
-
+     
         public ActivityPeakDetail GetActivityPeakDetail(int id)
         {
             return _context.ActivityPeakDetail.Where(p => p.Id == id).FirstOrDefault();
@@ -562,7 +456,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<LapDto> GetLapStream(long activityId, PeakStreamType streamType)
         {
-            string units = StreamHelper.StreamTypeUnits(streamType);
+            string units = DisplayLabel.StreamTypeUnits(streamType);
 
             var result = _context.ActivityPeakDetail
               .Where(p => p.ActivityId == activityId && p.StreamType == streamType && 
@@ -588,7 +482,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
             foreach (LapDto l in result)
             {
-                l.Name = StreamHelper.StreamDurationForDisplay(Convert.ToInt32(l.Name));
+                l.Name = DisplayLabel.StreamDurationForDisplay(Convert.ToInt32(l.Name));
             }
             return result;
         }

@@ -28,7 +28,7 @@ namespace FitnessViewer.Test
             calc.StreamType = Infrastructure.enums.PeakStreamType.Power;
             calc.Value = 100;
 
-            Assert.AreEqual(calc.StartIndex + calc.Duration, calc.EndIndex);
+            Assert.AreEqual(1009, calc.EndIndex);
 
             ActivityPeakDetail mapped = AutoMapper.Mapper.Map<ActivityPeakDetail>(calc);
 

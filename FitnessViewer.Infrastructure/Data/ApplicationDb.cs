@@ -9,6 +9,7 @@ namespace FitnessViewer.Infrastructure.Data
         public ApplicationDb()
             : base("FitnessViewer", throwIfV1Schema: false)
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public static ApplicationDb Create()

@@ -75,6 +75,21 @@ namespace FitnessViewer.Infrastructure.Models
         {
             AzureWebJob.AddToAzureQueue(Id);
         }
+
+        public void Save()
+        {
+            this.Save(null);
+        }
+
+        public void Save(UnitOfWork uow)
+        {
+            if (uow == null)
+                uow = new UnitOfWork();
+
+            uow.Queue.AddQueueItem(this);
+            uow.Complete();
+   //         AddToAzureQueue();
+        }
     }
 }
 

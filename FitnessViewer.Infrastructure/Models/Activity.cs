@@ -41,7 +41,7 @@ namespace FitnessViewer.Infrastructure.Models
             set
             {
                 _distance = value;
-                DistanceInMiles = MetreDistance.ToMiles(value);
+                DistanceInMiles = Helpers.Conversions.Distance.MetersToMiles(value);
             }
         }
 
@@ -145,9 +145,9 @@ namespace FitnessViewer.Infrastructure.Models
         public string GetDistanceByActivityType()
         {
             if (this.ActivityType.IsRide)
-                return string.Format("{0}", MetreDistance.ToMiles(this.Distance).ToString());
+                return string.Format("{0}", Helpers.Conversions.Distance.MetersToMiles(this.Distance).ToString());
             else if (this.ActivityType.IsRun)
-                return string.Format("{0}mi", MetreDistance.ToMiles(this.Distance).ToString());
+                return string.Format("{0}mi", Helpers.Conversions.Distance.MetersToMiles(this.Distance).ToString());
             else if (this.ActivityType.IsSwim)
                 return string.Format("{0}m", this.Distance.ToString());
             else

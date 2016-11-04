@@ -21,7 +21,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 if (string.IsNullOrEmpty(Value))
                     return string.Empty;
 
-                return StreamHelper.StreamTypeUnits(this.Type);
+                return DisplayLabel.StreamTypeUnits(this.Type);
 
             }
             private set { }

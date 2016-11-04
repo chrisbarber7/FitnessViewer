@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FitnessViewer.Infrastructure.Helpers.Conversions;
+using System;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -16,7 +13,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <returns></returns>
         public static TimeSpan RunMinuteMiles(decimal distanceInMetres, TimeSpan runDuration)
         {
-            double distanceInMiles = Convert.ToDouble(distanceInMetres * MetreDistance.METRE_TO_MILE);
+            double distanceInMiles = Convert.ToDouble(distanceInMetres * Distance.METRE_TO_MILE);
 
             if (distanceInMiles <= 0)
                 return new TimeSpan(0, 0, 0);

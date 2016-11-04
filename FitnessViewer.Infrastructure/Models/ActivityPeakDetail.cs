@@ -58,7 +58,7 @@ namespace FitnessViewer.Infrastructure.Models
                     EndIndex = null;
                 else
                 {
-                    EndIndex = _startIndex + Duration;
+                    EndIndex = _startIndex + Duration - 1;
                 }
             }
         }
@@ -74,9 +74,23 @@ namespace FitnessViewer.Infrastructure.Models
         {
             get
             {
-                return StreamHelper.StreamDurationForDisplay(Convert.ToInt32(Duration));
+                return DisplayLabel.StreamDurationForDisplay(Convert.ToInt32(Duration));
             }
             private set { }
+        }
+    }
+
+    /// <summary>
+    /// Add a Queue collection to base class which will be used to hold values used to 
+    /// calculate the average.
+    /// </summary>
+    [NotMapped]
+    public class ActivityPeakDetailCalculator : ActivityPeakDetail
+    {
+        public Queue<int> rollingValues = new Queue<int>();
+
+        public ActivityPeakDetailCalculator(long activityId, PeakStreamType type, int duration) : base(activityId, type, duration)
+        {
         }
     }
 }

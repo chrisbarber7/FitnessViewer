@@ -1,6 +1,7 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Helpers.Conversions;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
@@ -157,17 +158,17 @@ namespace FitnessViewer.Infrastructure.Repository
             int?[] stream = null;
 
             if (zoneType == ZoneType.BikePower)
-                stream = activity.Stream
-                            .Where(s => s.Watts.HasValue)
-                            .Select(s => s.Watts)
+                stream = activity.ActivityStream.GetIndividualStream<int?>(StreamType.Watts)
+                           // .Where(s => s.Watts.HasValue)
+                          //  .Select(s => s.Watts)
                             .ToArray();
             else if (zoneType == ZoneType.RunHeartRate || zoneType == ZoneType.BikeHeartRate)
-                stream = activity.Stream
-                            .Where(s => s.HeartRate.HasValue)
-                            .Select(s => s.HeartRate)
+                stream = activity.ActivityStream.GetIndividualStream<int?>(StreamType.Heartrate)
+                            // .Where(s => s.HeartRate.HasValue)
+                            // .Select(s => s.HeartRate)
                             .ToArray();
             else if (zoneType == ZoneType.RunPace)
-                stream = GetSecondsPerMileFromVelocity(activity.Stream);
+                stream = GetSecondsPerMileFromVelocity(activity.ActivityStream.Stream);
 
             return GetZoneValues(activity.Athlete.UserId, activity.Start, stream, zoneType);
         }
@@ -191,7 +192,7 @@ namespace FitnessViewer.Infrastructure.Repository
             foreach (Stream s in stream)
             {
                 if (s.Velocity.HasValue && s.Velocity.Value > 0)
-                    secsPerMile.Add(MetreDistance.MetrePerSecondToSecondPerMile(s.Velocity.Value));
+                    secsPerMile.Add(Distance.MetrePerSecondToSecondPerMile(s.Velocity.Value));
             }
 
             return secsPerMile.Select(s => (int?)s).ToArray();
@@ -204,7 +205,7 @@ namespace FitnessViewer.Infrastructure.Repository
             foreach (double? s in metrePerSecondStream)
             {
                 if (s != null && s > 0)
-                    secsPerMile.Add(MetreDistance.MetrePerSecondToSecondPerMile(s.Value));
+                    secsPerMile.Add(Distance.MetrePerSecondToSecondPerMile(s.Value));
             }
 
             return secsPerMile.Select(s => (int?)s).ToArray();

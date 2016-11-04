@@ -9,7 +9,8 @@ using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
 using System;
-//using System.Web.Http;
+using FitnessViewer.Infrastructure.Models.Collections;
+
 
 namespace FitnessViewer.Controllers
 {
@@ -29,7 +30,9 @@ namespace FitnessViewer.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            StreamHelper.RecalculateSingleActivity(_unitOfWork, id.Value);
+            ActivityStreams.CreateFromExistingActivityStream(id.Value)
+                .CalculatePeaksAndSave();
+
             return RedirectToAction("ViewActivity", new { id = id });
         }
 
@@ -68,7 +71,9 @@ namespace FitnessViewer.Controllers
         [HttpGet]
         public ActionResult GetSummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
         {
-            return PartialView("_ActivitySummaryInformation", _unitOfWork.Activity.BuildSummaryInformation(detail.activityId, detail.startIndex, detail.endIndex));
+
+            var details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex).BuildSummaryInformation();
+            return PartialView("_ActivitySummaryInformation", details);
         }
 
         [Authorize]

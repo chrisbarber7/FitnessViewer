@@ -1,9 +1,7 @@
-﻿using FitnessViewer.Infrastructure.Data;
-using FitnessViewer.Infrastructure.enums;
+﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
-using System;
+using FitnessViewer.Infrastructure.Models.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,26 +10,41 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// <summary>
     /// Find peak values for a duration in a stream (ie 30 second peak power)
     /// </summary>
-    public class PeakValueFinder
+    public class PeakSeeker
     {
         private int[] _data;
-        private int[] _standardDurations;
+        private int[] _durations;
         private PeakStreamType _streamType;
         private long _activityId;
-        private bool _includeFullDuration = true;
-
-        public bool IncludeFullDuration
+  
+  
+        public static PeakSeeker Create(List<int> stream, PeakStreamType type, long activityId)
         {
-            get { return _includeFullDuration; }
-            set { _includeFullDuration = value; }
+            return new PeakSeeker(stream, type, activityId, false);
+        }
+
+        public static PeakSeeker Create(ActivityStreams stream, StreamType type)
+        {
+            var individualStream = stream.GetIndividualStream<int?>(type)
+                .Select(s => s.Value)
+                .ToList();
+
+            PeakStreamType peakStream = type == StreamType.Watts ? PeakStreamType.Power :
+                                        type == StreamType.Cadence ? PeakStreamType.Cadence : PeakStreamType.HeartRate;
+
+            return new PeakSeeker(individualStream, peakStream, stream.ActivityId, false);
         }
 
 
-        public PeakValueFinder(List<int> stream, PeakStreamType type, long activityIds)
-            : this(stream, type, activityIds, false)
+        public static PeakSeeker CreatePowerCurve(ActivityStreams stream)
         {
+            var individualStream = stream.GetIndividualStream<int?>( StreamType.Watts)
+                .Select(s => s.Value)
+                .ToList();
 
+            return new PeakSeeker(individualStream, PeakStreamType.Power, stream.ActivityId, true);
         }
+
 
         /// <summary>
         /// 
@@ -39,90 +52,38 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="stream">Stream to be analysed for peaks.</param>
         /// <param name="type">Type of stream (power, HR, cadence)</param>
         /// <param name="activityId">Activity Id.</param>
-        public PeakValueFinder(List<int> stream, PeakStreamType type, long activityId, bool usePowerCurveDurations)
+        private PeakSeeker(List<int> stream, PeakStreamType type, long activityId, bool usePowerCurveDurations)
         {
             _streamType = type;
             _activityId = activityId;
 
             // for cadence peaks we ignore 0 values to exclude times when stationary so strip out now.
             _data = stream.Where(d => _streamType == PeakStreamType.Cadence ? d > 0 : true).ToArray();
-
+            
             if (usePowerCurveDurations)
-                SetupPowerCurveDurations();
+                _durations = PeakDuration.CreatePowerCurveDurations(_data.Count()).Durations;
             else
-            {
-                UnitOfWork uow = new UnitOfWork();
-                _standardDurations = uow.Analysis.GetPeakStreamTypeDuration(type);
-            }
-
+                _durations = PeakDuration.Create(_streamType).Durations;
         }
 
-
-        public int[] StandardDurations
+        public List<ActivityPeakDetail> FindPeaks()
         {
-            get { return _standardDurations; }
+            return FindPeaks(null);
         }
-
-        private int[] SetupPowerCurveDurations()
-        {
-            List<int> durations = new List<int>();
-
-            // under 3 minutes = every second
-            for (int x = 1; x <= 179; x++)
-                durations.Add(x);
-
-            // 3 mins to 5 mins = every 2 seconds
-            for (int x = 180; x <= 299; x = x + 2)
-                durations.Add(x);
-
-            // 5 mins to 30 mins = every 5 seconds
-            for (int x = 300; x <= (30 * 60) - 1; x = x + 5)
-                durations.Add(x);
-
-            // 30 mins to 1 hour = every 30 seconds.
-            for (int x = (30 * 60); x <= (60 * 60) - 1; x = x + 30)
-                durations.Add(x);
-
-            // one hour to two hours = every 60 seconds.
-            for (int x = (60 * 60); x <= (2 * 60 * 60) - 1; x = x + 60)
-                durations.Add(x);
-
-            // anything over every 5 mins
-            for (int x = (2 * 60 * 60); x <= (3 * 60 * 60) - 1; x = x + 300)
-                durations.Add(x);
-
-            //    durations.Add(int.MaxValue);
-
-            // include any duration less than event time (and int.MaxValue for full event).
-            _standardDurations = durations.Where(d => d <= _data.Count() || d == int.MaxValue).ToArray();
-
-            return _standardDurations;
-        }
-
-
-        public static List<ActivityPeakDetail> ExtractPeaksFromStream(long activityId, List<int?> stream, PeakStreamType type)
-        {
-            if (stream.Contains(null))
-                return null;
-
-            PeakValueFinder finder = new PeakValueFinder(
-                stream.Select(s => s.Value).ToList(),
-                type,
-                activityId, type == PeakStreamType.Power ? true : false);
-
-            return finder.FindPeaks();
-        }
-
 
         /// <summary>
         /// Find peaks in stream for all standard durations
         /// </summary>
         /// <returns></returns>
-        public List<ActivityPeakDetail> FindPeaks()
+        public List<ActivityPeakDetail> FindPeaks(int? singleDuration)
         {
             List<ActivityPeakDetailCalculator> peaks = new List<ActivityPeakDetailCalculator>();
 
-            foreach (int duration in _standardDurations)
+            // if running for a single duration override the standard durations.
+            if (singleDuration != null)
+                _durations =  new int[] { singleDuration.Value };
+   
+            foreach (int duration in _durations)
             {
                 // default value to -1 so first value found will be higher and therefore used.
                 peaks.Add(new ActivityPeakDetailCalculator(_activityId, _streamType, duration)
@@ -151,7 +112,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             //   });
 
 
-            int dataCount = _data.Length;
+
 
             //// loop over the data for each possible starting point 
             //for (int startDataPoint = 0; startDataPoint <= dataCount; startDataPoint++)
@@ -172,6 +133,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             //      });
             //}
+
+            int dataCount = _data.Length;
 
             // loop over the data for each possible starting point 
             for (int startDataPoint = 0; startDataPoint <= dataCount - 1; startDataPoint++)
@@ -196,7 +159,9 @@ namespace FitnessViewer.Infrastructure.Helpers
                });
             }
 
-            if (_includeFullDuration)
+            // if we're running for a single duration then we don't need to include the 
+            // peaks for the full full activity duration.
+            if (singleDuration == null)
             {
                 ActivityPeakDetailCalculator fullDuration = new ActivityPeakDetailCalculator(_activityId, _streamType, _data.Length)
                 {
@@ -217,38 +182,5 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             return peaks.Select(p => AutoMapper.Mapper.Map<ActivityPeakDetail>(p)).ToList();
         }
-
-        public ActivityPeakDetail FindPeakForDuration(int duration)
-        {
-            // override default duration as we're only interested in this one!
-            _standardDurations = new int[] { duration };
-
-
-            this.IncludeFullDuration = false;
-
-            List<ActivityPeakDetail> peaks = FindPeaks();
-
-
-            // we should only get back one result as that's all we asked for.
-            if (peaks.Count() != 1)
-                return null;
-
-            return peaks[0];
-        }
     }
-
-    /// <summary>
-    /// Add a Queue collection to base class which will be used to hold values used to 
-    /// calculate the average.
-    /// </summary>
-    [NotMapped]
-    public class ActivityPeakDetailCalculator : ActivityPeakDetail
-    {
-        public Queue<int> rollingValues = new Queue<int>();
-
-        public ActivityPeakDetailCalculator(long activityId, PeakStreamType type, int duration) : base(activityId, type, duration)
-        {
-        }
-    }
-
 }

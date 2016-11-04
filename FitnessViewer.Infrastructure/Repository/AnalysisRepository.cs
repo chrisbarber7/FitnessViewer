@@ -37,8 +37,15 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        public void AddPeaks(long activityId, PeakStreamType type, List<ActivityPeakDetail> peaks)
+        public void AddPeaks( List<ActivityPeakDetail> peaks)
         {
+            if ((peaks == null) || (peaks.Count == 0))
+                    return;
+
+            long activityId = peaks[0].ActivityId;
+            PeakStreamType type = peaks[0].StreamType;
+
+
             var existingPeaks = _context.ActivityPeak.Where(a => a.ActivityId == activityId && a.StreamType == type).ToList();
             if (existingPeaks.Count > 0)
                 _context.ActivityPeak.RemoveRange(existingPeaks);

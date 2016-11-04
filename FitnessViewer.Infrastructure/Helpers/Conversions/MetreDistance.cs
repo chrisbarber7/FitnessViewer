@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FitnessViewer.Infrastructure.Helpers
+namespace FitnessViewer.Infrastructure.Helpers.Conversions
 {
     /// <summary>
     /// Convert from metre distances (used by Strava) to user preferred units.
     /// </summary>
-    public static class MetreDistance
+    public static class Distance
     {
         public const decimal METRE_TO_MILE = 0.00062137119M;
         public const decimal METER_TO_KM = 0.001M;
@@ -22,7 +18,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="metres">metre distance to convert</param>
         /// <returns></returns>
-        public static decimal ToMiles(decimal metres)
+        public static decimal MetersToMiles(decimal metres)
         {
             return Math.Round(metres * METRE_TO_MILE, PRECISION);
         }
@@ -32,7 +28,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="metres">metre distance to convert</param>
         /// <returns></returns>
-        public static decimal ToKM(decimal metres)
+        public static decimal MetersToKilometers(decimal metres)
         {
             return Math.Round(metres * METER_TO_KM, PRECISION);
         }
@@ -42,7 +38,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="metres">metre distance to convert</param>
         /// <returns></returns>
-        public static decimal ToFeet(decimal metres)
+        public static decimal MetersToFeet(decimal metres)
         {
             return Math.Round(metres * METER_TO_FEET, PRECISION);
         }

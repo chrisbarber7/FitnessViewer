@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Helpers.Conversions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,12 @@ namespace FitnessViewer.Infrastructure.Helpers
     {
         public static decimal ToMiles(this decimal distanceInMetres)
         {
-            return MetreDistance.ToMiles(distanceInMetres);
+            return Distance.MetersToMiles(distanceInMetres);
         }
 
         public static decimal ToFeet(this decimal distanceInMetres)
         {
-            return MetreDistance.ToFeet(distanceInMetres);
+            return Distance.MetersToFeet(distanceInMetres);
         }
     }
 }

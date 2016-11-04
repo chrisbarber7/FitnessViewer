@@ -79,9 +79,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                     fvAthlete.Activities.Add(fvActivity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    DownloadQueue job = DownloadQueue.CreateQueueJob(fvAthlete.UserId, DownloadType.Strava, stravaActivitySummary.Id);
-                    _unitOfWork.Queue.AddQueueItem(job);
-                    jobs.Add(job);
+                    jobs.Add(DownloadQueue.CreateQueueJob(fvAthlete.UserId, DownloadType.Strava, stravaActivitySummary.Id));
+           
           
                     itemsAdded++;
                 }
@@ -89,9 +88,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 // write changes to database.
                 _unitOfWork.Complete();
 
-
                 foreach (DownloadQueue job in jobs)
-                    job.AddToAzureQueue();
+                    job.Save(_unitOfWork);
 
                 StravaPause(fvAthlete);          
             }

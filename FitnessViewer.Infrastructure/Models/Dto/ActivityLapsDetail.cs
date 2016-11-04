@@ -2,6 +2,7 @@
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Models.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,15 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         {
             ActivityDetailDto m = Mapper.Map<ActivityDetailDto>(ActivityDto.CreateFromActivity(fvActivity));
 
-                m.Stream = uow.Activity.GetActivityStream(fvActivity.Id);
+            m.ActivityStream = ActivityStreams.CreateFromExistingActivityStream(fvActivity.Id);// uow.Activity.GetActivityStream(fvActivity.Id);
             
             m.Laps = uow.Activity.GetLaps(fvActivity.Id);
             m.HeartRate = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.HeartRate);
             m.Cadence = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Cadence);
-            m.SummaryInfo = uow.Activity.BuildSummaryInformation(fvActivity, m.Stream, 0, int.MaxValue);
+
+            m.SummaryInfo = m.ActivityStream.BuildSummaryInformation();
+                
+                // = uow.Activity.BuildSummaryInformation(fvActivity, m.ActivityStream, 0, int.MaxValue);
             m.Analytics = m.SummaryInfo.Analytics;
 
             if (m.HasPowerMeter)
@@ -40,7 +44,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<LapDto> Cadence { get; set; }
 
         public IEnumerable<ZoneValueDto> PowerZones { get; set; }
-        public List<Stream> Stream { get; set; }
+        public ActivityStreams ActivityStream { get; set; }
 
         public ActivityAnalyticsDto Analytics { get; set; }
 

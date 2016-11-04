@@ -2,11 +2,8 @@
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+
+using FitnessViewer.Infrastructure.Models.Collections;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -96,7 +93,11 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         private void CalculateStats()
         {
-            StreamHelper.CalculatePowerCurveForDuration(_jobDetails.ActivityId.Value, _jobDetails.Duration.Value);
+
+         ActivityStreams.CreateFromExistingActivityStream(_jobDetails.ActivityId.Value)
+                .CalculatePeak(StreamType.Watts)
+                .Save();
+
             _jobDetails.MarkJobComplete();
             _uow.Complete();
         }

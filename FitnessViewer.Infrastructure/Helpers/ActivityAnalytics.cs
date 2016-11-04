@@ -40,16 +40,27 @@ namespace FitnessViewer.Infrastructure.Helpers
         private void Setup(IEnumerable<int> powerStream, decimal ftp)
         {
             _powerStream = powerStream;
-            _normalisedPower = this.CalculateNormalisedPower();
             _FTP = ftp;
+
+            // can't calculate NP if less than 30 data points.
+            if (_powerStream.Count() > 30)
+                _normalisedPower = this.CalculateNormalisedPower();
+            else
+                _normalisedPower = Convert.ToDecimal(_powerStream.Average());
+          
         }
 
         private void Setup(IEnumerable<Stream> stream, decimal ftp)
         {
             _powerStream = null;
             _stream = stream;
-            _normalisedPower = this.CalculateNormalisedPower();
             _FTP = ftp;
+
+            // can't calculate NP if less than 30 data points.
+            if (_stream.Count() > 30)
+                _normalisedPower = this.CalculateNormalisedPower();
+            else
+                _normalisedPower = 0.00M;
         }
 
 
@@ -72,7 +83,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             // calcualte based on which whether values held in Stream collection or just values as int collection
             if (_powerStream != null)
-            {   
+            {
                 foreach (int i in _powerStream)
                 {
                     rollingValues.Enqueue(i);

@@ -17,6 +17,7 @@ using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Models.Collections;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -53,7 +54,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             UpdateActivityDetails();
 
-            StreamHelper.RecalculateSingleActivity(_unitOfWork, _activityId);
+
 
             AddNotification(Notification.StravaActivityDownload(_activityId));
             StravaPause(_fvActivity);
@@ -158,9 +159,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Convert Strava stream information and write to database.
         /// </summary>
         /// <param name="stream">Detailed information for activity in strava format</param>
-        private void ConvertStream(List<StravaDotNetStreams.ActivityStream> stream)
+        private ActivityStreams ConvertStream(List<StravaDotNetStreams.ActivityStream> stream)
         {
-            List<Stream> convertedStream = new List<Stream>();
+            ActivityStreams convertedStream = ActivityStreams.CreateForNewActivity(this._activityId);
 
             // convert each strava item
             for (int row = 0; row <= stream[0].OriginalSize - 1; row++)
@@ -168,18 +169,20 @@ namespace FitnessViewer.Infrastructure.Helpers
                 Stream s = ExtractStreamRow(stream, row);
 
                 // occasinally we get duplicate rows for the same time back from Strava so need to ignore them!
-                if (convertedStream.Where(c => c.Time == s.Time).Any())
+                if (convertedStream.Stream.Where(c => c.Time == s.Time).Any())
                 {
                     System.Diagnostics.Debug.WriteLine(string.Format("Skipping row {0} for activity {1}", s.Time, _activityId));
                     continue;
                 }                    
 
-                convertedStream.Add(s);
+                convertedStream.Stream.Add(s);
             }
 
-            // write all details to database.
-            _unitOfWork.Activity.AddStreamBulk(convertedStream);
-            _unitOfWork.Complete();
+            convertedStream.StoreStreams();
+            convertedStream.CalculatePeaksAndSave();
+            convertedStream.AddPowerCurveCalculationJobs();
+
+            return convertedStream;    
         }
         
         /// <summary>
