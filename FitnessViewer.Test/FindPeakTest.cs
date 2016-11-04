@@ -33,27 +33,23 @@ namespace FitnessViewer.Test
 
             for (int i = 1000; i <= 0; i--)
                 _30SecondData.Add(i);
-
-
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<Infrastructure.Configuration.AutoMapperConfig.InfrasturtureProfile>();
-            });
+            
+            AutoMapperConfiguration.Initialise();
         }
 
         [TestMethod]
         public void CheckPeakTypeReturned()
         {
-            PeakValueFinder finder = new PeakValueFinder(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
-            ActivityPeakDetail peak = finder.FindPeakForDuration(30);
+            PeakSeeker finder = new PeakSeeker(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            ActivityPeakDetail peak = finder.FindPeaks(30)[0];
             Assert.AreEqual(PeakStreamType.Power, peak.StreamType);
         }
 
         [TestMethod]
         public void Find30SecondMax()
         {
-            PeakValueFinder finder = new PeakValueFinder(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
-            ActivityPeakDetail peak = finder.FindPeakForDuration(30);
+            PeakSeeker finder = new PeakSeeker(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            ActivityPeakDetail peak = finder.FindPeaks(30)[0];
 
             Assert.AreEqual(1000, peak.Value);
         }
@@ -61,7 +57,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void Find30SecondPeakUsingDefaultDurations()
         {
-            PeakValueFinder finder = new PeakValueFinder(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
 
             foreach (ActivityPeakDetail p in peaks)
@@ -91,7 +87,7 @@ namespace FitnessViewer.Test
         {
             List<int> activtityData = GetActivityPowerStream();
 
-            PeakValueFinder finder = new PeakValueFinder(activtityData, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(activtityData, PeakStreamType.Power, TEST_ACTIVITY_ID);
 
 
             foreach (ActivityPeakDetail p in finder.FindPeaks())
@@ -117,7 +113,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void CheckPowerHasCorrectDurations()
         {
-            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
 
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
@@ -147,7 +143,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void CheckPowerHasCorrectStreamType()
         {
-            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
 
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
@@ -170,7 +166,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void CheckHeartRateHasCorrectStreamType()
         {
-            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
 
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
@@ -190,7 +186,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void CheckCadenceHasCorrectStreamType()
         {
-            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
 
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
@@ -213,7 +209,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void CheckCadenceHasCorrectDurations()
         {
-            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
 
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
@@ -244,7 +240,7 @@ namespace FitnessViewer.Test
         [TestMethod]
         public void CheckHeartRateHasCorrectDurations()
         {
-            PeakValueFinder finder = new PeakValueFinder(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
 
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
             // test for durations we're expecting
@@ -274,7 +270,7 @@ namespace FitnessViewer.Test
         {
             List<int> activtityData = GetActicityCadenceStream();
 
-            PeakValueFinder finder = new PeakValueFinder(activtityData, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(activtityData, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
 
 
             foreach (ActivityPeakDetail p in finder.FindPeaks())
@@ -308,7 +304,7 @@ namespace FitnessViewer.Test
         {
             List<int> activtityData = GetActivityHeartRateStream();
 
-            PeakValueFinder finder = new PeakValueFinder(activtityData, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(activtityData, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
 
 
             foreach (ActivityPeakDetail p in finder.FindPeaks())
@@ -334,9 +330,9 @@ namespace FitnessViewer.Test
             for (int i = 0; i <= 25; i++)
                 data.Add(i);
 
-            PeakValueFinder finder = new PeakValueFinder(data, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(data, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
 
-            ActivityPeakDetail peak = finder.FindPeakForDuration(30);
+            ActivityPeakDetail peak = finder.FindPeaks(30)[0];
 
             Assert.AreEqual(null, peak.Value);
         }
@@ -354,9 +350,9 @@ namespace FitnessViewer.Test
             }
             int average = total / 30;
 
-            PeakValueFinder finder = new PeakValueFinder(data, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            PeakSeeker finder = new PeakSeeker(data, PeakStreamType.Power, TEST_ACTIVITY_ID);
 
-            ActivityPeakDetail peak = finder.FindPeakForDuration(30);
+            ActivityPeakDetail peak = finder.FindPeaks(30)[0];
 
             Assert.AreEqual(average, peak.Value);
             Assert.AreEqual(0, peak.StartIndex);
@@ -373,8 +369,8 @@ namespace FitnessViewer.Test
             for (int i = 0; i < 50; i++)
                 data.Add(i);
 
-            PeakValueFinder finder = new PeakValueFinder(data, PeakStreamType.Power, TEST_ACTIVITY_ID);
-            ActivityPeakDetail peak = finder.FindPeakForDuration(int.MaxValue);
+            PeakSeeker finder = new PeakSeeker(data, PeakStreamType.Power, TEST_ACTIVITY_ID);
+            ActivityPeakDetail peak = finder.FindPeaks(int.MaxValue)[0];
 
             Assert.AreEqual(int.MaxValue, peak.Duration);
         }

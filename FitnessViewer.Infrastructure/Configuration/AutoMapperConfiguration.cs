@@ -22,8 +22,13 @@ namespace FitnessViewer.Infrastructure.Configuration
                 CreateMap<Athlete, Strava.Athletes.Athlete>().ReverseMap();
                 CreateMap<AthleteDto, Athlete>().ReverseMap();
 
-                CreateMap<ActivityPeakDetailCalculator, ActivityPeakDetail>();
-
+                // endIndex is calculated from StartIndex by adding Duration. therefore we must copy Duration then StartIndex
+                // so that it's calculated correctly.
+                CreateMap<ActivityPeakDetailCalculator, ActivityPeakDetail>()
+                    .ForMember(dest=>dest.Duration, opt=>opt.SetMappingOrder(1))
+                    .ForMember(dest=>dest.StartIndex, opt=>opt.SetMappingOrder(2))
+                    .ForMember(x => x.EndIndex, opt => opt.Ignore());
+                
                 CreateMap<Strava.Activities.ActivityLap, Lap>()
                    .ForMember(src => src.Athlete, opt => opt.Ignore())
                    .ForMember(src => src.Activity, opt => opt.Ignore())

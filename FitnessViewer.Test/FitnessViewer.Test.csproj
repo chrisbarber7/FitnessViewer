@@ -66,11 +66,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ActivityAnalyticsTest.cs" />
+    <Compile Include="AutoMapperConfiguration.cs" />
     <Compile Include="FindPeakTest.cs" />
     <Compile Include="PaceCalculatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetreDistanceConversionTest.cs" />
     <Compile Include="StreamHelperTests.cs" />
+    <Compile Include="AutoMapperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\connectionStrings.config">
