@@ -109,7 +109,7 @@ namespace FitnessViewer.Infrastructure.Repository
         internal IEnumerable<ActivityDto> GetRecentActivity(List<ActivityDto> summaryActivities, int returnedRows)
         {
             return summaryActivities
-                 .OrderByDescending(a => a.Start)
+                 .OrderByDescending(a => a.StartDateLocal)
                  .Take(returnedRows)
                  .ToList();
         }
@@ -513,10 +513,31 @@ namespace FitnessViewer.Infrastructure.Repository
                         ElevationGain = r.ElevationGain,
                         Start = r.Start,
                         StartDateLocal = r.StartDateLocal,
+                        HasMap = r.StartLatitude != null ? true : false,
                         IsRide = r.ActivityType.IsRide,
                         IsRun = r.ActivityType.IsRun,
                         IsSwim = r.ActivityType.IsSwim,
-                        IsOther = r.ActivityType.IsOther
+                        IsOther = r.ActivityType.IsOther,
+                        DetailsDownloaded = r.DetailsDownloaded,
+                        HasPowerMeter = r.HasPowerMeter
+
+
+
+
+
+
+
+                        //m.AverageSpeed = 0;
+                        //m.AveragePace = PaceCalculator.RunMinuteMiles(fvActivity.Distance, fvActivity.ElapsedTime.Value);
+                        //m.Date = fvActivity.StartDateLocal.ToShortDateString();
+                 
+
+
+
+
+
+
+
                     });
 
             return activityQuery;
