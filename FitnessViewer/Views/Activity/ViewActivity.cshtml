@@ -176,12 +176,34 @@ else
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 @if (Model.PowerZones != null && Model.PowerZones.Count() > 0)
                 {
                     foreach (var pz in Model.PowerZones)
                     {
-                        @pz.ZoneLabel @pz.Duration < br />
+                        @pz.ZoneLabel @pz.Duration @:</br>
+                    }
+                }
+
+
+            </div>
+            <div class="col-md-4">
+                @if (Model.HeartRateZones != null && Model.HeartRateZones.Count() > 0)
+                {
+                    foreach (var pz in Model.HeartRateZones)
+                    {
+                        @pz.ZoneLabel @pz.Duration @:</br>
+                    }
+                }
+
+
+            </div>
+            <div class="col-md-4">
+                @if (Model.RunPaceZones != null && Model.RunPaceZones.Count() > 0)
+                {
+                    foreach (var pz in Model.RunPaceZones)
+                    {
+                        @pz.ZoneLabel @pz.Duration @:</br>
                     }
                 }
 

@@ -64,15 +64,20 @@ namespace FitnessViewer.Controllers
         public class SummaryInformationRequest
         {
             public long activityId { get; set; }
+            public string selection { get; set; }
             public int startIndex { get; set; }
             public int endIndex { get; set; }
+            
         }
 
         [HttpGet]
         public ActionResult GetSummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
         {
+            var details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex)
+                                         .BuildSummaryInformation();
 
-            var details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex).BuildSummaryInformation();
+            details.Label = detail.selection;
+
             return PartialView("_ActivitySummaryInformation", details);
         }
 

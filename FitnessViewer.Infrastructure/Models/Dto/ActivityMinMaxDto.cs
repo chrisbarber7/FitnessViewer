@@ -9,10 +9,6 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 {
     public class ActivityMinMaxDto : ActivityDto
     {
-
-
-
-
         public static ActivityMinMaxDto Create()
         {
             ActivityMinMaxDto a = new ActivityMinMaxDto();
@@ -33,6 +29,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public MinMaxAve Elevation { get; set; }
 
         public ActivityAnalyticsDto Analytics {get;set;}
+
+        public string Label { get; set; }
 
         public class MinMaxAve
         {

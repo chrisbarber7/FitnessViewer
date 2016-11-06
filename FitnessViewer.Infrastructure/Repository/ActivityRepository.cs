@@ -288,21 +288,21 @@ namespace FitnessViewer.Infrastructure.Repository
             return results.ToList();
         }
 
-        public List<Stream> GetActivityStream(long activityId)
-        {
-            return _context.Stream
-                       .Where(s => s.ActivityId == activityId)
-                       .OrderBy(s=>s.Time)
-                       .ToList();           
-        }
+        //public List<Stream> GetActivityStream(long activityId)
+        //{
+        //    return _context.Stream
+        //               .Where(s => s.ActivityId == activityId)
+        //               .OrderBy(s=>s.Time)
+        //               .ToList();           
+        //}
 
 
 
      
-        public ActivityPeakDetail GetActivityPeakDetail(int id)
-        {
-            return _context.ActivityPeakDetail.Where(p => p.Id == id).FirstOrDefault();
-        }
+        //public ActivityPeakDetail GetActivityPeakDetail(int id)
+        //{
+        //    return _context.ActivityPeakDetail.Where(p => p.Id == id).FirstOrDefault();
+        //}
 
 
 
@@ -401,10 +401,10 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        public Lap GetLap(int id)
-        {
-            return _context.Lap.Where(l => l.Id == id).FirstOrDefault();
-        }
+        //public Lap GetLap(int id)
+        //{
+        //    return _context.Lap.Where(l => l.Id == id).FirstOrDefault();
+        //}
 
 
 

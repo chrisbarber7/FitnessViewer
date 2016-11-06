@@ -84,7 +84,7 @@ namespace FitnessViewer.Infrastructure.Repository
         internal int[] GetPeakStreamTypeDuration(PeakStreamType type)
         {
             return _context.PeakStreamTypeDuration
-                            .Where(p => p.PeakStreamType == type)
+                            .Where(p => p.PeakStreamType == type && p.Duration != int.MaxValue)
                             .OrderBy(p => p.Duration)
                             .Select(p => p.Duration)
                             .ToArray();
@@ -102,13 +102,11 @@ namespace FitnessViewer.Infrastructure.Repository
                   .Where(p => p.Activity.Athlete.UserId == userId && p.StreamType == type)
                   .Include(p => p.Activity);
 
-            List<PeaksDto> ap = new List<PeaksDto>();
-            ap.Add(ExtractPeaksByDays(type, peaks, 7));
-            ap.Add(ExtractPeaksByDays(type, peaks, 30));
-            ap.Add(ExtractPeaksByDays(type, peaks, 90));
-            ap.Add(ExtractPeaksByDays(type, peaks, 365));
-            ap.Add(ExtractPeaksByDays(type, peaks, int.MaxValue));
-            return ap;
+            return new[] { ExtractPeaksByDays(type, peaks, 7),
+                           ExtractPeaksByDays(type, peaks, 30),
+                           ExtractPeaksByDays(type, peaks, 90),
+                           ExtractPeaksByDays(type, peaks, 365),
+                           ExtractPeaksByDays(type, peaks, int.MaxValue) };
         }
 
         private static PeaksDto ExtractPeaksByDays(PeakStreamType type, IQueryable<ActivityPeaks> peaks, int days)

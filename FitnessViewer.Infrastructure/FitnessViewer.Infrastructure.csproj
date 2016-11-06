@@ -143,6 +143,7 @@
     <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="enums\StreamType.cs" />
     <Compile Include="enums\ZoneType.cs" />
+    <Compile Include="Helpers\ActivityZones.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\ActivityAnalytics.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Helpers\StravaActivityDownload.cs" />
     <Compile Include="Helpers\StravaActivityScan.cs" />
     <Compile Include="Helpers\StravaAthlete.cs" />
+    <Compile Include="Helpers\UserZones.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">
       <DependentUpon>201609302208361_AddActivityMap.cs</DependentUpon>
@@ -283,6 +285,10 @@
     <Compile Include="Migrations\201610311401040_ZoneTables.cs" />
     <Compile Include="Migrations\201610311401040_ZoneTables.Designer.cs">
       <DependentUpon>201610311401040_ZoneTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611062218468_PeakStreamTypeDurationsAddEntireEvent.cs" />
+    <Compile Include="Migrations\201611062218468_PeakStreamTypeDurationsAddEntireEvent.Designer.cs">
+      <DependentUpon>201611062218468_PeakStreamTypeDurationsAddEntireEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
@@ -638,6 +644,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610311401040_ZoneTables.resx">
       <DependentUpon>201610311401040_ZoneTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611062218468_PeakStreamTypeDurationsAddEntireEvent.resx">
+      <DependentUpon>201611062218468_PeakStreamTypeDurationsAddEntireEvent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

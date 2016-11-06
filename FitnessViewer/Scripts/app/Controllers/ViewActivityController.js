@@ -8,7 +8,8 @@
         var endIndex = $(this).attr("data-end-index");
         var streamStep = $(this).attr("data-stream-step");
         var activityId = document.getElementById('activityId').value;
-        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&startIndex=" + startIndex*streamStep + "&endIndex=" + endIndex*streamStep);
+        var selectedText = encodeURIComponent($(this).find(".lapName").text());
+        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&selection=" + selectedText + "&startIndex=" + startIndex*streamStep + "&endIndex=" + endIndex*streamStep);
 
         // if previous selection exists then removeit
         if (selectedPolyline!==undefined)

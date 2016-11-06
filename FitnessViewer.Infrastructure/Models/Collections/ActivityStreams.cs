@@ -201,5 +201,23 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             return ActivityMinMaxDto.CreateFromActivityStreams(this);
         }
 
+
+        internal int?[] GetSecondsPerMileFromVelocity()
+        {
+            return _containedStreams.Where(s => s.Velocity.HasValue && s.Velocity.Value > 0)
+                                    .Select(s => (int?)Distance.MetrePerSecondToSecondPerMile(s.Velocity.Value))
+                                .ToArray();
+
+            //List<int> secsPerMile = new List<int>();
+
+            //foreach (Stream s in stream)
+            //{
+            //    if (s.Velocity.HasValue && s.Velocity.Value > 0)
+            //        secsPerMile.Add(Distance.MetrePerSecondToSecondPerMile(s.Velocity.Value));
+            //}
+
+            //     return secsPerMile.Select(s => (int?)s).ToArray();
+        }
+
     }
 }

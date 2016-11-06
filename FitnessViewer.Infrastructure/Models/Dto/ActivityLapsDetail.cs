@@ -26,14 +26,35 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
             m.SummaryInfo = m.ActivityStream.BuildSummaryInformation();
                 
-                // = uow.Activity.BuildSummaryInformation(fvActivity, m.ActivityStream, 0, int.MaxValue);
+               
             m.Analytics = m.SummaryInfo.Analytics;
 
-            if (m.HasPowerMeter)
+
+            ActivityZones zones = new ActivityZones(m);
+
+            if (m.IsRun)
             {
-                m.Power = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Power);
-                m.PowerZones = uow.Settings.GetZoneValues(m, ZoneType.BikePower);
+                m.HeartRateZones = zones.GetZoneValues(ZoneType.RunHeartRate);
+                m.RunPaceZones = zones.GetZoneValues(ZoneType.RunPace);
+
             }
+            else if (m.IsRide)
+            {
+
+                m.HeartRateZones = zones.GetZoneValues(ZoneType.BikeHeartRate);
+
+                if (m.HasPowerMeter)
+                {
+                    m.Power = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Power);
+                    m.PowerZones = zones.GetZoneValues(ZoneType.BikePower);  // uow.Settings.GetZoneValues(m, ZoneType.BikePower);
+                }
+            }
+            else if (m.IsSwim)
+            {
+
+            }
+
+
             return m;
         }
 
@@ -46,6 +67,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<ZoneValueDto> PowerZones { get; set; }
         public ActivityStreams ActivityStream { get; set; }
 
+        public IEnumerable<ZoneValueDto> HeartRateZones { get; set; }
+
+        public IEnumerable<ZoneValueDto> RunPaceZones { get; set; }
         public ActivityAnalyticsDto Analytics { get; set; }
 
 
