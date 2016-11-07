@@ -1,0 +1,23 @@
+﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.LapDto>
+
+@if (Model != null)
+{
+    <ul class="laps">
+        @foreach (var p in Model)
+        {
+            if (!@p.Value.IsEmpty())
+            {
+            <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
+                <div class="lapDetails">
+                    <span class="lapName">@p.Name</span>
+                    <span class="lapValue">@p.Value<span class="lapUnits">&nbsp;@p.Units</span></span>
+                </div>
+            </li>
+            }
+        }
+    </ul>
+}
+else
+{
+    <span>Activity has no relevant data.</span>
+}

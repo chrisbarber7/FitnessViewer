@@ -202,28 +202,3 @@ h6,
     border-radius: 1px;
     padding: 4px 10px;
 }
-
-.zone {
-        padding: 1px 0px;
-}
-
-.zones{
-    width:100%;
-        font-weight: 700;
-    font-size: 11px;
-}
-
-.zoneLabel{
-position:absolute;
-right:18px;
-
-}
-
-.zonePercentage {
-color:red;
-}
-
-.zoneDuration{
-    padding: 0 4px;
-}
-

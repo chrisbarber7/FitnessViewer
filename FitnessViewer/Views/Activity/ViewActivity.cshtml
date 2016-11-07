@@ -79,95 +79,53 @@ else
                     </ul>
                     <div class="tab-content clearfix">
                         <div class="tab-pane active" id="lapTabData">
-                            <ul class="laps">
-                                @foreach (var p in Model.Laps)
-                                {
-                                    <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                        <div class="lapDetails">
-                                            <span class="lapName">@p.Name</span>
-                                            <span class="lapValue">
-                                                @p.Value
-                                                <span class="lapUnits">@p.Units</span>
-                                            </span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
+                            @if (Model.Laps != null && Model.Laps.Count() > 0)
+                            {
+
+                                { Html.RenderPartial("_LapInformation", Model.Laps); }
+                            }
+                            else
+                            {
+                                <span>Activity has no lap information.</span>
+                            }
+
                         </div>
                         <div class="tab-pane" id="powerTabData">
-                            @if (Model.Power != null)
+                            @if (Model.Power != null && Model.Power.Count() > 0)
                             {
-                                foreach (var p in Model.Power)
-                                {
-                                    <ul class="laps">
-                                        <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                            <div class="lapDetails">
-                                                <span class="lapName">@p.Name</span>
-                                                <span class="lapValue">
-                                                    @p.Value
-                                                    <span class="lapUnits">@p.Units</span>
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                }
+
+                                { Html.RenderPartial("_LapInformation", Model.Power); }
                             }
                             else
                             {
                                 <span>Activity has no power data.</span>
                             }
-
                         </div>
                         <div class="tab-pane" id="heartTabData">
-                            @if (Model.HeartRate != null)
+                            @if (Model.HeartRate != null && Model.HeartRate.Count() > 0)
                             {
-                                <ul class="laps">
-                                    @foreach (var p in Model.HeartRate)
-                                    {
-                                        <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                            <div class="lapDetails">
-                                                <span class="lapName">@p.Name</span>
-                                                <span class="lapValue">
-                                                    @p.Value
-                                                    <span class="lapUnits">@p.Units</span>
-                                                </span>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+
+                                { Html.RenderPartial("_LapInformation", Model.HeartRate); }
                             }
                             else
                             {
-                                <span>Activity has no heart rate data.</span>
+                                <span>Activity has no heart rate information.</span>
                             }
                         </div>
                         <div class="tab-pane" id="cadenceTabData">
-                            @if (Model.Cadence != null)
+                            @if (Model.Cadence != null && Model.Cadence.Count() > 0)
                             {
-                                <ul class="laps">
-                                    @foreach (var p in Model.Cadence)
-                                    {
-                                        <li class="lap" data-start-index="@p.StartIndex" data-end-index="@p.EndIndex" data-stream-step="@p.StreamStep">
-                                            <div class="lapDetails">
-                                                <span class="lapName">@p.Name</span>
-                                                <span class="lapValue">
-                                                    @p.Value
-                                                    <span class="lapUnits">@p.Units</span>
-                                                </span>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+
+                                { Html.RenderPartial("_LapInformation", Model.Cadence); }
                             }
                             else
                             {
-                                <span>Activity has no heart rate data.</span>
+                                <span>Activity has no cadence information.</span>
                             }
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-12">
                 @if (Model.PowerZones != null && Model.PowerZones.Count() > 0)
                 {
@@ -175,8 +133,6 @@ else
                     { Html.RenderPartial("_ZoneInformation", Model.PowerZones); }
                 }
             </div>
-
-
             <div class="col-md-12">
                 @if (Model.HeartRateZones != null && Model.HeartRateZones.Count() > 0)
                 {
@@ -184,9 +140,6 @@ else
                     { Html.RenderPartial("_ZoneInformation", Model.HeartRateZones); }
                 }
             </div>
-
-
-
             <div class="col-md-12">
                 @if (Model.RunPaceZones != null && Model.RunPaceZones.Count() > 0)
                 {
@@ -194,20 +147,13 @@ else
                     { Html.RenderPartial("_ZoneInformation", Model.RunPaceZones); }
                 }
             </div>
-
-
-
             <div class="col-md-12">
                 <h4>Activity Options</h4>
                 <input type="button" value="Recalculate" onclick="location.href='@Url.Action("Recalculate", "Activity", new { id = Model.Id })'" />
-
-
-
             </div>
         </div>
-
     </div>
-                        }
+}
 
 @section scripts {
     <script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>

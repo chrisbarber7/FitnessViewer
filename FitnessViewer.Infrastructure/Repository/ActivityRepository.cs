@@ -381,23 +381,33 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<LapDto> GetLaps(long activityId)
         {
-            var result = _context.Lap
+            // split into two queries - first is Linq to sql, second is linq to objects  - need to split as can't format the TimeSpan on Linq to Sql
+            return _context.Lap
                 .Include(a => a.Activity)
                 .Where(l => l.ActivityId == activityId).OrderBy(l => l.LapIndex)
+                  .Select(l => new
+                  {
+                      Id = l.Id,
+                      Type = PeakStreamType.Lap,
+                      Selected = false,
+                      Name = l.Name,
+                      ElapsedTime = l.ElapsedTime,
+                      StartIndex = l.StartIndex / l.Activity.StreamStep,
+                      EndIndex = l.EndIndex / l.Activity.StreamStep,
+                      StreamStep = l.Activity.StreamStep
+                  })
+                  .ToList()
                   .Select(l => new LapDto
                   {
                       Id = l.Id,
                       Type = PeakStreamType.Lap,
                       Selected = false,
                       Name = l.Name,
-                      Value = l.ElapsedTime.ToString(),
-                      StartIndex = l.StartIndex / l.Activity.StreamStep,
-                      EndIndex = l.EndIndex / l.Activity.StreamStep,
-                      StreamStep = l.Activity.StreamStep
-                  });
-
-
-            return result.ToList();
+                      Value = l.ElapsedTime.ToString(@"hh\:mm\:ss"),
+                      StartIndex = l.StartIndex,
+                      EndIndex = l.EndIndex,
+                      StreamStep = l.StreamStep
+                  }).ToList();
         }
 
 

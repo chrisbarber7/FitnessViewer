@@ -2,8 +2,9 @@
     var selectedPolyline;
     var fullRouteLatLng;
     // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
-    $('ul.laps li').click(function (e) {   
-     
+    $('ul.laps li').click(function (e) {
+        $("li.selectedLap").removeClass("selectedLap");
+        $(this).addClass("selectedLap");
         var startIndex = $(this).attr("data-start-index");
         var endIndex = $(this).attr("data-end-index");
         var streamStep = $(this).attr("data-stream-step");

@@ -604,6 +604,7 @@
     <Content Include="Views\Settings\Pace.cshtml" />
     <Content Include="Views\Settings\HeartRate.cshtml" />
     <Content Include="Views\Activity\_ZoneInformation.cshtml" />
+    <Content Include="Views\Activity\_LapInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,7 +12,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 case PeakStreamType.Cadence: return "rpm";
                 case PeakStreamType.HeartRate: return "bpm";
                 case PeakStreamType.Lap: return "";
-                case PeakStreamType.Power: return "watts";
+                case PeakStreamType.Power: return "w";
                 case PeakStreamType.Speed: return "mph";
                 default: return "";
             }
