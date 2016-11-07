@@ -11,6 +11,12 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int EndValue { get; set; }
         public int DurationInSeconds { get; set; }
 
+        // percentage of overall activity spent in this zone.
+        public decimal PercentageInZone { get; set; }
+
+        // scaled percentage used for display purposes (largest percentage has 100%, others scaled in proportion).
+        public decimal DisplayPercentage { get; set; }
+
         public TimeSpan Duration
         {
             get

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.ZoneValueDto>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="zones">
+        @foreach (var pz in Model)
+        {
+            <div class="zone">
+                <div style="width: @pz.DisplayPercentage%;background-color:#e1f3d1;border:1px solid;border-color:#3a8904;">
+                    <span class="zoneLabel">@pz.ZoneLabel</span>
+                    <span class="zoneDuration">@pz.Duration</span>
+                </div>
+            </div>
+        }
+    </div>
+}

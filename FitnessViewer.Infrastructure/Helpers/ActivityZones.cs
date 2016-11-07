@@ -4,8 +4,6 @@ using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -17,14 +15,14 @@ namespace FitnessViewer.Infrastructure.Helpers
         private UserZones _userZones;
 
         public ActivityZones(ActivityDetailDto activity)
-            {
+        {
             _activity = activity;
             _unitOfWork = new UnitOfWork();
             _userZones = new UserZones(activity.Athlete.UserId);
         }
 
 
-        public IEnumerable<ZoneValueDto> GetZoneValues( ZoneType zoneType)
+        public IEnumerable<ZoneValueDto> GetZoneValues(ZoneType zoneType)
         {
             int?[] stream = null;
 
@@ -41,14 +39,24 @@ namespace FitnessViewer.Infrastructure.Helpers
             else if (zoneType == ZoneType.RunPace)
                 stream = _activity.ActivityStream.GetSecondsPerMileFromVelocity();
 
-            var zoneValues = _userZones.GetUserZoneValues( zoneType, _activity.Start).Where(z=>z.ZoneType == zoneType);
+            var zoneValues = _userZones.GetUserZoneValues(zoneType, _activity.Start).Where(z => z.ZoneType == zoneType);
 
-            // calculate number of seconds in each zone.
+            decimal totalDuration = stream.Count();
+            decimal highestPercentage = 0;
+
+            // calculate number of seconds in each zone,keep running total and store highest percentage
             foreach (ZoneValueDto z in zoneValues)
+            {
                 z.DurationInSeconds = stream.Where(w => w.Value >= z.StartValue && w.Value <= z.EndValue).Count();
+                z.PercentageInZone = Math.Round(totalDuration == 0 ? 0.00M : Convert.ToDecimal(z.DurationInSeconds / totalDuration) * 100, 2);
+                highestPercentage = z.PercentageInZone > highestPercentage ? z.PercentageInZone : highestPercentage;
+            }
+
+            // scale each percentage so that highest takes up 100% and other scale in proportion
+            foreach (ZoneValueDto z in zoneValues)
+                z.DisplayPercentage = z.PercentageInZone / highestPercentage * 100;
 
             return zoneValues;
         }
-
     }
 }

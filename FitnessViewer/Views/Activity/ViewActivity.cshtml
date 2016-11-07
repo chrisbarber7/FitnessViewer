@@ -167,6 +167,36 @@ else
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-12">
+                @if (Model.PowerZones != null && Model.PowerZones.Count() > 0)
+                {
+                    <h4>Power Zones</h4>
+                    { Html.RenderPartial("_ZoneInformation", Model.PowerZones); }
+                }
+            </div>
+
+
+            <div class="col-md-12">
+                @if (Model.HeartRateZones != null && Model.HeartRateZones.Count() > 0)
+                {
+                    <h4>Heart Rate Zones</h4>
+                    { Html.RenderPartial("_ZoneInformation", Model.HeartRateZones); }
+                }
+            </div>
+
+
+
+            <div class="col-md-12">
+                @if (Model.RunPaceZones != null && Model.RunPaceZones.Count() > 0)
+                {
+                    <h4>Pace Zones</h4>
+                    { Html.RenderPartial("_ZoneInformation", Model.RunPaceZones); }
+                }
+            </div>
+
+
+
             <div class="col-md-12">
                 <h4>Activity Options</h4>
                 <input type="button" value="Recalculate" onclick="location.href='@Url.Action("Recalculate", "Activity", new { id = Model.Id })'" />
@@ -175,41 +205,7 @@ else
 
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                @if (Model.PowerZones != null && Model.PowerZones.Count() > 0)
-                {
-                    foreach (var pz in Model.PowerZones)
-                    {
-                        @pz.ZoneLabel @pz.Duration @:</br>
-                    }
-                }
 
-
-            </div>
-            <div class="col-md-4">
-                @if (Model.HeartRateZones != null && Model.HeartRateZones.Count() > 0)
-                {
-                    foreach (var pz in Model.HeartRateZones)
-                    {
-                        @pz.ZoneLabel @pz.Duration @:</br>
-                    }
-                }
-
-
-            </div>
-            <div class="col-md-4">
-                @if (Model.RunPaceZones != null && Model.RunPaceZones.Count() > 0)
-                {
-                    foreach (var pz in Model.RunPaceZones)
-                    {
-                        @pz.ZoneLabel @pz.Duration @:</br>
-                    }
-                }
-
-
-            </div>
-        </div>
     </div>
                         }
 
