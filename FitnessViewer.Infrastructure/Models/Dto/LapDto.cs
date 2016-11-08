@@ -30,5 +30,11 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int? StartIndex { get; set; }
         public int? EndIndex { get; set; }
         public int? StreamStep { get; set; }
+        public int? SteppedStartIndex { get; set; }
+        public int? SteppedEndIndex { get; set; }
+
+        // fields below are only added so that a fix can be applied to laps (see comments in ActivityRepository.GetLaps)
+        public TimeSpan MovingTime { get; set; }
+        public int LapIndex { get; set; }
     }
 }

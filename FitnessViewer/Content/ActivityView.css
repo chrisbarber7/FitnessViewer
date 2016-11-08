@@ -92,7 +92,7 @@ li.lap {
     padding: 5px;
     text-align: right;
     border-right: 1px solid #ccc;
-    color: #ccc;
+    color: slategrey;
 }
 
 .summaryInfoLabelLeft {
@@ -101,7 +101,7 @@ li.lap {
     padding: 5px;
     text-align: left;
     border-left: 1px solid #ccc;
-    color: #ccc;
+    color: slategrey;
 }
 
 .rightAlign {

@@ -10,7 +10,11 @@
         var streamStep = $(this).attr("data-stream-step");
         var activityId = document.getElementById('activityId').value;
         var selectedText = encodeURIComponent($(this).find(".lapName").text());
-        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&selection=" + selectedText + "&startIndex=" + startIndex*streamStep + "&endIndex=" + endIndex*streamStep);
+        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&selection=" + selectedText + "&startIndex=" + startIndex + "&endIndex=" + endIndex);
+
+        // for map and graphs we need to take the steps in data into account
+        startIndex = $(this).attr("data-start-stepped-index");;
+        endIndex = $(this).attr("data-end-stepped-index");
 
         // if previous selection exists then removeit
         if (selectedPolyline!==undefined)
