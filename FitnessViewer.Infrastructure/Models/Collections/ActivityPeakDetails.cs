@@ -24,13 +24,40 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             _containedPeaks = new List<ActivityPeakDetail>();                
         }
 
+        /// <summary>
+        /// Default save is a complete save updating both ActivityPeaks and ActivityPeakDetails
+        /// </summary>
         public void Save()
+        {
+            Save(true);
+        }
+
+
+        /// <summary>
+        /// Save a series of peak durations.
+        /// </summary>
+        /// <param name="updateActivityPeaks">True = update both ActivityPeaks and ActivityPeakDetails.
+        /// False = Update only ActivityPeakDetails (used to create power curve records).</param>
+        public void Save(bool updateActivityPeaks)
         {
             if (_containedPeaks.Count() == 0)
                 return;
 
-            _unitOfWork.Analysis.AddPeaks(_containedPeaks.ToList());
-            _unitOfWork.Complete();
+            if (updateActivityPeaks)
+            {
+                _unitOfWork.Analysis.AddPeaks(_containedPeaks.ToList());
+                _unitOfWork.Complete();
+            }
+            else
+            {
+                foreach (ActivityPeakDetail p in _containedPeaks)
+                    _unitOfWork.Analysis.AddPeakDetail(p);
+
+                _unitOfWork.Complete();
+
+            }
         }
+
+    
     }
 }

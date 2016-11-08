@@ -23,10 +23,18 @@ namespace FitnessViewer.Infrastructure.Models
         public DateTime Added { get; private set; }
         public bool Processed { get; set; }
         public DateTime? ProcessedAt { get; set; }
+
+
+
         public long? ActivityId { get; private set; }
         public bool? HasError { get; set; }
         public DownloadType DownloadType { get; set; }
         public int? Duration { get; set; }
+
+        internal static DownloadQueue CreateQueueJob(DownloadQueue job)
+        {
+            return CreateQueueJob(job.UserId, job.DownloadType, job.ActivityId, job.Duration);
+        }
 
         public static DownloadQueue CreateQueueJob(string userId, DownloadType type)
         {

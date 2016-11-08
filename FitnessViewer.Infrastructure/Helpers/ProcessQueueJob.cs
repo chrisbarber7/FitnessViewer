@@ -20,6 +20,19 @@ namespace FitnessViewer.Infrastructure.Helpers
       
         }
 
+
+        public void ResumbitJob()
+        {
+
+            _jobDetails = _uow.Queue.Find(_jobId);
+
+            if (_jobDetails == null)
+                return;
+
+             DownloadQueue.CreateQueueJob(_jobDetails).Save();
+
+        }
+
         public  bool IsJobValid()
         {
             _jobDetails = _uow.Queue.Find(_jobId);
@@ -95,8 +108,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
 
          ActivityStreams.CreateFromExistingActivityStream(_jobDetails.ActivityId.Value)
-                .CalculatePeak(StreamType.Watts)
-                .Save();
+                .CalculatePeak(StreamType.Watts, _jobDetails.Duration)
+                .Save(false);
 
             _jobDetails.MarkJobComplete();
             _uow.Complete();

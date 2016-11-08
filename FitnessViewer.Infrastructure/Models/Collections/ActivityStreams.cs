@@ -108,6 +108,16 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             ActivityId = activityId;
         }
 
+
+        internal ActivityPeakDetails CalculatePeak(StreamType type, int? duration)
+        {
+            if (!this.HasIndividualStream(type))
+                return new ActivityPeakDetails();
+
+            return new ActivityPeakDetails(PeakSeeker.Create(this, type).FindPeaks(duration));
+        }
+
+
         /// <summary>
         ///  Calculate a peak information for a given stream type.
         /// </summary>
@@ -115,10 +125,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         internal ActivityPeakDetails CalculatePeak(StreamType type)
         {
-            if (!this.HasIndividualStream(type))
-                return new ActivityPeakDetails();
-
-            return new ActivityPeakDetails(PeakSeeker.Create(this, type).FindPeaks());
+            return CalculatePeak(type, null);
         }
         
         /// <summary>

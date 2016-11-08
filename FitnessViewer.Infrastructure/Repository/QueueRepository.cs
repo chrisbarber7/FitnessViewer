@@ -39,6 +39,15 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).Take(count).ToList();
         }
 
+        public IEnumerable<DownloadQueue> GetFailedJob()
+        {
+            return _context.Queue
+                           .Where(x => x.HasError.Value)
+                           .OrderBy(x => x.Id)
+                           .ToList();
+        }
+
+
         /// <summary>
         /// Queue Count
         /// </summary>

@@ -180,7 +180,10 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             convertedStream.StoreStreams();
             convertedStream.CalculatePeaksAndSave();
-            convertedStream.AddPowerCurveCalculationJobs();
+
+            // we can only calculate a power curve for activities which have a power meter!
+            if (_stravaActivity.HasPowerMeter)
+                convertedStream.AddPowerCurveCalculationJobs();
 
             return convertedStream;    
         }

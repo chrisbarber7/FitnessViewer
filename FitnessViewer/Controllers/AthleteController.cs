@@ -42,6 +42,14 @@ namespace FitnessViewer.Controllers
             DownloadQueue.CreateQueueJob(this.User.Identity.GetUserId(), DownloadType.Strava).Save();
             return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
+
+        public ActionResult ReprocessJobs()
+        {
+            foreach(DownloadQueue queueJob in _unitOfWork.Queue.GetFailedJob())
+                new ProcessQueueJob(queueJob.Id).ResumbitJob();
+       
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+        }
     }
 }
 
