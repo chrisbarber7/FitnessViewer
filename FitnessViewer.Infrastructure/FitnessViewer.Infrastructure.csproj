@@ -290,6 +290,10 @@
     <Compile Include="Migrations\201611062218468_PeakStreamTypeDurationsAddEntireEvent.Designer.cs">
       <DependentUpon>201611062218468_PeakStreamTypeDurationsAddEntireEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611081158536_ActivityDeleteDetailsAddNotifications.cs" />
+    <Compile Include="Migrations\201611081158536_ActivityDeleteDetailsAddNotifications.Designer.cs">
+      <DependentUpon>201611081158536_ActivityDeleteDetailsAddNotifications.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
     <Compile Include="Models\Dto\ActivityLapsDetail.cs" />
@@ -647,6 +651,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611062218468_PeakStreamTypeDurationsAddEntireEvent.resx">
       <DependentUpon>201611062218468_PeakStreamTypeDurationsAddEntireEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611081158536_ActivityDeleteDetailsAddNotifications.resx">
+      <DependentUpon>201611081158536_ActivityDeleteDetailsAddNotifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
