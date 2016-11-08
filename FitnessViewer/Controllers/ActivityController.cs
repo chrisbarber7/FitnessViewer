@@ -57,8 +57,10 @@ namespace FitnessViewer.Controllers
 
             if (fvActivity.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            return View(ActivityDetailDto.CreateFromActivity(_unitOfWork, fvActivity));
+
+            ActivityDetailDto v = ActivityDetailDto.CreateFromActivity(_unitOfWork, fvActivity);
+            v.SummaryInfo.Label = "Activity";
+            return View(v);
         }
 
         public class SummaryInformationRequest

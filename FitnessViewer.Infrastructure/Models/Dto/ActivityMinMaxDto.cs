@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Models.Collections;
+﻿using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Models.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             public int Min { get; set; }
             public int Max { get; set; }
             public int Ave { get; set; }
+            public string Suffix { get; set; }
         }
 
         internal static ActivityMinMaxDto CreateFromActivityStreams(ActivityStreams activityStreams)
@@ -87,6 +89,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 info.Power.Min = minMaxAveResults.powerMin.Value;
                 info.Power.Max = minMaxAveResults.powerMax.Value;
                 info.Power.Ave = Convert.ToInt32(minMaxAveResults.powerAve.Value);
+                info.Power.Suffix = DisplayLabel.StreamTypeUnits(enums.PeakStreamType.Power);
             }
 
             if (minMaxAveResults.heartRateMin == null)
@@ -98,6 +101,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 info.HeartRate.Min = minMaxAveResults.heartRateMin.Value;
                 info.HeartRate.Max = minMaxAveResults.heartRateMax.Value;
                 info.HeartRate.Ave = Convert.ToInt32(minMaxAveResults.heartRateAve.Value);
+                info.HeartRate.Suffix = DisplayLabel.StreamTypeUnits(enums.PeakStreamType.HeartRate);
             }
 
             if (minMaxAveResults.cadenceMin == null)
@@ -109,6 +113,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 info.Cadence.Min = minMaxAveResults.cadenceMin.Value;
                 info.Cadence.Max = minMaxAveResults.cadenceMax.Value;
                 info.Cadence.Ave = Convert.ToInt32(minMaxAveResults.cadenceAve.Value);
+                info.Cadence.Suffix = DisplayLabel.StreamTypeUnits(enums.PeakStreamType.Cadence);
             }
 
             if (minMaxAveResults.elevationMin == null)
@@ -120,6 +125,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 info.Elevation.Min = Convert.ToInt32(minMaxAveResults.elevationMin.Value);
                 info.Elevation.Ave = Convert.ToInt32(minMaxAveResults.elevationAve.Value);
                 info.Elevation.Max = Convert.ToInt32(minMaxAveResults.elevationMax.Value);
+                info.Elevation.Suffix = DisplayLabel.StreamTypeUnits(enums.PeakStreamType.Elevation);
             }
 
             if ((startDetails.Distance != null) && (endDetails.Distance != null))
@@ -127,10 +133,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
             info.Time = TimeSpan.FromSeconds(activityStreams.Stream.Count());
 
-
-
             return info;
-
         }
     }
 }

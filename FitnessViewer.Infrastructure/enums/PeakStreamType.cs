@@ -15,7 +15,8 @@ namespace FitnessViewer.Infrastructure.enums
         HeartRate = 2,
         Cadence = 3,
         Lap = 4,
-        Speed = 5
+        Speed = 5,
+        Elevation = 6
     }
 }
 

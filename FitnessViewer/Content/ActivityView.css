@@ -18,17 +18,16 @@ li.lap {
     width: 80%;
 }
 
- .selectedLap
-    {
-        background-color: #e1f3d1;
-    }
+.selectedLap {
+    background-color: #e1f3d1;
+}
 
 
 .lapDetails {
     display: inline-block;
     width: 100%;
     padding-bottom: 1px;
-        font-size: 11px;
+    font-size: 11px;
     font-weight: 700;
 }
 
@@ -38,9 +37,8 @@ li.lap {
 
 .lapValue {
     float: right;
-
     /*  used to align lapValue and lapUnits where font sizes are different */
-        display: flex;
+    display: flex;
     align-items: baseline;
 }
 
@@ -58,31 +56,83 @@ li.lap {
 }
 
 #nomap {
-       margin-top: 10px;
+    margin-top: 10px;
 }
 
 
 .zone {
-        padding: 1px 0px;
+    padding: 1px 0px;
 }
 
-.zones{
-    width:100%;
-        font-weight: 700;
+.zones {
+    width: 100%;
+    font-weight: 700;
     font-size: 11px;
 }
 
-.zoneLabel{
-position:absolute;
-right:18px;
-
+.zoneLabel {
+    position: absolute;
+    right: 18px;
 }
 
-.zonePercentage {
-color:red;
-}
 
-.zoneDuration{
+.zoneDuration {
     padding: 0 4px;
 }
 
+
+.summaryInfoTable {
+    padding: 8px;
+    vertical-align: top;
+}
+
+.summaryInfoLabelRight {
+    font-weight: 400;
+    font-size: 11px;
+    padding: 5px;
+    text-align: right;
+    border-right: 1px solid #ccc;
+    color: #ccc;
+}
+
+.summaryInfoLabelLeft {
+    font-weight: 400;
+    font-size: 11px;
+    padding: 5px;
+    text-align: left;
+    border-left: 1px solid #ccc;
+    color: #ccc;
+}
+
+.rightAlign {
+    text-align: right;
+}
+
+.leftAlign {
+    text-align: left;
+}
+
+
+.summaryInfoMinMaxLabel {
+    text-align: center;
+    font-size: 11px;
+}
+
+.summaryInfoValue {
+    font-weight: 700;
+    font-size: 11px;
+    text-align: left;
+    padding: 5px;
+}
+
+.summarySeperator {
+    border-top: 1px solid #ccc;
+}
+
+.summaryInfoColumn{
+    width:18%;
+}
+
+.summaryInfoEdgeColumn{
+     width:23%;
+}

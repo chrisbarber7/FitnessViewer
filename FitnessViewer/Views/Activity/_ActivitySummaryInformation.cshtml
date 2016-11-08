@@ -1,107 +1,81 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.ActivityMinMaxDto
-
 <h4>Summary Information - @Model.Label</h4>
-
-<div class="row">
-    <div class="col-xs-4">
-        <div class="SummaryTitle">Time</div>
-        <div class="SummaryValue">@Model.Time</div>
-       
-    </div>
-    <div class="col-xs-4">
-        <div class="SummaryTitle">Distance</div>
-        <div class="SummaryValue">@Model.Distance</div>
-      
-    </div>
-
-    <div class="col-xs-4">
-        <div class="SummaryTitle">TSS</div>
-        <div class="SummaryValue">@Math.Round(Model.Analytics.TSS,0)</div>
-    
-    </div>
+<div>
+    <table class="summaryInfoTable">
+        <tr>
+            <td class="summaryInfoLabelRight summaryInfoEdgeColumn">Time</td>
+            <td class="summaryInfoValue summaryInfoColumn">@Model.Time</td>
+            <td class="summaryInfoColumn">&nbsp;</td>
+            <td class="summaryInfoColumn summaryInfoLabelRight">Strava SS</td>
+            <td class="summaryInfoEdgeColumn"></td>
+        </tr>
+        <tr>
+            <td class="summaryInfoLabelRight">Distance</td>
+            <td class="summaryInfoValue">@Model.Distance</td>
+            <td></td>
+            <td class="summaryInfoLabelRight">TSS</td>
+            <td class="summaryInfoValue">@Model.Analytics.TSS</td>
+        </tr>
+        <tr>
+            <td class="summaryInfoLabelRight">Speed</td>
+            <td></td>
+            <td></td>
+            <td class="summaryInfoLabelRight">IF</td>
+            <td class="summaryInfoValue">@Model.Analytics.IF</td>
+        </tr>
+        <tr>
+            <td class="summaryInfoLabelRight">Ele Gain</td>
+            <td></td>
+            <td></td>
+            <td class="summaryInfoLabelRight">NP</td>
+            <td class="summaryInfoValue">@Model.Analytics.NP</td>
+        </tr>
+        <tr>
+            <th class="summaryInfoLabelRight summarySeperator">&nbsp;</th>
+            <th class="summaryInfoMinMaxLabel summarySeperator">Min</th>
+            <th class="summaryInfoMinMaxLabel summarySeperator">Ave</th>
+            <th class="summaryInfoMinMaxLabel summarySeperator">Max</th>
+            <th class="summaryInfoLabelLeft summarySeperator">&nbsp;</th>
+        </tr>
+        @if (Model.Power != null)
+        {
+            <tr>
+                <td class="summaryInfoLabelRight">Power</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Power.Min</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Power.Ave</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Power.Max</td>
+                <td class="summaryInfoLabelLeft">@Model.Power.Suffix</td>
+            </tr>
+        }
+        @if (Model.HeartRate != null)
+        {
+            <tr>
+                <td class="summaryInfoLabelRight">Heart Rate</td>
+                <td class="summaryInfoMinMaxLabel">@Model.HeartRate.Min</td>
+                <td class="summaryInfoMinMaxLabel">@Model.HeartRate.Ave</td>
+                <td class="summaryInfoMinMaxLabel">@Model.HeartRate.Max</td>
+                <td class="summaryInfoLabelLeft">@Model.HeartRate.Suffix</td>
+            </tr>
+        }
+        @if (Model.Cadence != null)
+        {
+            <tr>
+                <td class="summaryInfoLabelRight">Cadence</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Cadence.Min</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Cadence.Ave</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Cadence.Max</td>
+                <td class="summaryInfoLabelLeft">@Model.Cadence.Suffix</td>
+            </tr>
+        }
+        @if (Model.Elevation != null)
+        {
+            <tr>
+                <td class="summaryInfoLabelRight">Elevation</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Elevation.Min</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Elevation.Ave</td>
+                <td class="summaryInfoMinMaxLabel">@Model.Elevation.Max</td>
+                <td class="summaryInfoLabelLeft">@Model.Elevation.Suffix</td>
+            </tr>
+        }
+    </table>
 </div>
-<div class="table-responsive">
-    <table class="table table-condensed">
-    
-        <tr>
-            <td>Time</td>
-        <td>@Model.Time</td>
-            <td>Strava SS</td>
-            <td></td>
-        </tr>
-
-
-        <tr>
-            <td>Distance</td>
-            <td>@Model.Distance
-            </td>
-            <td>TSS</td>
-            <td>@Model.Analytics.TSS</td>
-        </tr>
-
-
-        <tr>
-            <td>Speed</td>
-            <td></td>
-            <td>IF</td>
-            <td>@Model.Analytics.IF</td>
-        </tr>
-
-
-        <tr>
-            <td>Ele Gain</td>
-            <td></td>
-            <td>NP</td>
-            <td>@Model.Analytics.NP</td>
-        </tr>
-        </table>
-    </div>
-
-
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th class="text-right">Min</th>
-                        <th class="text-right">Ave</th>
-                        <th class="text-right">Max</th>
-                    </tr>
-                    @if (Model.Power != null)
-                    {
-                        <tr>
-                            <td>Power</td>
-                            <td class="text-right">@Model.Power.Min</td>
-                            <td class="text-right">@Model.Power.Ave</td>
-                            <td class="text-right">@Model.Power.Max</td>
-                        </tr>
-                    }
-
-                    @if (Model.HeartRate != null)
-                    {
-                        <tr>
-                            <td>Heart Rate</td>
-                            <td class="text-right">@Model.HeartRate.Min</td>
-                            <td class="text-right">@Model.HeartRate.Ave</td>
-                            <td class="text-right">@Model.HeartRate.Max</td>
-                        </tr>
-                    }
-                    @if (Model.Cadence != null)
-                    {
-                        <tr>
-                            <td>Cadence</td>
-                            <td class="text-right">@Model.Cadence.Min</td>
-                            <td class="text-right">@Model.Cadence.Ave</td>
-                            <td class="text-right">@Model.Cadence.Max</td>
-                        </tr>
-                    }
-                    @if (Model.Elevation != null)
-                    {
-                        <tr>
-                            <td>Elevation</td>
-                            <td class="text-right">@Model.Elevation.Min</td>
-                            <td class="text-right">@Model.Elevation.Ave</td>
-                            <td class="text-right">@Model.Elevation.Max</td>
-                        </tr>
-                    }
-                </table>
-            </div>

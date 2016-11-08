@@ -14,6 +14,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 case PeakStreamType.Lap: return "";
                 case PeakStreamType.Power: return "w";
                 case PeakStreamType.Speed: return "mph";
+                case PeakStreamType.Elevation: return "ft";
                 default: return "";
             }
         }
