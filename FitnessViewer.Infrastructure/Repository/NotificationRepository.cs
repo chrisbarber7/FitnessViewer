@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using FitnessViewer.Infrastructure.Data;
+﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Text;
-using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Infrastructure.Repository

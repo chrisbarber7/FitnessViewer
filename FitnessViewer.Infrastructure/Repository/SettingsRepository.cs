@@ -1,14 +1,8 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
-using FitnessViewer.Infrastructure.Helpers;
-using FitnessViewer.Infrastructure.Helpers.Conversions;
 using FitnessViewer.Infrastructure.Models;
-using FitnessViewer.Infrastructure.Models.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Repository
 {

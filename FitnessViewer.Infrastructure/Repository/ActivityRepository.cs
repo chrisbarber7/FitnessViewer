@@ -24,16 +24,16 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
         #region activity
-        public void AddActivity(Activity a)
-        {
-            _context.Activity.Add(a);
+        //public void AddActivity(Activity a)
+        //{
+        //    _context.Activity.Add(a);
 
-        }
+        //}
 
-        public void AddActivity(IEnumerable<Activity> activities)
-        {
-            _context.Activity.AddRange(activities);
-        }
+        //public void AddActivity(IEnumerable<Activity> activities)
+        //{
+        //    _context.Activity.AddRange(activities);
+        //}
 
 
         public Activity GetActivity(long activityId)
@@ -63,15 +63,15 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        public IEnumerable<ActivityPeaks> GetActivityPeaks(long id)
-        {
-            return _context.ActivityPeak.Where(p => p.ActivityId == id).ToList();
-        }
+        //public IEnumerable<ActivityPeaks> GetActivityPeaks(long id)
+        //{
+        //    return _context.ActivityPeak.Where(p => p.ActivityId == id).ToList();
+        //}
 
-        internal IQueryable<Stream> GetStream()
-        {
-            return _context.Stream;
-        }
+        //internal IQueryable<Stream> GetStream()
+        //{
+        //    return _context.Stream;
+        //}
 
 
 
@@ -318,11 +318,6 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<PeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
         {
-            //bool isRide = activityType == "Ride" || activityType == "All" ? true : false;
-            //bool isRun = activityType == "Run" || activityType == "All" ? true : false;
-            //bool isSwim = activityType == "Swim" || activityType == "All" ? true : false;
-            //bool isOther = activityType == "All" ? true : false;
-
             // get list of weeks in the period (to ensure we get full weeks date where the start and/or end date may be in the 
             // middle of a week
             var weeks = _context.Calendar
@@ -588,34 +583,16 @@ namespace FitnessViewer.Infrastructure.Repository
                         IsOther = r.ActivityType.IsOther,
                         DetailsDownloaded = r.DetailsDownloaded,
                         HasPowerMeter = r.HasPowerMeter
-
-
-
-
-
-
-
-                        //m.AverageSpeed = 0;
-                        //m.AveragePace = PaceCalculator.RunMinuteMiles(fvActivity.Distance, fvActivity.ElapsedTime.Value);
-                        //m.Date = fvActivity.StartDateLocal.ToShortDateString();
-                 
-
-
-
-
-
-
-
                     });
 
             return activityQuery;
         }
 
 
-        public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end)
-        {
-            return GetSportSummary(userId, sport, start, end, null);
-        }
+        //public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end)
+        //{
+        //    return GetSportSummary(userId, sport, start, end, null);
+        //}
 
         public SportSummaryDto GetSportSummary(string userId, string sport, DateTime start, DateTime end, List<ActivityDto> fullActivityList)
         {

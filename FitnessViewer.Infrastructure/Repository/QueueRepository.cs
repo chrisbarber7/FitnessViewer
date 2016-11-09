@@ -1,8 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
-using FitnessViewer.Infrastructure.enums;
-using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,11 +19,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public void AddQueueItem(DownloadQueue newJob)
         {
-         
             _context.Queue.Add(newJob);
-
-     
-
         }
 
         internal DownloadQueue Find(int jobId)
@@ -48,22 +41,22 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        /// <summary>
-        /// Queue Count
-        /// </summary>
-        /// <returns>Number of items in queue waiting to be processed</returns>
-        public int GetQueueCount()
-        {
-            return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).Count();
-        }
+        ///// <summary>
+        ///// Queue Count
+        ///// </summary>
+        ///// <returns>Number of items in queue waiting to be processed</returns>
+        //public int GetQueueCount()
+        //{
+        //    return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).Count();
+        //}
 
     
 
 
-        public IEnumerable<DownloadQueue> FindQueueItemByUserId(string userId)
-        {
-            return _context.Queue.Where(x => x.UserId == userId).ToList();
-        }
+        //public IEnumerable<DownloadQueue> FindQueueItemByUserId(string userId)
+        //{
+        //    return _context.Queue.Where(x => x.UserId == userId).ToList();
+        //}
         #endregion
     }
 }
