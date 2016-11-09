@@ -48,10 +48,20 @@ namespace FitnessViewer.Infrastructure.Repository
 
 
         
-        public IEnumerable<ActivityPeakDetail> GetActivityPeakDetails(long id, PeakStreamType streamType)
+        //public IEnumerable<ActivityPeakDetail> GetActivityPeakDetails(long id, PeakStreamType streamType)
+        //{
+
+        //    return _context.ActivityPeakDetail.Where(a => a.ActivityId == id && a.StreamType == streamType).ToList();
+        //}
+
+        public IEnumerable<ActivityPeakDetail> GetActivityPeakDetails(long id)
         {
-            return _context.ActivityPeakDetail.Where(a => a.ActivityId == id && a.StreamType == streamType).ToList();
+            return _context.ActivityPeakDetail.Where(a => a.ActivityId == id )
+                .OrderBy(a=>a.StreamType)
+                .ThenBy(a=>a.Duration)
+                .ToList();
         }
+
 
         public IEnumerable<ActivityPeaks> GetActivityPeaks(long id)
         {

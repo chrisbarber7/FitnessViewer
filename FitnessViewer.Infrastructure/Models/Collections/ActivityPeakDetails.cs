@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,38 @@ namespace FitnessViewer.Infrastructure.Models.Collections
 {
     public class ActivityPeakDetails
     {
-        private IEnumerable<ActivityPeakDetail> _containedPeaks { get; }
+        private List<ActivityPeakDetail> _containedPeaks { get; }
         private UnitOfWork _unitOfWork;
+
+
+        public static ActivityPeakDetails LoadForActivity (long activityId)
+        {
+            UnitOfWork uow = new UnitOfWork();
+            return new ActivityPeakDetails(uow.Activity.GetActivityPeakDetails(activityId));
+        }
 
         public ActivityPeakDetails(IEnumerable<ActivityPeakDetail> peaks)
         {
-            _containedPeaks = peaks;
             _unitOfWork = new UnitOfWork();
+            _containedPeaks = peaks.ToList();
+        }
 
+        public IEnumerable<PowerCurveDto> GetPowerCurve()
+        {
+            return _containedPeaks.Where(p => p.StreamType == enums.PeakStreamType.Power && p.Value.HasValue)
+                .Select(p => new PowerCurveDto
+                {
+                    Duration = p.Duration,
+                    Watts = p.Value.Value
+                })
+                .OrderBy(p => p.Duration)
+                .ToList();
+        }
+
+        public List<ActivityPeakDetail> Peaks
+        {
+            get { return _containedPeaks; }
+            private set { }
         }
 
         public ActivityPeakDetails()

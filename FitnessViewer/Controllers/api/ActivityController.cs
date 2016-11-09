@@ -8,6 +8,7 @@ using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System.Net.Http;
+using FitnessViewer.Infrastructure.Models.Collections;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -34,7 +35,7 @@ namespace FitnessViewer.Controllers.api
             });
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult GetActivityCoords(string id)
         {
             var coords = _unitOfWork.Activity.GetActivityCoords(Convert.ToInt64(id));
@@ -43,7 +44,7 @@ namespace FitnessViewer.Controllers.api
             );
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult GetActivityStreams(string id)
         {
             var streams = _unitOfWork.Activity.GetActivityStreams(Convert.ToInt64(id));
@@ -111,7 +112,11 @@ namespace FitnessViewer.Controllers.api
             return Json(chart);
         }
 
-   
+        [HttpGet]
+        public IHttpActionResult GetPowerCurve(string id)
+        {
+            var powerCurve = ActivityPeakDetails.LoadForActivity(Convert.ToInt64(id)).GetPowerCurve();
+            return Ok(powerCurve);
+        }
     }
-
 }

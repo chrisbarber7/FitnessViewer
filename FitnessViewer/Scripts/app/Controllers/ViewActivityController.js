@@ -52,7 +52,7 @@
             async: false,
             global: false,
             dataType: "json",
-            type: "POST",
+            type: "GET",
             url: "/api/Activity/GetActivityCoords/" + activityId,
             success: function (data) {
                 fullRouteLatLng = data;
@@ -70,7 +70,7 @@
         function SetupActivityChart(chartName) {
         $.ajax({
             dataType: "json",
-            type: "POST",
+            type: "GET",
             url: "/api/Activity/GetActivityStreams/" + activityId,
             data: JSON,
             success: function (data) {
