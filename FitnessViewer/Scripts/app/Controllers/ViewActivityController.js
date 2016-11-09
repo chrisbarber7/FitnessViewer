@@ -65,77 +65,148 @@
     }
 
 
- SetupActivityChart("chartActivity");
+    SetupPowerCurveChart("chartPowerCurve");
 
-        function SetupActivityChart(chartName) {
+    function SetupPowerCurveChart(chartName) {
         $.ajax({
             dataType: "json",
             type: "GET",
-            url: "/api/Activity/GetActivityStreams/" + activityId,
+            url: "/api/Activity/GetPowerCurve/" + activityId,
             data: JSON,
             success: function (data) {
-                BarChart(data);
+                PowerCurveChart(data);
             },
             error: function () {
                 alert("Error loading activity data!");
             }
         });
 
-        function BarChart(data) {
-            var barChartData = {
-                labels: data.Time,
+        function PowerCurveChart(data) {
+            var powerCurveChartData = {
+                labels: data.duration,
                 datasets: [
                     {
                         label: 'Power',
-                        data: data.Watts,
-                        radius: 0,            
-                    fill: false,      
-                    borderColor: 'blue',
-                        yAxesID : 'y-axis-0'
-                    },
-                    {
-                        label: 'Heart Rate',
-                        data: data.HeartRate,
+                        data: data.watts,
                         radius: 0,
                         fill: false,
-                        borderColor: 'red',
-                        yAxesID: 'y-axis-0',
-                        lineThickness: 0.1
-                    },
-                    {
-                        label: 'Elevation',
-                        data: data.Altitude,
-                        radius: 0,
-                        fill: false,
-                        borderColor: 'green',
-                        yAxesID: 'y-axis-1'
+                        borderColor: 'blue'
                     }
+
+
                 ]
             };
 
-            Chart.defaults.scale.ticks.autoSkipPadding = 100;
+
 
             var ctx = document.getElementById(chartName).getContext("2d");
 
             var myBarChart = Chart.Line(ctx, {
-                data: barChartData,
+                data: powerCurveChartData,
                 options: {
                     animation: false,
-                    fill: false,
-                    beizierCurve: false,
+                    //fill: false,
+                    //beizierCurve: false,
                     responsive: true,
-                    datasetFill: true,
-                    scales: {
-                        yAxes: [{
-                            position: "left",
-                            "id": "y-axis-0"
-                        }, {
-                            position: "right",
-                            "id": "y-axis-1"
-                        }]
-                    }
+                    datasetFill: true
+                    //,
+                    //scales: {
+                    //    xAxes: [{
+                    //        type: "logarithmic",
+                    //        position: "bottom",
+                    //        ticks: {
+                    //            min:1,
+                    //        max:2000
+                    //        }
+                    //    }]
+                    //}
+                   
                 }
             });
         }
+
+
     }
-});
+
+
+
+
+     
+        SetupActivityChart("chartActivity");
+
+        function SetupActivityChart(chartName) {
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/api/Activity/GetActivityStreams/" + activityId,
+                data: JSON,
+                success: function (data) {
+                    ActivityChart(data);
+                },
+                error: function () {
+                    alert("Error loading activity data!");
+                }
+            });
+
+            function ActivityChart(data) {
+                var barChartData = {
+                    labels: data.Time,
+                    datasets: [
+                        {
+                            label: 'Power',
+                            data: data.Watts,
+                            radius: 0,
+                            fill: false,
+                            borderColor: 'blue',
+                            yAxesID: 'y-axis-0'
+                        },
+                        {
+                            label: 'Heart Rate',
+                            data: data.HeartRate,
+                            radius: 0,
+                            fill: false,
+                            borderColor: 'red',
+                            yAxesID: 'y-axis-0',
+                            lineThickness: 0.1
+                        },
+                        {
+                            label: 'Elevation',
+                            data: data.Altitude,
+                            radius: 0,
+                            fill: false,
+                            borderColor: 'green',
+                            yAxesID: 'y-axis-1'
+                        }
+                    ]
+                };
+
+                Chart.defaults.scale.ticks.autoSkipPadding = 100;
+
+                var ctx = document.getElementById(chartName).getContext("2d");
+
+                var myBarChart = Chart.Line(ctx, {
+                    data: barChartData,
+                    options: {
+                        animation: false,
+                        fill: false,
+                        beizierCurve: false,
+                        responsive: true,
+                        datasetFill: true,
+                        scales: {
+                            yAxes: [{
+                                position: "left",
+                                "id": "y-axis-0"
+                            }, {
+                                position: "right",
+                                "id": "y-axis-1"
+                            }]
+                        }
+                    }
+                });
+            }
+
+
+        }
+ 
+        });
+  

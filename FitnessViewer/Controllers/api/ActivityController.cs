@@ -116,7 +116,21 @@ namespace FitnessViewer.Controllers.api
         public IHttpActionResult GetPowerCurve(string id)
         {
             var powerCurve = ActivityPeakDetails.LoadForActivity(Convert.ToInt64(id)).GetPowerCurve();
-            return Ok(powerCurve);
+
+            List<string> duration = new List<string>();
+            List<string> watts = new List<string>();
+
+            foreach (PowerCurveDto p in powerCurve)
+            {
+                duration.Add(p.Duration.ToString());
+                watts.Add(p.Watts.ToString());
+            }
+
+            var chart = new { 
+            Duration=duration,
+            Watts = watts
+            };
+            return Ok(chart);
         }
     }
 }
