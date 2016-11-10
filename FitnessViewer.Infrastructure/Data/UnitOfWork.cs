@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.Repository;
+using System.Data.Entity.Validation;
 
 namespace FitnessViewer.Infrastructure.Data
 {
@@ -32,7 +33,29 @@ namespace FitnessViewer.Infrastructure.Data
 
         public void Complete()
         {
+            try
+            {
                 _context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    System.Diagnostics.Debug.WriteLine("Validation errors for Entity: \"{0}\" State: \"{1}\"", 
+                            eve.Entry.Entity.GetType().Name, 
+                            eve.Entry.State);
+
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Property: \"{0}\" Value: \"{1}\" Error: \"{2}\"",
+                            ve.PropertyName,
+                            eve.Entry.CurrentValues.GetValue<object>(ve.PropertyName),
+                            ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+
         }
     }
 }
