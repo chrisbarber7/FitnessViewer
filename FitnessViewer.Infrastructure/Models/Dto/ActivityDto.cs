@@ -36,6 +36,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.HasPowerMeter = fvActivity.HasPowerMeter;
 
             m.Athlete = AthleteDto.CreateFromAthlete(fvActivity.Athlete);
+            m.Weight = fvActivity.Weight;
 
             return m;
         }
@@ -65,6 +66,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public bool HasPowerMeter { get; set; }
         
         public AthleteDto Athlete { get; set; }
+        public decimal? Weight { get; set; }
 
     }
 }

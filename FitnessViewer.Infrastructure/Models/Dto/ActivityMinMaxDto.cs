@@ -33,6 +33,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public string Label { get; set; }
 
+        public decimal? WattsPerKg { get; set; }
+
         public class MinMaxAve
         {
             public int Min { get; set; }
@@ -71,6 +73,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
             ActivityMinMaxDto info = ActivityMinMaxDto.Create();
 
+            info.Weight = activityStreams.Activity.Weight;
+
             if (activityStreams.Activity.ActivityType.IsRide)
                 info.Analytics = ActivityAnalyticsDto.RideCreateFromPowerStream(activityStreams.Stream, 295);
             else if (activityStreams.Activity.ActivityType.IsRun)
@@ -90,6 +94,11 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 info.Power.Max = minMaxAveResults.powerMax.Value;
                 info.Power.Ave = Convert.ToInt32(minMaxAveResults.powerAve.Value);
                 info.Power.Suffix = DisplayLabel.StreamTypeUnits(enums.PeakStreamType.Power);
+
+                if (info.Weight != null)
+                    info.WattsPerKg = Math.Round(info.Power.Ave / info.Weight.Value, 2);
+                else
+                    info.WattsPerKg = null;
             }
 
             if (minMaxAveResults.heartRateMin == null)
