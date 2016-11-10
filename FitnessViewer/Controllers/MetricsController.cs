@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -45,6 +46,11 @@ namespace FitnessViewer.Controllers
             }
 
             _unitOfWork.Complete();
+
+            // as weight details have changed we need to refresh weights recorded against activities
+            ActivityWeight aw = new ActivityWeight(User.Identity.GetUserId());
+            aw.UpdateActivityWeight();
+
             return RedirectToAction("Index", "Home");
         }
 

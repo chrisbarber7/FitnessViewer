@@ -57,8 +57,8 @@ namespace FitnessViewer.Infrastructure.Repository
         {
             // check if metric already exists?
             Metric existing = _context.Metric
-                                        .Where(m => m.UserId == metric.UserId && 
-                                                    m.Recorded == metric.Recorded && 
+                                        .Where(m => m.UserId == metric.UserId &&
+                                                    m.Recorded == metric.Recorded &&
                                                     m.MetricType == metric.MetricType)
                                         .FirstOrDefault();
 
@@ -83,9 +83,9 @@ namespace FitnessViewer.Infrastructure.Repository
             DateTime dataFrom = from.AddDays(-30);
             // grab a copy of the needed data from database once then we'll work out figures from local list.
             var metrics = _context.Metric
-                 .Where(m => m.UserId == userId && 
-                            m.MetricType == type && 
-                            m.Recorded >= dataFrom && 
+                 .Where(m => m.UserId == userId &&
+                            m.MetricType == type &&
+                            m.Recorded >= dataFrom &&
                             m.Recorded <= upperDateTime)
                  .Select(m => new
                  {
@@ -102,7 +102,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 return results;
             }
 
-            DateTime day = from; 
+            DateTime day = from;
 
             while (day <= to)
             {
@@ -150,7 +150,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 decimal? weight7daysAgo = null;
                 if (weight7daysAgoQuery != null)
                     weight7daysAgo = weight7daysAgoQuery.Value;
-                    
+
 
                 var weight30daysAgoQuery = metrics
                       .Where(m => m.Recorded <= day.AddDays(-30))
@@ -175,6 +175,18 @@ namespace FitnessViewer.Infrastructure.Repository
             }
             return results;
         }
+        /// <summary>
+        /// Update weight on an activity
+        /// </summary>
+        /// <param name="activityId">Strava activity Id</param>
+        /// <param name="userId">ASP.NET Identity id</param>
+        /// <param name="weightOnActivityDay">Weight on/both activity</param>
+        internal void UpdateActivityWeight(long activityId, string userId, decimal weightOnActivityDay)
+        {
+            var activity = new Activity() { Id = activityId, Weight = weightOnActivityDay };
 
+            _context.Activity.Attach(activity);
+            _context.Entry(activity).Property(w => w.Weight).IsModified = true;
+        }
     }
 }

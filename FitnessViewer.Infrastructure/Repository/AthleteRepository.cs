@@ -36,15 +36,8 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public Athlete FindAthleteByUserId(string userId)
         {
-            return _context.Athlete.Where(r => r.userId == userId).FirstOrDefault();
-            //var result = (from r in _context.Athlete where r.UserId == userId select r).FirstOrDefault();
-            //return result;
+            return _context.Athlete.Where(r => r.UserId == userId).FirstOrDefault();
         }
-
-        //public void RemoveAthlete(int Id)
-        //{
-        //    throw new NotImplementedException();
-        //}
         #endregion
     }
 }

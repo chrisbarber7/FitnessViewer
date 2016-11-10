@@ -81,12 +81,11 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        public IEnumerable<Activity> GetActivities(string userId)
+        public IQueryable<Activity> GetActivities(string userId)
         {
             return _context.Activity
                   .Where(a => a.Athlete.UserId == userId)
-                  .Include(a => a.ActivityType)
-                  .ToList();
+                  .Include(a => a.ActivityType);
 
         }
 
@@ -106,7 +105,7 @@ namespace FitnessViewer.Infrastructure.Repository
                  .Include(a => a.ActivityType)
                  .OrderByDescending(a => a.StartDateLocal)
                  .Take(returnedRows.Value)
-                 .ToList();
+                 .ToList();           
 
             List<ActivityDto> results = new List<ActivityDto>();
 

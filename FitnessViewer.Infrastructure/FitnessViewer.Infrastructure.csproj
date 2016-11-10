@@ -143,6 +143,7 @@
     <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="enums\StreamType.cs" />
     <Compile Include="enums\ZoneType.cs" />
+    <Compile Include="Helpers\ActivityWeight.cs" />
     <Compile Include="Helpers\ActivityZones.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\ActivityAnalytics.cs" />
@@ -293,6 +294,10 @@
     <Compile Include="Migrations\201611081158536_ActivityDeleteDetailsAddNotifications.cs" />
     <Compile Include="Migrations\201611081158536_ActivityDeleteDetailsAddNotifications.Designer.cs">
       <DependentUpon>201611081158536_ActivityDeleteDetailsAddNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611091742596_ActivitiesAddWeight.cs" />
+    <Compile Include="Migrations\201611091742596_ActivitiesAddWeight.Designer.cs">
+      <DependentUpon>201611091742596_ActivitiesAddWeight.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
@@ -655,6 +660,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611081158536_ActivityDeleteDetailsAddNotifications.resx">
       <DependentUpon>201611081158536_ActivityDeleteDetailsAddNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611091742596_ActivitiesAddWeight.resx">
+      <DependentUpon>201611091742596_ActivitiesAddWeight.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

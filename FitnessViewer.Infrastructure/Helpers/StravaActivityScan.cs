@@ -22,20 +22,24 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public class StravaActivityScan : Strava
     {
+        private Athlete _fvAthlete;
+
         public StravaActivityScan(UnitOfWork uow, string userId) : base(uow, userId)
         { }
+
+
 
         /// <summary>
         /// Download all activities for athlete from strava and write to database.
         /// </summary>
         public void AddActivitesForAthlete()
         {
-            Athlete fvAthlete = _unitOfWork.Athlete.FindAthleteByUserId(_userId);
+            _fvAthlete = _unitOfWork.Athlete.FindAthleteByUserId(_userId);
 
-            if (fvAthlete == null)
+            if (_fvAthlete == null)
                 throw new ArgumentException("Invalid UserId");
 
-            LogActivity("Add Activities", fvAthlete);
+            LogActivity("Add Activities", _fvAthlete);
 
             // max activities allowed by strava in each download.
             const int perPage = 200;
@@ -71,15 +75,15 @@ namespace FitnessViewer.Infrastructure.Helpers
                         continue;
                     }
 
-                    Models.Activity fvActivity = InsertActivity(fvAthlete.Id, stravaActivitySummary);
+                    Models.Activity fvActivity = InsertActivity(stravaActivitySummary);
 
                     if (fvActivity == null)
                         continue;
 
-                    fvAthlete.Activities.Add(fvActivity);
+                    _fvAthlete.Activities.Add(fvActivity);
 
                     // put the new activity in the queue so that we'll download the full activity details.
-                    jobs.Add(DownloadQueue.CreateQueueJob(fvAthlete.UserId, DownloadType.Strava, stravaActivitySummary.Id));
+                    jobs.Add(DownloadQueue.CreateQueueJob(_fvAthlete.UserId, DownloadType.Strava, stravaActivitySummary.Id));
            
           
                     itemsAdded++;
@@ -91,7 +95,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 foreach (DownloadQueue job in jobs)
                     job.Save(_unitOfWork);
 
-                StravaPause(fvAthlete);          
+                StravaPause(_fvAthlete);          
             }
 
             if (itemsAdded > 0)
@@ -119,17 +123,21 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="athleteId">Strava Athlete Id</param>
         /// <param name="item">Strava Summary infomation</param>
         /// <returns></returns>
-        private Activity InsertActivity(long athleteId, StravaDotNetActivities.ActivitySummary item)
+        private Activity InsertActivity(StravaDotNetActivities.ActivitySummary item)
         {
             Models.Activity s = new Models.Activity();
 
             try
             {
-                s.AthleteId = athleteId;
+                s.AthleteId = _fvAthlete.Id;
             
                 UpdateActivityDetails(item, s);
 
                 s.DetailsDownloaded = false;
+      
+                // get the weight on the activty date on/before activity.          
+                ActivityWeight w = new ActivityWeight(_userId, item.Id);
+                s.Weight = w.GetActivityWeight();
             }
             catch (Exception ex)
             {

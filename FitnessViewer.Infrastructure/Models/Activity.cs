@@ -110,6 +110,8 @@ namespace FitnessViewer.Infrastructure.Models
         public decimal Calories { get; set; }
         public string Description { get; set; }
 
+        public decimal? Weight { get; set; }
+
         private int? _streamSize;
 
         public int? StreamSize

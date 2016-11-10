@@ -2,6 +2,7 @@
 using Fitbit.Api.Portable.OAuth2;
 using Fitbit.Models;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -109,11 +110,17 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             DownloadMetric(TimeSeriesResourceType.Weight, fullDownload);
 
-          //  DownloadMetric(TimeSeriesResourceType.Fat, true);
+            //  DownloadMetric(TimeSeriesResourceType.Fat, true);
+       
 
+            // as weight details have changed we need to refresh weights recorded against activities
+            ActivityWeight w = new ActivityWeight(_userId);
+            w.UpdateActivityWeight();
+
+            _unitOfWork.Complete();
             return ;
         }
-
+        
         private void DownloadMetric(TimeSeriesResourceType type, bool fullDownload)
         {
             if (!fullDownload)
