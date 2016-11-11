@@ -38,14 +38,43 @@
         var polyline = L.polyline(fullRouteLatLng, { color: 'red' }).addTo(mymap);
         mymap.fitBounds(polyline.getBounds());
 
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxcDdnOTAwNGUzbm9hMDNueDBla2IifQ.uCc724sMqgSk316I0XuPlA', {
+        var streets = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxcDdnOTAwNGUzbm9hMDNueDBla2IifQ.uCc724sMqgSk316I0XuPlA', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
             '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
             'Imagery © <a href="http://mapbox.com">Mapbox</a>',
             id: 'mapbox.streets'
-        }).addTo(mymap);
+        });
+
+        streets.addTo(mymap);
+
+        var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxbHo4MDAwM280NnA2eW8yMnlrNGEifQ.tp_Iz6xwf9m9_QXpdC6D8Q', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'mapbox.outdoors'
+        });
+
+        outdoors.addTo(mymap);
+
+        var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hyaXNiYXJiZXI3IiwiYSI6ImNpdHlxbHo4MDAwM280NnA2eW8yMnlrNGEifQ.tp_Iz6xwf9m9_QXpdC6D8Q', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'mapbox.outdoors'
+        });
+
+        var baseLayers = {
+            "streets": streets,
+            "outdoors": outdoors,
+            "satellite": satellite
+        };
+
+        L.control.layers(baseLayers).addTo(mymap);
     }
+
     function getCoords(activityId) {
         var fullRouteLatLng = null;
         $.ajax({
