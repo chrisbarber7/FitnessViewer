@@ -24,7 +24,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
             else if (activity.IsRun)
             {
-                return StreamType.Altitude | StreamType.Cadence | StreamType.Heartrate | StreamType.Temp | StreamType.Velocity;
+                return StreamType.Altitude | StreamType.Cadence | StreamType.Heartrate | StreamType.Temp |  StreamType.Pace;
             }
             else if (activity.IsSwim)
             {
@@ -51,8 +51,9 @@ namespace FitnessViewer.Infrastructure.Helpers
                 case StreamType.Heartrate: { return 2; }
                 case StreamType.Cadence: { return 3; }
                 case StreamType.Velocity: { return 4; }
-                case StreamType.Altitude: { return 5; }
-                case StreamType.Temp: { return 6; }
+                case StreamType.Pace: { return 5; }
+                case StreamType.Altitude: { return 6; }
+                case StreamType.Temp: { return 7; }
 
                 case StreamType.Time: { return 10; }
                 case StreamType.Latitude: { return 11; }
@@ -79,6 +80,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 case StreamType.Distance: { return "Distance"; }
                 case StreamType.Altitude: { return "Elevation"; }
                 case StreamType.Velocity: { return "Speed"; }
+                case StreamType.Pace: { return "Pace"; }
                 case StreamType.Heartrate: { return "Heart Rate"; }
                 case StreamType.Cadence: { return "Cadence"; }
                 case StreamType.Watts: { return "Power"; }
@@ -99,6 +101,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 case StreamType.Distance: { return "m"; }
                 case StreamType.Altitude: { return "ft"; }
                 case StreamType.Velocity: { return "mph"; }
+                case StreamType.Pace: { return "min/mi"; }
                 case StreamType.Heartrate: { return "bpm"; }
                 case StreamType.Cadence: { return "rpm"; }
                 case StreamType.Watts: { return "w"; }
@@ -126,6 +129,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 case StreamType.Distance: { return value.ToString(); }
                 case StreamType.Altitude: { return value.ToFeet().ToString("N0"); }
                 case StreamType.Velocity: { return Distance.MetrePerSecondToMilesPerHour(value).ToString("N1"); }
+                case StreamType.Pace: { return TimeSpan.FromSeconds( Distance.MetrePerSecondToSecondPerMile(value)).ToString(); }
                 case StreamType.Heartrate: { return value.ToString("N0"); }
                 case StreamType.Cadence: { return value.ToString("N0"); }
                 case StreamType.Watts: { return value.ToString("N0"); }

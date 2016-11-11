@@ -274,6 +274,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 case StreamType.Moving: { return _containedStreams.Select(s => s.Moving) as IEnumerable<T>; }
                 case StreamType.Temp: { return _containedStreams.Select(s => s.Temperature) as IEnumerable<T>; }
                 case StreamType.Velocity: { return _containedStreams.Select(s => s.Velocity) as IEnumerable<T>; }
+                case StreamType.Pace: { return _containedStreams.Select(s => s.Velocity) as IEnumerable<T>; }
                 case StreamType.Time: { return _containedStreams.Select(s => s.Time) as IEnumerable<T>; }
                 default: return null;
             }
@@ -291,6 +292,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             if (streamType.HasFlag(StreamType.Distance) ||
                 streamType.HasFlag(StreamType.Altitude) ||
                 streamType.HasFlag(StreamType.Velocity) ||
+                 streamType.HasFlag(StreamType.Pace) ||
                 streamType.HasFlag(StreamType.Gradient))
             {
                 return GetIndividualStream<double?>(streamType).GroupBy(i => 1)
@@ -345,6 +347,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 case StreamType.Temp: { return !GetIndividualStream<int?>(StreamType.Temp).Contains(null); }
                 case StreamType.Time: { return true; }
                 case StreamType.Velocity: { return !GetIndividualStream<double?>(StreamType.Velocity).Contains(null); }
+                case StreamType.Pace: { return !GetIndividualStream<double?>(StreamType.Pace).Contains(null); }
                 default: return false;
             }
         }

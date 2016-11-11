@@ -56,6 +56,10 @@ namespace FitnessViewer.Infrastructure.Helpers.Conversions
         /// <returns></returns>
         public static int MetrePerSecondToSecondPerMile(decimal metresPerSecond)
         {
+            // not moving.
+            if (metresPerSecond == 0)
+                return 0;
+
             return Convert.ToInt32(METER_PER_SEC_TO_SECONDS_PER_MILE / metresPerSecond * 60);
         }
 

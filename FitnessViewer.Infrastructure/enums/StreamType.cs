@@ -20,6 +20,7 @@ namespace FitnessViewer.Infrastructure.enums
         Watts = 256,
         Temp = 512,
         Moving = 1024,
-        Gradient = 2048
+        Gradient = 2048,
+        Pace = 4096
     }
 }
