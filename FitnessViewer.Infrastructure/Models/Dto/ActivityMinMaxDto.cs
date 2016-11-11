@@ -52,8 +52,29 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             StreamSummary = CreateStreamInformation();
             Distance = CalculateDistance();
             Time = TimeSpan.FromSeconds(_activityStreams.Stream.Count());
+            WattsPerKg = CalculateWattsPerKg();
         }
 
+        /// <summary>
+        /// Calculate Watts per Kg 
+        /// </summary>
+        /// <returns></returns>
+        private decimal? CalculateWattsPerKg()
+        {
+            decimal? wkg = null;
+        
+            // we need both a power meter and a weight
+            if ((_activityStreams.Activity.HasPowerMeter) && (Weight != null))
+            {
+                decimal? aveWatts = StreamSummary.Where(s => s.StreamType == StreamType.Watts).Select(s => s.Ave).FirstOrDefault();
+                
+                if (aveWatts != null)
+                    wkg = Math.Round(aveWatts.Value / Weight.Value, 2);
+
+            }
+
+            return wkg;
+        }
 
         /// <summary>
         /// Calculate distance based on start/end distances of stream.
