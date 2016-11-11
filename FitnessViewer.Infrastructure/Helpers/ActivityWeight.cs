@@ -14,21 +14,25 @@ namespace FitnessViewer.Infrastructure.Helpers
         private UnitOfWork _unitOfWork;
         private long? _activityId;
         private string _userId;
+        private List<Metric> _userWeights;
+
+        // update weight details for all activity for a single user.
+        public ActivityWeight(string userId) : this(userId, null)
+        {
+     
+        }
+
 
         // update weight for a single activity
-        public ActivityWeight(string userId, long activityId)
+        public ActivityWeight(string userId, long? activityId) 
         {
             _unitOfWork = new UnitOfWork();
             _userId = userId;
+            _userWeights = GetUserWeights();
             _activityId = activityId;
         }
 
-        // update weight details for all activity for a single user.
-        public ActivityWeight(string userId)
-        {
-            _unitOfWork = new UnitOfWork();
-            _userId = userId;
-        }
+   
 
         /// <summary>
         /// Update requested activity weight details.
@@ -42,14 +46,16 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             //// get a list of activities with the weight details currently recorded against each.
             //var userActivities = _unitOfWork.Activity.GetActivities(_userId).Select(a => new { a.Id, a.Start, a.Weight });
-            
+
             //// if a single activity was requested then limit to just that activity.
             //if (_activityId != null)
             //    userActivities = userActivities.Where(a => a.Id == _activityId);
 
-            foreach (var a in GetActivityQuery().ToList())
+            var activities = GetActivityQuery().ToList();
+
+            foreach (var a in activities)
             {
-                decimal?  weightOnActivityDay = GetActivityWeight();
+                decimal?  weightOnActivityDay = GetActivityWeight(a.Start);
 
                 // if a weight found and it's different to the weight on the activity then update it.
                 if ((weightOnActivityDay != null) && (weightOnActivityDay != 0.00M) && (a.Weight != weightOnActivityDay))
@@ -76,16 +82,25 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         public decimal? GetActivityWeight()
         {
-            var activityDetails = GetActivityQuery().ToList();
+            return GetActivityWeight(null);
+        }
+        public decimal? GetActivityWeight(DateTime? activityStartDate)
+        {
+            if (activityStartDate == null)
+            {
+                // if no activity start date provided then look it up from the activity.
+                var activityDetails = GetActivityQuery().ToList();
 
-            if ((activityDetails == null) || (activityDetails.Count() !=1))
+                if ((activityDetails == null) || (activityDetails.Count() != 1))
                     return null;
 
-            DateTime activityStart = activityDetails[0].Start.Date;
+                activityStartDate = activityDetails[0].Start.Date;
+            }
+          
 
             // get the weight recorded on the nearest date before the activity.
-            return GetUserWeights()
-                        .Where(m => m.Recorded.Date <= activityStart)
+            return _userWeights
+                        .Where(m => m.Recorded.Date <= activityStartDate)
                         .OrderByDescending(m => m.Recorded)
                         .Select(m => m.Value)
                         .FirstOrDefault();
