@@ -24,11 +24,12 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.HeartRate = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.HeartRate);
             m.Cadence = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Cadence);
 
-            m.SummaryInfo = m.ActivityStream.BuildSummaryInformation();
-                
-               
-            m.Analytics = m.SummaryInfo.Analytics;
+            ActivityMinMaxDto mma = new ActivityMinMaxDto(m.ActivityStream);
 
+            mma.Populate();
+            m.SummaryInfo = mma;
+
+            m.Analytics = m.SummaryInfo.Analytics;
 
             ActivityZones zones = new ActivityZones(m);
 

@@ -44,45 +44,18 @@
             <th class="summaryInfoMinMaxLabel summarySeperator">Max</th>
             <th class="summaryInfoLabelLeft summarySeperator">&nbsp;</th>
         </tr>
-        @if (Model.Power != null)
+        @foreach (var stream in Model.StreamSummary)
         {
-            <tr>
-                <td class="summaryInfoLabelRight">Power</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Power.Min</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Power.Ave</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Power.Max</td>
-                <td class="summaryInfoLabelLeft">@Model.Power.Suffix</td>
-            </tr>
-        }
-        @if (Model.HeartRate != null)
-        {
-            <tr>
-                <td class="summaryInfoLabelRight">Heart Rate</td>
-                <td class="summaryInfoMinMaxLabel">@Model.HeartRate.Min</td>
-                <td class="summaryInfoMinMaxLabel">@Model.HeartRate.Ave</td>
-                <td class="summaryInfoMinMaxLabel">@Model.HeartRate.Max</td>
-                <td class="summaryInfoLabelLeft">@Model.HeartRate.Suffix</td>
-            </tr>
-        }
-        @if (Model.Cadence != null)
-        {
-            <tr>
-                <td class="summaryInfoLabelRight">Cadence</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Cadence.Min</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Cadence.Ave</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Cadence.Max</td>
-                <td class="summaryInfoLabelLeft">@Model.Cadence.Suffix</td>
-            </tr>
-        }
-        @if (Model.Elevation != null)
-        {
-            <tr>
-                <td class="summaryInfoLabelRight">Elevation</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Elevation.Min</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Elevation.Ave</td>
-                <td class="summaryInfoMinMaxLabel">@Model.Elevation.Max</td>
-                <td class="summaryInfoLabelLeft">@Model.Elevation.Suffix</td>
-            </tr>
+            if (stream.HasStream)
+            {
+                <tr>
+                    <td class="summaryInfoLabelRight">@stream.Name</td>
+                    <td class="summaryInfoMinMaxLabel">@stream.GetMinimum()</td>
+                    <td class="summaryInfoMinMaxLabel">@stream.GetAverage()</td>
+                    <td class="summaryInfoMinMaxLabel">@stream.GetMaximum()</td>
+                    <td class="summaryInfoLabelLeft">@stream.Suffix</td>
+                </tr>
+            }
         }
     </table>
 </div>

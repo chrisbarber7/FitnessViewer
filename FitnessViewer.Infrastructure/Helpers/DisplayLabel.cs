@@ -5,7 +5,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public class DisplayLabel
     {
-        public static string StreamTypeUnits(PeakStreamType type)
+
+        public static string PeakStreamTypeUnits(PeakStreamType type)
         {
             switch (type)
             {

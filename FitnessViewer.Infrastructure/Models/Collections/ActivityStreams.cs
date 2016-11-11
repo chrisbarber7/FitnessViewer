@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
+using static FitnessViewer.Infrastructure.Models.Dto.ActivityMinMaxDto;
 
 namespace FitnessViewer.Infrastructure.Models.Collections
 {
@@ -31,7 +32,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             return new ActivityStreams(activityId);
         }
 
-  
+
 
         internal Activity Activity
         {
@@ -50,7 +51,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// </summary>
         /// <param name="activityId">Strava ActivityId</param>
         /// <returns></returns>
-        public static ActivityStreams CreateFromExistingActivityStream(long activityId) 
+        public static ActivityStreams CreateFromExistingActivityStream(long activityId)
         {
             return CreateFromExistingActivityStream(activityId, 0, int.MaxValue);
         }
@@ -68,7 +69,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             UnitOfWork uow = new UnitOfWork();
             return new ActivityStreams(activityId, uow.Activity
                                                         .GetStreamForActivity(activityId)
-                                                        .Where(s=>s.Time>=start && s.Time<=end));
+                                                        .Where(s => s.Time >= start && s.Time <= end));
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         {
             return CalculatePeak(type, null);
         }
-        
+
         /// <summary>
         /// Return an invividual stream
         /// </summary>
@@ -139,10 +140,10 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public IEnumerable<T> GetIndividualStream<T>(StreamType type)
         {
-            switch(type)
+            switch (type)
             {
-                case StreamType.Watts: {  return _containedStreams.Select(s => s.Watts) as IEnumerable<T>; }
-                case StreamType.Altitude: { return _containedStreams.Select(s => s.Activity) as IEnumerable<T>; }
+                case StreamType.Watts: { return _containedStreams.Select(s => s.Watts) as IEnumerable<T>; }
+                case StreamType.Altitude: { return _containedStreams.Select(s => s.Altitude) as IEnumerable<T>; }
                 case StreamType.Cadence: { return _containedStreams.Select(s => s.Cadence) as IEnumerable<T>; }
                 case StreamType.Distance: { return _containedStreams.Select(s => s.Distance) as IEnumerable<T>; }
                 case StreamType.Gradient: { return _containedStreams.Select(s => s.Gradient) as IEnumerable<T>; }
@@ -151,10 +152,56 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 case StreamType.Longitude: { return _containedStreams.Select(s => s.Longitude) as IEnumerable<T>; }
                 case StreamType.Moving: { return _containedStreams.Select(s => s.Moving) as IEnumerable<T>; }
                 case StreamType.Temp: { return _containedStreams.Select(s => s.Temperature) as IEnumerable<T>; }
+                case StreamType.Velocity: { return _containedStreams.Select(s => s.Velocity) as IEnumerable<T>; }
                 case StreamType.Time: { return _containedStreams.Select(s => s.Time) as IEnumerable<T>; }
                 default: return null;
             }
         }
+
+
+        public MinMaxAve GetMinMaxAve(StreamType streamType)
+        {
+            // if the activity doesn't have the requested stream then no point checkings for values;
+            if (!HasIndividualStream(streamType))
+                return new MinMaxAve(streamType);
+
+
+            // need a better method to do this!  Having to split into two queries depending on the data type of the stream!!!
+            if (streamType.HasFlag(StreamType.Distance) ||
+                streamType.HasFlag(StreamType.Altitude) ||
+                streamType.HasFlag(StreamType.Velocity) ||
+                streamType.HasFlag(StreamType.Gradient))
+            {
+                return GetIndividualStream<double?>(streamType).GroupBy(i => 1)
+                          .Select(g => new MinMaxAve(streamType)
+                          {
+                              HasStream = true,
+                              Min = Convert.ToDecimal(g.Min(s => s.Value)),
+                              Ave = Convert.ToDecimal(g.Average(s => s.Value)),
+                              Max = Convert.ToDecimal(g.Max(s => s.Value))
+
+                          }).First();
+            }
+            else if (streamType.HasFlag(StreamType.Heartrate) ||
+                streamType.HasFlag(StreamType.Cadence) ||
+                streamType.HasFlag(StreamType.Watts) ||
+                streamType.HasFlag(StreamType.Temp))
+            {
+                return GetIndividualStream<int?>(streamType)
+                            .Where(i => streamType == StreamType.Cadence ? i.Value > 0 : true).GroupBy(i => 1)
+                            .Select(g => new MinMaxAve(streamType)
+                            {
+                                HasStream = true,
+                                Min = g.Min(s => s.Value),
+                                Ave = Convert.ToDecimal(g.Average(s => s.Value)),
+                                Max = g.Max(s => s.Value)
+                            }).First();
+            }
+
+            // unhandled stream type!
+            return new MinMaxAve(streamType);
+        }
+        
 
         /// <summary>
         /// Does this activity have the given stream.
@@ -168,6 +215,15 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 case StreamType.Cadence: { return !GetIndividualStream<int?>(StreamType.Cadence).Contains(null); }
                 case StreamType.Watts: { return !GetIndividualStream<int?>(StreamType.Watts).Contains(null); }
                 case StreamType.Heartrate: { return !GetIndividualStream<int?>(StreamType.Heartrate).Contains(null); }
+                case StreamType.Altitude: { return !GetIndividualStream<double?>(StreamType.Altitude).Contains(null); }
+                case StreamType.Distance: { return !GetIndividualStream<double?>(StreamType.Distance).Contains(null); }
+                case StreamType.Gradient: { return !GetIndividualStream<double?>(StreamType.Gradient).Contains(null); }
+                case StreamType.Latitude: { return !GetIndividualStream<double?>(StreamType.Latitude).Contains(null); }
+                case StreamType.Longitude: { return !GetIndividualStream<double?>(StreamType.Longitude).Contains(null); }
+                case StreamType.Moving: { return !GetIndividualStream<bool?>(StreamType.Moving).Contains(null); }
+                case StreamType.Temp: { return !GetIndividualStream<int?>(StreamType.Temp).Contains(null); }
+                case StreamType.Time: { return true; }
+                case StreamType.Velocity: { return !GetIndividualStream<double?>(StreamType.Velocity).Contains(null); }
                 default: return false;
             }
         }
@@ -203,28 +259,18 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                              .Save();
          }
 
-        public ActivityMinMaxDto BuildSummaryInformation()
-        {
-            return ActivityMinMaxDto.CreateFromActivityStreams(this);
-        }
+        //public ActivityMinMaxDto BuildSummaryInformation()
+        //{
+        //    return ActivityMinMaxDto.CreateFromActivityStreams(this);
+        //}
 
 
         internal int?[] GetSecondsPerMileFromVelocity()
         {
             return _containedStreams.Where(s => s.Velocity.HasValue && s.Velocity.Value > 0)
                                     .Select(s => (int?)Distance.MetrePerSecondToSecondPerMile(s.Velocity.Value))
-                                .ToArray();
+                                    .ToArray();
 
-            //List<int> secsPerMile = new List<int>();
-
-            //foreach (Stream s in stream)
-            //{
-            //    if (s.Velocity.HasValue && s.Velocity.Value > 0)
-            //        secsPerMile.Add(Distance.MetrePerSecondToSecondPerMile(s.Velocity.Value));
-            //}
-
-            //     return secsPerMile.Select(s => (int?)s).ToArray();
         }
-
     }
 }

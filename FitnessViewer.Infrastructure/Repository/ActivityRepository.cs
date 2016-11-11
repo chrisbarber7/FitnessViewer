@@ -517,7 +517,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         public IEnumerable<LapDto> GetLapStream(long activityId, PeakStreamType streamType)
         {
-            string units = DisplayLabel.StreamTypeUnits(streamType);
+            string units = DisplayLabel.PeakStreamTypeUnits(streamType);
 
             var result = _context.ActivityPeakDetail
               .Where(p => p.ActivityId == activityId && p.StreamType == streamType && 

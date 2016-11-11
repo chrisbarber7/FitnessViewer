@@ -11,6 +11,7 @@ namespace FitnessViewer.Infrastructure.Helpers.Conversions
         public const decimal METER_TO_KM = 0.001M;
         public const decimal METER_TO_FEET = 3.2808399M;
         public const decimal METER_PER_SEC_TO_SECONDS_PER_MILE = 26.8224M;
+        public const decimal METER_PER_SEC_TO_MILES_PER_HOUR = 2.236936M;
         public const int PRECISION = 2;
 
         /// <summary>
@@ -43,6 +44,11 @@ namespace FitnessViewer.Infrastructure.Helpers.Conversions
             return Math.Round(metres * METER_TO_FEET, PRECISION);
         }
 
+        public static decimal MetersToFeet(int metres)
+        {
+            return Math.Round(metres * METER_TO_FEET, PRECISION);
+        }
+
         /// <summary>
         /// Convert Metres per second (Stream.Velocity) to Seconds per mile
         /// </summary>
@@ -63,5 +69,34 @@ namespace FitnessViewer.Infrastructure.Helpers.Conversions
             return MetrePerSecondToSecondPerMile(Convert.ToDecimal(metresPerSecond));
         }
 
+
+        /// <summary>
+        /// Convert Meters per second (Stream.Velocity) to Miles Per Hour
+        /// </summary>
+        /// <param name="metresPerSecond">Velocity (metres per second)</param>
+        /// <returns>Miles Per Hour equivalent</returns>
+        public static decimal MetrePerSecondToMilesPerHour(decimal metresPerSecond)
+        {
+            return METER_PER_SEC_TO_MILES_PER_HOUR * metresPerSecond;
+        }
+        /// <summary>
+        /// Convert Meters per second (Stream.Velocity) to Miles Per Hour
+        /// </summary>
+        /// <param name="metresPerSecond">Velocity (metres per second)</param>
+        /// <returns>Miles Per Hour equivalent</returns>
+        public static decimal MetrePerSecondToMilesPerHour(double metresPerSecond)
+        {
+            return METER_PER_SEC_TO_MILES_PER_HOUR * Convert.ToDecimal(metresPerSecond);
+        }
+
+        /// <summary>
+        /// Convert Meters per second (Stream.Velocity) to Miles Per Hour
+        /// </summary>
+        /// <param name="metresPerSecond">Velocity (metres per second)</param>
+        /// <returns>Miles Per Hour equivalent</returns>
+        public static decimal MetrePerSecondToMilesPerHour(int metresPerSecond)
+        {
+            return METER_PER_SEC_TO_MILES_PER_HOUR * metresPerSecond;
+        }
     }
 }

@@ -158,6 +158,7 @@
     <Compile Include="Helpers\StravaActivityDownload.cs" />
     <Compile Include="Helpers\StravaActivityScan.cs" />
     <Compile Include="Helpers\StravaAthlete.cs" />
+    <Compile Include="Helpers\StreamTypeHelper.cs" />
     <Compile Include="Helpers\UserZones.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">
@@ -310,6 +311,7 @@
     <Compile Include="Models\Dto\LapDto.cs" />
     <Compile Include="Models\Dto\ActivityMinMaxDto.cs" />
     <Compile Include="Models\Dto\FitbitHomeDto.cs" />
+    <Compile Include="Models\Dto\MinMaxAve.cs" />
     <Compile Include="Models\Dto\NotificationDto.cs" />
     <Compile Include="Models\Dto\PowerCurveDto.cs" />
     <Compile Include="Models\Dto\SportSummaryDto.cs" />

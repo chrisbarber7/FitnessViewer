@@ -75,12 +75,13 @@ namespace FitnessViewer.Controllers
         [HttpGet]
         public ActionResult GetSummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
         {
-            var details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex)
-                                         .BuildSummaryInformation();
+            ActivityStreams details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex);
 
-            details.Label = detail.selection;
+            ActivityMinMaxDto mma = new ActivityMinMaxDto(details);
+            mma.Populate();
+            mma.Label = detail.selection;
 
-            return PartialView("_ActivitySummaryInformation", details);
+            return PartialView("_ActivitySummaryInformation", mma);
         }
 
         [Authorize]
