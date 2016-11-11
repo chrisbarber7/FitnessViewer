@@ -37,7 +37,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                             // .Select(s => s.HeartRate)
                             .ToArray();
             else if (zoneType == ZoneType.RunPace)
-                stream = _activity.ActivityStream.GetSecondsPerMileFromVelocity();
+                stream = _activity.ActivityStream.GetSecondsPerMile();
 
             var zoneValues = _userZones.GetUserZoneValues(zoneType, _activity.Start).Where(z => z.ZoneType == zoneType);
 

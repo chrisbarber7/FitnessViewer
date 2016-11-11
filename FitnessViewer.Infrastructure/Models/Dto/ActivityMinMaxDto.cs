@@ -9,126 +9,39 @@ using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ActivityMinMaxDto : ActivityDto
+    public class ActivityMinMaxDto 
     {
-        public List<MinMaxAve> StreamSummary { get; private set; }
-
         private ActivityStreams _activityStreams;
-        public ActivityMinMaxDto(ActivityStreams activityStreams)
+
+        public ActivityMinMaxDto(ActivityStreams activityStreams) 
         {
             _activityStreams = activityStreams;
             StreamSummary = new List<MinMaxAve>();
-
         }
 
-        public ActivityMinMaxDto()
-        {
-            StreamSummary = new List<MinMaxAve>();
-        }
-
-        public TimeSpan Time { get; set; }
-
-        public MinMaxAve Power { get; set; }
-        public MinMaxAve HeartRate { get; set; }
-        public MinMaxAve Cadence { get; set; }
-        public MinMaxAve Elevation { get; set; }
-
-        public MinMaxAve Temperature { get; set; }
-        public MinMaxAve Speed { get; set; }
-
-        public ActivityAnalyticsDto Analytics {get;set;}
-
+        public List<MinMaxAve> StreamSummary { get; private set; }
+        public TimeSpan Time { get; private set; }
+        public ActivityAnalyticsDto Analytics {get; private set;}
         public string Label { get; set; }
-
-        public decimal? WattsPerKg { get; set; }
+        public string WattsPerKg { get; private set; }
+        public string Distance { get; private set; }
+        public string AverageSpeed { get; private set; }
+        public string ElevationGain { get; private set; }
+        public string ElevationLoss { get; private set; }
 
         public void Populate()
         {
-            if (_activityStreams.Stream.Count == 0)
+            if (_activityStreams == null)
                 return;
 
-            Weight = _activityStreams.Activity.Weight;
-            Analytics = CreateAnalytics();
-            StreamSummary = CreateStreamInformation();
-            Distance = CalculateDistance();
-            Time = TimeSpan.FromSeconds(_activityStreams.Stream.Count());
-            WattsPerKg = CalculateWattsPerKg();
-        }
-
-        /// <summary>
-        /// Calculate Watts per Kg 
-        /// </summary>
-        /// <returns></returns>
-        private decimal? CalculateWattsPerKg()
-        {
-            decimal? wkg = null;
-        
-            // we need both a power meter and a weight
-            if ((_activityStreams.Activity.HasPowerMeter) && (Weight != null))
-            {
-                decimal? aveWatts = StreamSummary.Where(s => s.StreamType == StreamType.Watts).Select(s => s.Ave).FirstOrDefault();
-                
-                if (aveWatts != null)
-                    wkg = Math.Round(aveWatts.Value / Weight.Value, 2);
-
-            }
-
-            return wkg;
-        }
-
-        /// <summary>
-        /// Calculate distance based on start/end distances of stream.
-        /// </summary>
-        /// <returns></returns>
-        private decimal CalculateDistance()
-        {
-            var startDetails = _activityStreams.Stream.First();
-            var endDetails = _activityStreams.Stream.Last();
-
-            if ((startDetails.Distance != null) && (endDetails.Distance != null))
-                return Helpers.Conversions.Distance.MetersToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
-
-            return 0.00M;
-        }
-
-        /// <summary>
-        /// Which streams are valid and available on the activity
-        /// </summary>
-        /// <returns></returns>
-        private List<MinMaxAve>  CreateStreamInformation()
-        {
-            List<MinMaxAve> streamInfo = new List<MinMaxAve>();
-
-            StreamType activityTypeStreams = StreamTypeHelper.SportStreams(_activityStreams.Activity.ActivityType);
-
-            foreach (StreamType t in Enum.GetValues(typeof(StreamType)))
-            {
-                if (!activityTypeStreams.HasFlag(t))
-                    continue;
-
-                MinMaxAve mma = _activityStreams.GetMinMaxAve(t);
-
-                if (mma.HasStream)
-                    streamInfo.Add(mma);
-            }
-
-            return streamInfo.OrderBy(s => s.Priority).ToList();
-        }
-
-        /// <summary>
-        /// Create Activity Analytics based on the activity type.
-        /// </summary>
-        /// <returns>Analytics</returns>
-        private ActivityAnalyticsDto CreateAnalytics()
-        {
-            if (_activityStreams.Activity.ActivityType.IsRide)
-                return ActivityAnalyticsDto.RideCreateFromPowerStream(_activityStreams.Stream, 295);
-            else if (_activityStreams.Activity.ActivityType.IsRun)
-                return ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(_activityStreams.Stream.Select(w => w.Velocity).ToList(), _activityStreams.Stream.Select(w => w.HeartRate).ToList());
-            else if (_activityStreams.Activity.ActivityType.IsSwim)
-               return ActivityAnalyticsDto.SwimCreateFromPaceStream(_activityStreams.Stream.Select(w => w.Velocity).ToList());
-            else
-              return ActivityAnalyticsDto.OtherUnknown();
+            Analytics = _activityStreams.GetAnalytics();
+            StreamSummary = _activityStreams.GetStreamSummary();
+            Distance = _activityStreams.GetDistance().ToString("N1");
+            Time = _activityStreams.GetTime();
+            WattsPerKg = _activityStreams.GetWattsPerKg().ToString();
+            AverageSpeed = _activityStreams.GetAverageSpeed().ToString("N1");
+            ElevationGain = _activityStreams.GetElevationGain().ToString("N0");
+            ElevationLoss = _activityStreams.GetElevationLoss().ToString("N0");
         }
     }
 }

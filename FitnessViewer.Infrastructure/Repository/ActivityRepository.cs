@@ -77,7 +77,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         internal IQueryable<Stream> GetStreamForActivity(long activityId)
         {
-            return _context.Stream.Where(s => s.ActivityId == activityId);
+            return _context.Stream.Where(s => s.ActivityId == activityId).OrderBy(s=>s.Time);
         }
 
 

@@ -38,6 +38,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             return Distance.MetersToFeet(distanceInMetres);
         }
+
+        /// <summary>
+        /// Convert a distance in meters to a distance in feet.
+        /// </summary>
+        /// <param name="distanceInMetres">Distance to convert (in meters)</param>
+        /// <returns>Distance in Miles</returns>
+        public static decimal ToFeet(this double distanceInMetres)
+        {
+            return Distance.MetersToFeet(Convert.ToDecimal(distanceInMetres));
+        }
     }
 }
 

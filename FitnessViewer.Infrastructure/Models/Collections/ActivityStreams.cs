@@ -32,8 +32,6 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             return new ActivityStreams(activityId);
         }
 
-
-
         internal Activity Activity
         {
             get
@@ -45,7 +43,6 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             }
         }
 
-
         /// <summary>
         /// Create and load existing stream for an activity
         /// </summary>
@@ -56,7 +53,129 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             return CreateFromExistingActivityStream(activityId, 0, int.MaxValue);
         }
 
+        private ActivityStreams(long activityId, IEnumerable<Stream> stream)
+        {
+            _unitOfWork = new UnitOfWork();
+            _containedStreams = stream.ToList();
+            ActivityId = activityId;
+        }
 
+        private ActivityStreams(long activityId)
+        {
+            _unitOfWork = new UnitOfWork();
+            _containedStreams = new List<Models.Stream>();
+
+            ActivityId = activityId;
+        }
+
+        /// <summary>
+        /// Stream Duration
+        /// </summary>
+        /// <returns></returns>
+        public TimeSpan GetTime()
+        {
+            return TimeSpan.FromSeconds(Stream.Count());
+        }
+
+        /// <summary>
+        /// Average Speed
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetAverageSpeed()
+        {
+            return Math.Round(GetDistance() / Convert.ToDecimal(GetTime().TotalSeconds) * 60 * 60, 2);
+        }
+
+        /// <summary>
+        /// Elevation Gain
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetElevationGain()
+        {
+            double? previousAltitude = null;
+            double gain = 0;
+            foreach (double? altitide in GetIndividualStream<double?>(StreamType.Altitude).Where(s => s.HasValue))
+                {
+                // first pass though we'll have no previous altitude.
+                if (previousAltitude == null)
+                    previousAltitude = altitide;
+
+                // have we gained altitude?
+                if (altitide > previousAltitude)
+                    gain += altitide.Value - previousAltitude.Value;
+
+                previousAltitude = altitide;
+            }
+
+            return gain.ToFeet();
+        }
+
+
+        /// <summary>
+        /// Elevation Loss
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetElevationLoss()
+        {
+            double? previousAltitude = null;
+            double loss = 0;
+            foreach (double? altitide in GetIndividualStream<double?>(StreamType.Altitude).Where(s => s.HasValue))
+            {
+                // first pass though we'll have no previous altitude.
+                if (previousAltitude == null)
+                    previousAltitude = altitide;
+
+                // have we gained altitude?
+                if (altitide < previousAltitude)
+                    loss += previousAltitude.Value - altitide.Value;
+
+                previousAltitude = altitide;
+            }
+
+            return loss.ToFeet();
+        }
+
+        /// <summary>
+        /// Calculate Watts per Kg 
+        /// </summary>
+        /// <returns></returns>
+        public decimal? GetWattsPerKg()
+        {
+            // we need both a power meter and a weight
+            if ((Activity.HasPowerMeter) && ( Activity.Weight != null))
+            {
+                double? aveWatts = GetIndividualStream<int?>(StreamType.Watts).Average(s => s.Value);
+
+                if (aveWatts != null)
+                    return Math.Round(Convert.ToDecimal(aveWatts.Value) / Activity.Weight.Value, 2);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Which streams are valid and available on the activity
+        /// </summary>
+        /// <returns></returns>
+        public List<MinMaxAve> GetStreamSummary()
+        {
+            List<MinMaxAve> streamInfo = new List<MinMaxAve>();
+
+            StreamType activityTypeStreams = StreamTypeHelper.SportStreams(Activity.ActivityType);
+
+            foreach (StreamType t in Enum.GetValues(typeof(StreamType)))
+            {
+                if (!activityTypeStreams.HasFlag(t))
+                    continue;
+
+                MinMaxAve mma = GetMinMaxAve(t);
+
+                if (mma.HasStream)
+                    streamInfo.Add(mma);
+            }
+
+            return streamInfo.OrderBy(s => s.Priority).ToList();
+        }
         /// <summary>
         /// Create and load partial stream for an activity
         /// </summary>
@@ -93,21 +212,23 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 return _containedStreams;
             }
         }
-
-        private ActivityStreams(long activityId, IEnumerable<Stream> stream)
+        
+        /// <summary>
+        /// Create Activity Analytics based on the activity type.
+        /// </summary>
+        /// <returns>Analytics</returns>
+        public ActivityAnalyticsDto GetAnalytics()
         {
-            _unitOfWork = new UnitOfWork();
-            _containedStreams = stream.ToList();
-            ActivityId = activityId;
+            if (Activity.ActivityType.IsRide)
+                return ActivityAnalyticsDto.RideCreateFromPowerStream(Stream, 295);
+            else if (Activity.ActivityType.IsRun)
+                return ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(Stream.Select(w => w.Velocity).ToList(), Stream.Select(w => w.HeartRate).ToList());
+            else if (Activity.ActivityType.IsSwim)
+                return ActivityAnalyticsDto.SwimCreateFromPaceStream(Stream.Select(w => w.Velocity).ToList());
+            else
+                return ActivityAnalyticsDto.OtherUnknown();
         }
 
-        private ActivityStreams(long activityId)
-        {
-            _unitOfWork = new UnitOfWork();
-            _containedStreams = new List<Models.Stream>();
-
-            ActivityId = activityId;
-        }
 
 
         internal ActivityPeakDetails CalculatePeak(StreamType type, int? duration)
@@ -159,7 +280,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         }
 
 
-        public MinMaxAve GetMinMaxAve(StreamType streamType)
+        private MinMaxAve GetMinMaxAve(StreamType streamType)
         {
             // if the activity doesn't have the requested stream then no point checkings for values;
             if (!HasIndividualStream(streamType))
@@ -231,7 +352,6 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <summary>
         /// Write all steams to the database.
         /// </summary>
-
         internal void StoreStreams()
         {
             // write all details to database.
@@ -259,18 +379,26 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                              .Save();
          }
 
-        //public ActivityMinMaxDto BuildSummaryInformation()
-        //{
-        //    return ActivityMinMaxDto.CreateFromActivityStreams(this);
-        //}
-
-
-        internal int?[] GetSecondsPerMileFromVelocity()
+        internal int?[] GetSecondsPerMile()
         {
             return _containedStreams.Where(s => s.Velocity.HasValue && s.Velocity.Value > 0)
                                     .Select(s => (int?)Distance.MetrePerSecondToSecondPerMile(s.Velocity.Value))
                                     .ToArray();
+        }
 
+        /// <summary>
+        /// Calculate distance based on start/end distances of stream.
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetDistance()
+        {
+            var startDetails = Stream.First();
+            var endDetails = Stream.Last();
+
+            if ((startDetails.Distance != null) && (endDetails.Distance != null))
+                return Helpers.Conversions.Distance.MetersToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
+
+            return 0.00M;
         }
     }
 }
