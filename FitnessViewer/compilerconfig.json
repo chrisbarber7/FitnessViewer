@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "Content/Site.css",
+    "inputFile": "Content/Site.less"
+  },
+  {
+    "outputFile": "Content/ActivityView.css",
+    "inputFile": "Content/ActivityView.less"
+  },
+  {
+    "outputFile": "Content/activityLeaflet.css",
+    "inputFile": "Content/activityLeaflet.less"
+  }
+]

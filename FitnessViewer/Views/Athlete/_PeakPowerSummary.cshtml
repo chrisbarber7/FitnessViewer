@@ -3,7 +3,7 @@
 <h4>Peak Power Summary</h4>
 
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-striped table-condensed">
         <tr>
 
             <th>Period</th>
@@ -22,7 +22,7 @@
                     {
                         if (p.Seconds5.Peak != null)
                         {
-                        @Html.ActionLink(p.Seconds5.Peak.ToString(), "ViewActivity", "Activity",
+                            @Html.ActionLink(p.Seconds5.Peak.ToString(), "ViewActivity", "Activity",
                                              new { Id = p.Seconds5.ActivityId },
                                              new { data_toggle = "tooltip", title = @p.Seconds5.Description })
                         }
@@ -31,7 +31,7 @@
                 <td>
                     @if (p.Minute1 != null)
                     {
-                       if (p.Minute1.Peak != null)
+                        if (p.Minute1.Peak != null)
                         {
                             @Html.ActionLink(p.Minute1.Peak.ToString(), "ViewActivity", "Activity",
                                     new { Id = p.Minute1.ActivityId },

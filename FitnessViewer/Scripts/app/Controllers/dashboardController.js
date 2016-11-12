@@ -1,9 +1,9 @@
 ﻿var DashboardController = function () {
     var init = function () {
 
-        setupWeeklyReport("chart12weekRun", "Run", "blue");
-        setupWeeklyReport("chart12weekBike", "Ride", "red");
-        setupWeeklyReport("chart12weekSwim", "Swim", "green");
+        setupWeeklyReport("chart12weekRun", "Run", "#873D48");
+        setupWeeklyReport("chart12weekBike", "Ride", "#DC758F");
+        setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport7Day", 7);
         setupTimeBySportChart("chartTimeBySport30Day", 30);
@@ -38,8 +38,8 @@
                     {
                         label: 'Distance',
                         data: data.distance,
-                        borderColor: '#3a8904',
-                        backgroundColor :'#3a8904', 
+                        borderColor: colour,
+                        backgroundColor :colour, 
                         fill: false
                     }]
             };
@@ -91,14 +91,14 @@
                         data: data.MetricValue,
                         lineThickness:0.1,
                         fill: false,                       
-                        borderColor: '#3a8904'
+                        borderColor: '#545677'
                     },
                     {
                         label: 'Rolling 7 Day Average',
                         data: data.Ave7Day,
                         radius:0,
                         fill: false,
-                        borderColor: '#c0ef95'
+                        borderColor: '#B1B2C1'
                     }
                 ]
             };
@@ -133,10 +133,10 @@
                     {
                         data: dataSet.Duration,
                         backgroundColor: [
-                            "#FF6384",
-                            "#36A2EB",
-                            "#FFCE56",
-                            "#3498db"
+                            "#553739",
+                            "#873D48",
+                            "#DC758F",
+                            "#955E42"
                         ],
                         hoverBackgroundColor: [
                             "#FF6384",

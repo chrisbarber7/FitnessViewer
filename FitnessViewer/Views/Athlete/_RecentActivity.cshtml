@@ -2,20 +2,20 @@
 @model IEnumerable<FitnessViewer.Infrastructure.Models.Dto.ActivityDto>
 <h4>Recent Activities</h4>
 <div class="table-responsive">
-    <table  class="table">
+    <table class="table table-striped table-condensed">
         <tr>
             <th>Name</th>
             <th>Date</th>
             <th>Type</th>
             <th class="align-right">Distance</th>
             <th class="align-right">Time</th>
-         </tr>
+        </tr>
         @foreach (var a in Model)
         {
             <tr>
-                <td>                    
-                    @Html.ActionLink(a.Name, "ViewActivity", "Activity", new { Id =a.Id }, null )
-            </td>
+                <td>
+                    @Html.ActionLink(a.Name, "ViewActivity", "Activity", new { Id = a.Id }, null)
+                </td>
                 <td>@a.Start.ToShortDateString()</td>
                 <td>@a.ActivityTypeId</td>
                 <td class="align-right">@FitnessViewer.Infrastructure.Helpers.ExtensionMethods.ToMiles(a.Distance)</td>

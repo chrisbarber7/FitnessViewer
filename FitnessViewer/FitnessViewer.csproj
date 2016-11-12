@@ -250,12 +250,25 @@
     <Compile Include="ViewModels\WeightViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\activityLeaflet.css" />
-    <Content Include="Content\ActivityView.css" />
+    <None Include="Content\activityLeaflet.less" />
+    <None Include="Content\ActivityView.less" />
+    <Content Include="Content\activityLeaflet.css">
+      <DependentUpon>activityLeaflet.less</DependentUpon>
+    </Content>
+    <Content Include="Content\activityLeaflet.min.css">
+      <DependentUpon>activityLeaflet.css</DependentUpon>
+    </Content>
+    <Content Include="Content\ActivityView.css">
+      <DependentUpon>ActivityView.less</DependentUpon>
+    </Content>
+    <Content Include="Content\ActivityView.min.css">
+      <DependentUpon>ActivityView.css</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <None Include="Content\colours.less" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
@@ -412,10 +425,21 @@
     <Content Include="Content\Images\Strava\btn_strava_connectwith_light.png" />
     <Content Include="Content\Images\Strava\btn_strava_connectwith_orange.png" />
     <Content Include="Content\Images\Strava\ConnectWithStrava.png" />
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="Content\fonts.less" />
+    <None Include="Content\Site.less" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="ApplicationInsights.config">

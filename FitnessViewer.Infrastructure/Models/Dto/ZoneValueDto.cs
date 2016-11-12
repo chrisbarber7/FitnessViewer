@@ -40,7 +40,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 }
                 if (ZoneType == ZoneType.RunPace)
                 {
-                    if (this.EndValue != int.MaxValue)
+                    if ((this.EndValue != int.MaxValue) && (this.EndValue != 0))
                         return string.Format("{0} ({1}-{2}{3})",
                             this.ZoneName,
                            TimeSpan.FromSeconds(this.StartValue).ToString(),
@@ -55,7 +55,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 else
                 {
 
-                    if (this.EndValue != int.MaxValue)
+                    if ((this.EndValue != int.MaxValue) && (this.EndValue != 0))
                         return string.Format("{0} ({1}-{2}{3})",
                             this.ZoneName,
                             this.StartValue.ToString(),

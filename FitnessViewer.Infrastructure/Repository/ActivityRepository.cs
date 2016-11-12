@@ -486,7 +486,7 @@ namespace FitnessViewer.Infrastructure.Repository
                     Distance = r.Distance,
                     Sport = r.ActivityType.IsRun ? "Run" : r.ActivityType.IsRide ? "Ride" : r.ActivityType.IsSwim ? "Swim" : "Other"
                 })
-
+           
             .ToList();
 
             // group the activities by week.
@@ -501,6 +501,20 @@ namespace FitnessViewer.Infrastructure.Repository
 
                 .ToList();
 
+            // need to make sure that each sport has at least a single row so
+            // that it'll be included in the results.
+            if (totalsBySport.Select(r => r.Sport == "Run").Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Run", Distance = 0, Duration = 0 });
+            
+            if (totalsBySport.Select(r => r.Sport == "Ride").Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Ride", Distance = 0, Duration = 0 });
+
+
+            if (totalsBySport.Select(r => r.Sport == "Swim").Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Swim", Distance = 0, Duration = 0 });
+
+            if (totalsBySport.Select(r => r.Sport == "Other").Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Other", Distance = 0, Duration = 0 });
 
             foreach (TimeDistanceBySportDto t in totalsBySport)
             {
@@ -512,7 +526,7 @@ namespace FitnessViewer.Infrastructure.Repository
                                                          duration.Seconds.ToString().PadLeft(2, '0'));
             }
 
-            return totalsBySport;
+            return totalsBySport.OrderBy(s=>s.Sport);
         }
 
         public IEnumerable<LapDto> GetLapStream(long activityId, PeakStreamType streamType)
