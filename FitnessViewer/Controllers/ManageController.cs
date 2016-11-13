@@ -7,10 +7,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FitnessViewer.ViewModels;
+using System.Configuration;
 
 namespace FitnessViewer.Controllers
 {
-    [Authorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -19,7 +19,7 @@ namespace FitnessViewer.Controllers
         public ManageController()
         {
         }
-
+        
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -52,6 +52,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/Index
+        [Authorize]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -79,6 +80,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;
@@ -101,6 +103,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/AddPhoneNumber
+        [Authorize]
         public ActionResult AddPhoneNumber()
         {
             return View();
@@ -110,6 +113,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
@@ -134,6 +138,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
@@ -149,6 +154,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/DisableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
@@ -162,6 +168,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/VerifyPhoneNumber
+        [Authorize]
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
@@ -173,6 +180,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
@@ -198,6 +206,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/RemovePhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
@@ -215,6 +224,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/ChangePassword
+        [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
@@ -224,6 +234,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -246,6 +257,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/SetPassword
+        [Authorize]
         public ActionResult SetPassword()
         {
             return View();
@@ -255,6 +267,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -278,6 +291,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/ManageLogins
+        [Authorize]
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -303,6 +317,7 @@ namespace FitnessViewer.Controllers
         // POST: /Manage/LinkLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
@@ -311,6 +326,7 @@ namespace FitnessViewer.Controllers
 
         //
         // GET: /Manage/LinkLoginCallback
+        [Authorize]
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
@@ -333,8 +349,20 @@ namespace FitnessViewer.Controllers
             base.Dispose(disposing);
         }
 
+        public async Task<ActionResult> DemoAccountLogin()
+        {
+            var demoAccount = ConfigurationManager.AppSettings["DemoAccount"];
+            
+            var user = await UserManager.FindByNameAsync(demoAccount);
+
+            if (user != null)
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+           
+            return RedirectToAction("Dashboard", "Athlete");
+        }
+
 #region Helpers
-        // Used for XSRF protection when adding external logins
+            // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
