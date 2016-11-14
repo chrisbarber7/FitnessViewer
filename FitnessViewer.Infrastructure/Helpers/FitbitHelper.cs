@@ -3,6 +3,7 @@ using Fitbit.Api.Portable.OAuth2;
 using Fitbit.Models;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers.Conversions;
 using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -103,24 +104,33 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Dummy method to test downloads.
         /// </summary>
         /// <returns></returns>
-        public  void Download(bool fullDownload)
+        public void Download(bool fullDownload)
         {
 
-           RefreshToken();
+            RefreshToken();
 
-            DownloadMetric(TimeSeriesResourceType.Weight, fullDownload);
-
-            //  DownloadMetric(TimeSeriesResourceType.Fat, true);
-       
+            // which metrics are we interested in?
+            List<TimeSeriesResourceType> series = new List<TimeSeriesResourceType>()
+            {
+                 TimeSeriesResourceType.TimeEnteredBed,
+                TimeSeriesResourceType.MinutesAsleep,
+                TimeSeriesResourceType.TimeInBed,
+                TimeSeriesResourceType.CaloriesIn,
+                TimeSeriesResourceType.Weight,
+                TimeSeriesResourceType.Fat
+            };
+        
+            foreach (TimeSeriesResourceType r in series)
+                DownloadMetric(r, true);
 
             // as weight details have changed we need to refresh weights recorded against activities
             ActivityWeight w = new ActivityWeight(_userId);
             w.UpdateActivityWeight();
 
             _unitOfWork.Complete();
-            return ;
+            return;
         }
-        
+
         private void DownloadMetric(TimeSeriesResourceType type, bool fullDownload)
         {
             if (!fullDownload)
@@ -134,13 +144,13 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         }
 
-        private  void DownloadMetric(TimeSeriesResourceType type, DateTime dateStart)
+        private void DownloadMetric(TimeSeriesResourceType type, DateTime dateStart)
         {
             TimeSeriesDataList fitbitData = null;
-        
+
             try
             {
-                fitbitData =  _client.GetTimeSeriesAsync(type, dateStart, DateRangePeriod.OneYear).Result;
+                fitbitData = _client.GetTimeSeriesAsync(type, dateStart, DateRangePeriod.OneYear).Result;
                 SaveSeries(type, fitbitData);
             }
             catch (Exception ex)
@@ -157,18 +167,39 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             foreach (Fitbit.Models.TimeSeriesDataList.Data item in fitbitData.DataList)
             {
+                // no value so ignore
+                if (string.IsNullOrEmpty(item.Value))
+                    continue;
+
+                decimal convertedValue = FitbitConversion.ConvertFitbitValue(type, item.Value);
+
+                // 0 = no value for the type/date so ignore
+                if (convertedValue == FitbitConversion.InvalidValue)
+                    continue;
+                
+                // check if we already have a metric for the given date.
                 var existingMetric = currentlyStoredMetrics.Where(m => m.Recorded == item.DateTime).FirstOrDefault();
 
                 if (existingMetric == null)
-                {         
-                    _unitOfWork.Metrics.AddOrUpdateMetric(Metric.CreateMetric(_userId, metricType, item.DateTime, Convert.ToDecimal(item.Value), false));
+                {
+                    // add metric
+                    _unitOfWork.Metrics.AddMetric(Metric.CreateMetric(_userId, metricType, item.DateTime, convertedValue, false));
                 }
                 else
-                    existingMetric.Value = Convert.ToDecimal(item.Value);
+                {
+                    // don't overwrite any manually entered metrics.
+                    if (!existingMetric.IsManual)
+                    {
+                        existingMetric.Value = convertedValue;
+                        _unitOfWork.Metrics.UpdateMetric(existingMetric);
+                    }
+                }
 
             }
             _unitOfWork.Complete();
         }
+
+        
     }
 }
 

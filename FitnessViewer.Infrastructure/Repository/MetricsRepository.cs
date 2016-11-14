@@ -6,6 +6,7 @@ using Fitbit.Api.Portable.OAuth2;
 using FitnessViewer.Infrastructure.enums;
 using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Models.Dto;
+using System.Data.Entity;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
@@ -51,22 +52,67 @@ namespace FitnessViewer.Infrastructure.Repository
                 .Where(m => m.UserId == userId && m.MetricType == metricType)
                 .ToList();
         }
-
-
+        
+        /// <summary>
+        /// Add or Update a metric record
+        /// </summary>
+        /// <param name="metric">Metric details</param>
         public void AddOrUpdateMetric(Metric metric)
         {
-            // check if metric already exists?
-            Metric existing = _context.Metric
-                                        .Where(m => m.UserId == metric.UserId &&
-                                                    m.Recorded == metric.Recorded &&
-                                                    m.MetricType == metric.MetricType)
-                                        .FirstOrDefault();
+            AddOrUpdateMetric(metric, false);
 
-            if (existing == null)
-                _context.Metric.Add(metric);
-            else
-                existing.Value = metric.Value;
         }
+
+        /// <summary>
+        /// Add a new metric
+        /// </summary>
+        /// <param name="metric">Metric details</param>
+        public void AddMetric(Metric metric)
+        {
+            AddOrUpdateMetric(metric, true);
+        }
+
+        /// <summary>
+        /// Add or Update a metric record
+        /// </summary>
+        /// <param name="metric">Metric details</param>
+        /// <param name="isNew"></param>
+        private void AddOrUpdateMetric(Metric metric, bool isNew)
+        {
+
+            if (!isNew)
+            {
+                // check if metric already exists?
+                Metric existing = _context.Metric
+                                            .Where(m => m.UserId == metric.UserId &&
+                                                        m.Recorded == metric.Recorded &&
+                                                        m.MetricType == metric.MetricType)
+                                            .FirstOrDefault();
+
+                // if it doesn't exist then add it, otherwise update
+                if (existing == null)
+                    isNew = true;
+                else
+                {
+                    existing.Value = metric.Value;
+                    UpdateMetric(metric);
+                }
+            }
+
+            if (isNew)
+                _context.Metric.Add(metric);
+        }
+
+        /// <summary>
+        /// Update existing metric record
+        /// </summary>
+        /// <param name="amended">Amended Metric details</param>
+        internal void UpdateMetric(Metric amended)
+        {
+            _context.Metric.Attach(amended);
+            _context.Entry(amended).State = EntityState.Modified;
+        }
+
 
         public List<WeightByDayDto> GetMetricDetails(string userId, MetricType type, int days)
         {

@@ -20,6 +20,11 @@ namespace FitnessViewer.Infrastructure.Helpers
             {
                 case TimeSeriesResourceType.Weight: { return MetricType.Weight; }
                 case TimeSeriesResourceType.Fat: { return MetricType.BodyFat; }
+                case TimeSeriesResourceType.CaloriesIn: { return MetricType.CaloriesIn; }
+                case TimeSeriesResourceType.MinutesAsleep: { return MetricType.SleepMinutes; }
+                case TimeSeriesResourceType.TimeInBed: { return MetricType.TimeInBed; }
+                case TimeSeriesResourceType.TimeEnteredBed: { return MetricType.TimeEnteredBed; }
+
                 default: { return MetricType.Invalid; }
             }
         }

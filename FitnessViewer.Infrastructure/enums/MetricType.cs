@@ -14,6 +14,10 @@ namespace FitnessViewer.Infrastructure.enums
         HRVLnRMSSD = 7,
         HRVSDNN = 8,
         HRVNN50 = 9,
-        HRVPNN50 = 10
+        HRVPNN50 = 10,
+        CaloriesIn = 11,
+        SleepMinutes = 12,
+        TimeInBed = 13,
+        TimeEnteredBed = 14
     }
 }

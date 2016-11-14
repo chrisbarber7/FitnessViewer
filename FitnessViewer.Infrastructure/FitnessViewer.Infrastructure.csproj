@@ -147,6 +147,7 @@
     <Compile Include="Helpers\ActivityZones.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\ActivityAnalytics.cs" />
+    <Compile Include="Helpers\Conversions\FitbitConversion.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
     <Compile Include="Helpers\DisplayLabel.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
