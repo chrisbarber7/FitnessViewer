@@ -15,9 +15,7 @@ namespace FitnessViewer.App_Start
         {
             Mapper.Initialize(cfg => 
             {
-            //    cfg.CreateMap<Activity, ActivityViewModel>()
-            //            .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.StartDateLocal.Date.ToShortDateString()));
-
+                cfg.CreateMap<Activity, EditActivityViewModel > ();
                 cfg.AddProfile<InfrasturtureProfile>();
                         }
                         );

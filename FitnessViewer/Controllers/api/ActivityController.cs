@@ -132,5 +132,15 @@ namespace FitnessViewer.Controllers.api
             };
             return Ok(chart);
         }
+
+        /* Code below is to work with commented out code in ViewActivity view to allow inline editing of activity name.
+         *  Search for INLINE_EDIT for other commented out code.
+         * 
+         * */
+        //[HttpPost]
+        //public string  UpdateDescription([FromBody]string description)
+        //{
+        //    return description + "Updated!";
+        //}
     }
 }

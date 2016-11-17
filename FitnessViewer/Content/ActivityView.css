@@ -121,3 +121,12 @@ li.lap {
   border: 1px solid;
   border-color: #00182C;
 }
+/* Used for inline editing of activity details.
+   Search for INLINE_EDIT for other commented out code.
+    .edit-input {
+    display:none;
+}
+
+.save{
+    display:none;
+}*/

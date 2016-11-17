@@ -11,6 +11,8 @@ using FitnessViewer.Infrastructure.Helpers;
 using System;
 using FitnessViewer.Infrastructure.Models.Collections;
 
+using System.Threading.Tasks;
+using AutoMapper;
 
 namespace FitnessViewer.Controllers
 {
@@ -69,7 +71,7 @@ namespace FitnessViewer.Controllers
             public string selection { get; set; }
             public int startIndex { get; set; }
             public int endIndex { get; set; }
-            
+
         }
 
         [HttpGet]
@@ -94,6 +96,47 @@ namespace FitnessViewer.Controllers
         public ActionResult Calendar()
         {
             return View();
+        }
+
+        //// GET: People/Edit/{id}
+        //public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(long? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Activity a = _unitOfWork.Activity.GetActivity(id.Value);
+
+            if ((a == null) || (a.Athlete.UserId != User.Identity.GetUserId()))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            EditActivityViewModel vm = Mapper.Map<EditActivityViewModel>(a);
+
+            return PartialView("_Edit", vm);
+        }
+
+        // POST: Activity/Edit/{id}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Edit
+        public ActionResult Edit(EditActivityViewModel activity)
+        {
+            if (ModelState.IsValid)
+            {
+                Activity a = _unitOfWork.Activity.GetActivity(activity.Id);
+
+                if ((a == null) || (a.Athlete.UserId != User.Identity.GetUserId()))
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                a.Name = activity.Name;
+
+                _unitOfWork.Activity.UpdateActivity(a);
+                _unitOfWork.Complete();
+
+                return Json(new { success = true });
+            }
+            return PartialView("_Edit", activity);
         }
     }
 }

@@ -14,12 +14,30 @@
 @Html.Hidden("activityId", Model.Id)
 @Html.Hidden("hasMap", Model.HasMap)
 <div>
+    @* Code to edit activity title inline - alternative to a popup edit form.
+                 Search for INLINE_EDIT for other commented out code.
 
-    <div class="ActivityTitle">@Model.Name</div>
-    <div class="ActivityTitle">@Model.MovingTime</div>
-    <div class="ActivityTitle">@Model.Distance<span class="ActivityTitleSuffix">mi</span></div>
-    <div class="ActivityTitle">@Model.Analytics.TSS<span class="ActivityTitleSuffix">TSS</span></div>
+        <div class="control-group">
+                <label class="ActivityTitle edit-label">@Model.Name</label>
+                <input type="text" class="edit-input" /><div class="ActivityTitle">@Model.MovingTime</div>
+                <div class="ActivityTitle">@Model.Distance<span class="ActivityTitleSuffix">mi</span></div>
+                <div class="ActivityTitle">@Model.Analytics.TSS<span class="ActivityTitleSuffix">TSS</span></div>
+                <a href="#" class="edit">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <input id="saveDescription" class="btn btn-sm save" type="submit" value="Save" />
+        </div>*@
 
+    <div class="control-group">
+        <label class="ActivityTitle">@Model.Name</label>
+
+        <div class="ActivityTitle">@Model.MovingTime</div>
+        <div class="ActivityTitle">@Model.Distance<span class="ActivityTitleSuffix">mi</span></div>
+        <div class="ActivityTitle">@Model.Analytics.TSS<span class="ActivityTitleSuffix">TSS</span></div>
+        <a href='@Url.Action("Edit", "Activity", new { id = Model.Id })' data-modal="">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+    </div>
     <a href="https://www.strava.com/activities/@Model.Id" class="StravaLink">View on Strava</a>
     <div>
         @Model.ActivityTypeId by @Model.Athlete.FirstName @Model.Athlete.LastName on @Model.Start.ToLongDateString()
@@ -157,8 +175,16 @@ else
             </div>
         </div>
     </div>
+     // Modal form
+    <div id='fvModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='fvModalContent'></div>
+            </div>
+        </div>
+    </div>
 }
-
 @section scripts {
     <script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>
+    <script src="~/Scripts/app/modalForm.js" type="text/javascript"></script>
 }

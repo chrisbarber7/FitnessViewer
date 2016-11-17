@@ -154,7 +154,7 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        internal void UpdateActivity(Activity amended)
+        public void UpdateActivity(Activity amended)
         {
             _context.Activity.Attach(amended);
             _context.Entry(amended).State = EntityState.Modified;

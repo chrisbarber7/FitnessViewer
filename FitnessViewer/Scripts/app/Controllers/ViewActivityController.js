@@ -1,6 +1,36 @@
 ﻿$(document).ready(function () {
+
+    /*
+    Code to allow inline editing of activity details (alternative to modal popup).  
+    Search for INLINE_EDIT for other commented out code.    
+
+    $('a.edit').click(function () {
+        var container = $(this).parent().parent();
+        var label = container.find('label');
+        label.hide();
+        var textBox = container.find('input[type="text"]');
+        textBox.val(label.text());
+        var saveButton = container.find('#saveDescription');
+        saveButton.show();
+        textBox.show().focus();
+        $(this).hide();
+    });
+    $('#saveDescription').click(function () {
+        var container = $(this).parent();
+        var textBox = container.find('input[type="text"]');
+        $.post("/api/Activity/UpdateDescription", { '': textBox.val() })
+                  .done(function (data) {
+                      var label = container.find('label');
+                      label.text(data);
+                  });
+        textBox.hide();
+        $(this).hide();
+        container.find('label').show();
+    });
+*/
     var selectedPolyline;
     var fullRouteLatLng;
+    var hasMap = document.getElementById('hasMap').value;
     // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
     $('ul.laps li').click(function (e) {
         $("li.selectedLap").removeClass("selectedLap");
@@ -12,28 +42,32 @@
         var selectedText = encodeURIComponent($(this).find(".lapName").text());
         $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&selection=" + selectedText + "&startIndex=" + startIndex + "&endIndex=" + endIndex);
 
-        // for map and graphs we need to take the steps in data into account
-        startIndex = $(this).attr("data-start-stepped-index");;
-        endIndex = $(this).attr("data-end-stepped-index");
+        if (hasMap === "True") {
 
-        // if previous selection exists then removeit
-        if (selectedPolyline!==undefined)
-            mymap.removeLayer(selectedPolyline);
+            // for map and graphs we need to take the steps in data into account
+            startIndex = $(this).attr("data-start-stepped-index");;
+            endIndex = $(this).attr("data-end-stepped-index");
 
-        // strip the full route coordinated just keeping the section we are interested in (no need for stream step on the map as the map has reduced data points)
-        var selectedLatLng = fullRouteLatLng.slice(startIndex, endIndex);
+            // if previous selection exists then removeit
+            if (selectedPolyline !== undefined)
+                mymap.removeLayer(selectedPolyline);
 
-        selectedPolyline = L.polyline(selectedLatLng, { color : 'blue' }).addTo(mymap);
+            // strip the full route coordinated just keeping the section we are interested in (no need for stream step on the map as the map has reduced data points)
+            var selectedLatLng = fullRouteLatLng.slice(startIndex, endIndex);
 
-        // un-comment to zoom in on selected polyline.  Undecided if I like it or not as hard to see where on route you are!
-        //mymap.fitBounds(selectedPolyline.getBounds());
+            selectedPolyline = L.polyline(selectedLatLng, { color: 'blue' }).addTo(mymap);
+
+            // un-comment to zoom in on selected polyline.  Undecided if I like it or not as hard to see where on route you are!
+            //mymap.fitBounds(selectedPolyline.getBounds());
+        }
     });
 
-    var mymap = L.map('mapid');
+   
     var activityId = document.getElementById('activityId').value;
     var hasMap = document.getElementById('hasMap').value;
 
     if (hasMap === "True") {
+        var mymap = L.map('mapid');
         fullRouteLatLng = getCoords(activityId);
         var polyline = L.polyline(fullRouteLatLng, { color: 'red' }).addTo(mymap);
         mymap.fitBounds(polyline.getBounds());
