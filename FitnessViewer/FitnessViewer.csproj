@@ -632,10 +632,7 @@
     <Content Include="Views\Activity\_LapInformation.cshtml" />
     <Content Include="Views\Activity\_Edit.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
