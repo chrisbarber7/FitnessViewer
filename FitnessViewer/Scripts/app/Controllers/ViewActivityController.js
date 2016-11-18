@@ -30,7 +30,7 @@
 */
     var selectedPolyline;
     var fullRouteLatLng;
-    var hasMap = document.getElementById('hasMap').value;
+   // var hasMap = document.getElementById('hasMap').value;
     // user clicks on any of the options in the lap info panel.  We'll load the summary info for that section and highlight the section on the map.
     $('ul.laps li').click(function (e) {
         $("li.selectedLap").removeClass("selectedLap");
