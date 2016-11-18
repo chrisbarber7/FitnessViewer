@@ -159,6 +159,7 @@
     <Compile Include="Helpers\StravaActivityDownload.cs" />
     <Compile Include="Helpers\StravaActivityScan.cs" />
     <Compile Include="Helpers\StravaAthlete.cs" />
+    <Compile Include="Helpers\StravaUpdate.cs" />
     <Compile Include="Helpers\StreamTypeHelper.cs" />
     <Compile Include="Helpers\UserZones.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />

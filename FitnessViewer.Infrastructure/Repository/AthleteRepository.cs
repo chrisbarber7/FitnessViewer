@@ -1,6 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models;
-using System;
 using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Repository
@@ -18,20 +17,11 @@ namespace FitnessViewer.Infrastructure.Repository
         public void AddAthlete(Athlete a)
         {
             _context.Athlete.Add(a);
-         
         }
-
-        //public void EditAthlete(Athlete a)
-        //{
-        
-            
-        //}
 
         public Athlete FindAthleteById(long id)
         {
             return _context.Athlete.Where(r => r.Id == id).FirstOrDefault();
-            //var result = (from r in _context.Athlete where r.Id == id select r).FirstOrDefault();
-            //return result;
         }
 
         public Athlete FindAthleteByUserId(string userId)

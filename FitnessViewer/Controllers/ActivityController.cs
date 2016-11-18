@@ -116,11 +116,9 @@ namespace FitnessViewer.Controllers
         }
 
         // POST: Activity/Edit/{id}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Edit
-        public ActionResult Edit(EditActivityViewModel activity)
+        public async Task<ActionResult> Edit(EditActivityViewModel activity)
         {
             if (ModelState.IsValid)
             {
@@ -133,6 +131,10 @@ namespace FitnessViewer.Controllers
 
                 _unitOfWork.Activity.UpdateActivity(a);
                 _unitOfWork.Complete();
+
+                StravaUpdate upd = new StravaUpdate(_unitOfWork, User.Identity.GetUserId());
+
+                await upd.UpdateActivityNameAsync(activity.Id, activity.Name);
 
                 return Json(new { success = true });
             }
