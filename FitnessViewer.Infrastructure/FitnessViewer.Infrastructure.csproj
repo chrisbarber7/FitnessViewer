@@ -328,6 +328,7 @@
     <Compile Include="Models\PeakStreamTypeDuration.cs" />
     <Compile Include="Models\Collections\ActivityStreams.cs" />
     <Compile Include="Models\UserNotification.cs" />
+    <Compile Include="Models\ViewModels\EditActivityViewModel.cs" />
     <Compile Include="Models\Zone.cs" />
     <Compile Include="Models\ZoneRange.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />

@@ -239,7 +239,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AccountViewModels.cs" />
-    <Compile Include="ViewModels\EditActivityViewModel.cs" />
     <Compile Include="ViewModels\HeartRateViewModel.cs" />
     <Compile Include="ViewModels\HRVViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />

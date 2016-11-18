@@ -15,7 +15,7 @@ namespace FitnessViewer.App_Start
         {
             Mapper.Initialize(cfg => 
             {
-                cfg.CreateMap<Activity, EditActivityViewModel > ();
+           
                 cfg.AddProfile<InfrasturtureProfile>();
                         }
                         );

@@ -1,6 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.Infrastructure.Models;
-using FitnessViewer.ViewModels;
+using FitnessViewer.Infrastructure.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Net;
 using System.Web.Mvc;
@@ -110,9 +110,7 @@ namespace FitnessViewer.Controllers
             if ((a == null) || (a.Athlete.UserId != User.Identity.GetUserId()))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            EditActivityViewModel vm = Mapper.Map<EditActivityViewModel>(a);
-
-            return PartialView("_Edit", vm);
+            return PartialView("_Edit", Mapper.Map<EditActivityViewModel>(a));
         }
 
         // POST: Activity/Edit/{id}
@@ -127,14 +125,11 @@ namespace FitnessViewer.Controllers
                 if ((a == null) || (a.Athlete.UserId != User.Identity.GetUserId()))
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                a.Name = activity.Name;
-
-                _unitOfWork.Activity.UpdateActivity(a);
-                _unitOfWork.Complete();
-
+   
                 StravaUpdate upd = new StravaUpdate(_unitOfWork, User.Identity.GetUserId());
-
-                await upd.UpdateActivityNameAsync(activity.Id, activity.Name);
+             await    upd.ActivityDetailsUpdate(a, activity);
+           
+              
 
                 return Json(new { success = true });
             }

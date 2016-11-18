@@ -2,6 +2,7 @@
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
+using FitnessViewer.Infrastructure.Models.ViewModels;
 
 namespace FitnessViewer.Infrastructure.Configuration
 {
@@ -45,7 +46,9 @@ namespace FitnessViewer.Infrastructure.Configuration
 
                 CreateMap<Activity, ActivityDetailDto>()
                             .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.StartDateLocal.Date.ToShortDateString()));
-                
+
+                CreateMap<Activity, EditActivityViewModel>();
+
             }
         }
     }
