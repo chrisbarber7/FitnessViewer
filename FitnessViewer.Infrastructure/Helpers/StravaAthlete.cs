@@ -66,10 +66,13 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             LogActivity("Updating Athlete", fitnessViewerAthlete);
 
-            fitnessViewerAthlete = Mapper.Map<Athlete>(stravaAthleteDetails);
+            // update athlete details from strava.
+            Mapper.Map(stravaAthleteDetails, fitnessViewerAthlete);
 
+            // get latest access token.
             fitnessViewerAthlete.Token = token;
 
+            // update bike and shoe details.
             UpdateBikes(stravaAthleteDetails.Id, stravaAthleteDetails.Bikes);
             UpdateShoes(stravaAthleteDetails.Id, stravaAthleteDetails.Shoes);
 
