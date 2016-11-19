@@ -11,24 +11,23 @@ namespace FitnessViewer.Infrastructure.Data
     public class UnitOfWork
     {
         private ApplicationDb _context;
-        public ActivityRepository Activity { get; private set; }
-        public AnalysisRepository Analysis { get; private set; }
-        public AthleteRepository Athlete { get; private set; }
+        internal ActivityRepository Activity { get; private set; }
+  
         public MetricsRepository Metrics { get; private set; }
         public QueueRepository Queue { get; private set; }
         public NotificationRepository Notification { get; private set; }
         public SettingsRepository Settings { get; private set; }
+        public GenericRepository CRUDRepository { get; set; }
 
         public UnitOfWork()
         {
             _context = new ApplicationDb();
             Activity = new ActivityRepository(_context);
-            Analysis = new AnalysisRepository(_context);
-            Athlete = new AthleteRepository(_context);
             Metrics = new MetricsRepository(_context);
             Queue = new QueueRepository(_context);
             Notification = new NotificationRepository(_context);
             Settings = new SettingsRepository(_context);
+            CRUDRepository = new GenericRepository(_context);
         }
 
         public void Complete()

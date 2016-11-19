@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class UserNotification
+    public class UserNotification : Entity<int>, IEntity<int>, IUserEntity
     {
         private UserNotification()
         {
         }
 
-        public int Id { get; set; }
+    //    public int Id { get; set; }
 
         [Required]
         [MaxLength(128)]

@@ -1,23 +1,24 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class DownloadQueue
+    public class DownloadQueue : Entity<int>, IEntity<int>, IUserEntity
     {
         private DownloadQueue()
         { }
 
-        public int Id { get; private set; }
+       // public  int Id { get; private set; }
 
         [Required]
         [MaxLength(128)]
         [ForeignKey("User")]
-        public string UserId { get; private set; }
+        public string UserId { get;  set; }
         public virtual ApplicationUser User { get; set; }
 
         public DateTime Added { get; private set; }
@@ -94,7 +95,8 @@ namespace FitnessViewer.Infrastructure.Models
             if (uow == null)
                 uow = new UnitOfWork();
 
-            uow.Queue.AddQueueItem(this);
+            uow.CRUDRepository.Add<DownloadQueue>(this);
+         //   uow.Queue.AddQueueItem(this);
             uow.Complete();
             AddToAzureQueue();
         }

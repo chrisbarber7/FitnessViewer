@@ -1,4 +1,6 @@
-﻿using FitnessViewer.Infrastructure.enums;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class ActivityPeaks
+    public class ActivityPeaks : Entity<int>, IEntity<int>, IActivityEntity
     {
         public int Id { get; set; }
 

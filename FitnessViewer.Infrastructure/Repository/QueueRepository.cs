@@ -13,20 +13,7 @@ namespace FitnessViewer.Infrastructure.Repository
         {
             _context = context;
         }
-
-        #region Queue
-
-
-        public void AddQueueItem(DownloadQueue newJob)
-        {
-            _context.Queue.Add(newJob);
-        }
-
-        internal DownloadQueue Find(int jobId)
-        {
-            return _context.Queue.Find(jobId);
-        }
-
+        
         public IEnumerable<DownloadQueue> GetQueue(int count)
         {
             return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).OrderBy(x=>x.Id).Take(count).ToList();
@@ -39,24 +26,5 @@ namespace FitnessViewer.Infrastructure.Repository
                            .OrderBy(x => x.Id)
                            .ToList();
         }
-
-
-        ///// <summary>
-        ///// Queue Count
-        ///// </summary>
-        ///// <returns>Number of items in queue waiting to be processed</returns>
-        //public int GetQueueCount()
-        //{
-        //    return _context.Queue.Where(x => !x.Processed && !x.HasError.Value).Count();
-        //}
-
-    
-
-
-        //public IEnumerable<DownloadQueue> FindQueueItemByUserId(string userId)
-        //{
-        //    return _context.Queue.Where(x => x.UserId == userId).ToList();
-        //}
-        #endregion
     }
 }

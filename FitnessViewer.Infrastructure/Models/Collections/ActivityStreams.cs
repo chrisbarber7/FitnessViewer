@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
 using static FitnessViewer.Infrastructure.Models.Dto.ActivityMinMaxDto;
+using FitnessViewer.Infrastructure.Repository;
 
 namespace FitnessViewer.Infrastructure.Models.Collections
 {
@@ -37,7 +38,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             get
             {
                 if (_activity == null)
-                    _activity = _unitOfWork.Activity.GetActivity(ActivityId);
+                    _activity = _unitOfWork.CRUDRepository.GetByKey<Activity>(ActivityId, o => o.ActivityType, o => o.Athlete);
 
                 return _activity;
             }
@@ -186,9 +187,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         public static ActivityStreams CreateFromExistingActivityStream(long activityId, int start, int end)
         {
             UnitOfWork uow = new UnitOfWork();
-            return new ActivityStreams(activityId, uow.Activity
-                                                        .GetStreamForActivity(activityId)
-                                                        .Where(s => s.Time >= start && s.Time <= end));
+            return new ActivityStreams(activityId, uow.CRUDRepository.GetByActivityId<Stream>(activityId).OrderBy(s => s.Time));
         }
 
         /// <summary>
@@ -357,10 +356,9 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// </summary>
         internal void StoreStreams()
         {
-            // write all details to database.
-            _unitOfWork.Activity.AddStreamBulk(_containedStreams);
-            _unitOfWork.Complete();
-        }
+            StreamRepository repo = new StreamRepository();
+            repo.AddStreamBulk(_containedStreams);
+         }
                 
         /// <summary>
         /// Calculate peaks for stream and save.

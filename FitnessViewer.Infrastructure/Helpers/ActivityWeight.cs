@@ -111,8 +111,12 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <returns></returns>
         private List<Metric> GetUserWeights()
-        {   
-            return _unitOfWork.Metrics.GetMetrics(_userId, MetricType.Weight);
+        {
+            //return _unitOfWork.Metrics.GetMetrics(_userId, MetricType.Weight);
+
+            return _unitOfWork.CRUDRepository.GetByUserId<Metric>(_userId)
+                                             .Where(m => m.MetricType == MetricType.Weight)
+                                             .ToList();
         }
 
     }

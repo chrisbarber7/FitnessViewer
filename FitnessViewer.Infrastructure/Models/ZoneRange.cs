@@ -2,16 +2,16 @@
 using FitnessViewer.Infrastructure.enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Models
 {
     /// <summary>
     /// Lower/Upper zone ranges for a user/sport 
     /// </summary>
-    public class ZoneRange
+    public class ZoneRange : Entity<int>, IEntity<int>, IUserEntity
     {
-        public int Id { get; set; }
+     //   public int Id { get; set; }
 
         [Required]
         [MaxLength(128)]

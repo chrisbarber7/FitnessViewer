@@ -1,4 +1,6 @@
-﻿using FitnessViewer.Infrastructure.enums;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class Notification
+    public class Notification : Entity<int>, IEntity<int>
     {
         private Notification()
         {
         }
 
-        public int Id { get; set; }
+    //    public int Id { get; set; }
 
         public DateTime Created { get; set; }
         public NotificationType Type { get; set; }

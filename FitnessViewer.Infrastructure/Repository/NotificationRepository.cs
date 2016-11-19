@@ -11,7 +11,7 @@ namespace FitnessViewer.Infrastructure.Repository
     {
         private ApplicationDb _context;
 
-                public NotificationRepository(ApplicationDb context)
+        public NotificationRepository(ApplicationDb context)
         {
             _context = context;
         }

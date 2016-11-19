@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class Stream
+    public class Stream :  Entity<int>, IEntity<int>, IActivityEntity
     {
-        public int Id { get; set; }
+     //  public int Id { get; set; }
 
         [Required]
         [ForeignKey("Activity")]

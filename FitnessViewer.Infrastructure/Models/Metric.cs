@@ -8,12 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fitbit.Models;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class Metric
+    public class Metric : Entity<int>, IEntity<int>, IUserEntity
     {
-        public int Id { get; set; }
+   //     public int Id { get; set; }
 
         [Required]
         [MaxLength(128)]

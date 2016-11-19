@@ -54,8 +54,6 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             UpdateActivityDetails();
 
-
-
             AddNotification(Notification.StravaActivityDownload(_activityId));
             StravaPause(_fvActivity);
         }
@@ -74,13 +72,11 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         private void GetFitnessViewerActivity()
         {
-            _fvActivity = _unitOfWork.Activity.GetActivity(_activityId);
+            _fvActivity = _unitOfWork.CRUDRepository.GetByKey<Activity>(_activityId, o => o.ActivityType, o => o.Athlete);
 
             if (_fvActivity == null)
                 throw new ArgumentException(string.Format("Activity Not Found: {0}", _activityId.ToString()));
         }
-
-   
 
         private void UpdateActivityDetails()
         {
@@ -150,7 +146,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 if (l.MovingTime < new TimeSpan(0, 0, 0))
                     l.MovingTime = l.ElapsedTime;
 
-                _unitOfWork.Activity.AddLap(l);
+
+                _unitOfWork.CRUDRepository.Add<Lap>(l);
             }
             _unitOfWork.Complete();
         }
@@ -274,8 +271,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             effort.ElapsedTime = TimeSpan.FromSeconds(e.ElapsedTime);
             effort.Distance = Convert.ToDecimal(e.Distance);
             effort.EndIndex = e.EndIndex;
-
-            _unitOfWork.Activity.AddBestEffort(effort);
+            
+            _unitOfWork.CRUDRepository.Add<BestEffort>(effort);
         }
     }
 }

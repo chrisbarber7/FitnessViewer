@@ -25,12 +25,17 @@ namespace FitnessViewer.Controllers.api
         [HttpGet]
         public IHttpActionResult GetActivities()
         {
+            ActivityDtoRepository repo = new ActivityDtoRepository();
+
             return Ok(new
             {
                 //data =
                 //Mapper.Map<IEnumerable<ActivityLapsDto>>(_unitOfWork.Activity.GetActivities(this.User.Identity.GetUserId())).ToList()
 
-                data = _unitOfWork.Activity.GetActivityDto(this.User.Identity.GetUserId())
+
+              
+
+                data = repo.GetActivityDto(this.User.Identity.GetUserId())
 
             });
         }
@@ -38,7 +43,9 @@ namespace FitnessViewer.Controllers.api
         [HttpGet]
         public IHttpActionResult GetActivityCoords(string id)
         {
-            var coords = _unitOfWork.Activity.GetActivityCoords(Convert.ToInt64(id));
+            CoordsDtoRepository repo = new CoordsDtoRepository();
+
+            var coords = repo.GetActivityCoords(Convert.ToInt64(id));
             return Ok(
                coords
             );
@@ -47,7 +54,9 @@ namespace FitnessViewer.Controllers.api
         [HttpGet]
         public IHttpActionResult GetActivityStreams(string id)
         {
-            var streams = _unitOfWork.Activity.GetActivityStreams(Convert.ToInt64(id));
+            GraphStreamDtoRepository dtoRepo = new GraphStreamDtoRepository();
+
+            var streams = dtoRepo.GetActivityStreams(Convert.ToInt64(id));
 
             return Json(
                streams
@@ -63,8 +72,9 @@ namespace FitnessViewer.Controllers.api
             if (!int.TryParse(id, out daysValue))
                 return BadRequest("Invalid Days Parameter");
 
+            TimeDistanceBySportRepository repo = new TimeDistanceBySportRepository();
 
-            var data = _unitOfWork.Activity.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
+            var data = repo.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
                                             DateTime.Now.AddDays(daysValue*-1), DateTime.Now);
 
             List<string> sport = new List<string>();
@@ -89,7 +99,8 @@ namespace FitnessViewer.Controllers.api
         [HttpGet]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
-            var runData = _unitOfWork.Activity.ActivityByWeek(this.User.Identity.GetUserId(), id, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
+            PeriodDtoRepository repo = new PeriodDtoRepository();
+            var runData = repo.ActivityByWeek(this.User.Identity.GetUserId(), id, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();

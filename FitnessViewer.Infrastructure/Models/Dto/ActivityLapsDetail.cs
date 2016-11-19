@@ -3,6 +3,7 @@ using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Models.Collections;
+using FitnessViewer.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +15,16 @@ namespace FitnessViewer.Infrastructure.Models.Dto
     public class ActivityDetailDto : ActivityDto
     {
 
-        public static ActivityDetailDto CreateFromActivity(UnitOfWork uow, Activity fvActivity)
+        public static new ActivityDetailDto CreateFromActivity(Activity fvActivity)
         {
+            LapDtoRepository repo = new LapDtoRepository();
             ActivityDetailDto m = Mapper.Map<ActivityDetailDto>(ActivityDto.CreateFromActivity(fvActivity));
 
             m.ActivityStream = ActivityStreams.CreateFromExistingActivityStream(fvActivity.Id);// uow.Activity.GetActivityStream(fvActivity.Id);
             
-            m.Laps = uow.Activity.GetLaps(fvActivity.Id);
-            m.HeartRate = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.HeartRate);
-            m.Cadence = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Cadence);
+            m.Laps = repo.GetLaps(fvActivity.Id);
+            m.HeartRate = repo.GetLapStream(fvActivity.Id, PeakStreamType.HeartRate);
+            m.Cadence = repo.GetLapStream(fvActivity.Id, PeakStreamType.Cadence);
 
             ActivityMinMaxDto mma = new ActivityMinMaxDto(m.ActivityStream);
 
@@ -46,7 +48,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
                 if (m.HasPowerMeter)
                 {
-                    m.Power = uow.Activity.GetLapStream(fvActivity.Id, PeakStreamType.Power);
+                    m.Power = repo.GetLapStream(fvActivity.Id, PeakStreamType.Power);
                     m.PowerZones = zones.GetZoneValues(ZoneType.BikePower);  // uow.Settings.GetZoneValues(m, ZoneType.BikePower);
                 }
             }

@@ -4,7 +4,7 @@ namespace FitnessViewer.Infrastructure.Models.ViewModels
 {
     public class EditActivityViewModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [Display(Name = "Activity Name")]

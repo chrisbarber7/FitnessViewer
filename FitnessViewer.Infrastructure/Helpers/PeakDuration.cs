@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,10 +44,29 @@ namespace FitnessViewer.Infrastructure.Helpers
         private int[] SetupDurations()
         {
             UnitOfWork uow = new UnitOfWork();
-            return uow.Analysis.GetPeakStreamTypeDuration(_streamType);
-        }
 
-        private int[] SetupPowerCurveDurations(int streamSize)
+            return uow.CRUDRepository.GetAll<PeakStreamTypeDuration>()
+                .Where(p => p.PeakStreamType == _streamType && p.Duration != int.MaxValue)
+                            .OrderBy(p => p.Duration)
+                            .Select(p => p.Duration)
+                            .ToArray();
+
+//            return uow.Analysis.GetPeakStreamTypeDuration(_streamType);
+
+
+
+        //internal int[] GetPeakStreamTypeDuration(PeakStreamType type)
+        //{
+        //    return _context.PeakStreamTypeDuration
+        //                    .Where(p => p.PeakStreamType == type && p.Duration != int.MaxValue)
+        //                    .OrderBy(p => p.Duration)
+        //                    .Select(p => p.Duration)
+        //                    .ToArray();
+        //}
+
+    }
+
+    private int[] SetupPowerCurveDurations(int streamSize)
         {
             List<int> durations = new List<int>();
 

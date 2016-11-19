@@ -1,14 +1,15 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class Zone
+    public class Zone : Entity<int>, IEntity<int>, IUserEntity
     {
-        public int Id { get; set; }
+      //  public int Id { get; set; }
 
         [Required]
         [MaxLength(128)]

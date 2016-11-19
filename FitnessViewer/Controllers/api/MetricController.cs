@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models.Dto;
+using FitnessViewer.Infrastructure.Repository;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,9 @@ namespace FitnessViewer.Controllers.api
             if (metricType == MetricType.Invalid)
                 return BadRequest("Invalid Metric Type");
 
-            var metrics= _unitOfWork.Metrics.GetMetricDetails(userId, metricType, dates.FromDateTime.Value, dates.ToDateTime.Value);
+            WeightByDayDtoRepository repo = new WeightByDayDtoRepository();
+
+            var metrics= repo.GetMetricDetails(userId, metricType, dates.FromDateTime.Value, dates.ToDateTime.Value);
 
             List<string> date = new List<string>();
             List<string> metricValue = new List<string>();

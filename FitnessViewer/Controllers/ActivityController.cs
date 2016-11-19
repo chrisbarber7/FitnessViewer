@@ -43,8 +43,8 @@ namespace FitnessViewer.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            Activity fvActivity = _unitOfWork.Activity.GetActivity(id.Value);
+            
+            Activity fvActivity = _unitOfWork.CRUDRepository.GetByKey<Activity>(id.Value, o => o.ActivityType, o => o.Athlete);
 
             if (!fvActivity.DetailsDownloaded)
             {
@@ -60,7 +60,7 @@ namespace FitnessViewer.Controllers
             if (fvActivity.Athlete.UserId != User.Identity.GetUserId())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            ActivityDetailDto v = ActivityDetailDto.CreateFromActivity(_unitOfWork, fvActivity);
+            ActivityDetailDto v = ActivityDetailDto.CreateFromActivity( fvActivity);
             v.SummaryInfo.Label = "Activity";
             return View(v);
         }
@@ -105,7 +105,7 @@ namespace FitnessViewer.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Activity a = _unitOfWork.Activity.GetActivity(id.Value);
+            Activity a = _unitOfWork.CRUDRepository.GetByKey<Activity>(id.Value, o => o.ActivityType, o => o.Athlete);
 
             if ((a == null) || (a.Athlete.UserId != User.Identity.GetUserId()))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -120,7 +120,7 @@ namespace FitnessViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Activity a = _unitOfWork.Activity.GetActivity(activity.Id);
+                Activity a = _unitOfWork.CRUDRepository.GetByKey<Activity>(activity.Id, o => o.ActivityType, o => o.Athlete);
 
                 if ((a == null) || (a.Athlete.UserId != User.Identity.GetUserId()))
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

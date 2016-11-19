@@ -40,7 +40,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             a.UserId = userId;
             a.Token = token;
 
-            _unitOfWork.Athlete.AddAthlete(a);
+            //     _unitOfWork.Athlete.AddAthlete(a);
+            _unitOfWork.CRUDRepository.Add<Athlete>(a);
 
             UpdateBikes(a.Id, athlete.Bikes);
             UpdateShoes(a.Id, athlete.Shoes);
@@ -59,7 +60,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         public void UpdateAthlete(string token)
         {
             StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
-            Athlete fitnessViewerAthlete = _unitOfWork.Athlete.FindAthleteById(this._stravaId);
+            
+            Athlete fitnessViewerAthlete = _unitOfWork.CRUDRepository.GetByKey<Athlete>(this._stravaId);
 
             if (fitnessViewerAthlete == null)
                 return;
@@ -71,6 +73,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             // get latest access token.
             fitnessViewerAthlete.Token = token;
+
+            _unitOfWork.CRUDRepository.Update<Athlete>(fitnessViewerAthlete);
 
             // update bike and shoe details.
             UpdateBikes(stravaAthleteDetails.Id, stravaAthleteDetails.Bikes);
@@ -100,7 +104,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 g.Name = b.Name;
                 g.ResourceState = b.ResourceState;
 
-                _unitOfWork.Activity.AddOrUpdateGear(g);
+                _unitOfWork.CRUDRepository.AddOrUpdate<Gear>(g);
             }
         }
 
@@ -115,7 +119,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 g.IsPrimary = s.IsPrimary;
                 g.Name = s.Name;
                 g.ResourceState = s.ResourceState;
-                _unitOfWork.Activity.AddOrUpdateGear(g);
+                _unitOfWork.CRUDRepository.AddOrUpdate<Gear>(g);
+              //  _unitOfWork.Activity.AddOrUpdateGear(g);
             }
         }
 

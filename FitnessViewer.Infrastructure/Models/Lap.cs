@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class Lap
+    public class Lap : Entity<long>, IEntity<long>, IActivityEntity
     {
-        public long Id { get; set; }
+       // public long Id { get; set; }
 
         [Required]
         [ForeignKey("Activity")]

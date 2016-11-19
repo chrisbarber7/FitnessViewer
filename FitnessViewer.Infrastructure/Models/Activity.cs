@@ -1,4 +1,6 @@
-﻿using FitnessViewer.Infrastructure.Helpers;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,12 +8,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Models
 {
-    public class Activity
+    public class Activity : Entity<long>, IEntity<long>
     {
         // disabling auto identity column to allow use of strava activity id as the key.
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long Id { get; set; }
+        public override long Id { get; set; }
 
         [Required]
         [ForeignKey("Athlete")]

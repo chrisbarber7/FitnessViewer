@@ -136,6 +136,8 @@
     <Compile Include="Configuration\AutoMapperConfiguration.cs" />
     <Compile Include="Data\ApplicationDb.cs" />
     <Compile Include="Data\ApplicationUser.cs" />
+    <Compile Include="Data\DtoRepository.cs" />
+    <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="enums\DownloadType.cs" />
     <Compile Include="enums\MetricType.cs" />
@@ -162,6 +164,10 @@
     <Compile Include="Helpers\StravaUpdate.cs" />
     <Compile Include="Helpers\StreamTypeHelper.cs" />
     <Compile Include="Helpers\UserZones.cs" />
+    <Compile Include="Interfaces\IActivityEntity.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IUserEntity.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">
       <DependentUpon>201609302208361_AddActivityMap.cs</DependentUpon>
@@ -320,8 +326,8 @@
     <Compile Include="Models\Dto\TimeDistanceBySportDto.cs" />
     <Compile Include="Models\Dto\WeightByDayDto.cs" />
     <Compile Include="Models\Dto\ZoneValueDto.cs" />
-    <Compile Include="Models\FindPeak.cs" />
     <Compile Include="Models\FitbitUser.cs" />
+    <Compile Include="Data\GenericRepository.cs" />
     <Compile Include="Models\Lap.cs" />
     <Compile Include="Models\Metric.cs" />
     <Compile Include="Models\Notification.cs" />
@@ -331,11 +337,16 @@
     <Compile Include="Models\ViewModels\EditActivityViewModel.cs" />
     <Compile Include="Models\Zone.cs" />
     <Compile Include="Models\ZoneRange.cs" />
+    <Compile Include="Repository\DtoRepository\ActivityDtoRepository.cs" />
     <Compile Include="Repository\ActivityRepository.cs" />
-    <Compile Include="Repository\AnalysisRepository.cs" />
-    <Compile Include="Repository\AthleteRepository.cs" />
+    <Compile Include="Repository\DtoRepository\CoordsDtoRepository.cs" />
+    <Compile Include="Repository\DtoRepository\GraphStreamDtoRepository.cs" />
+    <Compile Include="Repository\DtoRepository\LapDtoRepository.cs" />
+    <Compile Include="Repository\DtoRepository\WeightByDayDtoRepository.cs" />
     <Compile Include="Repository\MetricsRepository.cs" />
     <Compile Include="Repository\NotificationRepository.cs" />
+    <Compile Include="Repository\DtoRepository\PeaksDtoRepository.cs" />
+    <Compile Include="Repository\DtoRepository\PeriodDtoRepository.cs" />
     <Compile Include="Repository\QueueRepository.cs" />
     <Compile Include="enums\BikeType.cs" />
     <Compile Include="enums\GearType.cs" />
@@ -468,7 +479,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\PeakSeeker.cs" />
     <Compile Include="Helpers\Strava.cs" />
+    <Compile Include="Repository\DtoRepository\RunningTimesDtoRepository.cs" />
     <Compile Include="Repository\SettingsRepository.cs" />
+    <Compile Include="Repository\DtoRepository\SportSummaryDtoRepository.cs" />
+    <Compile Include="Repository\StreamRepository.cs" />
+    <Compile Include="Repository\DtoRepository\TimeDistanceBySportRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -670,9 +685,7 @@
       <DependentUpon>201611091742596_ActivitiesAddWeight.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -60,7 +60,14 @@ namespace FitnessViewer.Infrastructure.Helpers
             _userId = userId;
             StravaDotNetApi.Limits.UsageChanged += Limits_UsageChanged;
 
-            string token = _unitOfWork.Athlete.FindAthleteByUserId(userId).Token;
+            //   string token = _unitOfWork.Athlete.FindAthleteByUserId(userId).Token;
+
+            var athlete = _unitOfWork.CRUDRepository.GetByUserId<Athlete>(userId).FirstOrDefault();
+
+            if (athlete == null)
+                throw new ArgumentException("Athlete Not Found.");
+
+            string token = athlete.Token;
 
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentException("Invalid UserId");

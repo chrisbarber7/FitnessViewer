@@ -163,7 +163,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         private void SaveSeries(TimeSeriesResourceType type, TimeSeriesDataList fitbitData)
         {
             var metricType = MetricTypeConversion.FromFitBitType(type);
-            List<Metric> currentlyStoredMetrics = _unitOfWork.Metrics.GetMetrics(_userId, metricType);
+            List<Metric> currentlyStoredMetrics = _unitOfWork.CRUDRepository.GetByUserId<Metric>(_userId)
+                                                                            .Where(m => m.MetricType == metricType)
+                                                                            .ToList();
 
             foreach (Fitbit.Models.TimeSeriesDataList.Data item in fitbitData.DataList)
             {

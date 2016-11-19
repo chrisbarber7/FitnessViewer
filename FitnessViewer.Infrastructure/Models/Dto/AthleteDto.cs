@@ -1,9 +1,6 @@
-﻿using FitnessViewer.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
+using FitnessViewer.Infrastructure.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
@@ -11,16 +8,17 @@ namespace FitnessViewer.Infrastructure.Models.Dto
     {
         public static AthleteDto Create(UnitOfWork uow, string userId)
         {
-            Athlete a = uow.Athlete.FindAthleteByUserId(userId);
+            Athlete a = uow.CRUDRepository.GetByUserId<Athlete>(userId).FirstOrDefault();
 
             if (a == null)
                 return null;
 
-            AthleteDto dto = new AthleteDto() {
-                Id = a.Id,
-                FirstName = a.FirstName,
-                LastName = a.LastName
-            };
+            AthleteDto dto = Mapper.Map<AthleteDto>(a);
+            //AthleteDto dto = new AthleteDto() {
+            //    Id = a.Id,
+            //    FirstName = a.FirstName,
+            //    LastName = a.LastName
+            //};
 
             return dto;
         }

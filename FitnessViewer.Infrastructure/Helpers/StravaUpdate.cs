@@ -51,7 +51,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             fvActivity.IsCommute = amendedDetails.IsCommute;
             fvActivity.Description = amendedDetails.Description;
 
-            _unitOfWork.Activity.UpdateActivity(fvActivity);
+            //        _unitOfWork.Activity.UpdateActivity(fvActivity);
+            _unitOfWork.CRUDRepository.Update<Activity>(fvActivity);
             _unitOfWork.Complete();
 
         }

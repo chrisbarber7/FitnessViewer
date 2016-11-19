@@ -1,5 +1,7 @@
-﻿using FitnessViewer.Infrastructure.enums;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +15,7 @@ namespace FitnessViewer.Infrastructure.Models
     /// <summary>
     /// holds detail of a single peak.
     /// </summary>
-    public class ActivityPeakDetail
+    public class ActivityPeakDetail : Entity<int>, IEntity<int>, IActivityEntity
     {
         private ActivityPeakDetail()
         { }

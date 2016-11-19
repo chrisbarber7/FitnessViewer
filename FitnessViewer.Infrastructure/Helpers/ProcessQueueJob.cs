@@ -17,25 +17,21 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _uow = new UnitOfWork();
             _jobId = jobId;
-      
         }
-
 
         public void ResumbitJob()
         {
-
-            _jobDetails = _uow.Queue.Find(_jobId);
+            _jobDetails = _uow.CRUDRepository.GetByKey<DownloadQueue>(_jobId);
 
             if (_jobDetails == null)
                 return;
 
              DownloadQueue.CreateQueueJob(_jobDetails).Save();
-
         }
 
         public  bool IsJobValid()
         {
-            _jobDetails = _uow.Queue.Find(_jobId);
+            _jobDetails = _uow.CRUDRepository.GetByKey<DownloadQueue>(_jobId);
 
             if (_jobDetails == null)
                 return false;

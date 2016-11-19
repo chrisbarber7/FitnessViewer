@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,33 +14,42 @@ namespace FitnessViewer.Infrastructure.Models.Dto
     {
         public static new AthleteDashboardDto Create(UnitOfWork uow, string userId)
         {
+            ApplicationDb context = new ApplicationDb();
+                 
+
             AthleteDashboardDto dashboard = Mapper.Map<AthleteDashboardDto>(AthleteDto.Create(uow, userId));
 
             if (dashboard == null)
                 return null;
 
-            // get a list of activities for the past 90 days which will be used to extract various summary information details.
-            var summaryActivities = uow.Activity.GetSportSummaryQuery(userId, "All", DateTime.Now.AddDays(-90), DateTime.Now).ToList();
+            PeaksDtoRepository peaksRepo = new PeaksDtoRepository(context);
+            RunningTimesDtoRepository timesRepo = new RunningTimesDtoRepository(context);
+            ActivityDtoRepository activityRepo = new ActivityDtoRepository(context);
+            SportSummaryDtoRepository sportRepo = new SportSummaryDtoRepository(context);
+            WeightByDayDtoRepository weightRepo = new WeightByDayDtoRepository(context);
 
-            dashboard.PowerPeaks = uow.Analysis.GetPeaks(userId, PeakStreamType.Power);
-            dashboard.RunningTime = uow.Activity.GetBestTimes(userId);
-            dashboard.CurrentWeight = uow.Metrics.GetMetricDetails(userId, MetricType.Weight, 1)[0];
-            dashboard.RecentActivity = uow.Activity.GetRecentActivity(summaryActivities, 7);
-            dashboard.Run7Day = uow.Activity.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
-            dashboard.Bike7Day = uow.Activity.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
-            dashboard.Swim7Day = uow.Activity.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
-            dashboard.Other7Day = uow.Activity.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
-            dashboard.All7Day = uow.Activity.GetSportSummary(userId, "All", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
-            dashboard.Run30Day = uow.Activity.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
-            dashboard.Bike30Day = uow.Activity.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
-            dashboard.Swim30Day = uow.Activity.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
-            dashboard.Other30Day = uow.Activity.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
-            dashboard.All30Day = uow.Activity.GetSportSummary(userId, "All", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
-            dashboard.Run90Day = uow.Activity.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
-            dashboard.Bike90Day = uow.Activity.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
-            dashboard.Swim90Day = uow.Activity.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
-            dashboard.Other90Day = uow.Activity.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
-            dashboard.All90Day = uow.Activity.GetSportSummary(userId, "All", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            // get a list of activities for the past 90 days which will be used to extract various summary information details.
+            var summaryActivities = activityRepo.GetSportSummaryQuery(userId, "All", DateTime.Now.AddDays(-90), DateTime.Now).ToList();
+
+            dashboard.PowerPeaks = peaksRepo.GetPeaks(userId, PeakStreamType.Power);
+            dashboard.RunningTime = timesRepo.GetBestTimes(userId);
+            dashboard.CurrentWeight = weightRepo.GetMetricDetails(userId, MetricType.Weight, 1)[0];
+            dashboard.RecentActivity = activityRepo.GetRecentActivity(summaryActivities, 7);
+            dashboard.Run7Day = sportRepo.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
+            dashboard.Bike7Day = sportRepo.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
+            dashboard.Swim7Day = sportRepo.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
+            dashboard.Other7Day = sportRepo.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
+            dashboard.All7Day = sportRepo.GetSportSummary(userId, "All", DateTime.Now.AddDays(-7), DateTime.Now, summaryActivities);
+            dashboard.Run30Day = sportRepo.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
+            dashboard.Bike30Day = sportRepo.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
+            dashboard.Swim30Day = sportRepo.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
+            dashboard.Other30Day = sportRepo.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
+            dashboard.All30Day = sportRepo.GetSportSummary(userId, "All", DateTime.Now.AddDays(-30), DateTime.Now, summaryActivities);
+            dashboard.Run90Day = sportRepo.GetSportSummary(userId, "Run", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.Bike90Day = sportRepo.GetSportSummary(userId, "Ride", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.Swim90Day = sportRepo.GetSportSummary(userId, "Swim", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.Other90Day = sportRepo.GetSportSummary(userId, "Other", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
+            dashboard.All90Day = sportRepo.GetSportSummary(userId, "All", DateTime.Now.AddDays(-90), DateTime.Now, summaryActivities);
 
 
             return dashboard;

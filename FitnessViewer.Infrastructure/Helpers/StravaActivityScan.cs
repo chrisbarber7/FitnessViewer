@@ -34,7 +34,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         public void AddActivitesForAthlete()
         {
-            _fvAthlete = _unitOfWork.Athlete.FindAthleteByUserId(_userId);
+            _fvAthlete = _unitOfWork.CRUDRepository.GetByUserId<Athlete>(_userId).FirstOrDefault();
 
             if (_fvAthlete == null)
                 throw new ArgumentException("Invalid UserId");
@@ -108,13 +108,18 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="item">Strava summary activity details</param>
         private void CheckActivityDetailsForChanges(StravaDotNetActivities.ActivitySummary item)
         {
-            Activity fvActivity = _unitOfWork.Activity.GetActivity(item.Id);
+           // Activity fvActivity = _unitOfWork.Activity.GetActivity(item.Id);
+
+
+            Activity fvActivity = _unitOfWork.CRUDRepository.GetByKey<Activity>(item.Id, o => o.ActivityType, o => o.Athlete);
+
             if (fvActivity == null)
                 return;
 
             UpdateActivityDetails(item, fvActivity);
 
-            _unitOfWork.Activity.UpdateActivity(fvActivity);
+            //        _unitOfWork.Activity.UpdateActivity(fvActivity);
+            _unitOfWork.CRUDRepository.Update<Activity>(fvActivity);
         }
 
         /// <summary>
