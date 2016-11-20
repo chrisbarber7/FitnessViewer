@@ -8,16 +8,17 @@ using FitnessViewer.Infrastructure.Helpers;
 using Microsoft.AspNet.Identity;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models.Dto;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace SampleWebMVC.Controllers
 {
     public class FitbitController : Controller
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public FitbitController()
+        public FitbitController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult Index()

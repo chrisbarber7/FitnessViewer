@@ -167,6 +167,7 @@
     <Compile Include="Interfaces\IActivityEntity.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUserEntity.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.cs" />
     <Compile Include="Migrations\201609302208361_AddActivityMap.Designer.cs">

@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Repository;
 using Microsoft.AspNet.Identity;
@@ -15,7 +16,7 @@ namespace FitnessViewer.Controllers.api
     [Authorize]
     public class MetricController : ApiController
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         public MetricController()
         {

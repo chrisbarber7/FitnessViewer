@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Repository;
@@ -14,11 +15,11 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class AthleteController : Controller
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public AthleteController()
+        public AthleteController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult Dashboard()

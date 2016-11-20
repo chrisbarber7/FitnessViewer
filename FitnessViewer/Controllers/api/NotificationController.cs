@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using Microsoft.AspNet.Identity;
@@ -13,7 +14,7 @@ namespace FitnessViewer.Controllers.api
     [Authorize]
     public class NotificationsController : ApiController
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         public NotificationsController()
         {

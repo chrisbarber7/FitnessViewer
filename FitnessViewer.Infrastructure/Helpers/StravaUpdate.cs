@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.Models.ViewModels;
 using StravaDotNetActivities = Strava.Activities;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
     public class StravaUpdate : Strava
     {
 
-        public StravaUpdate(UnitOfWork uow, string userId) : base(uow, userId)
+        public StravaUpdate(IUnitOfWork uow, string userId) : base(uow, userId)
         { }
 
         public async Task UpdateActivityAsync(string field, long activityId, string amendedValue)

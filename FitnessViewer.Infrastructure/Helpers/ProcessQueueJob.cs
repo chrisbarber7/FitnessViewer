@@ -4,18 +4,19 @@ using FitnessViewer.Infrastructure.enums;
 using System;
 
 using FitnessViewer.Infrastructure.Models.Collections;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
     public class ProcessQueueJob
     {
-        private UnitOfWork _uow;
+        private Interfaces.IUnitOfWork _uow;
         private int _jobId;
         private DownloadQueue _jobDetails;
 
         public ProcessQueueJob(int jobId)
         {
-            _uow = new UnitOfWork();
+            _uow = new Data.UnitOfWork();
             _jobId = jobId;
         }
 

@@ -1,4 +1,6 @@
-﻿using FitnessViewer.ViewModels;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
@@ -7,11 +9,11 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class RunController : Controller
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public RunController()
+        public RunController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult Index()

@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace FitnessViewer.Infrastructure.Models.Collections
     public class ActivityPeakDetails
     {
         private List<ActivityPeakDetail> _containedPeaks { get; }
-        private UnitOfWork _unitOfWork;
+        private Interfaces.IUnitOfWork _unitOfWork;
 
 
         public static ActivityPeakDetails LoadForActivity(long activityId)
         {
-            UnitOfWork uow = new UnitOfWork();
+            Interfaces.IUnitOfWork uow = new Data.UnitOfWork();
             var peaks = uow.CRUDRepository.GetByActivityId<ActivityPeakDetail>(activityId)
                                           .OrderBy(a => a.StreamType)
                                           .ThenBy(a => a.Duration)
@@ -28,7 +29,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
 
         public ActivityPeakDetails(IEnumerable<ActivityPeakDetail> peaks)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = new Data.UnitOfWork();
             _containedPeaks = peaks.ToList();
         }
 

@@ -17,6 +17,7 @@ using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -24,7 +25,7 @@ namespace FitnessViewer.Infrastructure.Helpers
     {
         private Athlete _fvAthlete;
 
-        public StravaActivityScan(UnitOfWork uow, string userId) : base(uow, userId)
+        public StravaActivityScan(IUnitOfWork uow, string userId) : base(uow, userId)
         { }
 
 

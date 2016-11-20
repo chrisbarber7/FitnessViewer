@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
@@ -13,7 +14,7 @@ namespace FitnessViewer.Infrastructure.Helpers
     public class UserZones
     {
         private string _userId;
-        private UnitOfWork _UnitOfWork;
+        private IUnitOfWork _UnitOfWork;
         IEnumerable<ZoneRange> _userZones;
 
         public UserZones(string userId)

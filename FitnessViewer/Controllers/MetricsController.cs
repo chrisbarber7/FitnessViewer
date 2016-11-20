@@ -1,5 +1,7 @@
-﻿using FitnessViewer.Infrastructure.enums;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -10,11 +12,11 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class MetricsController : Controller
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public MetricsController()
+        public MetricsController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult Index()

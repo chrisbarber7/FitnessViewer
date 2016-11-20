@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    internal class ActivityRepository
+    public class ActivityRepository
     {
         private ApplicationDb _context;
 

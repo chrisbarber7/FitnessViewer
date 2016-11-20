@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
 using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
     public class AthleteDto
     {
-        public static AthleteDto Create(UnitOfWork uow, string userId)
+        public static AthleteDto Create(IUnitOfWork uow, string userId)
         {
             Athlete a = uow.CRUDRepository.GetByUserId<Athlete>(userId).FirstOrDefault();
 

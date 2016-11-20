@@ -17,6 +17,7 @@ using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -25,7 +26,7 @@ namespace FitnessViewer.Infrastructure.Helpers
     /// </summary>
     public class Strava
     {
-        protected Data.UnitOfWork _unitOfWork;
+        protected IUnitOfWork _unitOfWork;
         protected StravaDotNetClient.StravaClient _client;
         protected string _userId;
         protected long _stravaId;
@@ -54,7 +55,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Constructor for a given identity user id (token looked up)
         /// </summary>
         /// <param name="userId">Identity userid</param>
-        public Strava(UnitOfWork uow, string userId)
+        public Strava(IUnitOfWork uow, string userId)
         {
             _unitOfWork = uow;
             _userId = userId;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,13 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class SettingsController : Controller
     {
-        public ActionResult Index()
+        private IUnitOfWork _unitOfWork;
+        public SettingsController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+    public ActionResult Index()
         {
             return View();
         }

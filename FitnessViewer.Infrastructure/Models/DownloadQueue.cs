@@ -90,10 +90,10 @@ namespace FitnessViewer.Infrastructure.Models
             this.Save(null);
         }
 
-        public void Save(UnitOfWork uow)
+        public void Save(IUnitOfWork uow)
         {
             if (uow == null)
-                uow = new UnitOfWork();
+                uow = new Data.UnitOfWork();
 
             uow.CRUDRepository.Add<DownloadQueue>(this);
          //   uow.Queue.AddQueueItem(this);

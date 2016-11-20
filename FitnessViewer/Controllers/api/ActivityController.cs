@@ -9,13 +9,14 @@ using Microsoft.AspNet.Identity;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System.Net.Http;
 using FitnessViewer.Infrastructure.Models.Collections;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Controllers.api
 {
     [Authorize]
     public class ActivityController : ApiController
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         public ActivityController()
         {

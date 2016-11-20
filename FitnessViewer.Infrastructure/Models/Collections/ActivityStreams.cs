@@ -10,6 +10,7 @@ using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
 using static FitnessViewer.Infrastructure.Models.Dto.ActivityMinMaxDto;
 using FitnessViewer.Infrastructure.Repository;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Models.Collections
 {
@@ -20,7 +21,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
     {
         private List<Stream> _containedStreams { get; }
         public long ActivityId { get; private set; }
-        private UnitOfWork _unitOfWork;
+        private Interfaces.IUnitOfWork _unitOfWork;
         private Activity _activity;
 
         /// <summary>
@@ -56,14 +57,14 @@ namespace FitnessViewer.Infrastructure.Models.Collections
 
         private ActivityStreams(long activityId, IEnumerable<Stream> stream)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = new Data.UnitOfWork();
             _containedStreams = stream.ToList();
             ActivityId = activityId;
         }
 
         private ActivityStreams(long activityId)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = new Data.UnitOfWork();
             _containedStreams = new List<Models.Stream>();
 
             ActivityId = activityId;
@@ -186,7 +187,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public static ActivityStreams CreateFromExistingActivityStream(long activityId, int start, int end)
         {
-            UnitOfWork uow = new UnitOfWork();
+            IUnitOfWork uow = new Data.UnitOfWork();
             return new ActivityStreams(activityId, uow.CRUDRepository.GetByActivityId<Stream>(activityId).OrderBy(s => s.Time));
         }
 

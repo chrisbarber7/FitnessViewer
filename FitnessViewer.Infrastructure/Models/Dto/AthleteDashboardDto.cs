@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 {
     public class AthleteDashboardDto : AthleteDto
     {
-        public static new AthleteDashboardDto Create(UnitOfWork uow, string userId)
+        public static new AthleteDashboardDto Create(IUnitOfWork uow, string userId)
         {
             ApplicationDb context = new ApplicationDb();
                  

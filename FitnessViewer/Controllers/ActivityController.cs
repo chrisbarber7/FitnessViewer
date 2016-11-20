@@ -13,17 +13,19 @@ using FitnessViewer.Infrastructure.Models.Collections;
 
 using System.Threading.Tasks;
 using AutoMapper;
+using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.Data;
 
 namespace FitnessViewer.Controllers
 {
     [Authorize]
     public class ActivityController : Controller
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public ActivityController()
+        public ActivityController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         [Authorize]

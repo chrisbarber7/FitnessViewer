@@ -4,6 +4,7 @@ using Fitbit.Models;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,10 @@ namespace FitnessViewer.Infrastructure.Helpers
     public class FitbitHelper
     {
         private FitbitClient _client;
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private string _userId;
 
-        public FitbitHelper(UnitOfWork uow, string userId)
+        public FitbitHelper(IUnitOfWork uow, string userId)
         {
             _unitOfWork = uow;
             _client = CreateFitbitClient(userId);
@@ -32,7 +33,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="userId">ASP.NET identity userId</param>
         /// <param name="accessToken">Fitbit access token.</param>
-        public static void AddOrUpdateUser(UnitOfWork uow, string userId, OAuth2AccessToken accessToken)
+        public static void AddOrUpdateUser(IUnitOfWork uow, string userId, OAuth2AccessToken accessToken)
         {
             FitbitUser fitbitUser = uow.Metrics.GetFitbitUser(userId);
 

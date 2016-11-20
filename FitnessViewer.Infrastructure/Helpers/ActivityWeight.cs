@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public class ActivityWeight
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private long? _activityId;
         private string _userId;
         private List<Metric> _userWeights;

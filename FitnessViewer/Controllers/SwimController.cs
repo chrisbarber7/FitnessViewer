@@ -1,4 +1,5 @@
-﻿using FitnessViewer.ViewModels;
+﻿using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
@@ -7,11 +8,11 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class SwimController : Controller
     {
-        private Infrastructure.Data.UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public SwimController()
+        public SwimController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult Index()

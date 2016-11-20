@@ -18,12 +18,13 @@ using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models.Collections;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
     public class StravaActivityDownload : Strava
     {
-        public StravaActivityDownload(UnitOfWork uow, string userId) : base(uow, userId)
+        public StravaActivityDownload(IUnitOfWork uow, string userId) : base(uow, userId)
         { }
         
         private Models.Activity _fvActivity;

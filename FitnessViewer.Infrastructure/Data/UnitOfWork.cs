@@ -5,18 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.Repository;
 using System.Data.Entity.Validation;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Data
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private ApplicationDb _context;
-        internal ActivityRepository Activity { get; private set; }
+        public ActivityRepository Activity { get;  set; }
   
-        public MetricsRepository Metrics { get; private set; }
-        public QueueRepository Queue { get; private set; }
-        public NotificationRepository Notification { get; private set; }
-        public SettingsRepository Settings { get; private set; }
+        public MetricsRepository Metrics { get;  set; }
+        public QueueRepository Queue { get;  set; }
+        public NotificationRepository Notification { get;  set; }
+        public SettingsRepository Settings { get; set; }
         public GenericRepository CRUDRepository { get; set; }
 
         public UnitOfWork()

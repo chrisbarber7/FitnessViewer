@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace FitnessViewer.Infrastructure.Helpers
     {
 
         private ActivityDetailDto _activity;
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private UserZones _userZones;
 
         public ActivityZones(ActivityDetailDto activity)
