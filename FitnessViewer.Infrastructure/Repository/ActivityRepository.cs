@@ -25,7 +25,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
         }
 
-        internal bool DeleteActivityDetails(long activityId)
+        public bool DeleteActivityDetails(long activityId)
         {
             try
             {

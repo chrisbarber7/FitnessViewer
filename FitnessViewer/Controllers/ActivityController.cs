@@ -41,6 +41,22 @@ namespace FitnessViewer.Controllers
         }
 
         [Authorize]
+        public ActionResult Redownload(long? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            _unitOfWork.Activity.DeleteActivityDetails(id.Value);
+
+            DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), DownloadType.Strava, id.Value);
+
+            ActivityStreams.CreateFromExistingActivityStream(id.Value)
+                .CalculatePeaksAndSave();
+
+            return RedirectToAction("ViewActivity", new { id = id });
+        }
+
+        [Authorize]
         public ActionResult ViewActivity(long? id)
         {
             if (id == null)

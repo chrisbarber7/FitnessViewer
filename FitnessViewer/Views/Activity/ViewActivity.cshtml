@@ -172,18 +172,20 @@ else
             <div class="col-md-12">
                 <h4>Activity Options</h4>
                 <input type="button" value="Recalculate" onclick="location.href='@Url.Action("Recalculate", "Activity", new { id = Model.Id })'" />
+                <input type="button" value="Delete And Re-download" onclick="location.href='@Url.Action("Redownload", "Activity", new { id = Model.Id })'" />
+
             </div>
         </div>
     </div>
-     // Modal form
-    <div id='fvModal' class='modal fade in'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div id='fvModalContent'></div>
-            </div>
-        </div>
-    </div>
-}
+                        // Modal form
+                        <div id='fvModal' class='modal fade in'>
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div id='fvModalContent'></div>
+                                </div>
+                            </div>
+                        </div>
+                        }
 @section scripts {
     <script src="~/Scripts/app/Controllers/ViewActivityController.js" type="text/javascript"></script>
     <script src="~/Scripts/app/modalForm.js" type="text/javascript"></script>
