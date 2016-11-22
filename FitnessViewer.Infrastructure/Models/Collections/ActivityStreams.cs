@@ -188,7 +188,10 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         public static ActivityStreams CreateFromExistingActivityStream(long activityId, int start, int end)
         {
             IUnitOfWork uow = new Data.UnitOfWork();
-            return new ActivityStreams(activityId, uow.CRUDRepository.GetByActivityId<Stream>(activityId).OrderBy(s => s.Time));
+            return new ActivityStreams(activityId, uow.CRUDRepository
+                                                        .GetByActivityId<Stream>(activityId)
+                                                        .Where(s => s.Time >= start && s.Time <= end)
+                                                        .OrderBy(s => s.Time));
         }
 
         /// <summary>
