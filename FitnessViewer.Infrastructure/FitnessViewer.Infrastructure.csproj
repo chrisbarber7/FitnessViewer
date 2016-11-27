@@ -115,8 +115,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="StravaDotNet, Version=3.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\StravaDotNet\StravaDotNet\bin\Debug\StravaDotNet.dll</HintPath>
+      <HintPath>..\packages\StravaDotNet.3.4.2\lib\net452\StravaDotNet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
