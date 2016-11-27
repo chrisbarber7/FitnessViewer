@@ -48,8 +48,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fitbit.Portable, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Fitbit.NET\Fitbit.Portable\bin\Debug\Fitbit.Portable.dll</HintPath>
+      <HintPath>..\packages\Fitbit.Portable.0.1\lib\Fitbit.Portable.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
