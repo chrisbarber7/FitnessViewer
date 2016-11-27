@@ -61,11 +61,25 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return m;
         }
 
+        public static ActivityDetailDto CreateForActivityWithNoDetails(Activity fvActivity)
+        {
+            ActivityDetailDto dto = ActivityDetailDto.CreateFromActivity(fvActivity);
+            dto.Name = fvActivity.Name;
+           
+
+            dto.Analytics = ActivityAnalyticsDto.EmptyStream();
+
+            return dto;
+
+        }
+
         public ActivityMinMaxDto SummaryInfo { get; set; }
         public IEnumerable<LapDto> Laps { get; set; }
         public IEnumerable<LapDto> Power { get; set; }
         public IEnumerable<LapDto> HeartRate { get; set; }
         public IEnumerable<LapDto> Cadence { get; set; }
+
+   
 
         public IEnumerable<ZoneValueDto> PowerZones { get; set; }
         public ActivityStreams ActivityStream { get; set; }

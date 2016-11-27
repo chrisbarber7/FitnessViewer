@@ -24,6 +24,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         private Interfaces.IUnitOfWork _unitOfWork;
         private Activity _activity;
 
+
         /// <summary>
         /// Create an empty stream for a new activity.
         /// </summary>
@@ -45,6 +46,8 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             }
         }
 
+
+
         /// <summary>
         /// Create and load existing stream for an activity
         /// </summary>
@@ -58,7 +61,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         private ActivityStreams(long activityId, IEnumerable<Stream> stream)
         {
             _unitOfWork = new Data.UnitOfWork();
-            _containedStreams = stream.ToList();
+            _containedStreams = stream.OrderBy(s => s.Time).ToList();
             ActivityId = activityId;
         }
 
@@ -85,6 +88,9 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public decimal GetAverageSpeed()
         {
+            if (!IsValid())
+                return 0.00M;
+
             return Math.Round(GetDistance() / Convert.ToDecimal(GetTime().TotalSeconds) * 60 * 60, 2);
         }
 
@@ -94,10 +100,13 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public decimal GetElevationGain()
         {
+            if (!IsValid())
+                return 0.00M;
+
             double? previousAltitude = null;
             double gain = 0;
             foreach (double? altitide in GetIndividualStream<double?>(StreamType.Altitude).Where(s => s.HasValue))
-                {
+            {
                 // first pass though we'll have no previous altitude.
                 if (previousAltitude == null)
                     previousAltitude = altitide;
@@ -119,6 +128,9 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public decimal GetElevationLoss()
         {
+            if (!IsValid())
+                return 0.00M;
+
             double? previousAltitude = null;
             double loss = 0;
             foreach (double? altitide in GetIndividualStream<double?>(StreamType.Altitude).Where(s => s.HasValue))
@@ -143,9 +155,15 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public decimal? GetWattsPerKg()
         {
+            if (!IsValid())
+                return null;
+
             // we need both a power meter and a weight
-            if ((Activity.HasPowerMeter) && ( Activity.Weight != null))
+            if ((Activity.HasPowerMeter) && (Activity.Weight != null))
             {
+                if (!HasIndividualStream(StreamType.Watts))
+                    return null;
+
                 double? aveWatts = GetIndividualStream<int?>(StreamType.Watts).Average(s => s.Value);
 
                 if (aveWatts != null)
@@ -215,13 +233,16 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 return _containedStreams;
             }
         }
-        
+
         /// <summary>
         /// Create Activity Analytics based on the activity type.
         /// </summary>
         /// <returns>Analytics</returns>
         public ActivityAnalyticsDto GetAnalytics()
         {
+            if (!IsValid())
+                return ActivityAnalyticsDto.EmptyStream();
+
             if (Activity.ActivityType.IsRide)
                 return ActivityAnalyticsDto.RideCreateFromPowerStream(Stream, 295);
             else if (Activity.ActivityType.IsRun)
@@ -327,7 +348,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             // unhandled stream type!
             return new MinMaxAve(streamType);
         }
-        
+
 
         /// <summary>
         /// Does this activity have the given stream.
@@ -336,6 +357,9 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns>Flag to indicate if the given stream exists for the activity.</returns>
         private bool HasIndividualStream(StreamType type)
         {
+            if (!IsValid())
+                return false;
+
             switch (type)
             {
                 case StreamType.Cadence: { return !GetIndividualStream<int?>(StreamType.Cadence).Contains(null); }
@@ -362,8 +386,8 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         {
             StreamRepository repo = new StreamRepository();
             repo.AddStreamBulk(_containedStreams);
-         }
-                
+        }
+
         /// <summary>
         /// Calculate peaks for stream and save.
         /// </summary>
@@ -377,12 +401,12 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         public void AddPowerCurveCalculationJobs()
         {
             foreach (int d in PeakDuration.CreatePowerCurveDurations(this.GetIndividualStream<int?>(StreamType.Watts).Count()).Durations)
-                DownloadQueue.CreateQueueJob(this.Activity.Athlete.UserId, 
-                                             enums.DownloadType.CalculateActivityStats, 
-                                             this.ActivityId, 
+                DownloadQueue.CreateQueueJob(this.Activity.Athlete.UserId,
+                                             enums.DownloadType.CalculateActivityStats,
+                                             this.ActivityId,
                                              d)
                              .Save();
-         }
+        }
 
         internal int?[] GetSecondsPerMile()
         {
@@ -397,6 +421,9 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// <returns></returns>
         public decimal GetDistance()
         {
+            if (Stream.Count == 0)
+                return 0.00M;
+
             var startDetails = Stream.First();
             var endDetails = Stream.Last();
 
@@ -404,6 +431,53 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 return Helpers.Conversions.Distance.MetersToMiles(Convert.ToDecimal(endDetails.Distance.Value - startDetails.Distance.Value));
 
             return 0.00M;
+        }
+
+        /// <summary>
+        /// Is this a valid stream?
+        /// </summary>
+        /// <returns></returns>
+        public bool IsValid()
+        {
+            if (this.Stream == null)
+                return false;
+
+            if (this.Stream.Count() == 0)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Are there any gaps in the stream (caused by activity stopped/started)?
+        /// </summary>
+        /// <returns></returns>
+        internal bool GapsInStream()
+        {
+            return FindGapsInStream().Count() == 0 ? false : true;
+        }
+
+
+        /// <summary>
+        /// List of any times missing from the stream?
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<int> FindGapsInStream()
+        {
+            //get an array of the times we've got
+            var time = this.GetIndividualStream<int>(StreamType.Time).ToArray();
+
+            // and compare it against the range of times we're expecting.
+            return Enumerable.Range(0, this.Stream.Count()).Except(time);
+        }
+
+        /// <summary>
+        /// Fix any gaps in the stream by adding empty stream rows (just have a time stream)
+        /// </summary>
+        internal void FixGaps()
+        {
+            foreach (int missingTime in FindGapsInStream())
+                this.Stream.Add(new Models.Stream() { Time = missingTime }); 
         }
     }
 }

@@ -63,6 +63,19 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return a;
         }
 
+
+        internal static ActivityAnalyticsDto EmptyStream()
+        {
+            ActivityAnalyticsDto a = new ActivityAnalyticsDto()
+            {
+                TSS = 0,
+                IF = 0,
+                NP = 0
+            };
+
+            return a;
+        }
+
     }
 }
 

@@ -46,12 +46,12 @@ namespace FitnessViewer.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            // remove existing activity details.
             _unitOfWork.Activity.DeleteActivityDetails(id.Value);
 
+            // perform another strava activity scan to pick up the activity again.
             DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), DownloadType.Strava, id.Value);
-
-            ActivityStreams.CreateFromExistingActivityStream(id.Value)
-                .CalculatePeaksAndSave();
+            
 
             return RedirectToAction("ViewActivity", new { id = id });
         }
@@ -66,12 +66,8 @@ namespace FitnessViewer.Controllers
 
             if (!fvActivity.DetailsDownloaded)
             {
-                ActivityDetailDto model = new ActivityDetailDto()
-                {
-                    DetailsDownloaded = false,
-                    Name = fvActivity.Name
-                };
-
+                ActivityDetailDto model = ActivityDetailDto.CreateForActivityWithNoDetails(fvActivity);
+         
                 return View(model);
             }
 

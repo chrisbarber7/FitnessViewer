@@ -176,6 +176,8 @@ namespace FitnessViewer.Infrastructure.Helpers
                 convertedStream.Stream.Add(s);
             }
 
+                convertedStream.FixGaps();
+
             convertedStream.StoreStreams();
             convertedStream.CalculatePeaksAndSave();
 

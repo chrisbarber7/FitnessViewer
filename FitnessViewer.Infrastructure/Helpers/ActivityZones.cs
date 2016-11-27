@@ -55,7 +55,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             // scale each percentage so that highest takes up 100% and other scale in proportion
             foreach (ZoneValueDto z in zoneValues)
-                z.DisplayPercentage = z.PercentageInZone / highestPercentage * 100;
+                if (highestPercentage > 0)
+                     z.DisplayPercentage = z.PercentageInZone / highestPercentage * 100;
 
             return zoneValues;
         }
