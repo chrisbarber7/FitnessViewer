@@ -46,12 +46,12 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                         return string.Format("{0}m", Math.Round(Distance, 0).ToString());
                 }
                 if (Distance > 100)
-                    return Math.Round(Distance.ToMiles(), 0).ToString();
+                    return string.Format("{0}mi", Math.Round(Distance.ToMiles(), 0).ToString());
 
                 if (Distance > 20)
-                    return Math.Round(Distance.ToMiles(), 1).ToString();
+                    return string.Format("{0}mi", Math.Round(Distance.ToMiles(), 1).ToString());
 
-                return Math.Round(Distance.ToMiles(), 2).ToString();
+                return string.Format("{0}mi", Math.Round(Distance.ToMiles(), 2).ToString());
             }
             private set { }
         }
