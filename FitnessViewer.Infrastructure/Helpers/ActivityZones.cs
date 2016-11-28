@@ -58,6 +58,11 @@ namespace FitnessViewer.Infrastructure.Helpers
                 if (highestPercentage > 0)
                      z.DisplayPercentage = z.PercentageInZone / highestPercentage * 100;
 
+
+            // for run pacing we need to reverse the results so we get the higher/slower times at the top of the list.
+            if (zoneType == ZoneType.RunPace)
+                return zoneValues.OrderByDescending(z => z.StartValue);
+
             return zoneValues;
         }
     }
