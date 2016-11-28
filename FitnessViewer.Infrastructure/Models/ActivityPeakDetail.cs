@@ -36,8 +36,6 @@ namespace FitnessViewer.Infrastructure.Models
             this.StreamType = type;
         }
 
-        public int Id { get; set; }
-
         [Required]
         [ForeignKey("Activity")]
         public long ActivityId { get; set; }

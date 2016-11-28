@@ -13,8 +13,6 @@ namespace FitnessViewer.Infrastructure.Models
 {
     public class ActivityPeaks : Entity<int>, IEntity<int>, IActivityEntity
     {
-        public int Id { get; set; }
-
         [Required]
         [ForeignKey("Activity")]
         [Index("IX_ActivityPeaks_ActivityIdAndStreamType", 1, IsUnique = true)]
