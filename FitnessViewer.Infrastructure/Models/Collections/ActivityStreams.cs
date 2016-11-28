@@ -477,7 +477,40 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         internal void FixGaps()
         {
             foreach (int missingTime in FindGapsInStream())
-                this.Stream.Add(new Models.Stream() { Time = missingTime, ActivityId=ActivityId }); 
+            {
+                // find the previous stream item.  We'll use this to get some values for the new time row.
+                Stream previous = this.Stream.Where(t => t.Time == missingTime - 1).FirstOrDefault();
+
+                // create new stream item with default values.
+                Stream newItem = new Models.Stream()
+                {
+                    Time = missingTime,
+                    ActivityId = ActivityId,
+                    Latitude = previous.Latitude,
+                    Longitude = previous.Longitude,
+                    Moving = false,
+                    Altitude = previous.Altitude,
+                    Distance = previous.Distance,
+                    Temperature = previous.Temperature,
+                    HeartRate = previous.HeartRate
+                };
+
+                // for velocity, gradient, cadence and watts then if the stream is un use set value to 0
+                // so as not to mess up peaks/averages by copying previous values.
+                if (previous.Velocity != null)
+                    newItem.Velocity = 0;
+
+                if (previous.Gradient != null)
+                    newItem.Gradient = 0;
+                
+                if (previous.Cadence != null)
+                    newItem.Cadence = 0;
+
+                if (previous.Watts != null)
+                    newItem.Watts = 0;
+
+                this.Stream.Add(newItem);
+            }
         }
     }
 }
