@@ -477,7 +477,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         internal void FixGaps()
         {
             foreach (int missingTime in FindGapsInStream())
-                this.Stream.Add(new Models.Stream() { Time = missingTime }); 
+                this.Stream.Add(new Models.Stream() { Time = missingTime, ActivityId=ActivityId }); 
         }
     }
 }
