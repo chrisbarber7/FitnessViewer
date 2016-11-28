@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using FitnessViewer.Infrastructure.Helpers;
 using AutoMapper;
@@ -17,8 +13,6 @@ namespace FitnessViewer.DownloadWebJob
         // on an Azure Queue called queue.
         public static void ProcessQueueMessage([QueueTrigger("fitness-viewer-download-queue")] string message, TextWriter log)
         {
-       
-
           Console.WriteLine(string.Format("Processing: {0}", message));
 
             AutoMapperConfig();
@@ -31,10 +25,8 @@ namespace FitnessViewer.DownloadWebJob
             }
 
             job.ProcessJob();
-
         }
-
-
+        
         /// <summary>
         /// Setup automapper
         /// </summary>
