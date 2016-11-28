@@ -83,7 +83,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             else
             {
                 foreach (ActivityPeakDetail p in _containedPeaks)
-                    _unitOfWork.CRUDRepository.Update<ActivityPeakDetail>(p);
+                    _unitOfWork.CRUDRepository.Add<ActivityPeakDetail>(p);
 
                 _unitOfWork.Complete();
 
