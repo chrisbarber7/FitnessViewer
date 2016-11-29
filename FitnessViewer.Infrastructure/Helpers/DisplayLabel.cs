@@ -38,5 +38,29 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             return string.Format("{0} secs", duration.ToString());
         }
+
+
+        public static string ShortStreamDurationForDisplay(int duration)
+        {
+            if (duration == int.MaxValue)
+                return "Activity";
+
+            TimeSpan time = TimeSpan.FromSeconds(duration);
+
+            if (time.Hours > 0)
+            {
+                if (time.Seconds == 0)
+                    return string.Format("{0}m", time.TotalMinutes.ToString());
+                else
+                    return time.ToString(@"hh\:mm\:ss");
+            }
+            if (time.Minutes > 0 && time.Seconds > 0)
+                return string.Format("{0}m {1}s", time.Minutes.ToString(), time.Seconds.ToString());
+
+            if (time.Minutes > 0 && time.Seconds == 0)
+                return string.Format("{0}m", time.Minutes);
+
+            return string.Format("{0}s", duration.ToString());
+        }
     }
 }

@@ -157,6 +157,31 @@ h6,
   font-weight: 400;
   margin-bottom: -6px;
 }
+.SummaryPeakContainer {
+  display: inline-block;
+  width: 95%;
+}
+.SummaryPeakContainer .Left {
+  float: left;
+  width: 48%;
+}
+.SummaryPeakContainer .Right {
+  float: right;
+  width: 48%;
+}
+.SummaryPeakContainer .Peak {
+  font-size: 10px;
+  text-align: left;
+}
+.SummaryPeakContainer .Peak .Title {
+  color: slategrey;
+  font-weight: 400;
+  margin-bottom: -5px;
+}
+.SummaryPeakContainer .Peak .Value {
+  color: black;
+  font-weight: 700;
+}
 .fvTab .tab-content {
   padding: 0px 0px;
 }

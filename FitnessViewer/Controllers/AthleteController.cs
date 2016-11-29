@@ -25,17 +25,16 @@ namespace FitnessViewer.Controllers
         public ActionResult Dashboard()
         {
             var userId = this.User.Identity.GetUserId();
-            var athleteDetails = AthleteDashboardDto.Create(_unitOfWork, userId);
-
+            var dashboard = new AthleteDashboardDto(_unitOfWork, userId);
+            
             // invalid user credentials so force a log off 
-            if (athleteDetails == null)
+            if (!dashboard.Populate())
             {
                 HttpContext.GetOwinContext().Authentication.SignOut();
                 return RedirectToAction("Index", "Home");
             }
 
-
-            return View(athleteDetails);
+            return View(dashboard);
         }
 
         public ActionResult ActivityScan()

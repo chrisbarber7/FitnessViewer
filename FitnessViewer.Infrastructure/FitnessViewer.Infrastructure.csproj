@@ -327,6 +327,7 @@
     <Compile Include="Models\Dto\FitbitHomeDto.cs" />
     <Compile Include="Models\Dto\MinMaxAve.cs" />
     <Compile Include="Models\Dto\NotificationDto.cs" />
+    <Compile Include="Models\Dto\PeaksDetailDto.cs" />
     <Compile Include="Models\Dto\PowerCurveDto.cs" />
     <Compile Include="Models\Dto\SportSummaryDto.cs" />
     <Compile Include="Models\Dto\TimeDistanceBySportDto.cs" />

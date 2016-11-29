@@ -9,6 +9,14 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 {
     public class SportSummaryDto
     {
+        public SportSummaryDto()
+        {
+            Peak1 = new KeyValuePair<string, string>();
+            Peak2 = new KeyValuePair<string, string>();
+            Peak3 = new KeyValuePair<string, string>();
+            Peak4 = new KeyValuePair<string, string>();
+        }
+
         public decimal Distance { get; set; }
         public TimeSpan Duration { get; set; }
         public string Sport { get; set; }
@@ -24,6 +32,10 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public bool IsSwim { get; set; }
         public bool IsOther { get; set; }
 
+        public KeyValuePair<string,string> Peak1 { get; set; }
+        public KeyValuePair<string, string> Peak2 { get; set; }
+        public KeyValuePair<string, string> Peak3 { get; set; }
+        public KeyValuePair<string, string> Peak4 { get; set; }
         /// <summary>
         /// Duration formatted for display
         /// </summary>
