@@ -33,52 +33,7 @@
                             }
                         }
                     </td>
-
                 }
-                @*<td>
-                    @if (p.Minute1 != null)
-                    {
-                        if (p.Minute1.Peak != null)
-                        {
-                            @Html.ActionLink(p.Minute1.Peak.ToString(), "ViewActivity", "Activity",
-                                    new { Id = p.Minute1.ActivityId },
-                                    new { data_toggle = "tooltip", title = @p.Minute1.Description })
-                        }
-                    }
-                </td>
-                <td>
-                    @if (p.Minute5 != null)
-                    {
-                        if (p.Minute5.Peak != null)
-                        {
-                            @Html.ActionLink(p.Minute5.Peak.ToString(), "ViewActivity", "Activity",
-                                    new { Id = p.Minute5.ActivityId },
-                                    new { data_toggle = "tooltip", title = @p.Minute5.Description })
-                        }
-                    }
-                </td>
-                <td>
-                    @if (p.Minute20 != null)
-                    {
-                        if (p.Minute20.Peak != null)
-                        {
-                            @Html.ActionLink(p.Minute20.Peak.ToString(), "ViewActivity", "Activity",
-                                    new { Id = p.Minute20.ActivityId },
-                                    new { data_toggle = "tooltip", title = @p.Minute20.Description })
-                        }
-                    }
-                </td>
-                <td>
-                    @if (p.Minute60 != null)
-                    {
-                        if (p.Minute60.Peak != null)
-                        {
-                            @Html.ActionLink(p.Minute60.Peak.ToString(), "ViewActivity", "Activity",
-                                    new { Id = p.Minute60.ActivityId },
-                                    new { data_toggle = "tooltip", title = @p.Minute60.Description })
-                        }
-                    }
-                </td>*@
             </tr>
         }
     </table>
