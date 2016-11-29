@@ -43,30 +43,30 @@ namespace FitnessViewer.Infrastructure.Repository
             ap.PeakType = type;
             ap.Days = days;
 
-            ap.Seconds5 = peaks.Where(p => p.Activity.Start >= earliestDate)
+            ap.DurationPeaks.Add(peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak5)
-                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
-                                .FirstOrDefault();
+                                .Select(p => new PeaksDto.PeaksDtoDetail() { Duration=5, Peak = p.Peak5, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault());
 
-            ap.Minute1 = peaks.Where(p => p.Activity.Start >= earliestDate)
+            ap.DurationPeaks.Add(peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak60)
-                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak60, ActivityId = p.ActivityId, Description = p.Activity.Name })
-                                .FirstOrDefault();
+                                .Select(p => new PeaksDto.PeaksDtoDetail() { Duration = 60, Peak = p.Peak60, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault());
 
-            ap.Minute5 = peaks.Where(p => p.Activity.Start >= earliestDate)
+            ap.DurationPeaks.Add(peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak300)
-                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak300, ActivityId = p.ActivityId, Description = p.Activity.Name })
-                                .FirstOrDefault();
+                                .Select(p => new PeaksDto.PeaksDtoDetail() { Duration=300, Peak = p.Peak300, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault());
 
-            ap.Minute20 = peaks.Where(p => p.Activity.Start >= earliestDate)
+            ap.DurationPeaks.Add(peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak1200)
-                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak1200, ActivityId = p.ActivityId, Description = p.Activity.Name })
-                                .FirstOrDefault();
+                                .Select(p => new PeaksDto.PeaksDtoDetail() { Duration=1200, Peak = p.Peak1200, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault());
 
-            ap.Minute60 = peaks.Where(p => p.Activity.Start >= earliestDate)
+            ap.DurationPeaks.Add(peaks.Where(p => p.Activity.Start >= earliestDate)
                                 .OrderByDescending(p => p.Peak3600)
-                                .Select(p => new PeaksDto.PeakDetail() { Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
-                                .FirstOrDefault();
+                                .Select(p => new PeaksDto.PeaksDtoDetail() { Duration=3600, Peak = p.Peak3600, ActivityId = p.ActivityId, Description = p.Activity.Name })
+                                .FirstOrDefault());
 
             return ap;
         }

@@ -17,18 +17,25 @@
         {
             <tr>
                 <td>@(p.Days == int.MaxValue ? "All" : @p.Days.ToString()) Days</td>
-                <td>
-                    @if (p.Seconds5 != null)
+            
+                @foreach (var d in p.DurationPeaks)
+                {
+
+        
+                    <td>
+                        @if (d != null)
                     {
-                        if (p.Seconds5.Peak != null)
+                        if (d.Peak != null)
                         {
-                            @Html.ActionLink(p.Seconds5.Peak.ToString(), "ViewActivity", "Activity",
-                                             new { Id = p.Seconds5.ActivityId },
-                                             new { data_toggle = "tooltip", title = @p.Seconds5.Description })
+                                @Html.ActionLink(d.Peak.ToString(), "ViewActivity", "Activity",
+                                              new { Id = d.ActivityId },
+                                              new { data_toggle = "tooltip", title =  d.Description })
+                            }
                         }
-                    }
-                </td>
-                <td>
+                    </td>
+
+                }
+                @*<td>
                     @if (p.Minute1 != null)
                     {
                         if (p.Minute1.Peak != null)
@@ -71,7 +78,7 @@
                                     new { data_toggle = "tooltip", title = @p.Minute60.Description })
                         }
                     }
-                </td>
+                </td>*@
             </tr>
         }
     </table>
