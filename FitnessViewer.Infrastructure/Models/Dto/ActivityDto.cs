@@ -18,8 +18,6 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.ActivityTypeId = fvActivity.ActivityTypeId;
             m.DetailsDownloaded = true;
             m.Distance = fvActivity.Distance.ToMiles();
-            m.AverageSpeed = 0;
-            m.AveragePace = PaceCalculator.RunMinuteMiles(fvActivity.Distance, fvActivity.ElapsedTime.Value);
             m.ElevationGain = fvActivity.ElevationGain.ToFeet();
             m.Date = fvActivity.StartDateLocal.ToShortDateString();
             m.MovingTime = fvActivity.MovingTime.Value;
@@ -41,12 +39,46 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return m;
         }
 
+        public string AveragePace{
+            get
+            {
+                if (IsRun)
+                {
+                    var averagePace = PaceCalculator.RunMinuteMiles(Distance, MovingTime);
+                    return string.Format("{0}:{1}", averagePace.Minutes.ToString().PadLeft(2, '0'), averagePace.Seconds.ToString().PadLeft(2, '0'));
+                }
+                else if (IsSwim)
+                {
+                    return "";
+                }
+                else
+                {
+                    return "";
+
+                }
+
+            }
+        private set { }
+        }
+
+        public string AverageSpeed
+        {
+            get
+            {
+                if ((IsRide) || (IsOther))
+                {
+                    var averageSpeed = PaceCalculator.AverageSpeed(Distance, MovingTime);
+                    return averageSpeed.ToString();
+                }
+                
+                return "";
+            }
+            private set { }
+        }
         public long Id { get; set; }
         public bool DetailsDownloaded { get; set; }
         public string Name { get; set; }
         public decimal Distance { get; set; }
-        public decimal AverageSpeed { get; set; }
-        public TimeSpan AveragePace { get; set; }
         public decimal ElevationGain { get; set; }
         public string Date { get; set; }
         public DateTime Start { get; set; }

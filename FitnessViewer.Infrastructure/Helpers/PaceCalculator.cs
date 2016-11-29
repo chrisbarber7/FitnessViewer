@@ -20,5 +20,21 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             return TimeSpan.FromSeconds(Math.Round(runDuration.TotalSeconds / distanceInMiles));
         }
+
+        /// <summary>
+        /// Convert distance/duraction in average speed in MPH
+        /// </summary>
+        /// <param name="distanceInMetres">Activity Distance (metres)</param>
+        /// <param name="duration">Activity Duration</param>
+        /// <returns></returns>
+        public static string AverageSpeed(decimal distanceInMetres, TimeSpan duration)
+        {
+            double distanceInMiles = Convert.ToDouble(distanceInMetres * Distance.METRE_TO_MILE);
+
+            if (duration.TotalSeconds <= 0)
+                return "0";
+
+            return Math.Round(distanceInMiles / duration.TotalSeconds * 60 * 60, 2).ToString();
+        }
     }
 }

@@ -9,6 +9,8 @@
             <th>Type</th>
             <th class="align-right">Distance</th>
             <th class="align-right">Time</th>
+              <th class="align-right">Speed<br/>mph</th>
+            <th class="align-right">Pace<br/>min/mi</th>
         </tr>
         @foreach (var a in Model)
         {
@@ -20,6 +22,8 @@
                 <td>@a.ActivityTypeId</td>
                 <td class="align-right">@FitnessViewer.Infrastructure.Helpers.ExtensionMethods.ToMiles(a.Distance)</td>
                 <td class="align-right">@a.MovingTime</td>
+                <td class="align-right">@a.AverageSpeed</td>
+                <td class="align-right">@a.AveragePace</td>
             </tr>
         }
     </table>

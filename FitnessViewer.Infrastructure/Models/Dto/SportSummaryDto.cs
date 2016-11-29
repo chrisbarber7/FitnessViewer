@@ -18,6 +18,12 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int ActivityCount { get; set; }
 
 
+        public bool IsBike { get; set; }
+
+        public bool IsRun { get; set; }
+        public bool IsSwim { get; set; }
+        public bool IsOther { get; set; }
+
         /// <summary>
         /// Duration formatted for display
         /// </summary>
@@ -55,5 +61,15 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             }
             private set { }
         }
+
+        public string ElevationGainLabel
+        {
+            get
+            {
+                return ElevationGain.ToString("N0");
+            }
+            private set { }
+        }
+    
     }
 }
