@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class PeriodDtoRepository : DtoRepository
+    public class PeriodDtoRepository : DtoRepository, IPeriodDtoRepository
     {
         private ActivityRepository _activityrepo;
 

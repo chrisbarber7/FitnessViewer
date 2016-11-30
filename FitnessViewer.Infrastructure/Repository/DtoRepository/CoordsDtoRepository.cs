@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using FitnessViewer.Infrastructure.Models.Dto;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class CoordsDtoRepository : DtoRepository
+    public class CoordsDtoRepository : DtoRepository, ICoordsDtoRepository
     {
         public CoordsDtoRepository() : base()
         { }

@@ -6,10 +6,11 @@ using System.Linq;
 using System.Data.Entity;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class PeaksDtoRepository : DtoRepository
+    public class PeaksDtoRepository : DtoRepository, IPeaksDtoRepository
     {
         public PeaksDtoRepository(ApplicationDb context) : base(context)
         {

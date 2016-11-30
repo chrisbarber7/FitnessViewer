@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Intefaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class ActivityDtoRepository : DtoRepository
+    public class ActivityDtoRepository : DtoRepository, IActivityDtoRepository
     {
         public ActivityDtoRepository(ApplicationDb context) : base(context)
         {
@@ -92,5 +93,15 @@ namespace FitnessViewer.Infrastructure.Repository
                  .ToList();
         }
 
+
+        public List<KeyValuePair<DateTime, int>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end)
+        {
+
+            ActivityRepository activityRepo = new ActivityRepository(_context);
+         return activityRepo.ActivitiesBySport(userId, sport).Where(a => a.StartDate >= start && a.StartDate <= end)
+                .GroupBy(a => a.StartDate)
+                .Select(a => new KeyValuePair<DateTime, int>(a.Key, a.Sum(g => g.SufferScore.Value)))
+                .ToList();
+         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class RunningTimesDtoRepository : DtoRepository
+    public class RunningTimesDtoRepository : DtoRepository, IRunningTimesDtoRepository
     {
         public RunningTimesDtoRepository(ApplicationDb context) : base(context)
         {

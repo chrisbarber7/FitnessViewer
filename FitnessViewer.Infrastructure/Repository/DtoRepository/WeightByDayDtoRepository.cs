@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class WeightByDayDtoRepository: DtoRepository
+    public class WeightByDayDtoRepository : DtoRepository, IWeightByDayDtoRepository
     {
         public WeightByDayDtoRepository() : base()
         {

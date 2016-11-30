@@ -170,6 +170,7 @@
     <Compile Include="Helpers\StreamTypeHelper.cs" />
     <Compile Include="Helpers\UserZones.cs" />
     <Compile Include="Interfaces\IActivityEntity.cs" />
+    <Compile Include="Interfaces\IApplicationDB.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
@@ -352,6 +353,16 @@
     <Compile Include="Repository\ActivityRepository.cs" />
     <Compile Include="Repository\DtoRepository\CoordsDtoRepository.cs" />
     <Compile Include="Repository\DtoRepository\GraphStreamDtoRepository.cs" />
+    <Compile Include="Interfaces\IActivityDtoRepository.cs" />
+    <Compile Include="Interfaces\ICoordsDtoRepository.cs" />
+    <Compile Include="Interfaces\IGraphStreamDtoRepository.cs" />
+    <Compile Include="Interfaces\ILapDtoRepository.cs" />
+    <Compile Include="Interfaces\IPeaksDtoRepository.cs" />
+    <Compile Include="Interfaces\IPeriodDtoRepository.cs" />
+    <Compile Include="Interfaces\IRunningTimesDtoRepository.cs" />
+    <Compile Include="Interfaces\ISportSummaryDtoRepository.cs" />
+    <Compile Include="Interfaces\ITimeDistanceBySportRepository.cs" />
+    <Compile Include="Interfaces\IWeightByDayDtoRepository.cs" />
     <Compile Include="Repository\DtoRepository\LapDtoRepository.cs" />
     <Compile Include="Repository\DtoRepository\WeightByDayDtoRepository.cs" />
     <Compile Include="Repository\MetricsRepository.cs" />

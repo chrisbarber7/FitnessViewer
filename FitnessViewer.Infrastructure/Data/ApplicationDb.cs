@@ -1,10 +1,11 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Data
 {
-    public class ApplicationDb : IdentityDbContext<ApplicationUser>
+    public class ApplicationDb : IdentityDbContext<ApplicationUser>, IApplicationDb
     {
         public ApplicationDb()
             : base("FitnessViewer", throwIfV1Schema: false)
@@ -17,28 +18,28 @@ namespace FitnessViewer.Infrastructure.Data
             return new ApplicationDb();
         }
 
-        public DbSet<Athlete> Athlete { get; set; }
-        public DbSet<Activity> Activity { get; set; }
-        public DbSet<DownloadQueue> Queue { get; set; }
-        public DbSet<BestEffort> BestEffort { get; set; }
-        public DbSet<Stream> Stream { get; set; }
-        public DbSet<ActivityPeaks> ActivityPeak { get; set; }
-        public DbSet<ActivityType> ActivityType { get; set; }
-        public DbSet<Gear> Gear { get; set; }
-        public DbSet<Calendar> Calendar { get; set; }
-        public DbSet<Lap> Lap { get; set; }
-        public DbSet<ActivityPeakDetail> ActivityPeakDetail { get; set; }
+        public virtual DbSet<Athlete> Athlete { get; set; }
+        public virtual DbSet<Activity> Activity { get; set; }
+        public virtual DbSet<DownloadQueue> Queue { get; set; }
+        public virtual DbSet<BestEffort> BestEffort { get; set; }
+        public virtual DbSet<Stream> Stream { get; set; }
+        public virtual DbSet<ActivityPeaks> ActivityPeak { get; set; }
+        public virtual DbSet<ActivityType> ActivityType { get; set; }
+        public virtual DbSet<Gear> Gear { get; set; }
+        public virtual DbSet<Calendar> Calendar { get; set; }
+        public virtual DbSet<Lap> Lap { get; set; }
+        public virtual DbSet<ActivityPeakDetail> ActivityPeakDetail { get; set; }
 
-        public DbSet<FitbitUser> FitbitUser { get; set; }
-        public DbSet<Metric> Metric { get; set; }
+        public virtual DbSet<FitbitUser> FitbitUser { get; set; }
+        public virtual DbSet<Metric> Metric { get; set; }
 
-        public DbSet<Notification> Notification { get; set; }
-        public DbSet<UserNotification> UserNotification { get; set; }
+        public virtual DbSet<Notification> Notification { get; set; }
+        public virtual DbSet<UserNotification> UserNotification { get; set; }
 
-        public DbSet<PeakStreamTypeDuration> PeakStreamTypeDuration { get; set; }
+        public virtual DbSet<PeakStreamTypeDuration> PeakStreamTypeDuration { get; set; }
 
-        public DbSet<Zone> Zone { get; set; }
-        public DbSet<ZoneRange> ZoneRange { get; set; }
+        public virtual DbSet<Zone> Zone { get; set; }
+        public virtual DbSet<ZoneRange> ZoneRange { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

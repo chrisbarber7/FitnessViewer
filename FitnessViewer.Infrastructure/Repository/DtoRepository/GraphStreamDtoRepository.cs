@@ -2,10 +2,11 @@
 using FitnessViewer.Infrastructure.Models.Dto;
 using System.Linq;
 using System.Data.Entity;
+using FitnessViewer.Infrastructure.Interfaces;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class GraphStreamDtoRepository : DtoRepository
+    public class GraphStreamDtoRepository : DtoRepository, IGraphStreamDtoRepository
     {
         public GraphStreamDtoRepository() : base()
         {
