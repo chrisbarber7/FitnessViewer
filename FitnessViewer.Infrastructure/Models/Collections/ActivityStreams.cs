@@ -355,7 +355,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// </summary>
         /// <param name="type">Which stream?</param>
         /// <returns>Flag to indicate if the given stream exists for the activity.</returns>
-        private bool HasIndividualStream(StreamType type)
+        internal bool HasIndividualStream(StreamType type)
         {
             if (!IsValid())
                 return false;

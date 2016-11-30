@@ -314,6 +314,10 @@
     <Compile Include="Migrations\201611091742596_ActivitiesAddWeight.Designer.cs">
       <DependentUpon>201611091742596_ActivitiesAddWeight.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611301141318_ActivityAddTSSAndIF.cs" />
+    <Compile Include="Migrations\201611301141318_ActivityAddTSSAndIF.Designer.cs">
+      <DependentUpon>201611301141318_ActivityAddTSSAndIF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
     <Compile Include="Models\Dto\ActivityLapsDetail.cs" />
@@ -690,6 +694,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611091742596_ActivitiesAddWeight.resx">
       <DependentUpon>201611091742596_ActivitiesAddWeight.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611301141318_ActivityAddTSSAndIF.resx">
+      <DependentUpon>201611301141318_ActivityAddTSSAndIF.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

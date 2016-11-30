@@ -157,5 +157,8 @@ namespace FitnessViewer.Infrastructure.Models
             else
                 return this.Distance.ToString();
         }
+
+        public decimal? TSS { get; set; }
+        public decimal? IntensityFactor { get; set; }
     }
 }

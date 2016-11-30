@@ -1,4 +1,6 @@
-﻿using FitnessViewer.Infrastructure.Models;
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,5 +156,49 @@ namespace FitnessViewer.Infrastructure.Helpers
             return _normalisedPower;
         }
 
+
+        /// <summary>
+        /// Used to initially popualte ACTIVITY.TSS & ACTIVITY.IF columns. Re-use if formula changes by setting values 
+        /// to null in DB then re-running
+        /// </summary>
+        public static void InitialPopulationOfActivityColuns()
+        {
+            UnitOfWork uow = new UnitOfWork();
+
+            List<long> activity = null;
+
+            // get a list of activities which don't have a TSS value but which do have a power meter so we can calculate TSS/IF
+            using (ApplicationDb db = new ApplicationDb())
+            {
+                activity = db.Activity.Where(a => a.TSS == null && a.HasPowerMeter).Select(a => a.Id).ToList();
+            }
+
+
+            if (activity.Count == 0)
+                return;
+
+            // try populating TSS/IF values for each possible activity.That 
+            foreach (long id in activity)
+            {
+                Activity fvActivity = uow.CRUDRepository.GetByKey<Activity>(id);
+
+                if (fvActivity == null)
+                    continue;
+
+
+                ActivityStreams stream = ActivityStreams.CreateFromExistingActivityStream(id);
+                
+                // stream must have watts to calculate TSS/IF!
+                if (!stream.HasIndividualStream(enums.StreamType.Watts))
+                    continue;
+                
+                ActivityAnalytics calc = new ActivityAnalytics(stream.GetIndividualStream<int?>(enums.StreamType.Watts), 295);
+
+                fvActivity.TSS = calc.TSS();
+                fvActivity.IntensityFactor = calc.IntensityFactor();
+
+                uow.Complete();
+            }
+        }
     }
 }

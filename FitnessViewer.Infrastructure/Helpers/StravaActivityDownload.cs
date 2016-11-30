@@ -31,6 +31,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         private StravaDotNetActivities.Activity _stravaActivity;
         private long _activityId;
         private int? _streamSize = null;
+        private ActivityStreams _convertedStream;
 
         /// <summary>
         /// Download detailed information for given activity
@@ -91,6 +92,14 @@ namespace FitnessViewer.Infrastructure.Helpers
             _fvActivity.MapPolyline = _stravaActivity.Map.Polyline;
             // splits_metric
             // splits_standard
+
+            if ((_fvActivity.HasPowerMeter) && (_convertedStream.HasIndividualStream(StreamType.Watts)))
+            {
+                ActivityAnalytics calc = new ActivityAnalytics(_convertedStream.GetIndividualStream<int?>(enums.StreamType.Watts), 295);
+
+                _fvActivity.TSS = calc.TSS();
+                _fvActivity.IntensityFactor = calc.IntensityFactor();
+            }
 
             if (_streamSize != null)
                 _fvActivity.StreamSize = _streamSize;
@@ -157,9 +166,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Convert Strava stream information and write to database.
         /// </summary>
         /// <param name="stream">Detailed information for activity in strava format</param>
-        private ActivityStreams ConvertStream(List<StravaDotNetStreams.ActivityStream> stream)
+        private void ConvertStream(List<StravaDotNetStreams.ActivityStream> stream)
         {
-            ActivityStreams convertedStream = ActivityStreams.CreateForNewActivity(this._activityId);
+            _convertedStream = ActivityStreams.CreateForNewActivity(this._activityId);
 
             // convert each strava item
             for (int row = 0; row <= stream[0].OriginalSize - 1; row++)
@@ -167,26 +176,25 @@ namespace FitnessViewer.Infrastructure.Helpers
                 Stream s = ExtractStreamRow(stream, row);
 
                 // occasinally we get duplicate rows for the same time back from Strava so need to ignore them!
-                if (convertedStream.Stream.Where(c => c.Time == s.Time).Any())
+                if (_convertedStream.Stream.Where(c => c.Time == s.Time).Any())
                 {
                     System.Diagnostics.Debug.WriteLine(string.Format("Skipping row {0} for activity {1}", s.Time, _activityId));
                     continue;
-                }                    
+                }
 
-                convertedStream.Stream.Add(s);
+                _convertedStream.Stream.Add(s);
             }
 
-                convertedStream.FixGaps();
+            _convertedStream.FixGaps();
 
-            convertedStream.StoreStreams();
-            convertedStream.CalculatePeaksAndSave();
+            _convertedStream.StoreStreams();
+            _convertedStream.CalculatePeaksAndSave();
 
             // we can only calculate a power curve for activities which have a power meter!
             if (_stravaActivity.HasPowerMeter)
-                convertedStream.AddPowerCurveCalculationJobs();
-
-            return convertedStream;    
+                _convertedStream.AddPowerCurveCalculationJobs();
         }
+        
         
         /// <summary>
         /// Convert a single stream row.
