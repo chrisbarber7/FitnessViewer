@@ -27,7 +27,7 @@ namespace FitnessViewer.Infrastructure.Repository
             else if (sport == "Ride")
             {
                 activities = fullActivityList.Where(r => r.IsRide && r.Start >= start && r.Start <= end).ToList();
-                sportSummary.IsBike = true;
+                sportSummary.IsRide = true;
             }
             else if (sport == "Run")
             {

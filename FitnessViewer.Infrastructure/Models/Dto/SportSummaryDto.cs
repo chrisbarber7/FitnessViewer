@@ -26,7 +26,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public int ActivityCount { get; set; }
 
 
-        public bool IsBike { get; set; }
+        public bool IsRide { get; set; }
 
         public bool IsRun { get; set; }
         public bool IsSwim { get; set; }
