@@ -11,6 +11,6 @@ namespace FitnessViewer.Infrastructure.Intefaces
         IEnumerable<ActivityDto> GetRecentActivity(string userId, int? returnedRows);
         IQueryable<ActivityDto> GetSportSummaryQuery(string userId, string sport, DateTime start, DateTime end);
 
-         List<KeyValuePair<DateTime, int>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end);
+         List<KeyValuePair<DateTime, decimal>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end);
     }
 }

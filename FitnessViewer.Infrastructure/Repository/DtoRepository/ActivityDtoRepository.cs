@@ -94,13 +94,13 @@ namespace FitnessViewer.Infrastructure.Repository
         }
 
 
-        public List<KeyValuePair<DateTime, int>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end)
+        public List<KeyValuePair<DateTime, decimal>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end)
         {
 
             ActivityRepository activityRepo = new ActivityRepository(_context);
          return activityRepo.ActivitiesBySport(userId, sport).Where(a => a.StartDate >= start && a.StartDate <= end)
                 .GroupBy(a => a.StartDate)
-                .Select(a => new KeyValuePair<DateTime, int>(a.Key, a.Sum(g => g.SufferScore.Value)))
+                .Select(a => new KeyValuePair<DateTime, decimal>(a.Key, a.Sum(g => g.SufferScore.Value)))
                 .ToList();
          }
     }
