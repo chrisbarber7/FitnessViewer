@@ -110,17 +110,17 @@ namespace FitnessViewer.Infrastructure.Helpers
             _userId = userId;
             _start = start.Date;
             _end = end.Date;
-            DayValues = new List<TrainingLoadDay>();
+            InitialiseDayValues();
         }
 
         public void Calculate(string sport)
         {
-            InitialiseDayValues();
+          
             PopulateDailyTSS(sport);
             Calculate();
         }
 
-        internal void PopulateDailyTSS(string sport)
+        private void PopulateDailyTSS(string sport)
         {
             var dailyValues = _repo.GetDailyTSS(_userId, sport, _start, _end);
 
@@ -138,7 +138,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// http://www.coachcox.co.uk/2012/03/30/how-to-plan-a-season-using-the-performance-management-chart/
         /// Descriptions at http://home.trainingpeaks.com/blog/article/what-is-the-performance-management-chart
         /// </summary>
-        internal void Calculate()
+        private void Calculate()
         {
             decimal previousShortTerm = ShortTermSeed;
             decimal previousLongTerm = LongTermSeed;
@@ -153,8 +153,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             }
         }
 
-        internal void InitialiseDayValues()
+        private void InitialiseDayValues()
         {
+            DayValues = new List<TrainingLoadDay>();
             for (DateTime date = _start; date <= _end; date = date.AddDays(1))
                 DayValues.Add(new TrainingLoadDay(date));
         }

@@ -41,8 +41,7 @@ namespace FitnessViewer.Test
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.Setup("uid", _startContantValues, _endConstantValues);
-            pmc.InitialiseDayValues();
-
+      
             // test start and end dates exist. 
             Assert.IsNotNull(pmc.DayValues.Where(d => d.Date == _startContantValues).FirstOrDefault());
             Assert.IsNotNull(pmc.DayValues.Where(d => d.Date == _endConstantValues).FirstOrDefault());
@@ -60,9 +59,7 @@ namespace FitnessViewer.Test
 
             TrainingLoad pmc = new TrainingLoad(mock.Object);
             pmc.Setup("uid", _startContantValues, _endConstantValues);
-            pmc.InitialiseDayValues();
-            pmc.PopulateDailyTSS("Ride");
-            pmc.Calculate();
+            pmc.Calculate("Ride");
 
             // check TSS values are populated correctly.
             foreach (TrainingLoadDay day in pmc.DayValues)
