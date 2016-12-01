@@ -37,7 +37,17 @@
         }
     </div>
     <div class="col-xs-2">
+        @if ((Model.TSS.HasValue) && (Model.TSS.Value > 0))
+        {
+            <div class="SummaryValue">@Model.TSS</div>
+            <div class="SummaryTitle">TSS</div>
+
+        }
+        else
+        {
+
         <div class="SummaryValue">@Model.SufferScore</div>
         <div class="SummaryTitle">SufferScore</div>
+        }
     </div>
 </div>

@@ -32,9 +32,11 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             m.IsOther = fvActivity.ActivityType.IsOther;
 
             m.HasPowerMeter = fvActivity.HasPowerMeter;
+            m.TSS = fvActivity.TSS.HasValue ? fvActivity.TSS.Value : 0;
 
             m.Athlete = AthleteDto.CreateFromAthlete(fvActivity.Athlete);
             m.Weight = fvActivity.Weight;
+            m.TSS = fvActivity.TSS;
 
             return m;
         }
@@ -99,6 +101,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         
         public AthleteDto Athlete { get; set; }
         public decimal? Weight { get; set; }
+
+        public decimal? TSS { get; set; }
 
     }
 }

@@ -55,7 +55,8 @@ namespace FitnessViewer.Infrastructure.Repository
             sportSummary.Calories = activities.Sum(r => r.Calories);
             sportSummary.ElevationGain = activities.Sum(r => r.ElevationGain).ToFeet();
             sportSummary.ActivityCount = activities.Count();
-        
+            sportSummary.TSS= activities.Sum(r => r.TSS);
+
             return sportSummary;
         }
 

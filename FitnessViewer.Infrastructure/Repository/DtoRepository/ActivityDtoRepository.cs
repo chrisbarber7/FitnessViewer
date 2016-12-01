@@ -58,7 +58,8 @@ namespace FitnessViewer.Infrastructure.Repository
                         IsSwim = r.ActivityType.IsSwim,
                         IsOther = r.ActivityType.IsOther,
                         DetailsDownloaded = r.DetailsDownloaded,
-                        HasPowerMeter = r.HasPowerMeter
+                        HasPowerMeter = r.HasPowerMeter,
+                        TSS = r.TSS != null ? r.TSS : 0
                     });
 
             return activityQuery;

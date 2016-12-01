@@ -32,6 +32,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public bool IsSwim { get; set; }
         public bool IsOther { get; set; }
 
+        public decimal? TSS { get; set; }
+
         public KeyValuePair<string,string> Peak1 { get; set; }
         public KeyValuePair<string, string> Peak2 { get; set; }
         public KeyValuePair<string, string> Peak3 { get; set; }
