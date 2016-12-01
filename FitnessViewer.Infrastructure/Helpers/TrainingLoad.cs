@@ -86,19 +86,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         public TrainingLoad()
         {
             _repo = new ActivityDtoRepository();
-            SetDefaults();
+            Init();
         }
-
-
 
         public TrainingLoad(IActivityDtoRepository repo)
         {
             _repo = repo;
-            SetDefaults();
+            Init();
         }
 
-
-        private void SetDefaults()
+        private void Init()
         {
             _loadTermSeed = 0;
             _shortTermSeed = 0;
@@ -120,12 +117,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             InitialiseDayValues();
             PopulateDailyTSS(sport);
-            CalculatePMC();
+            Calculate();
         }
 
         internal void PopulateDailyTSS(string sport)
         {
-            //   ActivityDtoRepository activityDtoRepo = new ActivityDtoRepository();
             var dailyValues = _repo.GetDailyTSS(_userId, sport, _start, _end);
 
             foreach (TrainingLoadDay day in DayValues)
@@ -140,26 +136,27 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <summary>
         /// Do the actual calculations.  Based on formulas from spreadsheet at 
         /// http://www.coachcox.co.uk/2012/03/30/how-to-plan-a-season-using-the-performance-management-chart/
+        /// Descriptions at http://home.trainingpeaks.com/blog/article/what-is-the-performance-management-chart
         /// </summary>
-        internal void CalculatePMC()
+        internal void Calculate()
         {
             decimal previousShortTerm = ShortTermSeed;
             decimal previousLongTerm = LongTermSeed;
 
+            decimal shortTermEXP = Convert.ToDecimal(Math.Exp(-1 / _shortTermDays));
+            decimal longTermEXP = Convert.ToDecimal(Math.Exp(-1 / _longTermDays));
+            
             foreach (TrainingLoadDay day in DayValues)
             {
-                previousShortTerm = day.ShortTermLoad = day.TSS * (1 - Convert.ToDecimal(Math.Exp(-1 / _shortTermDays))) + previousShortTerm * Convert.ToDecimal(Math.Exp(-1 / _shortTermDays));
-                previousLongTerm = day.LongTermLoad = day.TSS * (1 - Convert.ToDecimal(Math.Exp(-1 / _longTermDays))) + previousLongTerm * Convert.ToDecimal(Math.Exp(-1 / _longTermDays));
+                previousShortTerm = day.ShortTermLoad = day.TSS * (1 - shortTermEXP) + previousShortTerm * shortTermEXP;
+                previousLongTerm = day.LongTermLoad = day.TSS * (1 - longTermEXP) + previousLongTerm * longTermEXP;
             }
         }
 
         internal void InitialiseDayValues()
         {
-
             for (DateTime date = _start; date <= _end; date = date.AddDays(1))
-            {
                 DayValues.Add(new TrainingLoadDay(date));
-            }
         }
     }
 
@@ -173,10 +170,22 @@ namespace FitnessViewer.Infrastructure.Helpers
         private decimal _shortTermLoad;
         private decimal _longTermLoad;
 
-
         public DateTime Date { get; set; }
         public decimal TSS { get; set; }
-        public decimal ShortTermLoad { get { return Math.Round(_shortTermLoad, 2); } set { _shortTermLoad = value; } }
-        public decimal LongTermLoad { get { return Math.Round(_longTermLoad, 2); } set { _longTermLoad = value; } }
+        public decimal ShortTermLoad
+        {
+            get { return Math.Round(_shortTermLoad, 2); }
+            set { _shortTermLoad = value; }
+        }
+        public decimal LongTermLoad
+        {
+            get { return Math.Round(_longTermLoad, 2); }
+            set { _longTermLoad = value; }
+        }
+        public decimal Form
+        {
+            get { return LongTermLoad - ShortTermLoad; }
+            private set { }
+        }
     }
 }

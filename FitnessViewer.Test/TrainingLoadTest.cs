@@ -62,7 +62,7 @@ namespace FitnessViewer.Test
             pmc.Setup("uid", _startContantValues, _endConstantValues);
             pmc.InitialiseDayValues();
             pmc.PopulateDailyTSS("Ride");
-            pmc.CalculatePMC();
+            pmc.Calculate();
 
             // check TSS values are populated correctly.
             foreach (TrainingLoadDay day in pmc.DayValues)
