@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Intefaces;
 using FitnessViewer.Infrastructure.Repository;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -158,6 +159,14 @@ namespace FitnessViewer.Infrastructure.Helpers
             DayValues = new List<TrainingLoadDay>();
             for (DateTime date = _start; date <= _end; date = date.AddDays(1))
                 DayValues.Add(new TrainingLoadDay(date));
+        }
+
+        public string Json(DateTime start, DateTime end)
+        {
+            // overall list maybe larger than the section we need to filter.
+            var results = DayValues.Where(d => d.Date >= start && d.Date <= end).ToList();
+
+            return JsonConvert.SerializeObject(DayValues);
         }
     }
 

@@ -6,19 +6,26 @@
 @Scripts.Render("~/bundles/chart")
 <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h4>Average Run Distance Per Week</h4>
         <canvas id="chart12weekRun" width="800" height="300" title="Recent Run Activity Summary"></canvas>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h4>Average Bike Distance Per Week</h4>
         <canvas id="chart12weekBike" width="800" height="300" title="Recent Bike Activity Summary"></canvas>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h4>Average Swim Distance Per Week</h4>
         <canvas id="chart12weekSwim" width="800" height="300" title="Recent Run Activity Summary"></canvas>
     </div>
+
+    <div class="col-md-3">
+        <h4>Bike PMC</h4>
+        <canvas id="bikeTrainingLoadChart" width="800" height="300" title="Bike PMC Chart"></canvas>
+
+    </div>
 </div>
+
 <div class="row">
     <div class="col-md-8">
         <div id="daySummaryTab" class="fvTab">
@@ -71,55 +78,99 @@
         </div>
 
 
-       
+
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-8">
-        @{Html.RenderPartial("_RecentActivity", Model.RecentActivity); }
-    </div>
-    <div class="col-md-4">
-        <h4>Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToShortDateString()</h4>
-        <div class="table-responsive">
-            <table class="table table-striped table-condensed">
-                <tr>
-                    <th></th>
-                    <th>Low</th>
-                    <th>Average</th>
-                    <th>High</th>
-                    <th>Change</th>
-                </tr>
-                <tr>
-                    <td>7 Day</td>
-                    <td>@Model.CurrentWeight.Low7Day</td>
-                    <td>@Model.CurrentWeight.Average7Day</td>
-                    <td>@Model.CurrentWeight.High7Day</td>
-                    <td>@Model.CurrentWeight.Change7Day</td>
-                </tr>
-                <tr>
-                    <td>30 Day</td>
-                    <td>@Model.CurrentWeight.Low30Day</td>
-                    <td>@Model.CurrentWeight.Average30Day</td>
-                    <td>@Model.CurrentWeight.High30Day</td>
-                    <td>@Model.CurrentWeight.Change30Day</td>
-                </tr>
-            </table>
+
         </div>
-        <canvas id="chartWeight" width="800" height="400"></canvas>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-8">
-        @{Html.RenderPartial("_RunningTimes", Model.RunningTime); }
-    </div>
-    <div class="col-md-4">
-        @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
-    </div>
-</div>
-@section scripts {
-    <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            DashboardController.init();
-        }) </script>
-}
+
+        <div class="row">
+            <div class="col-md-8">
+                @{Html.RenderPartial("_RecentActivity", Model.RecentActivity); }
+            </div>
+            <div class="col-md-4">
+                <h4>Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToShortDateString()</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensed">
+                        <tr>
+                            <th></th>
+                            <th>Low</th>
+                            <th>Average</th>
+                            <th>High</th>
+                            <th>Change</th>
+                        </tr>
+                        <tr>
+                            <td>7 Day</td>
+                            <td>@Model.CurrentWeight.Low7Day</td>
+                            <td>@Model.CurrentWeight.Average7Day</td>
+                            <td>@Model.CurrentWeight.High7Day</td>
+                            <td>@Model.CurrentWeight.Change7Day</td>
+                        </tr>
+                        <tr>
+                            <td>30 Day</td>
+                            <td>@Model.CurrentWeight.Low30Day</td>
+                            <td>@Model.CurrentWeight.Average30Day</td>
+                            <td>@Model.CurrentWeight.High30Day</td>
+                            <td>@Model.CurrentWeight.Change30Day</td>
+                        </tr>
+                    </table>
+                </div>
+                <canvas id="chartWeight" width="800" height="400"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                @{Html.RenderPartial("_RunningTimes", Model.RunningTime); }
+            </div>
+            <div class="col-md-4">
+                @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
+            </div>
+        </div>
+        @section scripts {
+            <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
+
+                    setupTrainingLoadChart(trainingLoadData);
+
+
+
+                    function setupTrainingLoadChart(data) {
+                        var trainingLoadChartData = {
+                            labels: data.Date,
+                            datasets: [
+                                {
+                                    label: 'LTL',
+                                    data: data.LongTermLoad,
+                                    lineThickness: 0.1,
+                                    fill: false,
+                                    radius:0,
+                                    borderColor: '#545677'
+                                },
+                                {
+                                    label: 'STL',
+                                    data: data.ShortTermLoad,
+                                    radius: 0,
+                                    fill: false,
+                                    borderColor: '#B1B2C1'
+                                }
+                            ]
+                        };
+
+                        var ctx = document.getElementById("bikeTrainingLoadChart").getContext("2d");
+
+                        var myBarChart = Chart.Line(ctx, {
+                            data: trainingLoadChartData,
+                            options: {
+                                animation: false
+                            }
+                        });
+                    }
+                DashboardController.init();
+                }) </script>
+        }

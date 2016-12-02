@@ -14,6 +14,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         private IUnitOfWork _uow;
         private string _userId;
         private List<ActivityDto> _summaryActivities;
+        private TrainingLoad _trainingLoad;
 
         public AthleteDashboardDto(IUnitOfWork uow, string userId)
         {
@@ -47,11 +48,11 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             RecentActivity = activityRepo.GetRecentActivity(_summaryActivities, 7);
 
 
-            TrainingLoad pmc = new TrainingLoad(activityRepo);
+             _trainingLoad = new TrainingLoad(activityRepo);
             // need to go back the highest number of days we're interested in plus 42 days for LongTerm training load duration
             // and an extra day to get a seed value.   Add an extra day to the end to hold current form.
-            pmc.Setup(_userId, DateTime.Now.AddDays(-90 - 42 - 1), DateTime.Now.AddDays(1));
-            pmc.Calculate("Ride");
+            _trainingLoad.Setup(_userId, DateTime.Now.AddDays(-365 - 42 - 1), DateTime.Now.AddDays(1));
+            _trainingLoad.Calculate("Ride");
 
             Run7Day = GetSportSummary("Run", 7);
             Bike7Day = GetSportSummary("Ride", 7);
@@ -114,6 +115,29 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public SportSummaryDto All30Day { get; set; }
         public SportSummaryDto All90Day { get; set; }
 
+        public object DayValuesForChart()
+        {
+
+            List<string> date = new List<string>();
+            List<string> longTermStress = new List<string>();
+            List<string> shortTermStress = new List<string>();
+
+            foreach (TrainingLoadDay d in _trainingLoad.DayValues.Where(d => d.Date >= DateTime.Now.AddDays(-90) && d.Date <= DateTime.Now.AddDays(1)).ToList())
+            {
+                date.Add(d.Date.ToShortDateString());
+                longTermStress.Add(d.LongTermLoad.ToString());
+                shortTermStress.Add(d.ShortTermLoad.ToString());
+            }
+
+            var chart = new
+            {
+                Date = date,
+                LongTermLoad = longTermStress,
+                ShortTermLoad = shortTermStress
+            };
+
+            return chart;
+        }
 
 
         private SportSummaryDto GetSportSummary(string sport, int days)
