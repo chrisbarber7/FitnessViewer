@@ -361,7 +361,6 @@
     <Compile Include="Interfaces\IPeaksDtoRepository.cs" />
     <Compile Include="Interfaces\IPeriodDtoRepository.cs" />
     <Compile Include="Interfaces\IRunningTimesDtoRepository.cs" />
-    <Compile Include="Interfaces\ISportSummaryDtoRepository.cs" />
     <Compile Include="Interfaces\ITimeDistanceBySportRepository.cs" />
     <Compile Include="Interfaces\IWeightByDayDtoRepository.cs" />
     <Compile Include="Repository\DtoRepository\LapDtoRepository.cs" />
@@ -504,7 +503,6 @@
     <Compile Include="Helpers\Strava.cs" />
     <Compile Include="Repository\DtoRepository\RunningTimesDtoRepository.cs" />
     <Compile Include="Repository\SettingsRepository.cs" />
-    <Compile Include="Repository\DtoRepository\SportSummaryDtoRepository.cs" />
     <Compile Include="Repository\StreamRepository.cs" />
     <Compile Include="Repository\DtoRepository\TimeDistanceBySportRepository.cs" />
   </ItemGroup>

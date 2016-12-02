@@ -34,11 +34,9 @@ namespace FitnessViewer.Infrastructure.Repository
         public IQueryable<ActivityDto> GetSportSummaryQuery(string userId, string sport, DateTime start, DateTime end)
         {
             ActivityRepository activityRepo = new ActivityRepository(_context);
-
-
+            
             IQueryable<ActivityDto> activityQuery = activityRepo.ActivitiesBySport(userId, sport)
                 .Include(r => r.ActivityType)
-                .Include(r => r.Athlete)
                 .Where(r => r.Start >= start && r.Start <= end)
                     .Select(r => new ActivityDto
                     {
@@ -93,16 +91,19 @@ namespace FitnessViewer.Infrastructure.Repository
                  .Take(returnedRows)
                  .ToList();
         }
-
-
+        
         public List<KeyValuePair<DateTime, decimal>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end)
         {
-
+            // two select statement as can't call the KeyValuePair constructor from Linq To SQL.
             ActivityRepository activityRepo = new ActivityRepository(_context);
-         return activityRepo.ActivitiesBySport(userId, sport).Where(a => a.StartDate >= start && a.StartDate <= end)
-                .GroupBy(a => a.StartDate)
-                .Select(a => new KeyValuePair<DateTime, decimal>(a.Key, a.Sum(g => g.SufferScore.Value)))
-                .ToList();
+            var results = activityRepo.ActivitiesBySport(userId, sport).Where(a => a.StartDate >= start && a.StartDate <= end&& a.TSS.HasValue)
+                   .GroupBy(a => a.Start)
+                   .Select(a => new { Key = a.Key, Value = a.Sum(g => g.TSS.Value) })
+                   .ToList();
+             
+                   return results
+                   .Select(a => new KeyValuePair<DateTime, decimal>(a.Key, a.Value))
+                   .ToList();
          }
     }
 }

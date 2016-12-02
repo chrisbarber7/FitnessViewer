@@ -84,6 +84,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             }
             private set { }
         }
+
+        public string TrainingLoadChartName { get; set; }
     
     }
 }
