@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers.Analytics;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
@@ -35,14 +36,8 @@ namespace FitnessViewer.Infrastructure.Helpers
             // remove the time.
             date = date.Date;
 
-            // get a list of the zones for the user/type.
-            //   var zoneRanges = GetUserZoneRanges(_userId, zone);
-
-            // find the value of the zone (ftp/pace/hr/etc) on the given date
-            int? ValueOnDate = _UnitOfWork.Settings.GetUserZones(_userId, zone)
-                .Where(z => z.StartDate <= date)
-                .Select(z => z.Value)
-                .FirstOrDefault();
+            ZoneValueOnDay zoneValueDate = new ZoneValueOnDay();
+            int? ValueOnDate = zoneValueDate.GetUserZoneValueOnGivenDate(_userId, zone, date);
 
             // if no value value found for the given user/zone/date then return a single zone.
             if (ValueOnDate == null)

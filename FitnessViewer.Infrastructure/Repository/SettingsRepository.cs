@@ -1,12 +1,14 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
-    public class SettingsRepository
+    public class SettingsRepository : ISettingsRepository
     {
         private ApplicationDb _context;
 
@@ -28,6 +30,7 @@ namespace FitnessViewer.Infrastructure.Repository
                         .OrderBy(z => z.StartDate)
                         .ToList();
         }
+
 
 
         /// <summary>

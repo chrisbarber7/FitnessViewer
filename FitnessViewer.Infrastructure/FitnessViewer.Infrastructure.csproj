@@ -153,6 +153,7 @@
     <Compile Include="Helpers\ActivityWeight.cs" />
     <Compile Include="Helpers\ActivityZones.cs" />
     <Compile Include="Helpers\Analytics\AllActivityCalculation.cs" />
+    <Compile Include="Helpers\Analytics\ZoneValueOnDay.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\Analytics\BikePower.cs" />
     <Compile Include="Helpers\Conversions\FitbitConversion.cs" />
@@ -368,6 +369,7 @@
     <Compile Include="Interfaces\IWeightByDayDtoRepository.cs" />
     <Compile Include="Repository\DtoRepository\LapDtoRepository.cs" />
     <Compile Include="Repository\DtoRepository\WeightByDayDtoRepository.cs" />
+    <Compile Include="Interfaces\ISettingsRepository.cs" />
     <Compile Include="Repository\MetricsRepository.cs" />
     <Compile Include="Repository\NotificationRepository.cs" />
     <Compile Include="Repository\DtoRepository\PeaksDtoRepository.cs" />
