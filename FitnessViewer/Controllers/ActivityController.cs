@@ -57,6 +57,21 @@ namespace FitnessViewer.Controllers
         }
 
         [Authorize]
+        public async Task<ActionResult> KudosBomb(long? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            StravaRelatatedActivity related = new StravaRelatatedActivity(_unitOfWork, this.User.Identity.GetUserId());
+            List<long> activities = await related.GetRelatedActivityAsync(id.Value);
+
+            StravaGiveKudos kudos = new StravaGiveKudos(_unitOfWork, this.User.Identity.GetUserId());
+            kudos.GiveKudos(activities);
+            
+            return RedirectToAction("ViewActivity", new { id = id });
+        }
+
+        [Authorize]
         public ActionResult ViewActivity(long? id)
         {
             if (id == null)
