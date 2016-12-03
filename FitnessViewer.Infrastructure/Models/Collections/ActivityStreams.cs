@@ -245,7 +245,15 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 return ActivityAnalytics.EmptyStream();
 
             if (Activity.ActivityType.IsRide)
-                return ActivityAnalytics.RideCreateFromPowerStream(Stream, 295);
+            {
+                ZoneValueOnDay value = new ZoneValueOnDay();
+                var ftp = value.GetUserZoneValueOnGivenDate(_activity.Athlete.UserId, enums.ZoneType.BikePower, _activity.Start);
+
+                if (ftp == null)
+                    return null;
+
+                return ActivityAnalytics.RideCreateFromPowerStream(Stream, ftp.Value);
+            }
             else if (Activity.ActivityType.IsRun)
                 return ActivityAnalytics.RunCreateFromPaceOrHeartRateStream(Stream.Select(w => w.Velocity).ToList(), Stream.Select(w => w.HeartRate).ToList());
             else if (Activity.ActivityType.IsSwim)

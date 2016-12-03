@@ -65,7 +65,13 @@ namespace FitnessViewer.Infrastructure.Helpers.Analytics
             if (!stream.HasIndividualStream(enums.StreamType.Watts))
                 return;
 
-            BikePower calc = new BikePower(stream.GetIndividualStream<int?>(enums.StreamType.Watts), 295);
+            ZoneValueOnDay value = new ZoneValueOnDay();
+            var ftp = value.GetUserZoneValueOnGivenDate(fvActivity.Athlete.UserId, enums.ZoneType.BikePower, fvActivity.Start);
+
+            if (ftp == null)
+                return;
+
+            BikePower calc = new BikePower(stream.GetIndividualStream<int?>(enums.StreamType.Watts), ftp.Value);
 
             fvActivity.TSS = calc.TSS();
             fvActivity.IntensityFactor = calc.IntensityFactor();
