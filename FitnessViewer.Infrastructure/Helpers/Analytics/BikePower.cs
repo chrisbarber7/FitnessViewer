@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitnessViewer.Infrastructure.Helpers
+namespace FitnessViewer.Infrastructure.Helpers.Analytics
 {
-    public class ActivityAnalytics
+    public class BikePower
     {
         /// <summary>
         /// Data can either be held as a list of values(_powerStream) or full Stream information 
@@ -21,17 +21,17 @@ namespace FitnessViewer.Infrastructure.Helpers
         private decimal _normalisedPower;
         private decimal _FTP;
 
-        public ActivityAnalytics(IEnumerable<Stream> stream, decimal ftp)
+        public BikePower(IEnumerable<Stream> stream, decimal ftp)
         {
             Setup(stream, ftp);
         }
 
-        public ActivityAnalytics(IEnumerable<int> powerStream, decimal ftp)
+        public BikePower(IEnumerable<int> powerStream, decimal ftp)
         {
             Setup(powerStream, ftp);
         }
         
-        public ActivityAnalytics(IEnumerable<int?> powerStream, decimal ftp)
+        public BikePower(IEnumerable<int?> powerStream, decimal ftp)
         {
             if (powerStream.Contains(null))
                 throw new ArgumentException("Stream Contains null values");
@@ -64,7 +64,6 @@ namespace FitnessViewer.Infrastructure.Helpers
             else
                 _normalisedPower = 0.00M;
         }
-
 
         private decimal CalculateNormalisedPower()
         {
@@ -154,51 +153,6 @@ namespace FitnessViewer.Infrastructure.Helpers
         public decimal NP()
         {
             return _normalisedPower;
-        }
-
-
-        /// <summary>
-        /// Used to initially popualte ACTIVITY.TSS & ACTIVITY.IF columns. Re-use if formula changes by setting values 
-        /// to null in DB then re-running
-        /// </summary>
-        public static void InitialPopulationOfActivityColuns()
-        {
-            UnitOfWork uow = new UnitOfWork();
-
-            List<long> activity = null;
-
-            // get a list of activities which don't have a TSS value but which do have a power meter so we can calculate TSS/IF
-            using (ApplicationDb db = new ApplicationDb())
-            {
-                activity = db.Activity.Where(a => a.TSS == null && a.HasPowerMeter).Select(a => a.Id).ToList();
-            }
-
-
-            if (activity.Count == 0)
-                return;
-
-            // try populating TSS/IF values for each possible activity.That 
-            foreach (long id in activity)
-            {
-                Activity fvActivity = uow.CRUDRepository.GetByKey<Activity>(id);
-
-                if (fvActivity == null)
-                    continue;
-
-
-                ActivityStreams stream = ActivityStreams.CreateFromExistingActivityStream(id);
-                
-                // stream must have watts to calculate TSS/IF!
-                if (!stream.HasIndividualStream(enums.StreamType.Watts))
-                    continue;
-                
-                ActivityAnalytics calc = new ActivityAnalytics(stream.GetIndividualStream<int?>(enums.StreamType.Watts), 295);
-
-                fvActivity.TSS = calc.TSS();
-                fvActivity.IntensityFactor = calc.IntensityFactor();
-
-                uow.Complete();
-            }
         }
     }
 }

@@ -1,18 +1,19 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitnessViewer.Infrastructure.Models.Dto
+namespace FitnessViewer.Infrastructure.Helpers.Analytics
 {
-    public class ActivityAnalyticsDto
+    public class ActivityAnalytics
     {
-        public static ActivityAnalyticsDto RideCreateFromPowerStream(List<Stream> stream, decimal ftp)
+        public static ActivityAnalytics RideCreateFromPowerStream(List<Stream> stream, decimal ftp)
         {
-            Helpers.ActivityAnalytics calc = new Helpers.ActivityAnalytics(stream, ftp);
+            BikePower calc = new BikePower(stream, ftp);
 
-            ActivityAnalyticsDto a = new ActivityAnalyticsDto()
+            ActivityAnalytics a = new ActivityAnalytics()
             {
                 TSS = Math.Round(calc.TSS(),0),
                 IF = Math.Round(calc.IntensityFactor(),2),
@@ -27,9 +28,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public decimal IF { get; set; }
         public decimal NP { get; set; }
 
-        internal static ActivityAnalyticsDto RunCreateFromPaceOrHeartRateStream(List<double?> velocity, List<int?> heartRate)
+        internal static ActivityAnalytics RunCreateFromPaceOrHeartRateStream(List<double?> velocity, List<int?> heartRate)
         {
-            ActivityAnalyticsDto a = new ActivityAnalyticsDto()
+            ActivityAnalytics a = new ActivityAnalytics()
             {
                 TSS = 0,
                 IF = 0,
@@ -39,9 +40,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return a;
         }
 
-        internal static ActivityAnalyticsDto SwimCreateFromPaceStream(List<double?> list)
+        internal static ActivityAnalytics SwimCreateFromPaceStream(List<double?> list)
         {
-            ActivityAnalyticsDto a = new ActivityAnalyticsDto()
+            ActivityAnalytics a = new ActivityAnalytics()
             {
                 TSS = 0,
                 IF = 0,
@@ -51,9 +52,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return a;
         }
 
-        internal static ActivityAnalyticsDto OtherUnknown()
+        internal static ActivityAnalytics OtherUnknown()
         {
-            ActivityAnalyticsDto a = new ActivityAnalyticsDto()
+            ActivityAnalytics a = new ActivityAnalytics()
             {
                 TSS = 0,
                 IF = 0,
@@ -64,9 +65,9 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         }
 
 
-        internal static ActivityAnalyticsDto EmptyStream()
+        internal static ActivityAnalytics EmptyStream()
         {
-            ActivityAnalyticsDto a = new ActivityAnalyticsDto()
+            ActivityAnalytics a = new ActivityAnalytics()
             {
                 TSS = 0,
                 IF = 0,

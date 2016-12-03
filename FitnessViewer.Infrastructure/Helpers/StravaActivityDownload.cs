@@ -1,24 +1,17 @@
 ﻿using System;
-using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.Infrastructure.Models;
 using System.Collections.Generic;
-
 using Newtonsoft.Json.Linq;
 using System.Linq;
-
-// Strava.DotNet
-using StravaDotNetAthletes = Strava.Athletes;
-using StravaDotNetAuthentication = Strava.Authentication;
-using StravaDotNetClient = Strava.Clients;
-using StravaDotNetStreams = Strava.Streams;
-using StravaDotNetActivities = Strava.Activities;
-using StravaDotNetApi = Strava.Api;
-using StravaDotNetGear = Strava.Gear;
 using AutoMapper;
 using FitnessViewer.Infrastructure.enums;
-using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.Helpers.Analytics;
+
+// Strava.DotNet
+using StravaDotNetStreams = Strava.Streams;
+using StravaDotNetActivities = Strava.Activities;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -95,7 +88,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             if ((_fvActivity.HasPowerMeter) && (_convertedStream.HasIndividualStream(StreamType.Watts)))
             {
-                ActivityAnalytics calc = new ActivityAnalytics(_convertedStream.GetIndividualStream<int?>(enums.StreamType.Watts), 295);
+                BikePower calc = new BikePower(_convertedStream.GetIndividualStream<int?>(enums.StreamType.Watts), 295);
 
                 _fvActivity.TSS = calc.TSS();
                 _fvActivity.IntensityFactor = calc.IntensityFactor();

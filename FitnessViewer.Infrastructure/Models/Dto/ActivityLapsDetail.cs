@@ -2,6 +2,7 @@
 using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Helpers.Analytics;
 using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Repository;
 using System;
@@ -67,7 +68,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             dto.Name = fvActivity.Name;
            
 
-            dto.Analytics = ActivityAnalyticsDto.EmptyStream();
+            dto.Analytics = ActivityAnalytics.EmptyStream();
 
             return dto;
 
@@ -87,7 +88,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<ZoneValueDto> HeartRateZones { get; set; }
 
         public IEnumerable<ZoneValueDto> RunPaceZones { get; set; }
-        public ActivityAnalyticsDto Analytics { get; set; }
+        public ActivityAnalytics Analytics { get; set; }
 
 
     }

@@ -152,14 +152,16 @@
     <Compile Include="enums\ZoneType.cs" />
     <Compile Include="Helpers\ActivityWeight.cs" />
     <Compile Include="Helpers\ActivityZones.cs" />
+    <Compile Include="Helpers\Analytics\AllActivityCalculation.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
-    <Compile Include="Helpers\ActivityAnalytics.cs" />
+    <Compile Include="Helpers\Analytics\BikePower.cs" />
     <Compile Include="Helpers\Conversions\FitbitConversion.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
     <Compile Include="Helpers\DisplayLabel.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\FitbitHelper.cs" />
     <Compile Include="Helpers\Conversions\MetricTypeConversion.cs" />
+    <Compile Include="Helpers\Analytics\HeartRateTss.cs" />
     <Compile Include="Helpers\PaceCalculator.cs" />
     <Compile Include="Helpers\PeakDuration.cs" />
     <Compile Include="Helpers\TrainingLoad.cs" />
@@ -338,6 +340,7 @@
     <Compile Include="Models\Dto\SportSummaryDto.cs" />
     <Compile Include="Models\Dto\TimeDistanceBySportDto.cs" />
     <Compile Include="Models\Dto\WeightByDayDto.cs" />
+    <Compile Include="Models\Dto\ZoneValueBase.cs" />
     <Compile Include="Models\Dto\ZoneValueDto.cs" />
     <Compile Include="Models\FitbitUser.cs" />
     <Compile Include="Data\GenericRepository.cs" />
@@ -510,7 +513,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <Compile Include="Models\Dto\ActivityAnalyticsDto.cs" />
+    <Compile Include="Helpers\Analytics\ActivityAnalytics.cs" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

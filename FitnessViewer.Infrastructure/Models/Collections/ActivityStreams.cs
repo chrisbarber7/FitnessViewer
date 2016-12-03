@@ -11,6 +11,7 @@ using FitnessViewer.Infrastructure.Helpers.Conversions;
 using static FitnessViewer.Infrastructure.Models.Dto.ActivityMinMaxDto;
 using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.Helpers.Analytics;
 
 namespace FitnessViewer.Infrastructure.Models.Collections
 {
@@ -238,19 +239,19 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         /// Create Activity Analytics based on the activity type.
         /// </summary>
         /// <returns>Analytics</returns>
-        public ActivityAnalyticsDto GetAnalytics()
+        public ActivityAnalytics GetAnalytics()
         {
             if (!IsValid())
-                return ActivityAnalyticsDto.EmptyStream();
+                return ActivityAnalytics.EmptyStream();
 
             if (Activity.ActivityType.IsRide)
-                return ActivityAnalyticsDto.RideCreateFromPowerStream(Stream, 295);
+                return ActivityAnalytics.RideCreateFromPowerStream(Stream, 295);
             else if (Activity.ActivityType.IsRun)
-                return ActivityAnalyticsDto.RunCreateFromPaceOrHeartRateStream(Stream.Select(w => w.Velocity).ToList(), Stream.Select(w => w.HeartRate).ToList());
+                return ActivityAnalytics.RunCreateFromPaceOrHeartRateStream(Stream.Select(w => w.Velocity).ToList(), Stream.Select(w => w.HeartRate).ToList());
             else if (Activity.ActivityType.IsSwim)
-                return ActivityAnalyticsDto.SwimCreateFromPaceStream(Stream.Select(w => w.Velocity).ToList());
+                return ActivityAnalytics.SwimCreateFromPaceStream(Stream.Select(w => w.Velocity).ToList());
             else
-                return ActivityAnalyticsDto.OtherUnknown();
+                return ActivityAnalytics.OtherUnknown();
         }
 
 

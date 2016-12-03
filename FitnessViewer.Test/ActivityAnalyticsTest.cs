@@ -5,6 +5,7 @@ using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
 using System;
+using FitnessViewer.Infrastructure.Helpers.Analytics;
 
 namespace FitnessViewer.Test
 {
@@ -29,7 +30,7 @@ namespace FitnessViewer.Test
                     testData.Add(200);
 
             Assert.AreEqual(4000, testData.Count);
-            ActivityAnalytics cal = new ActivityAnalytics(testData, 295);
+            BikePower cal = new BikePower(testData, 295);
             Assert.AreEqual(200.241M, cal.NP());
         }
 
@@ -48,7 +49,7 @@ namespace FitnessViewer.Test
 
             Assert.AreEqual(60*60, testData.Count);
 
-            ActivityAnalytics cal = new ActivityAnalytics(testData,ftp);
+            BikePower cal = new BikePower(testData,ftp);
             Assert.AreEqual(ftp, cal.NP());
             Assert.AreEqual(100, cal.TSS());
             Assert.AreEqual(1.00M, cal.IntensityFactor());
@@ -65,7 +66,7 @@ namespace FitnessViewer.Test
             List<int> testData = FindPeakTest.GetActivityPowerStream();
             
             // results rounded to match values shown on Training Peaks.
-            ActivityAnalytics cal = new ActivityAnalytics(testData, ftp);
+            BikePower cal = new BikePower(testData, ftp);
             Assert.AreEqual(227, Math.Round(cal.NP(), 0));
             Assert.AreEqual(52.8M, Math.Round(cal.TSS(), 1));
             Assert.AreEqual(0.77M, Math.Round(cal.IntensityFactor(), 2));

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers.Analytics;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
@@ -21,7 +22,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public List<MinMaxAve> StreamSummary { get; private set; }
         public TimeSpan Time { get; private set; }
-        public ActivityAnalyticsDto Analytics {get; private set;}
+        public ActivityAnalytics Analytics {get; private set;}
         public string Label { get; set; }
         public string WattsPerKg { get; private set; }
         public string Distance { get; private set; }

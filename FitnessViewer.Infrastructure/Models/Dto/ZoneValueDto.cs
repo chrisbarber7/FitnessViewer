@@ -3,13 +3,9 @@ using System;
 
 namespace FitnessViewer.Infrastructure.Models.Dto
 {
-    public class ZoneValueDto
+    public class ZoneValueDto : ZoneValueBase
     {
-        public ZoneType ZoneType { get; set; }
-        public string ZoneName { get; set; }
-        public int StartValue { get; set; }
-        public int EndValue { get; set; }
-        public int DurationInSeconds { get; set; }
+   
 
         // percentage of overall activity spent in this zone.
         public decimal PercentageInZone { get; set; }
