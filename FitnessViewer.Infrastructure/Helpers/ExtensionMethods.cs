@@ -48,6 +48,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             return Distance.MetersToFeet(Convert.ToDecimal(distanceInMetres));
         }
+
+        /// <summary>
+        ///  Format TimeSpan/Duration as MM:SS
+        /// </summary>
+        /// <param name="duration">Time</param>
+        /// <returns>Time formatted as MM:SS</returns>
+        public static string ToMinSec(this TimeSpan duration)
+        {
+            return string.Format("{0}:{1}", duration.Minutes.ToString().PadLeft(2, '0'), duration.Seconds.ToString().PadLeft(2, '0'));
+        }
     }
 }
 
