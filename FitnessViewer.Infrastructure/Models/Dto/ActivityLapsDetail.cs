@@ -40,6 +40,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             {
                 m.HeartRateZones = zones.GetZoneValues(ZoneType.RunHeartRate);
                 m.RunPaceZones = zones.GetZoneValues(ZoneType.RunPace);
+                m.PaceByDistance = repo.GetBestEffort(fvActivity.Id);
 
             }
             else if (m.IsRide)
@@ -79,7 +80,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<LapDto> Power { get; set; }
         public IEnumerable<LapDto> HeartRate { get; set; }
         public IEnumerable<LapDto> Cadence { get; set; }
-
+        public IEnumerable<LapDto> PaceByDistance { get; set; }
+            
    
 
         public IEnumerable<ZoneValueDto> PowerZones { get; set; }

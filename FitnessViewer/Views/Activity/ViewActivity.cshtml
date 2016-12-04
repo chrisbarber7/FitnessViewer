@@ -98,6 +98,9 @@ else
                         <li>
                             <a href="#cadenceTabData" data-toggle="tab">Cadence</a>
                         </li>
+                        <li>
+                            <a href="#paceTabData" data-toggle="tab">Pace</a>
+                        </li>
                     </ul>
                     <div class="tab-content clearfix">
                         <div class="tab-pane active" id="lapTabData">
@@ -143,6 +146,17 @@ else
                             else
                             {
                                 <span>Activity has no cadence information.</span>
+                            }
+                        </div>
+                        <div class="tab-pane" id="paceTabData">
+                            @if (Model.PaceByDistance != null && Model.PaceByDistance.Count() > 0)
+                            {
+
+                                { Html.RenderPartial("_LapInformation", Model.PaceByDistance); }
+                            }
+                            else
+                            {
+                                <span>Activity has no pace by distance information.</span>
                             }
                         </div>
                     </div>

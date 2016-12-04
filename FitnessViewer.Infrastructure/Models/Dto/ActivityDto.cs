@@ -46,8 +46,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             {
                 if (IsRun)
                 {
-                    var averagePace = PaceCalculator.RunMinuteMiles(Distance, MovingTime);
-                    return string.Format("{0}:{1}", averagePace.Minutes.ToString().PadLeft(2, '0'), averagePace.Seconds.ToString().PadLeft(2, '0'));
+                    return PaceCalculator.RunMinuteMiles(Distance, MovingTime).ToMinSec();
                 }
                 else if (IsSwim)
                 {

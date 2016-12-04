@@ -15,6 +15,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         private string _userId;
         private List<ActivityDto> _summaryActivities;
         private TrainingLoad _trainingLoad;
+        private RunningTimesDtoRepository _timesRepo;
 
         public AthleteDashboardDto(IUnitOfWork uow, string userId)
         {
@@ -35,7 +36,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             ApplicationDb context = new ApplicationDb();
 
             PeaksDtoRepository peaksRepo = new PeaksDtoRepository(context);
-            RunningTimesDtoRepository timesRepo = new RunningTimesDtoRepository(context);
+            _timesRepo = new RunningTimesDtoRepository(context);
             ActivityDtoRepository activityRepo = new ActivityDtoRepository(context);
             WeightByDayDtoRepository weightRepo = new WeightByDayDtoRepository(context);
 
@@ -43,7 +44,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
              _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, "All", DateTime.Now.AddDays(-90), DateTime.Now).ToList();
 
             PowerPeaks = peaksRepo.GetPeaks(_userId, PeakStreamType.Power);
-            RunningTime = timesRepo.GetBestTimes(_userId);
+            RunningTime = _timesRepo.GetBestTimes(_userId);
             CurrentWeight = weightRepo.GetMetricDetails(_userId, MetricType.Weight, 1)[0];
             RecentActivity = activityRepo.GetRecentActivity(_summaryActivities, 7);
 
@@ -163,6 +164,25 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             {
                 activities = _summaryActivities.Where(r => r.IsRun && r.Start >= start && r.Start <= end).ToList();
                 sportSummary.IsRun = true;
+
+                var bestEfforts = _timesRepo.GetBestTimes(_userId, start, end);
+
+                var OneKm = bestEfforts.Where(b => b.Distance == 1000).FirstOrDefault();
+                if (OneKm != null)
+                sportSummary.Peak1 = new KeyValuePair<string, string>(OneKm.DistanceName, OneKm.AveragePace.ToMinSec());
+
+                var OneMile = bestEfforts.Where(b => b.Distance == 1609).FirstOrDefault();
+                if (OneMile != null)
+                    sportSummary.Peak2 = new KeyValuePair<string, string>(OneMile.DistanceName, OneMile.AveragePace.ToMinSec());
+
+                var FiveKm = bestEfforts.Where(b => b.Distance == 5000).FirstOrDefault();
+                if (FiveKm != null)
+                    sportSummary.Peak3 = new KeyValuePair<string, string>(FiveKm.DistanceName, FiveKm.AveragePace.ToMinSec());
+
+                var TenKm = bestEfforts.Where(b => b.Distance == 10000).FirstOrDefault();
+                if (TenKm != null)
+                    sportSummary.Peak2 = new KeyValuePair<string, string>(TenKm.DistanceName, TenKm.AveragePace.ToMinSec());
+
             }
             else if (sport == "Swim")
             {

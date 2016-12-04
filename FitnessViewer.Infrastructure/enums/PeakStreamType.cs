@@ -16,7 +16,8 @@ namespace FitnessViewer.Infrastructure.enums
         Cadence = 3,
         Lap = 4,
         Speed = 5,
-        Elevation = 6
+        Elevation = 6,
+        PaceByDistance = 7
     }
 }
 

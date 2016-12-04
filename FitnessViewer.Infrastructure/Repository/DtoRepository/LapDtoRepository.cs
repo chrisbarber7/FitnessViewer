@@ -55,7 +55,28 @@ namespace FitnessViewer.Infrastructure.Repository
             return result;
         }
 
+        internal IEnumerable<LapDto> GetBestEffort(long id)
+        {
+            var results = _context.BestEffort
+                .Include(b=>b.Activity)
+                .Where(b => b.ActivityId == id)
+                .OrderBy(b => b.Distance)
+                .ToList();
 
+            return results.Select(l => new LapDto
+            {
+                Id = l.Id,
+                Type = PeakStreamType.PaceByDistance,
+                Selected = false,
+                Name = l.Name,
+                Value = PaceCalculator.RunMinuteMiles(l.Distance, l.ElapsedTime).ToMinSec(),
+                StartIndex = l.StartIndex,
+                EndIndex = l.EndIndex,
+                StreamStep = l.Activity.StreamStep,
+                SteppedStartIndex = l.StartIndex / l.Activity.StreamStep,
+                SteppedEndIndex = l.EndIndex / l.Activity.StreamStep,
+            }).ToList();
+        }
 
         public IEnumerable<LapDto> GetLaps(long activityId)
         {
