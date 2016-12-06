@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" type="text/css" href="~/Content/settings.css" />
 <div class="col-sm-3 col-md-2">
     <ul>
         <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
@@ -16,3 +17,10 @@
 <div class="col-sm-9 col-md-10">
     @RenderBody()
 </div>
+@section ViewJavaScript
+{
+    <script type="text/javascript" src="~/Scripts/app/Controllers/settingsController.js"></script>
+    <script type="text/javascript">
+        settingsController.init();
+    </script>
+}

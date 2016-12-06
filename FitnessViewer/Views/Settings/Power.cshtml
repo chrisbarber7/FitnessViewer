@@ -1,8 +1,13 @@
-﻿
+﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Zone>
 @{
     ViewBag.Title = "Power";
     Layout = "~/Views/Shared/_SettingsLayout.cshtml";
 }
 
-<h2>Power</h2>
-
+<h2>FTP</h2>
+<div id="error" class="alert alert-danger Hidden">
+    <strong>Error!</strong>&nbsp;<span id="errorMessage"></span>
+</div>
+<div id="zoneGrid">
+    @{Html.RenderPartial("_zoneGrid", Model); }
+</div>

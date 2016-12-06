@@ -1,0 +1,39 @@
+﻿@model IEnumerable<FitnessViewer.Infrastructure.Models.Zone>
+<div class="table-responsive">
+    <table class="table   table-condensed powerGrid">
+        <tr>
+            <th class="powerGridId">Date</th>
+            <th class="powerGridWatts">Watts</th>
+            <th class="powerGridOptions"></th>
+        </tr>
+        @foreach (var p in Model)
+        {
+            <tr data-id="@p.Id" class="@(p.Id == int.MaxValue ? "Hidden" : "VisibleRow")">
+                <td>
+                    <div id="dateView"> @p.StartDate.ToShortDateString()</div>
+                    <input type="date" id="dateEdit_@(p.Id)" class="Hidden" value="@p.StartDate.Year-@p.StartDate.Month.ToString().PadLeft(2, '0')-@p.StartDate.Day.ToString().PadLeft(2, '0')" />
+                </td>
+                <td>
+                    <div id="valueView">@p.Value</div>
+                    <input type="number" id="valueEdit_@(p.Id)" class="Hidden" value="@p.Value" />
+                </td>
+                <td>
+                    <a href="#" id="edit" title="Edit">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="#" id="delete" title="Delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                    <a href="#" id="save" class="Hidden" title="Save">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+                    <a href="#" id="cancel" class="Hidden" title="Cancel Edit">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+    <button type="button" id="add" class="btn btn-primary">Add New</button>
+</div>
+

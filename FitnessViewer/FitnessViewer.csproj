@@ -444,6 +444,12 @@
     <Content Include="Content\Images\Strava\btn_strava_connectwith_light.png" />
     <Content Include="Content\Images\Strava\btn_strava_connectwith_orange.png" />
     <Content Include="Content\Images\Strava\ConnectWithStrava.png" />
+    <Content Include="Content\settings.css">
+      <DependentUpon>settings.less</DependentUpon>
+    </Content>
+    <Content Include="Content\settings.min.css">
+      <DependentUpon>settings.css</DependentUpon>
+    </Content>
     <Content Include="Content\Site.css">
       <DependentUpon>Site.less</DependentUpon>
     </Content>
@@ -458,6 +464,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="Content\fonts.less" />
+    <Content Include="Content\settings.less" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
@@ -483,6 +490,7 @@
     <Content Include="Scripts\app\Controllers\activityTableController.js" />
     <Content Include="Scripts\app\Controllers\dashboardController.js" />
     <Content Include="Scripts\app\Controllers\metricsIndexController.js" />
+    <Content Include="Scripts\app\Controllers\settingsController.js" />
     <Content Include="Scripts\app\Controllers\ViewActivityController.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -641,6 +649,7 @@
     <Content Include="Views\Activity\_ZoneInformation.cshtml" />
     <Content Include="Views\Activity\_LapInformation.cshtml" />
     <Content Include="Views\Activity\_Edit.cshtml" />
+    <Content Include="Views\Settings\_zoneGrid.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

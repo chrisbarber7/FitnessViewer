@@ -216,3 +216,9 @@ h6,
   background-color: #E7EFF6;
   font-size: 18px;
 }
+.VisibleRow {
+  display: table-row;
+}
+.Hidden {
+  display: none;
+}

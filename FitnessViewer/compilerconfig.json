@@ -10,5 +10,9 @@
   {
     "outputFile": "Content/activityLeaflet.css",
     "inputFile": "Content/activityLeaflet.less"
+  },
+  {
+    "outputFile": "Content/settings.css",
+    "inputFile": "Content/settings.less"
   }
 ]
