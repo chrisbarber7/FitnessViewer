@@ -69,15 +69,15 @@ else
             <div class="col-md-12">
                 <canvas id="chartActivity" width="800" height="400"></canvas>
             </div>
-       
-                @if (Model.HasPowerMeter)
+
+            @if (Model.HasPowerMeter)
                 {
-                    <div class="col-md-12">
-                        Power Curve
-                        <canvas id="chartPowerCurve" width="800" height="400"></canvas>
-                    </div>
-                }
-              
+                <div class="col-md-12">
+                    Power Curve
+                    <canvas id="chartPowerCurve" width="800" height="400"></canvas>
+                </div>
+            }
+
         </div>
         <div class="col-md-4">
             <div class="col-md-12">
@@ -94,18 +94,30 @@ else
                         <li class="active">
                             <a href="#lapTabData" data-toggle="tab">Lap</a>
                         </li>
-                        <li>
-                            <a href="#powerTabData" data-toggle="tab">Power</a>
-                        </li>
-                        <li>
-                            <a href="#heartTabData" data-toggle="tab">Heart</a>
-                        </li>
-                        <li>
-                            <a href="#cadenceTabData" data-toggle="tab">Cadence</a>
-                        </li>
-                        <li>
-                            <a href="#paceTabData" data-toggle="tab">Pace</a>
-                        </li>
+                        @if (Model.Power != null && Model.Power.Count() > 0)
+                        {
+                            <li>
+                                <a href="#powerTabData" data-toggle="tab">Power</a>
+                            </li>
+                        }
+                        @if (Model.HeartRate != null && Model.HeartRate.Count() > 0)
+                        {
+                            <li>
+                                <a href="#heartTabData" data-toggle="tab">Heart</a>
+                            </li>
+                        }
+                        @if (Model.Cadence != null && Model.Cadence.Count() > 0)
+                        {
+                            <li>
+                                <a href="#cadenceTabData" data-toggle="tab">Cadence</a>
+                            </li>
+                        }
+                        @if (Model.PaceByDistance != null && Model.PaceByDistance.Count() > 0)
+                        {
+                            <li>
+                                <a href="#paceTabData" data-toggle="tab">Pace</a>
+                            </li>
+                        }
                     </ul>
                     <div class="tab-content clearfix">
                         <div class="tab-pane active" id="lapTabData">
