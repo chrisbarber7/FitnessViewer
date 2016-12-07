@@ -1,4 +1,7 @@
-﻿.powerGrid{
+﻿@import "colours.less";
+@import "fonts.less";
+
+.powerGrid{
     width:75%;
 }
 
@@ -12,3 +15,44 @@
 .powerGridOptions{
     width:20%
 }
+
+.sideBar{
+      margin-top: 24px;
+}
+.sideBar > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color:#ffffff;
+    border: 1px solid @gridlines;
+
+}
+
+.sideBar > ul > li  {
+border-bottom: 1px solid @gridlines;
+}
+
+.sideBar > ul >li:last-child {
+    border:none;
+}
+
+.sideBar > ul > li > a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+      /*border: 1px solid #ccc;*/
+}
+.sideBar > ul > li >  a.header {
+  background-color: @data-background;
+  color: @banner-background;
+}
+
+.sideBar > ul > li >  a.active {
+  background-color: @background;
+  color: @reverse-text;
+}
+.sideBar > ul > li > a:hover:not(.header):not(.active) {
+  background-color: @banner-background;
+  color: white;
+}
+

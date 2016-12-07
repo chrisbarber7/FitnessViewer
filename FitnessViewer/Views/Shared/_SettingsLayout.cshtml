@@ -5,14 +5,22 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/settings.css" />
 <div class="col-sm-3 col-md-2">
-    <ul>
-        <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
-        <li>@Html.ActionLink("Bike Power Zones", "Power", "Settings")</li>
-        <li>@Html.ActionLink("Run Pace Zones", "Pace", "Settings")</li>
-        <li>@Html.ActionLink("Bike Heart Rate Zones", "HeartRate/Bike", "Settings")</li>
-        <li>@Html.ActionLink("Run Heart Rate Zones", "HeartRate/Run", "Settings")</li>
-    </ul>
+    <div class="sideBar">
+        <ul id="settingsMenu">
+            <li>@Html.ActionLink("Home", "Dashboard", "Athlete", new { @class = "header" })</li>
+            <li>@Html.ActionLink("Preferences", "Index", "Settings")</li>
+            <li><a href="#" class="header">Bike</a></li>
+            <li>@Html.ActionLink("FTP", "BikeFTP", "Settings")</li>
+            <li>@Html.ActionLink("Power Zones", "BikePower", "Settings")</li>
+            <li>@Html.ActionLink("Heart Rate Zones", "BikeHeartRate", "Settings")</li>
+            <li><a href="#" class="header">Run</a></li>
+            <li>@Html.ActionLink("Pace Zones", "RunPace", "Settings", new { sport = "Run" }, null)</li>
+            <li>@Html.ActionLink("Heart Rate Zones", "RunHeartRate", "Settings")</li>
+            <li><a href="#" class="header">Swim</a></li>
 
+            <li>@Html.ActionLink("Pace Zones", "SwimPace", "Settings", new { sport = "Swim" }, null)</li>
+        </ul>
+    </div>
 </div>
 <div class="col-sm-9 col-md-10">
     @RenderBody()

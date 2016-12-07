@@ -643,13 +643,16 @@
     <Content Include="Views\Metrics\AddHRV.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Shared\_SettingsLayout.cshtml" />
-    <Content Include="Views\Settings\Power.cshtml" />
-    <Content Include="Views\Settings\Pace.cshtml" />
-    <Content Include="Views\Settings\HeartRate.cshtml" />
+    <Content Include="Views\Settings\BikeFTP.cshtml" />
     <Content Include="Views\Activity\_ZoneInformation.cshtml" />
     <Content Include="Views\Activity\_LapInformation.cshtml" />
     <Content Include="Views\Activity\_Edit.cshtml" />
     <Content Include="Views\Settings\_zoneGrid.cshtml" />
+    <None Include="Views\Settings\BikePower.cshtml" />
+    <Content Include="Views\Settings\BikeHeartRate.cshtml" />
+    <Content Include="Views\Settings\RunPace.cshtml" />
+    <Content Include="Views\Settings\RunHeartRate.cshtml" />
+    <Content Include="Views\Settings\SwimPace.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

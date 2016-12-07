@@ -68,10 +68,34 @@ namespace FitnessViewer.Controllers
             }
         }
 
-        public ActionResult Power()
+        public ActionResult BikeFTP()
         {
   
             return View(GetPowerZoneInformation());
+        }
+
+        public ActionResult BikePower()
+        {
+            return View();
+        }
+
+        public ActionResult BikeHeartRate()
+        {
+            return View();
+        }
+
+        public ActionResult RunHeartRate()
+        {
+            return View();
+        }
+        public ActionResult RunPace()
+        {
+            return View();
+        }
+
+        public ActionResult SwimPace()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -94,17 +118,6 @@ namespace FitnessViewer.Controllers
             });
 
             return power.OrderBy(a => a.StartDate).ToList();
-        }
-
-
-        public ActionResult Pace()
-        {
-            return View();
-        }
-
-        public ActionResult HeartRate(string sport)
-        {
-            return View();
         }
     }
 }

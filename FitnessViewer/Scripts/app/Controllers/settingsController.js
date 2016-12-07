@@ -92,6 +92,10 @@
             //settingsController.init();
             location.reload();
         };
+
+        // ensure correct menu item is highlighted
+        var location = window.location.pathname;
+        $("#settingsMenu li a[href$='" + location + "']").addClass("active");
     };
     return {
         init: init

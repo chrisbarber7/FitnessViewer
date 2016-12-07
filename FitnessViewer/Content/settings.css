@@ -1,4 +1,13 @@
-﻿.powerGrid {
+﻿/* https://coolors.co/955E42-0057a1-955e42-873d48-dc758f */
+.SmallText {
+  font-weight: 400;
+  font-size: 11px;
+}
+.SmallTextHeavy {
+  font-weight: 700;
+  font-size: 11px;
+}
+.powerGrid {
   width: 75%;
 }
 .powerGridId {
@@ -9,4 +18,38 @@
 }
 .powerGridOptions {
   width: 20%;
+}
+.sideBar {
+  margin-top: 24px;
+}
+.sideBar > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+}
+.sideBar > ul > li {
+  border-bottom: 1px solid #ccc;
+}
+.sideBar > ul > li:last-child {
+  border: none;
+}
+.sideBar > ul > li > a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  /*border: 1px solid #ccc;*/
+}
+.sideBar > ul > li > a.header {
+  background-color: #B9D1E5;
+  color: #00182C;
+}
+.sideBar > ul > li > a.active {
+  background-color: #0057a1;
+  color: #ffffff;
+}
+.sideBar > ul > li > a:hover:not(.header):not(.active) {
+  background-color: #00182C;
+  color: white;
 }
