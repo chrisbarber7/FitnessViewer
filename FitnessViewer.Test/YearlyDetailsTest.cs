@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Helpers;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Intefaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -30,7 +31,7 @@ namespace FitnessViewer.Test
             ytd.Calculate();
 
             // each day in May has a distance so max sequence should equal days in the May (31).
-            Assert.AreEqual(31, ytd.MaxSequence("Ride", 2016));
+            Assert.AreEqual(31, ytd.MaxSequence(SportType.Ride, 2016));
 
             // Test data has rows for each day in 2016.  Disance is zero for all days bar May.  May has a distance equal to the day
             // of the month.  
@@ -66,7 +67,7 @@ namespace FitnessViewer.Test
                 if (d.Month == 5)
                     distance = 1000;
 
-                results.Add(new YearlyDetailsDayInfo() { Date = d, Sport = "Ride", Distance=distance });
+                results.Add(new YearlyDetailsDayInfo() { Date = d, Sport = SportType.Ride, Distance=distance });
             }
 
             var mock = new Mock<IActivityDtoRepository>();

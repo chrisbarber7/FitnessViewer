@@ -1,13 +1,15 @@
-﻿using FitnessViewer.Infrastructure.Helpers.Conversions;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers.Conversions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
-   public static class ExtensionMethods
+    public static class ExtensionMethods
     {
         /// <summary>
         /// Convert a distance in meters to a distance in miles.
@@ -58,6 +60,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             return string.Format("{0}:{1}", duration.Minutes.ToString().PadLeft(2, '0'), duration.Seconds.ToString().PadLeft(2, '0'));
         }
+
+        /// <summary>
+        /// Get sport type as a string.
+        /// </summary>
+        /// <param name="sport">SportType enum to convert</param>
+        /// <returns>SportType as a string</returns>
+        public static string ToString(this SportType sport)
+        {
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])sport.GetType().GetField(sport.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+        }
     }
 }
-

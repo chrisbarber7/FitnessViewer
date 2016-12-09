@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessViewer.Infrastructure.enums;
+using System;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -11,7 +12,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             Sequence = 0;
         }
         public DateTime Date { get; set; }
-        public string Sport { get; set; }
+        public SportType Sport { get; set; }
         public decimal Distance { get; set; }
         public decimal YTDDistance { get; set; }
         public int Sequence { get; set; }

@@ -149,6 +149,7 @@
     <Compile Include="enums\MetricType.cs" />
     <Compile Include="enums\NotificationType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
+    <Compile Include="enums\SportType.cs" />
     <Compile Include="enums\StreamType.cs" />
     <Compile Include="enums\ZoneType.cs" />
     <Compile Include="Helpers\ActivityWeight.cs" />

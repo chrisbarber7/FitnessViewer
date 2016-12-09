@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Intefaces;
 using FitnessViewer.Infrastructure.Models;
@@ -112,26 +113,26 @@ namespace FitnessViewer.Infrastructure.Repository
             return _context.Activity
                       .Where(c => c.ActivityType.IsRide && c.Athlete.UserId == userId && year == null ? true : c.StartDate.Year == year.Value)
                       .GroupBy(c => new { Date = c.Start })
-                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = "Ride", Distance = a.Sum(g => g.Distance) })
+                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = SportType.Ride, Distance = a.Sum(g => g.Distance) })
                    .Union(
 
                   _context.Activity
                       .Where(c => c.ActivityType.IsRun && c.Athlete.UserId == userId && year == null ? true : c.StartDate.Year == year.Value)
                       .GroupBy(c => new { Date = c.Start })
-                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = "Run", Distance = a.Sum(g => g.Distance) })
+                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = SportType.Run, Distance = a.Sum(g => g.Distance) })
                   )
                   .Union(
                     _context.Activity
                       .Where(c => c.ActivityType.IsSwim && c.Athlete.UserId == userId && year == null ? true : c.StartDate.Year == year.Value)
                       .GroupBy(c => new { Date = c.Start })
-                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = "Swim", Distance = a.Sum(g => g.Distance) })
+                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = SportType.Swim, Distance = a.Sum(g => g.Distance) })
                   )
                   .Union
               (
                     _context.Activity
                       .Where(c => c.ActivityType.IsOther && c.Athlete.UserId == userId && year == null ? true : c.StartDate.Year == year.Value)
                       .GroupBy(c => new { Date = c.Start })
-                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = "Other", Distance = a.Sum(g => g.Distance) })
+                      .Select(a => new YearlyDetailsDayInfo { Date = a.Key.Date, Sport = SportType.Other, Distance = a.Sum(g => g.Distance) })
                   )
                   .ToList();
         }

@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Intefaces;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Intefaces;
 using FitnessViewer.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
@@ -59,10 +60,10 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         private void AddMissingDays()
         {
-            AddMissingDays("Ride");
-            AddMissingDays("Run");
-            AddMissingDays("Swim");
-            AddMissingDays("Other");
+            AddMissingDays(SportType.Ride);
+            AddMissingDays(SportType.Run);
+            AddMissingDays(SportType.Swim);
+            AddMissingDays(SportType.Other);
             //List<YearToDateDayInfo> allDatesRide = new List<YearToDateDayInfo>();
             //List<YearToDateDayInfo> allDatesRun = new List<YearToDateDayInfo>();
             //List<YearToDateDayInfo> allDatesSwim = new List<YearToDateDayInfo>();
@@ -88,7 +89,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <summary>
         /// Add any missing days which have no activities for a given sport.
         /// </summary>
-        private void AddMissingDays(string sport)
+        private void AddMissingDays(SportType sport)
         {
         //    List<YearToDateDayInfo> addDates = new List<YearToDateDayInfo>();
         //    List<YearToDateDayInfo> allDatesRun = new List<YearToDateDayInfo>();
@@ -119,17 +120,17 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         public void Calculate()
         {
-            Calculate("Ride");
-            Calculate("Run");
-            Calculate("Swim");
-            Calculate("Other");
+            Calculate(SportType.Ride);
+            Calculate(SportType.Run);
+            Calculate(SportType.Swim);
+            Calculate(SportType.Other);
         }
 
         /// <summary>
         /// Calculate Daily information for a given sport.
         /// </summary>
         /// <param name="sport"></param>
-        private void Calculate(string sport)
+        private void Calculate(SportType sport)
         { 
 
             int sequence = 0;
@@ -156,10 +157,10 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="sport"></param>
         /// <param name="year"></param>
         /// <returns></returns>
-        public int MaxSequence(string sport, int? year)
+        public int MaxSequence(SportType sport, int? year)
         {
            return _details
-                .Where(a => string.IsNullOrEmpty(sport) ? true : a.Sport == sport && year == null ? true : a.Date.Year == year.Value)
+                .Where(a => sport == SportType.All ? true : a.Sport == sport && year == null ? true : a.Date.Year == year.Value)
                 .Max(a => a.Sequence);
             
         }
