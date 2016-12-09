@@ -16,6 +16,7 @@ namespace FitnessViewer.Test
 
         private DateTime _startActualValues;
         private DateTime _endActualValues;
+        private const string USER_ID = "uid";
 
         [TestInitialize]
         public void Setup()
@@ -32,7 +33,7 @@ namespace FitnessViewer.Test
         public void CreateAndInitialiseInvalidDates()
         {
             TrainingLoad pmc = new TrainingLoad();
-            pmc.Setup("uid", DateTime.Now, DateTime.Now.AddDays(-1));
+            pmc.Setup(USER_ID, DateTime.Now, DateTime.Now.AddDays(-1));
         }
 
         [TestMethod]
@@ -40,7 +41,7 @@ namespace FitnessViewer.Test
         public void CreateAndInitialiseValidDates()
         {
             TrainingLoad pmc = new TrainingLoad();
-            pmc.Setup("uid", _startContantValues, _endConstantValues);
+            pmc.Setup(USER_ID, _startContantValues, _endConstantValues);
       
             // test start and end dates exist. 
             Assert.IsNotNull(pmc.DayValues.Where(d => d.Date == _startContantValues).FirstOrDefault());
@@ -58,7 +59,7 @@ namespace FitnessViewer.Test
             Mock<IActivityDtoRepository> mock = Constant100TSSDaily();
 
             TrainingLoad pmc = new TrainingLoad(mock.Object);
-            pmc.Setup("uid", _startContantValues, _endConstantValues);
+            pmc.Setup(USER_ID, _startContantValues, _endConstantValues);
             pmc.Calculate("Ride");
 
             // check TSS values are populated correctly.
@@ -73,7 +74,7 @@ namespace FitnessViewer.Test
             Mock<IActivityDtoRepository> mock = Constant100TSSDaily();
 
             TrainingLoad pmc = new TrainingLoad(mock.Object);
-            pmc.Setup("uid", _startContantValues, _endConstantValues);
+            pmc.Setup(USER_ID, _startContantValues, _endConstantValues);
             pmc.Calculate("Ride");
 
             Assert.AreEqual(13.31M, pmc.DayValues.Where(d => d.Date == _startContantValues).Select(d => d.ShortTermLoad).FirstOrDefault());
@@ -215,7 +216,7 @@ namespace FitnessViewer.Test
 
             TrainingLoad pmc = new TrainingLoad(mock.Object);
 
-            pmc.Setup("uid", _startActualValues, _endActualValues);
+            pmc.Setup(USER_ID, _startActualValues, _endActualValues);
             pmc.ShortTermSeed = 47.2M;
             pmc.LongTermSeed = 46.7M;
             pmc.ShortTermDays = 6.5;
@@ -323,7 +324,7 @@ namespace FitnessViewer.Test
 
             var mock = new Mock<IActivityDtoRepository>();
 
-            mock.Setup(x => x.GetDailyTSS("uid", "Ride", _startContantValues, _endConstantValues))
+            mock.Setup(x => x.GetDailyTSS(USER_ID, "Ride", _startContantValues, _endConstantValues))
                              .Returns(results);
 
             return mock;
@@ -436,7 +437,7 @@ namespace FitnessViewer.Test
 
             var mock = new Mock<IActivityDtoRepository>();
 
-            mock.Setup(x => x.GetDailyTSS("uid", "Ride", _startActualValues, _endActualValues))
+            mock.Setup(x => x.GetDailyTSS(USER_ID, "Ride", _startActualValues, _endActualValues))
                              .Returns(results);
 
             return mock;
