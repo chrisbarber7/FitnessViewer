@@ -88,6 +88,7 @@
     <Compile Include="AutoMapperTest.cs" />
     <Compile Include="FitbitConvert.cs" />
     <Compile Include="TrainingLoadTest.cs" />
+    <Compile Include="YearlyDetailsTest.cs" />
     <Compile Include="ZoneTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -175,6 +176,8 @@
     <Compile Include="Helpers\StravaUpdate.cs" />
     <Compile Include="Helpers\StreamTypeHelper.cs" />
     <Compile Include="Helpers\UserZones.cs" />
+    <Compile Include="Helpers\YearlyDetails.cs" />
+    <Compile Include="Helpers\YearlyDetailsDayInfo.cs" />
     <Compile Include="Interfaces\IActivityEntity.cs" />
     <Compile Include="Interfaces\IApplicationDB.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
