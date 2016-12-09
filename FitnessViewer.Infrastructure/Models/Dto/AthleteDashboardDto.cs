@@ -181,7 +181,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
                 var TenKm = bestEfforts.Where(b => b.Distance == 10000).FirstOrDefault();
                 if (TenKm != null)
-                    sportSummary.Peak2 = new KeyValuePair<string, string>(TenKm.DistanceName, TenKm.AveragePace.ToMinSec());
+                    sportSummary.Peak4 = new KeyValuePair<string, string>(TenKm.DistanceName, TenKm.AveragePace.ToMinSec());
 
             }
             else if (sport == "Swim")
