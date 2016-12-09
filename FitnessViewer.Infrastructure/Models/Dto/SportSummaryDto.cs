@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Helpers;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public decimal Distance { get; set; }
         public TimeSpan Duration { get; set; }
-        public string Sport { get; set; }
+        public SportType Sport { get; set; }
         public int SufferScore { get; set; }
         public decimal Calories { get; set; }
         public decimal ElevationGain { get; set; }
@@ -58,7 +59,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         {
             get
             {
-                if (Sport == "Swim")
+                if (Sport == SportType.Swim)
                 {
                     if (Distance >= 10000)
                         return string.Format("{0}km", Math.Round(Distance / 1000, 1).ToString());

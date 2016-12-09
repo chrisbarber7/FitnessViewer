@@ -33,7 +33,7 @@ namespace FitnessViewer.Infrastructure.Repository
         /// <param name="start">Beginning of date range</param>
         /// <param name="end">End of date range</param>
         /// <returns></returns>
-        public IQueryable<ActivityDto> GetSportSummaryQuery(string userId, string sport, DateTime start, DateTime end)
+        public IQueryable<ActivityDto> GetSportSummaryQuery(string userId, SportType sport, DateTime start, DateTime end)
         {
             ActivityRepository activityRepo = new ActivityRepository(_context);
             
@@ -94,7 +94,7 @@ namespace FitnessViewer.Infrastructure.Repository
                  .ToList();
         }
         
-        public List<KeyValuePair<DateTime, decimal>> GetDailyTSS(string userId, string sport, DateTime start, DateTime end)
+        public List<KeyValuePair<DateTime, decimal>> GetDailyTSS(string userId, SportType sport, DateTime start, DateTime end)
         {
             // two select statement as can't call the KeyValuePair constructor from Linq To SQL.
             ActivityRepository activityRepo = new ActivityRepository(_context);

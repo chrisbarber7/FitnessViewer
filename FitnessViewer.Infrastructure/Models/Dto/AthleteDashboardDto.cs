@@ -41,7 +41,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             WeightByDayDtoRepository weightRepo = new WeightByDayDtoRepository(context);
 
             // get a list of activities for the past 90 days which will be used to extract various summary information details.
-             _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, "All", DateTime.Now.AddDays(-90), DateTime.Now).ToList();
+             _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, SportType.All, DateTime.Now.AddDays(-90), DateTime.Now).ToList();
 
             PowerPeaks = peaksRepo.GetPeaks(_userId, PeakStreamType.Power);
             RunningTime = _timesRepo.GetBestTimes(_userId);
@@ -53,25 +53,25 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             // need to go back the highest number of days we're interested in plus 42 days for LongTerm training load duration
             // and an extra day to get a seed value.   Add an extra day to the end to hold current form.
             _trainingLoad.Setup(_userId, DateTime.Now.AddDays(-365 - 42 - 1), DateTime.Now.AddDays(1));
-            _trainingLoad.Calculate("Ride");
+            _trainingLoad.Calculate(SportType.Ride);
 
-            Run7Day = GetSportSummary("Run", 7);
-            Bike7Day = GetSportSummary("Ride", 7);
-            Swim7Day = GetSportSummary("Swim", 7);
-            Other7Day = GetSportSummary("Other", 7);
-            All7Day = GetSportSummary("All", 7);
+            Run7Day = GetSportSummary(SportType.Run, 7);
+            Bike7Day = GetSportSummary(SportType.Ride, 7);
+            Swim7Day = GetSportSummary(SportType.Swim, 7);
+            Other7Day = GetSportSummary(SportType.Other, 7);
+            All7Day = GetSportSummary(SportType.All, 7);
 
-            Run30Day = GetSportSummary("Run", 30);
-            Bike30Day = GetSportSummary("Ride", 30);
-            Swim30Day = GetSportSummary("Swim", 30);
-            Other30Day = GetSportSummary("Other", 30);
-            All30Day = GetSportSummary("All", 30);
+            Run30Day = GetSportSummary(SportType.Run, 30);
+            Bike30Day = GetSportSummary(SportType.Ride, 30);
+            Swim30Day = GetSportSummary(SportType.Swim, 30);
+            Other30Day = GetSportSummary(SportType.Other, 30);
+            All30Day = GetSportSummary(SportType.All, 30);
 
-            Run90Day = GetSportSummary("Run", 90);
-            Bike90Day = GetSportSummary("Ride", 90);
-            Swim90Day = GetSportSummary("Swim", 90);
-            Other90Day = GetSportSummary("Other", 90);
-            All90Day = GetSportSummary("All", 90);
+            Run90Day = GetSportSummary(SportType.Run, 90);
+            Bike90Day = GetSportSummary(SportType.Ride, 90);
+            Swim90Day = GetSportSummary(SportType.Swim, 90);
+            Other90Day = GetSportSummary(SportType.Other, 90);
+            All90Day = GetSportSummary(SportType.All, 90);
 
             return true;
         }
@@ -141,7 +141,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         }
 
 
-        private SportSummaryDto GetSportSummary(string sport, int days)
+        private SportSummaryDto GetSportSummary(SportType sport, int days)
         {
             DateTime start = DateTime.Now.AddDays(days*-1).Date;
             DateTime end = DateTime.Now.Date;
@@ -150,7 +150,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
             SportSummaryDto sportSummary = new SportSummaryDto();
 
-            if (sport == "Ride")
+            if (sport == SportType.Ride)
             {
                 activities = _summaryActivities.Where(r => r.IsRide && r.Start >= start && r.Start <= end).ToList();
                 sportSummary.IsRide = true;
@@ -160,7 +160,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                 sportSummary.Peak3 = ExtractPeak(days, 1200);
                 sportSummary.Peak4 = ExtractPeak(days, 3600);
             }
-            else if (sport == "Run")
+            else if (sport == SportType.Run)
             {
                 activities = _summaryActivities.Where(r => r.IsRun && r.Start >= start && r.Start <= end).ToList();
                 sportSummary.IsRun = true;
@@ -184,12 +184,12 @@ namespace FitnessViewer.Infrastructure.Models.Dto
                     sportSummary.Peak4 = new KeyValuePair<string, string>(TenKm.DistanceName, TenKm.AveragePace.ToMinSec());
 
             }
-            else if (sport == "Swim")
+            else if (sport == SportType.Swim)
             {
                 activities = _summaryActivities.Where(r => r.IsSwim && r.Start >= start && r.Start <= end).ToList();
                 sportSummary.IsSwim = true;
             }
-            else if (sport == "Other")
+            else if (sport == SportType.Other)
             {
                 activities = _summaryActivities.Where(r => r.IsOther && r.Start >= start && r.Start <= end).ToList();
                 sportSummary.IsOther = true;

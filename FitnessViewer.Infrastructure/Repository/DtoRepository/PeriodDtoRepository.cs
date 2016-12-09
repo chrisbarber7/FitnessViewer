@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
@@ -21,7 +22,7 @@ namespace FitnessViewer.Infrastructure.Repository
             _activityrepo = new ActivityRepository(context);
         }
 
-        public IEnumerable<PeriodDto> ActivityByWeek(string userId, string activityType, DateTime start, DateTime end)
+        public IEnumerable<PeriodDto> ActivityByWeek(string userId, SportType sport, DateTime start, DateTime end)
         {
             // get list of weeks in the period (to ensure we get full weeks date where the start and/or end date may be in the 
             // middle of a week
@@ -33,7 +34,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .ToList();
 
             // get activities which fall into the selected weeks.
-            var activities = _activityrepo.ActivitiesBySport(userId, activityType)
+            var activities = _activityrepo.ActivitiesBySport(userId, sport)
                 .Where(r => r.Athlete.UserId == userId &&
                       weeks.Contains(r.Calendar.YearWeek))
                 .Select(r => new

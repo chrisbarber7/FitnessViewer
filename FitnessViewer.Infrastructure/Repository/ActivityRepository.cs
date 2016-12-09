@@ -3,6 +3,7 @@ using FitnessViewer.Infrastructure.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Data.SqlClient;
+using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
@@ -42,7 +43,7 @@ namespace FitnessViewer.Infrastructure.Repository
         
  
 
-        internal IQueryable<Activity> ActivitiesBySport(string userId, string sport)
+        internal IQueryable<Activity> ActivitiesBySport(string userId, SportType sport)
         {
             // get activities which fall into the selected weeks.
             var activitiesQuery = _context.Activity
@@ -50,13 +51,13 @@ namespace FitnessViewer.Infrastructure.Repository
                 .Include(r => r.Athlete)
                 .Where(r => r.Athlete.UserId == userId);
 
-            if (sport == "Ride")
+            if (sport == SportType.Ride)
                 return activitiesQuery.Where(r => r.ActivityType.IsRide);
-            else if (sport == "Run")
+            else if (sport == SportType.Run)
                 return activitiesQuery.Where(r => r.ActivityType.IsRun);
-            else if (sport == "Swim")
+            else if (sport == SportType.Swim)
                 return activitiesQuery.Where(r => r.ActivityType.IsSwim);
-            else if (sport == "Other")
+            else if (sport == SportType.Other)
                 return activitiesQuery.Where(r => r.ActivityType.IsOther);
             else
                 return activitiesQuery;

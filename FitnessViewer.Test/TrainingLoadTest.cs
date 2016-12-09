@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using FitnessViewer.Infrastructure.Intefaces;
 using System.Collections.Generic;
+using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Test
 {
@@ -60,7 +61,7 @@ namespace FitnessViewer.Test
 
             TrainingLoad pmc = new TrainingLoad(mock.Object);
             pmc.Setup(USER_ID, _startContantValues, _endConstantValues);
-            pmc.Calculate("Ride");
+            pmc.Calculate(SportType.Ride);
 
             // check TSS values are populated correctly.
             foreach (TrainingLoadDay day in pmc.DayValues)
@@ -75,7 +76,7 @@ namespace FitnessViewer.Test
 
             TrainingLoad pmc = new TrainingLoad(mock.Object);
             pmc.Setup(USER_ID, _startContantValues, _endConstantValues);
-            pmc.Calculate("Ride");
+            pmc.Calculate(SportType.Ride);
 
             Assert.AreEqual(13.31M, pmc.DayValues.Where(d => d.Date == _startContantValues).Select(d => d.ShortTermLoad).FirstOrDefault());
             Assert.AreEqual(24.85M, pmc.DayValues.Where(d => d.Date == _startContantValues.AddDays(1)).Select(d => d.ShortTermLoad).FirstOrDefault());
@@ -221,7 +222,7 @@ namespace FitnessViewer.Test
             pmc.LongTermSeed = 46.7M;
             pmc.ShortTermDays = 6.5;
 
-            pmc.Calculate("Ride");
+            pmc.Calculate(SportType.Ride);
 
             Assert.AreEqual(40.47M, pmc.DayValues.Where(d => d.Date == new DateTime(2016, 9, 3)).Select(d => d.ShortTermLoad).FirstOrDefault());
             Assert.AreEqual(45.60M, pmc.DayValues.Where(d => d.Date == new DateTime(2016, 9, 3)).Select(d => d.LongTermLoad).FirstOrDefault());
@@ -324,7 +325,7 @@ namespace FitnessViewer.Test
 
             var mock = new Mock<IActivityDtoRepository>();
 
-            mock.Setup(x => x.GetDailyTSS(USER_ID, "Ride", _startContantValues, _endConstantValues))
+            mock.Setup(x => x.GetDailyTSS(USER_ID, SportType.Ride, _startContantValues, _endConstantValues))
                              .Returns(results);
 
             return mock;
@@ -437,7 +438,7 @@ namespace FitnessViewer.Test
 
             var mock = new Mock<IActivityDtoRepository>();
 
-            mock.Setup(x => x.GetDailyTSS(USER_ID, "Ride", _startActualValues, _endActualValues))
+            mock.Setup(x => x.GetDailyTSS(USER_ID, SportType.Ride, _startActualValues, _endActualValues))
                              .Returns(results);
 
             return mock;

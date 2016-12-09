@@ -1,4 +1,5 @@
-﻿using FitnessViewer.Infrastructure.Intefaces;
+﻿using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Intefaces;
 using FitnessViewer.Infrastructure.Repository;
 using Newtonsoft.Json;
 using System;
@@ -114,14 +115,14 @@ namespace FitnessViewer.Infrastructure.Helpers
             InitialiseDayValues();
         }
 
-        public void Calculate(string sport)
+        public void Calculate(SportType sport)
         {
           
             PopulateDailyTSS(sport);
             Calculate();
         }
 
-        private void PopulateDailyTSS(string sport)
+        private void PopulateDailyTSS(SportType sport)
         {
             var dailyValues = _repo.GetDailyTSS(_userId, sport, _start, _end);
 

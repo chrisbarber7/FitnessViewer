@@ -158,6 +158,7 @@
     <Compile Include="Helpers\Analytics\ZoneValueOnDay.cs" />
     <Compile Include="Helpers\AzureWebJob.cs" />
     <Compile Include="Helpers\Analytics\BikePower.cs" />
+    <Compile Include="Helpers\Conversions\EnumConversion.cs" />
     <Compile Include="Helpers\Conversions\FitbitConversion.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
     <Compile Include="Helpers\DisplayLabel.cs" />

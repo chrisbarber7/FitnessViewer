@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.enums;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
@@ -30,7 +31,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 {
                     Duration = r.MovingTime.Value,
                     Distance = r.Distance,
-                    Sport = r.ActivityType.IsRun ? "Run" : r.ActivityType.IsRide ? "Ride" : r.ActivityType.IsSwim ? "Swim" : "Other"
+                    Sport = r.ActivityType.IsRun ? SportType.Run : r.ActivityType.IsRide ? SportType.Ride : r.ActivityType.IsSwim ? SportType.Swim : SportType.Other
                 })
 
             .ToList();
@@ -49,24 +50,24 @@ namespace FitnessViewer.Infrastructure.Repository
 
             // need to make sure that each sport has at least a single row so
             // that it'll be included in the results.
-            if (totalsBySport.Select(r => r.Sport == "Run").Count() == 0)
-                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Run", Distance = 0, Duration = 0 });
+            if (totalsBySport.Select(r => r.Sport == SportType.Run).Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = SportType.Run, Distance = 0, Duration = 0 });
 
-            if (totalsBySport.Select(r => r.Sport == "Ride").Count() == 0)
-                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Ride", Distance = 0, Duration = 0 });
+            if (totalsBySport.Select(r => r.Sport == SportType.Ride).Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = SportType.Ride, Distance = 0, Duration = 0 });
 
 
-            if (totalsBySport.Select(r => r.Sport == "Swim").Count() == 0)
-                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Swim", Distance = 0, Duration = 0 });
+            if (totalsBySport.Select(r => r.Sport == SportType.Swim).Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = SportType.Swim, Distance = 0, Duration = 0 });
 
-            if (totalsBySport.Select(r => r.Sport == "Other").Count() == 0)
-                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = "Other", Distance = 0, Duration = 0 });
+            if (totalsBySport.Select(r => r.Sport == SportType.Other).Count() == 0)
+                totalsBySport.Add(new TimeDistanceBySportDto() { Sport = SportType.Other, Distance = 0, Duration = 0 });
 
             foreach (TimeDistanceBySportDto t in totalsBySport)
             {
                 TimeSpan duration = TimeSpan.FromMinutes((double)t.Duration);
 
-                t.Sport = string.Format("{0} {1}:{2}:{3}", t.Sport,
+                t.SportLabel = string.Format("{0} {1}:{2}:{3}", t.Sport.ToString(),
                                                          ((duration.Days * 24) + duration.Hours).ToString(),
                                                          duration.Minutes.ToString().PadLeft(2, '0'),
                                                          duration.Seconds.ToString().PadLeft(2, '0'));

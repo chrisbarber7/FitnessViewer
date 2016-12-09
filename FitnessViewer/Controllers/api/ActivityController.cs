@@ -10,6 +10,8 @@ using FitnessViewer.Infrastructure.Models.Dto;
 using System.Net.Http;
 using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Helpers.Conversions;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -84,7 +86,7 @@ namespace FitnessViewer.Controllers.api
 
             foreach (TimeDistanceBySportDto t in data)
             {
-                sport.Add(t.Sport);
+                sport.Add(t.SportLabel);
                 duration.Add(Convert.ToInt32( t.Duration));
             }
 
@@ -100,8 +102,18 @@ namespace FitnessViewer.Controllers.api
         [HttpGet]
         public IHttpActionResult GetRunDistancePerWeek(string id)
         {
+            SportType sport;
+            try
+            {
+                 sport = EnumConversion.GetEnumFromDescription<SportType>(id);
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest("Invalid Sport Type");
+            }
+
             PeriodDtoRepository repo = new PeriodDtoRepository();
-            var runData = repo.ActivityByWeek(this.User.Identity.GetUserId(), id, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
+            var runData = repo.ActivityByWeek(this.User.Identity.GetUserId(), sport, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();
