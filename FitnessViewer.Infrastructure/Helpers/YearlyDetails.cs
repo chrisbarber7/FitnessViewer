@@ -64,26 +64,6 @@ namespace FitnessViewer.Infrastructure.Helpers
             AddMissingDays(SportType.Run);
             AddMissingDays(SportType.Swim);
             AddMissingDays(SportType.Other);
-            //List<YearToDateDayInfo> allDatesRide = new List<YearToDateDayInfo>();
-            //List<YearToDateDayInfo> allDatesRun = new List<YearToDateDayInfo>();
-            //List<YearToDateDayInfo> allDatesSwim = new List<YearToDateDayInfo>();
-            //List<YearToDateDayInfo> allDatesOther = new List<YearToDateDayInfo>();
-
-            //for (DateTime d = new DateTime(_startYear, 01, 01); d <= new DateTime(DateTime.Now.Year, 12, 31); d = d.AddDays(1))
-            //{
-            //    allDatesRide.Add(new YearToDateDayInfo() { Date = d, Sport = "Ride" });
-            //    allDatesRun.Add(new YearToDateDayInfo() { Date = d, Sport = "Run" });
-            //    allDatesSwim.Add(new YearToDateDayInfo() { Date = d, Sport = "Swim" });
-            //    allDatesOther.Add(new YearToDateDayInfo() { Date = d, Sport = "Other" });
-            //}
-
-            //_details = _details
-            //    .Union(allDatesRide.Where(e => !_details.Where(x => x.Sport == "Ride").Select(x => x.Date).Contains(e.Date)))
-            //    .Union(allDatesRun.Where(e => !_details.Where(x => x.Sport == "Run").Select(x => x.Date).Contains(e.Date)))
-            //    .Union(allDatesSwim.Where(e => !_details.Where(x => x.Sport == "Swim").Select(x => x.Date).Contains(e.Date)))
-            //    .Union(allDatesOther.Where(e => !_details.Where(x => x.Sport == "Other").Select(x => x.Date).Contains(e.Date)))
-            //    .OrderBy(a => a.Date)
-            //    .ToList();
         }
 
         /// <summary>
@@ -91,28 +71,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         private void AddMissingDays(SportType sport)
         {
-        //    List<YearToDateDayInfo> addDates = new List<YearToDateDayInfo>();
-        //    List<YearToDateDayInfo> allDatesRun = new List<YearToDateDayInfo>();
-        //    List<YearToDateDayInfo> allDatesSwim = new List<YearToDateDayInfo>();
-         //   List<YearToDateDayInfo> allDatesOther = new List<YearToDateDayInfo>();
-
             for (DateTime d = new DateTime(_startYear, 01, 01); d <= new DateTime(DateTime.Now.Year, 12, 31); d = d.AddDays(1))
             {
                 if (!_details.Any(a=>a.Date == d && a.Sport == sport ))
                    _details.Add(new YearlyDetailsDayInfo() { Date = d, Sport = sport });
-           //     allDatesRun.Add(new YearToDateDayInfo() { Date = d, Sport = "Run" });
-            //    allDatesSwim.Add(new YearToDateDayInfo() { Date = d, Sport = "Swim" });
-             //   allDatesOther.Add(new YearToDateDayInfo() { Date = d, Sport = "Other" });
             }
-
-            //_details = _details
-            //    .Union(addDates.Where(e => !_details.Where(x => x.Sport == sport).Select(x => x.Date).Contains(e.Date)))
-            //   // .Union(allDatesRun.Where(e => !_details.Where(x => x.Sport == "Run").Select(x => x.Date).Contains(e.Date)))
-            //  //  .Union(allDatesSwim.Where(e => !_details.Where(x => x.Sport == "Swim").Select(x => x.Date).Contains(e.Date)))
-            //  //  .Union(allDatesOther.Where(e => !_details.Where(x => x.Sport == "Other").Select(x => x.Date).Contains(e.Date)))
-            //    .OrderBy(a => a.Date)
-            //    .ToList();
-
         }
 
         /// <summary>
@@ -132,7 +95,6 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="sport"></param>
         private void Calculate(SportType sport)
         { 
-
             int sequence = 0;
             decimal runningYTDDistance = 0;
 
