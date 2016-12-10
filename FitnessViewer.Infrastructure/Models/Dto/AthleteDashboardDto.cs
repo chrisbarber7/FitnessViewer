@@ -32,7 +32,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
             this.FirstName = athlete.FirstName;
             this.LastName = athlete.LastName;
-            
+
             ApplicationDb context = new ApplicationDb();
 
             PeaksDtoRepository peaksRepo = new PeaksDtoRepository(context);
@@ -41,7 +41,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             WeightByDayDtoRepository weightRepo = new WeightByDayDtoRepository(context);
 
             // get a list of activities for the past 90 days which will be used to extract various summary information details.
-             _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, SportType.All, DateTime.Now.AddDays(-90), DateTime.Now).ToList();
+            _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, SportType.All, DateTime.Now.AddDays(-90), DateTime.Now).ToList();
 
             PowerPeaks = peaksRepo.GetPeaks(_userId, PeakStreamType.Power);
             RunningTime = _timesRepo.GetBestTimes(_userId);
@@ -49,7 +49,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             RecentActivity = activityRepo.GetRecentActivity(_summaryActivities, 7);
 
 
-             _trainingLoad = new TrainingLoad(activityRepo);
+            _trainingLoad = new TrainingLoad(activityRepo);
             // need to go back the highest number of days we're interested in plus 42 days for LongTerm training load duration
             // and an extra day to get a seed value.   Add an extra day to the end to hold current form.
             _trainingLoad.Setup(_userId, DateTime.Now.AddDays(-365 - 42 - 1), DateTime.Now.AddDays(1));
@@ -76,19 +76,24 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             return true;
         }
 
-        private  KeyValuePair<string,string> ExtractPeak(int day, int duration)
+        private KeyValuePair<string, string> ExtractPeak(int day, int duration)
         {
             foreach (var d in PowerPeaks)
             {
                 if (d.Days == day)
                 {
                     foreach (var p in d.DurationPeaks)
+                    {
+                        if (p == null)
+                            continue;
+
                         if (p.Duration == duration)
                             return new KeyValuePair<string, string>(DisplayLabel.ShortStreamDurationForDisplay(duration),
                                   string.Format("{0}{1}", p.Peak.ToString(), DisplayLabel.PeakStreamTypeUnits(PeakStreamType.Power)));
+                    }
                 }
             }
-             return new KeyValuePair<string, string>(DisplayLabel.ShortStreamDurationForDisplay(duration), "-");
+            return new KeyValuePair<string, string>(DisplayLabel.ShortStreamDurationForDisplay(duration), "-");
         }
 
         public IEnumerable<PeaksDto> PowerPeaks { get; set; }
@@ -143,7 +148,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         private SportSummaryDto GetSportSummary(SportType sport, int days)
         {
-            DateTime start = DateTime.Now.AddDays(days*-1).Date;
+            DateTime start = DateTime.Now.AddDays(days * -1).Date;
             DateTime end = DateTime.Now.Date;
 
             IEnumerable<ActivityDto> activities;
@@ -169,7 +174,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
                 var OneKm = bestEfforts.Where(b => b.Distance == 1000).FirstOrDefault();
                 if (OneKm != null)
-                sportSummary.Peak1 = new KeyValuePair<string, string>(OneKm.DistanceName, OneKm.AveragePace.ToMinSec());
+                    sportSummary.Peak1 = new KeyValuePair<string, string>(OneKm.DistanceName, OneKm.AveragePace.ToMinSec());
 
                 var OneMile = bestEfforts.Where(b => b.Distance == 1609).FirstOrDefault();
                 if (OneMile != null)
