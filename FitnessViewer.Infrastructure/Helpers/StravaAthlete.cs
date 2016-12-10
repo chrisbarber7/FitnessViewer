@@ -45,10 +45,10 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             UpdateBikes(a.Id, athlete.Bikes);
             UpdateShoes(a.Id, athlete.Shoes);
-            
+
             // add user to the strava download queue for background downloading of activities.
-           DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Strava).Save();
-            
+            DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Strava).Save();
+
             _unitOfWork.Complete();
 
         }
@@ -59,28 +59,36 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <param name="token">Strava access token</param>
         public void UpdateAthlete(string token)
         {
-            StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
-            
-            Athlete fitnessViewerAthlete = _unitOfWork.CRUDRepository.GetByKey<Athlete>(this._stravaId);
+            try
+            {
+                StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
 
-            if (fitnessViewerAthlete == null)
-                return;
+                Athlete fitnessViewerAthlete = _unitOfWork.CRUDRepository.GetByKey<Athlete>(this._stravaId);
 
-            LogActivity("Updating Athlete", fitnessViewerAthlete);
+                if (fitnessViewerAthlete == null)
+                    return;
 
-            // update athlete details from strava.
-            Mapper.Map(stravaAthleteDetails, fitnessViewerAthlete);
+                LogActivity("Updating Athlete", fitnessViewerAthlete);
 
-            // get latest access token.
-            fitnessViewerAthlete.Token = token;
+                // update athlete details from strava.
+                Mapper.Map(stravaAthleteDetails, fitnessViewerAthlete);
 
-            _unitOfWork.CRUDRepository.Update<Athlete>(fitnessViewerAthlete);
+                // get latest access token.
+                fitnessViewerAthlete.Token = token;
 
-            // update bike and shoe details.
-            UpdateBikes(stravaAthleteDetails.Id, stravaAthleteDetails.Bikes);
-            UpdateShoes(stravaAthleteDetails.Id, stravaAthleteDetails.Shoes);
+                _unitOfWork.CRUDRepository.Update<Athlete>(fitnessViewerAthlete);
 
-            _unitOfWork.Complete();
+                // update bike and shoe details.
+                UpdateBikes(stravaAthleteDetails.Id, stravaAthleteDetails.Bikes);
+                UpdateShoes(stravaAthleteDetails.Id, stravaAthleteDetails.Shoes);
+
+                _unitOfWork.Complete();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+
+            }
         }
 
         private void UpdateBikes(long athleteId, List<StravaDotNetGear.Bike> bikes)
@@ -120,7 +128,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                 g.Name = s.Name;
                 g.ResourceState = s.ResourceState;
                 _unitOfWork.CRUDRepository.AddOrUpdate<Gear>(g);
-              //  _unitOfWork.Activity.AddOrUpdateGear(g);
+                //  _unitOfWork.Activity.AddOrUpdateGear(g);
             }
         }
 
