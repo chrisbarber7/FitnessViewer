@@ -20,7 +20,9 @@ namespace FitnessViewer.Infrastructure.Configuration
         {
             public InfrasturtureProfile()
             {
-                CreateMap<Athlete, Strava.Athletes.Athlete>().ReverseMap();
+                CreateMap<Strava.Athletes.Athlete, Athlete>()
+                    .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => System.Convert.ToDecimal(src.Weight)));
+                
                 CreateMap<AthleteDto, Athlete>().ReverseMap();
 
                 // endIndex is calculated from StartIndex by adding Duration. therefore we must copy Duration then StartIndex
