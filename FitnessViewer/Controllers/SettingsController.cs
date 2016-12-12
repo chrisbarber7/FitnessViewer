@@ -13,7 +13,8 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class SettingsController : Controller
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+
         public SettingsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

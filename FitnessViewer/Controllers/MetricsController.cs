@@ -12,7 +12,7 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class MetricsController : Controller
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public MetricsController(IUnitOfWork unitOfWork)
         {

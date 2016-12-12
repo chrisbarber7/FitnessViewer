@@ -21,7 +21,7 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class ActivityController : Controller
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ActivityController(IUnitOfWork unitOfWork)
         {

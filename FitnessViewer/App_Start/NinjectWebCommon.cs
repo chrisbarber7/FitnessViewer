@@ -12,6 +12,7 @@ namespace FitnessViewer.App_Start
     using Ninject.Web.Common;
     using Infrastructure.Interfaces;
     using Infrastructure.Data;
+    using System.Web.Http;
 
     public static class NinjectWebCommon 
     {
@@ -48,6 +49,9 @@ namespace FitnessViewer.App_Start
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
                 kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
 
+                // needed for classs dervived from apicontroller.
+                GlobalConfiguration.Configuration.DependencyResolver = kernel.Get<System.Web.Http.Dependencies.IDependencyResolver>();
+                
                 RegisterServices(kernel);
                 return kernel;
             }
@@ -64,6 +68,7 @@ namespace FitnessViewer.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+
         }        
     }
 }

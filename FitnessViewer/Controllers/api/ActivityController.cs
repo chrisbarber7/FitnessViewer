@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using FitnessViewer.Infrastructure.Repository;
-using FitnessViewer.ViewModels;
+﻿using FitnessViewer.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using FitnessViewer.Infrastructure.Models.Dto;
-using System.Net.Http;
 using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.enums;
@@ -18,11 +14,11 @@ namespace FitnessViewer.Controllers.api
     [Authorize]
     public class ActivityController : ApiController
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ActivityController()
+        public ActivityController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new Infrastructure.Data.UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]

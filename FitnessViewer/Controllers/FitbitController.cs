@@ -14,7 +14,7 @@ namespace SampleWebMVC.Controllers
 {
     public class FitbitController : Controller
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public FitbitController(IUnitOfWork unitOfWork)
         {

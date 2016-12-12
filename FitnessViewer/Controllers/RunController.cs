@@ -9,7 +9,7 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class RunController : Controller
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RunController(IUnitOfWork unitOfWork)
         {

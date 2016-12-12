@@ -8,7 +8,7 @@ namespace FitnessViewer.Controllers
     [Authorize]
     public class BikeController : Controller
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public BikeController(IUnitOfWork unitOfWork)
         {
