@@ -13,6 +13,8 @@ namespace FitnessViewer.App_Start
     using Infrastructure.Interfaces;
     using Infrastructure.Data;
     using System.Web.Http;
+    using Infrastructure.Repository;
+    using Infrastructure.Intefaces;
 
     public static class NinjectWebCommon 
     {
@@ -48,6 +50,12 @@ namespace FitnessViewer.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
                 kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
+                kernel.Bind<IActivityDtoRepository>().To<ActivityDtoRepository>().InRequestScope();
+                kernel.Bind<ICoordsDtoRepository>().To<CoordsDtoRepository>().InRequestScope();
+                kernel.Bind<IGraphStreamDtoRepository>().To<GraphStreamDtoRepository>().InRequestScope();
+                kernel.Bind<ITimeDistanceBySportRepository>().To<TimeDistanceBySportRepository>().InRequestScope();
+                kernel.Bind<IPeriodDtoRepository>().To<PeriodDtoRepository>().InRequestScope();
+                kernel.Bind<IWeightByDayDtoRepository>().To<WeightByDayDtoRepository>().InRequestScope();
 
                 // needed for classs dervived from apicontroller.
                 GlobalConfiguration.Configuration.DependencyResolver = kernel.Get<System.Web.Http.Dependencies.IDependencyResolver>();

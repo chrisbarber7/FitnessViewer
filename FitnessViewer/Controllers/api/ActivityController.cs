@@ -8,6 +8,7 @@ using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
+using FitnessViewer.Infrastructure.Intefaces;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -15,50 +16,50 @@ namespace FitnessViewer.Controllers.api
     public class ActivityController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IActivityDtoRepository _activityRepo;
+        private readonly ICoordsDtoRepository _coordsRepo;
+        private readonly IGraphStreamDtoRepository _graphRepo;
+        private readonly ITimeDistanceBySportRepository _timeDistanceRepo;
+        private readonly IPeriodDtoRepository _periodRepo;
 
-        public ActivityController(IUnitOfWork unitOfWork)
+        public ActivityController(IUnitOfWork unitOfWork, 
+                                    IActivityDtoRepository activityRepo, 
+                                    ICoordsDtoRepository coordsRepo,
+                                    IGraphStreamDtoRepository graphRepo,
+                                    ITimeDistanceBySportRepository timeDistanceRepo,
+                                    IPeriodDtoRepository periodRepo)
         {
             _unitOfWork = unitOfWork;
+            _activityRepo = activityRepo;
+            _coordsRepo = coordsRepo;
+            _graphRepo = graphRepo;
+            _timeDistanceRepo = timeDistanceRepo;
+            _periodRepo = periodRepo;
         }
+        
 
         [HttpGet]
         public IHttpActionResult GetActivities()
         {
-            ActivityDtoRepository repo = new ActivityDtoRepository();
-
             return Ok(new
             {
-                //data =
-                //Mapper.Map<IEnumerable<ActivityLapsDto>>(_unitOfWork.Activity.GetActivities(this.User.Identity.GetUserId())).ToList()
-
-
-              
-
-                data = repo.GetActivityDto(this.User.Identity.GetUserId())
-
+                data = _activityRepo.GetActivityDto(this.User.Identity.GetUserId())
             });
         }
 
         [HttpGet]
         public IHttpActionResult GetActivityCoords(string id)
         {
-            CoordsDtoRepository repo = new CoordsDtoRepository();
-
-            var coords = repo.GetActivityCoords(Convert.ToInt64(id));
             return Ok(
-               coords
+                _coordsRepo.GetActivityCoords(Convert.ToInt64(id))
             );
         }
 
         [HttpGet]
         public IHttpActionResult GetActivityStreams(string id)
         {
-            GraphStreamDtoRepository dtoRepo = new GraphStreamDtoRepository();
-
-            var streams = dtoRepo.GetActivityStreams(Convert.ToInt64(id));
-
             return Json(
-               streams
+                 _graphRepo.GetActivityStreams(Convert.ToInt64(id))
             );
         }
 
@@ -71,9 +72,9 @@ namespace FitnessViewer.Controllers.api
             if (!int.TryParse(id, out daysValue))
                 return BadRequest("Invalid Days Parameter");
 
-            TimeDistanceBySportRepository repo = new TimeDistanceBySportRepository();
+    
 
-            var data = repo.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
+            var data = _timeDistanceRepo.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
                                             DateTime.Now.AddDays(daysValue*-1), DateTime.Now);
 
             List<string> sport = new List<string>();
@@ -108,8 +109,7 @@ namespace FitnessViewer.Controllers.api
                 return BadRequest("Invalid Sport Type");
             }
 
-            PeriodDtoRepository repo = new PeriodDtoRepository();
-            var runData = repo.ActivityByWeek(this.User.Identity.GetUserId(), sport, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
+            var runData = _periodRepo.ActivityByWeek(this.User.Identity.GetUserId(), sport, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();

@@ -13,10 +13,13 @@ namespace FitnessViewer.Controllers.api
     public class MetricController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWeightByDayDtoRepository _weightRepo;
 
-        public MetricController(IUnitOfWork unitOfWork)
+        public MetricController(IUnitOfWork unitOfWork,
+                                IWeightByDayDtoRepository weightRepo)
         {
             _unitOfWork = unitOfWork;
+            _weightRepo = weightRepo;
         }
 
         [HttpGet]
@@ -41,9 +44,9 @@ namespace FitnessViewer.Controllers.api
             if (metricType == MetricType.Invalid)
                 return BadRequest("Invalid Metric Type");
 
-            WeightByDayDtoRepository repo = new WeightByDayDtoRepository();
 
-            var metrics= repo.GetMetricDetails(userId, metricType, dates.FromDateTime.Value, dates.ToDateTime.Value);
+
+            var metrics= _weightRepo.GetMetricDetails(userId, metricType, dates.FromDateTime.Value, dates.ToDateTime.Value);
 
             List<string> date = new List<string>();
             List<string> metricValue = new List<string>();
