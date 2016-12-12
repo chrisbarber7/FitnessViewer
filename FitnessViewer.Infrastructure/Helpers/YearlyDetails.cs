@@ -71,13 +71,15 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         private void AddMissingDays(SportType sport)
         {
-            for (DateTime d = new DateTime(_startYear, 01, 01); d <= new DateTime(DateTime.Now.Year, 12, 31); d = d.AddDays(1))
-            {
-                if (!_details.Any(a=>a.Date == d && a.Sport == sport ))
-                   _details.Add(new YearlyDetailsDayInfo() { Date = d, Sport = sport });
-            }
-        }
+            List<YearlyDetailsDayInfo> allDates = new List<YearlyDetailsDayInfo>();
 
+            for (DateTime d = new DateTime(_startYear, 01, 01); d <= new DateTime(DateTime.Now.Year, 12, 31); d = d.AddDays(1))
+                allDates.Add(new YearlyDetailsDayInfo() { Date = d, Sport = sport });
+
+            // add in any missing dates by Union
+            _details = _details.Union(allDates, new YearlyDetailsDayInfo()).ToList();
+        }
+        
         /// <summary>
         /// Calculate Daily information.
         /// </summary>
@@ -121,10 +123,30 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <returns></returns>
         public int MaxSequence(SportType sport, int? year)
         {
-           return _details
-                .Where(a => sport == SportType.All ? true : a.Sport == sport && year == null ? true : a.Date.Year == year.Value)
-                .Max(a => a.Sequence);
+        
+            return _details
+                    .Where(a => sport == SportType.All ? true : a.Sport == sport)
+                    .Where(a => year == null ? true : a.Date.Year == year.Value)
+                    .Select(a=>a.Sequence)
+                    .DefaultIfEmpty()
+                    .Max();
             
+        }
+
+        /// <summary>
+        /// Find daily average distance for a given sport/year
+        /// </summary>
+        /// <param name="sport"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public decimal DailyAverage(SportType sport, int? year)
+        {
+            return _details
+                    .Where(a => sport == SportType.All ? true : a.Sport == sport )
+                    .Where(a=> year == null ? true : a.Date.Year == year.Value)
+                    .Select(a=>a.Distance)
+                    .DefaultIfEmpty()
+                    .Average();
         }
     }
 }

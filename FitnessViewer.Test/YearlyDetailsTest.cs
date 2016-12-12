@@ -53,7 +53,68 @@ namespace FitnessViewer.Test
             }
         }
 
+        [TestMethod]
+        public void DailyRidingTest()
+        {
+            Mock<IActivityDtoRepository> mock = FiveYearDataWithDailyRiding();
 
+            YearlyDetails ytd = new YearlyDetails(mock.Object);
+
+            ytd.Populate(USER_ID, null);
+            ytd.Calculate();
+
+
+            Assert.AreEqual(1000, ytd.DailyAverage(SportType.Ride, null));
+            Assert.AreEqual(250, ytd.DailyAverage(SportType.All, null));
+            Assert.AreEqual(0, ytd.DailyAverage(SportType.Run, null));
+
+            Assert.AreEqual(1000, ytd.DailyAverage(SportType.Ride, 2016));
+            Assert.AreEqual(250, ytd.DailyAverage(SportType.All, 2016));
+            Assert.AreEqual(0, ytd.DailyAverage(SportType.Run, 2016));
+
+            Assert.AreEqual(0, ytd.DailyAverage(SportType.Ride, 2017));
+            Assert.AreEqual(0, ytd.DailyAverage(SportType.All, 2017));
+            Assert.AreEqual(0, ytd.DailyAverage(SportType.Run, 2017));
+        }
+
+        [TestMethod]
+        public void CheckMissingDaysAdded()
+        {
+            Mock<IActivityDtoRepository> mock = DataWithGapInDays();
+
+            YearlyDetails ytd = new YearlyDetails(mock.Object);
+
+            ytd.Populate(USER_ID, null);
+
+            // should be one per day of year for each of the 4 sporst        Assert.AreEqual(0, trueData2);
+            Assert.AreEqual(366*4, ytd.DayInformation.Count());
+
+            // test for first of days with activity data.
+            var trueData1 = ytd.DayInformation
+                                .Where(a => a.Date == new DateTime(2016, 2, 1))
+                                .Where(a => a.Sport == SportType.Ride)
+                                .Select(a => a.Distance)
+                                .FirstOrDefault();
+
+            Assert.AreEqual(1000, trueData1);
+
+            // test for second of days with activity data.
+            var trueData2 = ytd.DayInformation
+                              .Where(a => a.Date == new DateTime(2016, 2, 1))
+                              .Where(a => a.Sport == SportType.Ride)
+                              .Select(a => a.Distance)
+                              .FirstOrDefault();
+
+            Assert.AreEqual(1000, trueData2);
+
+            var addedData1 = ytd.DayInformation
+                              .Where(a => a.Date == new DateTime(2016, 2, 2))
+                              .Where(a => a.Sport == SportType.Ride)
+                              .Select(a => a.Distance)
+                              .FirstOrDefault();
+
+            Assert.AreEqual(0, addedData1);
+        }
 
         private Mock<IActivityDtoRepository> Ride2016DataWithDataForMay()
         {
@@ -69,6 +130,38 @@ namespace FitnessViewer.Test
 
                 results.Add(new YearlyDetailsDayInfo() { Date = d, Sport = SportType.Ride, Distance=distance });
             }
+
+            var mock = new Mock<IActivityDtoRepository>();
+
+            mock.Setup(x => x.GetYearToDateInfo(USER_ID, null))
+                .Returns(results);
+
+            return mock;
+        }
+
+
+        private Mock<IActivityDtoRepository> FiveYearDataWithDailyRiding()
+        {
+            var results = new List<YearlyDetailsDayInfo>();
+
+            for (DateTime d = new DateTime(2012, 1, 1); d <= new DateTime(2016, 12, 31); d = d.AddDays(1))
+                results.Add(new YearlyDetailsDayInfo() { Date = d, Sport = SportType.Ride, Distance = 1000 });
+
+            var mock = new Mock<IActivityDtoRepository>();
+
+            mock.Setup(x => x.GetYearToDateInfo(USER_ID, null))
+                .Returns(results);
+
+            return mock;
+        }
+
+
+        private Mock<IActivityDtoRepository> DataWithGapInDays()
+        {
+            var results = new List<YearlyDetailsDayInfo>();
+
+                results.Add(new YearlyDetailsDayInfo() { Date = new DateTime(2016,2,1), Sport = SportType.Ride, Distance = 1000 });
+            results.Add(new YearlyDetailsDayInfo() { Date = new DateTime(2016, 2, 10), Sport = SportType.Ride, Distance = 1000 });
 
             var mock = new Mock<IActivityDtoRepository>();
 

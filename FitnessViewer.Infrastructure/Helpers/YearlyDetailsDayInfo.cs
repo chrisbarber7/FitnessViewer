@@ -1,9 +1,11 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
-    public class YearlyDetailsDayInfo
+    public class YearlyDetailsDayInfo : IEqualityComparer<YearlyDetailsDayInfo>
     {
         public YearlyDetailsDayInfo()
         {
@@ -16,5 +18,17 @@ namespace FitnessViewer.Infrastructure.Helpers
         public decimal Distance { get; set; }
         public decimal YTDDistance { get; set; }
         public int Sequence { get; set; }
+
+        public bool Equals(YearlyDetailsDayInfo x, YearlyDetailsDayInfo y)
+        {
+            return x.Date == y.Date && x.Sport == y.Sport;
+        }
+
+        public int GetHashCode(YearlyDetailsDayInfo ytdInfo)
+        {
+            return ytdInfo.Date.GetHashCode() + ytdInfo.Sport.GetHashCode();
+        }
+
+
     }
 }
