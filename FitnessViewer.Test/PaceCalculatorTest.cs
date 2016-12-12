@@ -15,7 +15,7 @@ namespace FitnessViewer.Test
         public const int NO_DISTANCE = 0;
 
         [TestMethod]
-        public void MarathonTestMinPerMile()
+        public void PaceCalculator_MarathonTestMinPerMile()
         {
          
             Assert.AreEqual(new TimeSpan(0, 5, 0), PaceCalculator.RunMinuteMiles(MARATHON_DISTANCE, new TimeSpan(2, 11, 6)));
@@ -30,7 +30,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void TenKmTestMinPerMile()
+        public void PaceCalculator_TenKmTestMinPerMile()
         {
         
             Assert.AreEqual(new TimeSpan(0, 5, 0), PaceCalculator.RunMinuteMiles(TEN_KM, new TimeSpan(0, 31, 04)));
@@ -46,7 +46,7 @@ namespace FitnessViewer.Test
 
 
         [TestMethod]
-        public void FifteenHundredMetreTestMinPerMile()
+        public void PaceCalculator_FifteenHundredMetreTestMinPerMile()
         {
 
 
@@ -64,7 +64,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void TwoHundredMetreTestMinPerMile()
+        public void PaceCalculator_TwoHundredMetreTestMinPerMile()
         {
           
 
@@ -79,7 +79,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void MileTest()
+        public void PaceCalculator_MileTest()
         {
           
 
@@ -91,7 +91,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void NoDistance()
+        public void PaceCalculator_NoDistance()
         {
             Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(NO_DISTANCE, new TimeSpan(0, 1, 00)));
             Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(NO_DISTANCE, new TimeSpan(1, 0, 00)));
@@ -99,7 +99,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void NoTime()
+        public void PaceCalculator_NoTime()
         {
             Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(TEN_KM, new TimeSpan(0, 0, 0)));
             Assert.AreEqual(new TimeSpan(0, 0, 0), PaceCalculator.RunMinuteMiles(MILE_IN_METRES, new TimeSpan(0, 0, 0)));

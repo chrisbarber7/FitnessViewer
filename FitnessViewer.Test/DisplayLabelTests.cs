@@ -8,7 +8,7 @@ namespace FitnessViewer.Test
     public class DisplayLabelTests
     {
         [TestMethod]
-        public void DurationForDisplayTest()
+        public void DisplayLabel_DurationForDisplayTest()
         {
             Assert.AreEqual("Activity", DisplayLabel.StreamDurationForDisplay(int.MaxValue));
             Assert.AreEqual("5 secs", DisplayLabel.StreamDurationForDisplay(5));

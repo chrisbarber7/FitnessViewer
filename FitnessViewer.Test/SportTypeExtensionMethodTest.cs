@@ -10,7 +10,7 @@ namespace FitnessViewer.Test
     public class SportTypeExtensionMethodTest
     {
         [TestMethod]
-        public void EnumToStringValid()
+        public void SportTypeExtension_EnumToStringValid()
         {
             Assert.AreEqual("Ride", SportType.Ride.ToString());
             Assert.AreEqual("Run", SportType.Run.ToString());
@@ -20,7 +20,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void StringToEnumValid()
+        public void SportTypeExtension_StringToEnumValid()
         {
             Assert.AreEqual(SportType.Ride, EnumConversion.GetEnumFromDescription<SportType>("Ride"));
             Assert.AreEqual(SportType.Run, EnumConversion.GetEnumFromDescription<SportType>("Run"));
@@ -34,7 +34,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void StringToEnumInvalid()
+        public void SportTypeExtension_StringToEnumInvalid()
         {
             Assert.AreEqual(SportType.Ride, EnumConversion.GetEnumFromDescription<SportType>("InvalidSport"));
         }

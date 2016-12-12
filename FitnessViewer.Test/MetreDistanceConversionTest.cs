@@ -7,7 +7,7 @@ namespace FitnessViewer.Test
     public class MetreDistanceConversionTest
     {
         [TestMethod]
-        public void MetresToMiles()
+        public void MetreDistance_MetresToMiles()
         {
             Assert.AreEqual(0.06M, Distance.MetersToMiles(100));
             Assert.AreEqual(0.16M, Distance.MetersToMiles(250));
@@ -18,7 +18,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void MetersToFeet()
+        public void MetreDistance_MetersToFeet()
         {
             Assert.AreEqual(32.81M, Distance.MetersToFeet(10));
             Assert.AreEqual(164.04M, Distance.MetersToFeet(50));
@@ -28,7 +28,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void MetersToKM()
+        public void MetreDistance_MetersToKM()
         {
             Assert.AreEqual(10, Distance.MetersToKilometers(10000));
             Assert.AreEqual(5, Distance.MetersToKilometers(5000));

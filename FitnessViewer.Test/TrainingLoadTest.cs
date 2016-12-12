@@ -31,7 +31,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Invalid Start / End Dates")]
-        public void CreateAndInitialiseInvalidDates()
+        public void TrainingLoad_CreateAndInitialiseInvalidDates()
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.Setup(USER_ID, DateTime.Now, DateTime.Now.AddDays(-1));
@@ -39,7 +39,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
 
-        public void CreateAndInitialiseValidDates()
+        public void TrainingLoad_CreateAndInitialiseValidDates()
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.Setup(USER_ID, _startContantValues, _endConstantValues);
@@ -54,7 +54,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void TSSValueLoadTest()
+        public void TrainingLoad_TSSValueLoadTest()
         {
 
             Mock<IActivityDtoRepository> mock = Constant100TSSDaily();
@@ -69,7 +69,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void ConstantTSSTest()
+        public void TrainingLoad_ConstantTSSTest()
         {
 
             Mock<IActivityDtoRepository> mock = Constant100TSSDaily();
@@ -210,7 +210,7 @@ namespace FitnessViewer.Test
 
 
         [TestMethod]
-        public void ActualTSSTest()
+        public void TrainingLoad_ActualTSSTest()
         {
 
             Mock<IActivityDtoRepository> mock = ActualTSS();
@@ -284,7 +284,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Invalid ShortTermSeed")]
-        public void SeedATLTest()
+        public void TrainingLoad_SeedATLTest()
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.ShortTermSeed = -1;
@@ -293,7 +293,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Invalid LongTermSeed")]
-        public void SeedCTLTest()
+        public void TrainingLoad_SeedCTLTest()
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.LongTermSeed = -1;
@@ -301,7 +301,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Invalid LongTermDays")]
-        public void ATLDayConstantTest()
+        public void TrainingLoad_ATLDayConstantTest()
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.ShortTermDays = -1;
@@ -310,7 +310,7 @@ namespace FitnessViewer.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Invalid LongTermDays")]
-        public void CTLDayConstantTest()
+        public void TrainingLoad_CTLDayConstantTest()
         {
             TrainingLoad pmc = new TrainingLoad();
             pmc.LongTermDays = -1;

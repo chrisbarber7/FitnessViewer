@@ -20,7 +20,7 @@ namespace FitnessViewer.Test
         private const string USER_ID = "uid";
 
         [TestMethod]
-        public void BikeMayData()
+        public void YearlyDetails_BikeMayData()
             {
 
             Mock<IActivityDtoRepository> mock = Ride2016DataWithDataForMay();
@@ -54,7 +54,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void DailyRidingTest()
+        public void YearlyDetails_DailyRidingTest()
         {
             Mock<IActivityDtoRepository> mock = FiveYearDataWithDailyRiding();
 
@@ -78,7 +78,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckMissingDaysAdded()
+        public void YearlyDetails_CheckMissingDaysAdded()
         {
             Mock<IActivityDtoRepository> mock = DataWithGapInDays();
 

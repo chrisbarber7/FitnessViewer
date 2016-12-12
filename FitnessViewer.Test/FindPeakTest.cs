@@ -4,16 +4,12 @@ using System.Linq;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
-using AutoMapper;
 
 namespace FitnessViewer.Test
 {
     [TestClass]
     public class FindPeakTest
     {
-
-    
-
         private List<int> _30SecondData;
         private const long TEST_ACTIVITY_ID = long.MaxValue;
 
@@ -38,7 +34,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckPeakTypeReturned()
+        public void FindPeak_CheckPeakTypeReturned()
         {
             PeakSeeker finder = PeakSeeker.Create(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
             ActivityPeakDetail peak = finder.FindPeaks(30)[0];
@@ -46,7 +42,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void Find30SecondMax()
+        public void FindPeak_Find30SecondMax()
         {
             PeakSeeker finder = PeakSeeker.Create(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
             ActivityPeakDetail peak = finder.FindPeaks(30)[0];
@@ -55,7 +51,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void Find30SecondPeakUsingDefaultDurations()
+        public void FindPeak_Find30SecondPeakUsingDefaultDurations()
         {
             PeakSeeker finder = PeakSeeker.Create(_30SecondData, PeakStreamType.Power, TEST_ACTIVITY_ID);
             List<ActivityPeakDetail> peaks = finder.FindPeaks();
@@ -83,7 +79,7 @@ namespace FitnessViewer.Test
         /// and testing against values in strava. 
         /// </summary>
         [TestMethod]
-        public void PowerActivityDataTest()
+        public void FindPeak_PowerActivityDataTest()
         {
             List<int> activtityData = GetActivityPowerStream();
 
@@ -111,7 +107,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckPowerHasCorrectDurations()
+        public void FindPeak_CheckPowerHasCorrectDurations()
         {
             PeakSeeker finder = PeakSeeker.Create(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
 
@@ -141,7 +137,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckPowerHasCorrectStreamType()
+        public void FindPeak_CheckPowerHasCorrectStreamType()
         {
             PeakSeeker finder = PeakSeeker.Create(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Power, TEST_ACTIVITY_ID);
 
@@ -164,7 +160,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckHeartRateHasCorrectStreamType()
+        public void FindPeak_CheckHeartRateHasCorrectStreamType()
         {
             PeakSeeker finder = PeakSeeker.Create(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
 
@@ -184,7 +180,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckCadenceHasCorrectStreamType()
+        public void FindPeak_CheckCadenceHasCorrectStreamType()
         {
             PeakSeeker finder = PeakSeeker.Create(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
 
@@ -207,7 +203,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void CheckCadenceHasCorrectDurations()
+        public void FindPeak_CheckCadenceHasCorrectDurations()
         {
             PeakSeeker finder = PeakSeeker.Create(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.Cadence, TEST_ACTIVITY_ID);
 
@@ -238,7 +234,7 @@ namespace FitnessViewer.Test
 
 
         [TestMethod]
-        public void CheckHeartRateHasCorrectDurations()
+        public void FindPeak_CheckHeartRateHasCorrectDurations()
         {
             PeakSeeker finder = PeakSeeker.Create(new List<int>() { 0, 1, 2, 3 }, PeakStreamType.HeartRate, TEST_ACTIVITY_ID);
 
@@ -266,7 +262,7 @@ namespace FitnessViewer.Test
         /// and testing against values in strava. 
         /// </summary>
         [TestMethod]
-        public void CadenceActivityDataTest()
+        public void FindPeak_CadenceActivityDataTest()
         {
             List<int> activtityData = GetActicityCadenceStream();
 
@@ -300,7 +296,7 @@ namespace FitnessViewer.Test
         /// and testing against values in strava. 
         /// </summary>
         [TestMethod]
-        public void HeartRateActivityDataTest()
+        public void FindPeak_HeartRateActivityDataTest()
         {
             List<int> activtityData = GetActivityHeartRateStream();
 
@@ -324,7 +320,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void WhereNotEnoughValuesToFindPeak()
+        public void FindPeak_WhereNotEnoughValuesToFindPeak()
         {
             List<int> data = new List<int>();
             for (int i = 0; i <= 25; i++)
@@ -338,7 +334,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void WhereExactNumberOfValuesToFindPeak()
+        public void FindPeak_WhereExactNumberOfValuesToFindPeak()
         {
             int total = 0;
 
@@ -363,7 +359,7 @@ namespace FitnessViewer.Test
         /// duration is always the same for all activities irrespective of actual duration.
         /// </summary>
         [TestMethod]
-        public void CheckFullActivityAverageReturnAsCorrectDuration()
+        public void FindPeak_CheckFullActivityAverageReturnAsCorrectDuration()
         {
             List<int> data = new List<int>();
             for (int i = 0; i < 50; i++)

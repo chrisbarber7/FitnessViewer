@@ -84,7 +84,7 @@
     <Compile Include="PaceCalculatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetreDistanceConversionTest.cs" />
-    <Compile Include="StreamHelperTests.cs" />
+    <Compile Include="DisplayLabelTests.cs" />
     <Compile Include="AutoMapperTest.cs" />
     <Compile Include="FitbitConvert.cs" />
     <Compile Include="TrainingLoadTest.cs" />

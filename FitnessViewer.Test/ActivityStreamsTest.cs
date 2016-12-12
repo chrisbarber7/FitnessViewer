@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System.Linq;
-using FitnessViewer.Infrastructure.Helpers;
-using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Models;
-using System;
 using FitnessViewer.Infrastructure.Models.Collections;
 
 namespace FitnessViewer.Test
@@ -13,7 +9,7 @@ namespace FitnessViewer.Test
     public class ActivityStreamsTest
     {
         [TestMethod]
-        public void TestAllTimeRecordsExistNoGap()
+        public void ActivityStreams_TestAllTimeRecordsExistNoGap()
         {
             long activityId = 1234L;
 
@@ -35,7 +31,7 @@ namespace FitnessViewer.Test
         }
 
         [TestMethod]
-        public void TestAllTimeRecordsExistWithGap()
+        public void ActivityStreams_TestAllTimeRecordsExistWithGap()
         {
          
             long activityId = 1234L;
@@ -79,11 +75,6 @@ namespace FitnessViewer.Test
 
             Assert.AreEqual(101, added.Time);
             Assert.AreEqual(activityId, added.ActivityId);
-
-
-
-
-
         }
     }
 }

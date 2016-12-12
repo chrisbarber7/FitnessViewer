@@ -10,7 +10,7 @@ namespace FitnessViewer.Test
     public class FitbitConvert
     {
         [TestMethod]
-        public void TimeToBed()
+        public void Fitbit_TimeToBed()
         {
             Assert.AreEqual(FitbitConversion.InvalidValue, FitbitConversion.ConvertFitbitValue(TimeSeriesResourceType.TimeEnteredBed, ""), "No Value");
             Assert.AreEqual(FitbitConversion.InvalidValue, FitbitConversion.ConvertFitbitValue(TimeSeriesResourceType.TimeEnteredBed, "0115"), "Invalid Format");

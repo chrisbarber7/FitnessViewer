@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Linq;
-using FitnessViewer.Infrastructure.Helpers;
-using FitnessViewer.Infrastructure.enums;
-using FitnessViewer.Infrastructure.Models;
 using System;
 using FitnessViewer.Infrastructure.Helpers.Analytics;
 
@@ -20,7 +16,7 @@ namespace FitnessViewer.Test
         /// http://www.timetriallingforum.co.uk/?showtopic=50454
         /// </summary>
         [TestMethod]        
-        public void NormalisedPowerSpreadsheetTest()
+        public void ActivityAnalytics_NormalisedPowerSpreadsheetTest()
         {
             List<int> testData = new List<int>();
             for (int x = 1; x <= 4000; x++)
@@ -39,7 +35,7 @@ namespace FitnessViewer.Test
         /// One hour at FTP should return NP=FTP, TSS=100 & IF=1
         /// </summary>
         [TestMethod]
-        public void OneHourAtFTPTest()
+        public void ActivityAnalytics_OneHourAtFTPTest()
         {
             int ftp = 300;
 
@@ -60,7 +56,7 @@ namespace FitnessViewer.Test
         /// Equivalent Strava activity  https://www.strava.com/activities/718678832
         /// </summary>
         [TestMethod]
-        public void ActivityTest()
+        public void ActivityAnalytics_ActivityTest()
         {
             int ftp = 295;  // ftp at time of activity;
             List<int> testData = FindPeakTest.GetActivityPowerStream();

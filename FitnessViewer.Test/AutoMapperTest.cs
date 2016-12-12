@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FitnessViewer.Infrastructure.Helpers;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FitnessViewer.Infrastructure.Models;
 
 namespace FitnessViewer.Test
@@ -8,11 +6,9 @@ namespace FitnessViewer.Test
     [TestClass]
     public class AutoMapperTest
     {
-
         [TestInitialize]
         public void Setup()
         {
-
             AutoMapperConfiguration.Initialise();
         }
 
@@ -21,7 +17,7 @@ namespace FitnessViewer.Test
         /// copied correctly as it's calculated from StartIndex + Duration
         /// </summary>
         [TestMethod]
-        public void ActivityPeakDetails()
+        public void AutoMapper_ActivityPeakDetails()
         {
             ActivityPeakDetailCalculator calc = new ActivityPeakDetailCalculator(10001, Infrastructure.enums.PeakStreamType.Power, 10);
             calc.StartIndex = 1000;
