@@ -1,4 +1,6 @@
-﻿namespace FitnessViewer.Infrastructure.enums
+﻿using System.Collections.Generic;
+
+namespace FitnessViewer.Infrastructure.enums
 {
     /// <summary>
     /// Different types of zones available
@@ -12,4 +14,7 @@
         RunHeartRate = 4,
         SwimPace = 5
     }
+
+
+
 }

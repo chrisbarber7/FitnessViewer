@@ -9,5 +9,6 @@ namespace FitnessViewer.Infrastructure.Interfaces
     {
         List<ZoneRange> GetUserZoneRanges(string userId);
         IEnumerable<Zone> GetUserZones(string userId, ZoneType zone);
+        IEnumerable<Zone> GetUserZones(string userId);
     }
 }

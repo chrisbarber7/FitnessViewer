@@ -170,6 +170,7 @@
     <Compile Include="Helpers\PeakDuration.cs" />
     <Compile Include="Helpers\StravaGiveKudos.cs" />
     <Compile Include="Helpers\StravaRelatatedActivity.cs" />
+    <Compile Include="Helpers\SystemSettings.cs" />
     <Compile Include="Helpers\TrainingLoad.cs" />
     <Compile Include="Helpers\ProcessQueueJob.cs" />
     <Compile Include="Helpers\StravaActivityDownload.cs" />

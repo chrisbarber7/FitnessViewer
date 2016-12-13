@@ -1,0 +1,99 @@
+﻿using FitnessViewer.Infrastructure.Data;
+using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FitnessViewer.Infrastructure.Models;
+
+namespace FitnessViewer.Infrastructure.Helpers
+{
+    public class SystemSettings
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public string UserId { get; set; }
+        public int? Ftp { get; set; }
+
+        public bool ValueAdded { get; private set; }
+        public bool ZoneAdded { get; private set; }
+
+        internal static SystemSettings CheckSettings(string userId, int? ftp)
+        {
+            SystemSettings settings = new SystemSettings();
+            settings.UserId = userId;
+            settings.Ftp = ftp;
+
+            settings.CheckValues();
+            settings.CheckZones();
+
+            return settings;
+        }
+
+        public SystemSettings()
+        {
+            _unitOfWork = new UnitOfWork();
+        }
+
+        private void CheckZones()
+        {
+            var currentZones = _unitOfWork.Settings.GetUserZoneRanges(UserId);
+
+            CheckZones(currentZones, ZoneType.BikePower);
+            CheckZones(currentZones, ZoneType.BikeHeartRate);
+            CheckZones(currentZones, ZoneType.RunHeartRate);
+            CheckZones(currentZones, ZoneType.RunPace);
+            CheckZones(currentZones, ZoneType.SwimPace);
+        }
+
+        private void CheckZones(List<ZoneRange> currentZones, ZoneType zone)
+        {
+            if (currentZones.Any(a => a.ZoneType == zone))
+                return;
+
+            foreach (ZoneRange z in UserZones.ZoneTypeDefaultZones[zone])
+            {
+                ZoneRange newZoneRange = new ZoneRange();
+                newZoneRange.UserId = UserId;
+                newZoneRange.ZoneName = z.ZoneName;
+                newZoneRange.ZoneStart = z.ZoneStart;
+                newZoneRange.ZoneType = zone;
+                _unitOfWork.CRUDRepository.Add<ZoneRange>(newZoneRange);
+
+            }
+            _unitOfWork.Complete();
+            ZoneAdded = true;
+        }
+
+        private void CheckValues()
+        {
+            var currentValues = _unitOfWork.Settings.GetUserZones(UserId);
+
+            CheckValues(currentValues, ZoneType.BikePower);
+            CheckValues(currentValues, ZoneType.BikeHeartRate);
+            CheckValues(currentValues, ZoneType.RunHeartRate);
+            CheckValues(currentValues, ZoneType.RunPace);
+            CheckValues(currentValues, ZoneType.SwimPace);
+        }
+
+        private void CheckValues(IEnumerable<Zone> currentValues, ZoneType zone)
+        {
+            if (currentValues.Any(a => a.ZoneType == zone))
+                return;
+
+            Zone newZone = new Zone();
+            newZone.ZoneType = zone;
+            newZone.UserId = UserId;
+            newZone.StartDate = new DateTime(2000, 1, 1);
+            newZone.Value = UserZones.ZoneTypeDefaultValues[zone];
+
+            _unitOfWork.CRUDRepository.Add<Zone>(newZone);
+            _unitOfWork.Complete();
+
+            ValueAdded = true;
+        }
+    }
+}

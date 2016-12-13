@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FitnessViewer.ViewModels;
 using FitnessViewer.Infrastructure.Data;
+using System.Web.Security;
 
 namespace FitnessViewer.Controllers
 {
@@ -342,7 +343,13 @@ namespace FitnessViewer.Controllers
                         
                         // update details from current strava athlete settings.
                         FitnessViewer.Infrastructure.Helpers.StravaAthlete s = new Infrastructure.Helpers.StravaAthlete(stravaAthleteId, stravaTokenClaim.Value);
-                        s.UpdateAthlete(stravaTokenClaim.Value);
+                        if (!s.UpdateAthlete(stravaTokenClaim.Value))
+                        {
+                            // error occured somewhere during account creation.  ASP.NET user record exists but not an Athlete record
+                            var userDetails = await UserManager.FindByEmailAsync(loginInfo.Email);
+                            if (userDetails != null)
+                                s.AddAthlete(userDetails.Id, stravaTokenClaim.Value);
+                        }
 
                        return RedirectToLocal(returnUrl);
                 

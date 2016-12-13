@@ -17,6 +17,12 @@ namespace FitnessViewer.Infrastructure.Repository
             _context = context;
         }
 
+        public SettingsRepository()
+        {
+            _context = new ApplicationDb();
+
+        }
+
         /// <summary>
         /// List of zones for given user/sport
         /// </summary>
@@ -31,6 +37,18 @@ namespace FitnessViewer.Infrastructure.Repository
                         .ToList();
         }
 
+        /// <summary>
+        /// List of zones for given user/sport
+        /// </summary>
+        /// <param name="userId">ASP.NET Identity Id</param>
+        /// <returns>List of Zones</returns>
+        public IEnumerable<Zone> GetUserZones(string userId)
+        {
+            return _context.Zone
+                        .Where(z => z.UserId == userId)
+                        .OrderBy(z => z.StartDate)
+                        .ToList();
+        }
 
 
         /// <summary>

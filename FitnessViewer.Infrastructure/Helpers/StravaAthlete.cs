@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using StravaDotNetAthletes = Strava.Athletes;
 using StravaDotNetGear = Strava.Gear;
-using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Models;
 using System;
 
@@ -13,6 +12,8 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
         }
 
+        private StravaDotNetAthletes.Athlete stravaAthleteDetails;
+        private Athlete fitnessViewerAthlete;
 
         /// <summary>
         /// Constructor for creating a new athlete.
@@ -34,17 +35,15 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _userId = userId;
             base.SetupClient(token);
-            StravaDotNetAthletes.Athlete athlete = _client.Athletes.GetAthlete();
+            stravaAthleteDetails = _client.Athletes.GetAthlete();
 
-            Athlete a = Mapper.Map<Athlete>(athlete);
-            a.UserId = userId;
-            a.Token = token;
+            fitnessViewerAthlete = Mapper.Map<Athlete>(stravaAthleteDetails);
+            fitnessViewerAthlete.UserId = userId;
+            fitnessViewerAthlete.Token = token;
 
-            //     _unitOfWork.Athlete.AddAthlete(a);
-            _unitOfWork.CRUDRepository.Add<Athlete>(a);
+            _unitOfWork.CRUDRepository.Add<Athlete>(fitnessViewerAthlete);
 
-            UpdateBikes(a.Id, athlete.Bikes);
-            UpdateShoes(a.Id, athlete.Shoes);
+            UpdateUserConfig();
 
             // add user to the strava download queue for background downloading of activities.
             DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Strava).Save();
@@ -53,20 +52,29 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         }
 
+
+        private void UpdateUserConfig()
+        {
+            UpdateBikes();
+            UpdateShoes();
+
+            SystemSettings.CheckSettings(fitnessViewerAthlete.UserId, stravaAthleteDetails.Ftp);
+        }
+
         /// <summary>
         /// Update strava athlete details
         /// </summary>
         /// <param name="token">Strava access token</param>
-        public void UpdateAthlete(string token)
+        public bool UpdateAthlete(string token)
         {
             try
             {
-                StravaDotNetAthletes.Athlete stravaAthleteDetails = _client.Athletes.GetAthlete();
+               stravaAthleteDetails = _client.Athletes.GetAthlete();
 
-                Athlete fitnessViewerAthlete = _unitOfWork.CRUDRepository.GetByKey<Athlete>(this._stravaId);
+                 fitnessViewerAthlete = _unitOfWork.CRUDRepository.GetByKey<Athlete>(this._stravaId);
 
                 if (fitnessViewerAthlete == null)
-                    return;
+                    return false;
 
                 LogActivity("Updating Athlete", fitnessViewerAthlete);
 
@@ -78,24 +86,24 @@ namespace FitnessViewer.Infrastructure.Helpers
 
                 _unitOfWork.CRUDRepository.Update<Athlete>(fitnessViewerAthlete);
 
-                // update bike and shoe details.
-                UpdateBikes(stravaAthleteDetails.Id, stravaAthleteDetails.Bikes);
-                UpdateShoes(stravaAthleteDetails.Id, stravaAthleteDetails.Shoes);
+                UpdateUserConfig();
 
                 _unitOfWork.Complete();
+
+                return true;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-
+                return false;
             }
         }
 
-        private void UpdateBikes(long athleteId, List<StravaDotNetGear.Bike> bikes)
+        private void UpdateBikes()
         {
-            foreach (StravaDotNetGear.Bike b in bikes)
+            foreach (StravaDotNetGear.Bike b in stravaAthleteDetails.Bikes)
             {
-                Gear g = Gear.CreateBike(b.Id, athleteId);
+                Gear g = Gear.CreateBike(b.Id, stravaAthleteDetails.Id);
 
                 g.Brand = b.Brand;
                 g.Description = b.Description;
@@ -117,20 +125,18 @@ namespace FitnessViewer.Infrastructure.Helpers
         }
 
 
-        private void UpdateShoes(long athleteId, List<StravaDotNetGear.Shoes> shoes)
+        private void UpdateShoes()
         {
-            foreach (StravaDotNetGear.Shoes s in shoes)
+            foreach (StravaDotNetGear.Shoes s in stravaAthleteDetails.Shoes)
             {
-                Gear g = Gear.CreateShoe(s.Id, athleteId);
+                Gear g = Gear.CreateShoe(s.Id, stravaAthleteDetails.Id);
                 g.Distance = Convert.ToDecimal(s.Distance);
                 g.FrameType = enums.BikeType.Default;
                 g.IsPrimary = s.IsPrimary;
                 g.Name = s.Name;
                 g.ResourceState = s.ResourceState;
                 _unitOfWork.CRUDRepository.AddOrUpdate<Gear>(g);
-                //  _unitOfWork.Activity.AddOrUpdateGear(g);
             }
         }
-
     }
 }
