@@ -30,6 +30,10 @@
         @Html.ValidationMessageFor(m => m.Bodyfat)
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
+    <br />
+    <br />
+    @Html.LabelFor(m => m.MoveOntoNextDay)
+    @Html.CheckBoxFor(m => m.MoveOntoNextDay, new { @class = "checkbox" })
 
 }
 @section scripts

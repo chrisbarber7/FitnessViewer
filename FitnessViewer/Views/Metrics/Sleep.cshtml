@@ -1,12 +1,12 @@
-﻿@model FitnessViewer.ViewModels.HeartRateViewModel
+﻿@model FitnessViewer.ViewModels.SleepViewModel
 @{
-    ViewBag.Title = "Add Resting Heart Rate";
+    ViewBag.Title = "Sleep";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add Resting Heart Rate</h2>
+<h2>Add Sleep Time</h2>
 
-@using (Html.BeginForm("AddHeartRate", "Metrics"))
+@using (Html.BeginForm("AddSleep", "Metrics"))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.DateRecorded)
@@ -20,13 +20,20 @@
         @Html.ValidationMessageFor(m => m.TimeRecorded)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.RestingHeartRate)
-        @Html.TextBoxFor(m => m.RestingHeartRate, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.RestingHeartRate)
+        @Html.LabelFor(m => m.Hours)
+        @Html.TextBoxFor(m => m.Hours, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Hours)
     </div>
-
+    <div class="form-group">
+        @Html.LabelFor(m => m.Minutes)
+        @Html.TextBoxFor(m => m.Minutes, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Minutes)
+    </div>
     <button type="submit" class="btn btn-primary">Save</button>
-
+    <br />
+    <br />
+    @Html.LabelFor(m => m.MoveOntoNextDay)
+    @Html.CheckBoxFor(m => m.MoveOntoNextDay, new { @class = "checkbox" })
 }
 @section scripts
 {

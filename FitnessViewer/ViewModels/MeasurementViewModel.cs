@@ -15,6 +15,16 @@ namespace FitnessViewer.ViewModels
             TimeRecorded = "00:00";
         }
 
+        public MeasurementViewModel(DateTime defaultDate)
+        {
+            DateRecorded = string.Format("{0} {1} {2}",
+                         defaultDate.Day.ToString().PadLeft(2, '0'),
+                         defaultDate.ToString("MMM"),
+                         defaultDate.Year.ToString());
+
+            TimeRecorded = "00:00";
+        }
+
         [Required]
         [ValidDate]
         [Display(Name = "Recorded Date")]
@@ -28,5 +38,8 @@ namespace FitnessViewer.ViewModels
         {
             return DateTime.Parse(string.Format("{0} {1}", DateRecorded, TimeRecorded));
         }
+
+        [Display(Name = "Move onto next day automatically on saving?")]
+        public bool MoveOntoNextDay { get; set; }
     }
 }

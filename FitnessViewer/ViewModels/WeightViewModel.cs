@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessViewer.ViewModels
 {
     public class WeightViewModel : MeasurementViewModel
     {
+        public WeightViewModel(DateTime defaultDate) : base(defaultDate)
+        { }
+
         public WeightViewModel() : base()
         { }
 

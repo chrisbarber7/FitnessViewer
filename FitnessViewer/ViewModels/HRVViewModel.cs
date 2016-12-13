@@ -8,9 +8,12 @@ namespace FitnessViewer.ViewModels
 {
     public class HRVViewModel : HeartRateViewModel
     {
+        public HRVViewModel(DateTime defaultDate) : base(defaultDate)
+        { }
+
         public HRVViewModel() : base()
-        {
-        }
+        { }
+
 
         [Required]
         [Range(0, 100, ErrorMessage = "Heart Rate Variability must be between 1 and 100.")]

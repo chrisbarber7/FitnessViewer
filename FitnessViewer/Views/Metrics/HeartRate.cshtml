@@ -1,0 +1,38 @@
+﻿@model FitnessViewer.ViewModels.HeartRateViewModel
+@{
+    ViewBag.Title = "Add Resting Heart Rate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add Resting Heart Rate</h2>
+
+@using (Html.BeginForm("AddHeartRate", "Metrics"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateRecorded)
+        @Html.TextBoxFor(m => m.DateRecorded, new { @class = "form-control", placeholder = "eg 29 Sep 2016" })
+        @Html.ValidationMessageFor(m => m.DateRecorded)
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TimeRecorded)
+        @Html.TextBoxFor(m => m.TimeRecorded, new { @class = "form-control", placeholder = "eg 07:15" })
+        @Html.ValidationMessageFor(m => m.TimeRecorded)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.RestingHeartRate)
+        @Html.TextBoxFor(m => m.RestingHeartRate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RestingHeartRate)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <br />
+    <br />
+        @Html.LabelFor(m => m.MoveOntoNextDay)
+        @Html.CheckBoxFor(m => m.MoveOntoNextDay, new { @class = "checkbox" })
+
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

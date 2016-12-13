@@ -26,7 +26,7 @@ namespace FitnessViewer.Controllers
 
 
         [Authorize]
-        public ActionResult AddWeight()
+        public ActionResult Weight()
         {
             return View(new WeightViewModel());
         }
@@ -36,7 +36,7 @@ namespace FitnessViewer.Controllers
         public ActionResult AddWeight(WeightViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View("AddWeight", viewModel);
+                return View("Weight", viewModel);
 
             Metric w = Metric.CreateMetric(User.Identity.GetUserId(), Infrastructure.enums.MetricType.Weight, viewModel.GetRecordedDateTime(), viewModel.Weight, true); _unitOfWork.Metrics.AddOrUpdateMetric(w);
             _unitOfWork.Metrics.AddOrUpdateMetric(w);
@@ -53,30 +53,49 @@ namespace FitnessViewer.Controllers
             ActivityWeight aw = new ActivityWeight(User.Identity.GetUserId());
             aw.UpdateActivityWeight();
 
+            if (viewModel.MoveOntoNextDay)
+            {
+                WeightViewModel vm = new WeightViewModel(viewModel.GetRecordedDateTime().AddDays(1));
+                vm.MoveOntoNextDay = true;
+                return RedirectToAction("Weight", vm);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
-        public ActionResult AddHeartRate()
+        public ActionResult HeartRate(HeartRateViewModel vm)
         {
-            return View(new HeartRateViewModel());
+            if (vm == null)
+                vm = new HeartRateViewModel();
+
+            return View(vm);
+       
         }
         [HttpPost]
         [Authorize]
         public ActionResult AddHeartRate(HeartRateViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View("AddHeartRate", viewModel);
+                return View("HeartRate", viewModel);
 
             Metric heartRate = Metric.CreateMetric(User.Identity.GetUserId(), Infrastructure.enums.MetricType.RestingHeartRate, viewModel.GetRecordedDateTime(), viewModel.RestingHeartRate, true);
             _unitOfWork.Metrics.AddOrUpdateMetric(heartRate);
 
             _unitOfWork.Complete();
+
+            if (viewModel.MoveOntoNextDay)
+            {
+                HeartRateViewModel vm = new HeartRateViewModel(viewModel.GetRecordedDateTime().AddDays(1));
+                vm.MoveOntoNextDay = true;
+                return RedirectToAction("HeartRate", vm);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
-        public ActionResult AddHRV()
+        public ActionResult HRV()
         {
             return View(new HRVViewModel());
         }
@@ -86,7 +105,7 @@ namespace FitnessViewer.Controllers
         public ActionResult AddHRV(HRVViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View("AddHRV", viewModel);
+                return View("HRV", viewModel);
 
             Metric m1 = Metric.CreateMetric(User.Identity.GetUserId(), MetricType.HRV, viewModel.GetRecordedDateTime(), viewModel.HRV.Value, true);
             _unitOfWork.Metrics.AddOrUpdateMetric(m1);
@@ -123,11 +142,47 @@ namespace FitnessViewer.Controllers
             }
 
             _unitOfWork.Complete();
+
+            if (viewModel.MoveOntoNextDay)
+            {
+                HRVViewModel vm = new HRVViewModel(viewModel.GetRecordedDateTime().AddDays(1));
+                vm.MoveOntoNextDay = true;
+                return RedirectToAction("HRV", vm);
+            }
             return RedirectToAction("Index", "Home");
         }
 
-    }
+        [Authorize]
+        public ActionResult Sleep(SleepViewModel vm)
+        {
+            if (vm == null)
+                vm = new SleepViewModel();
 
+            return View(vm);
+
+        }
+        [HttpPost]
+        [Authorize]
+        public ActionResult AddSleep(SleepViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View("Sleep", viewModel);
+
+            Metric sleep = Metric.CreateMetric(User.Identity.GetUserId(), Infrastructure.enums.MetricType.SleepMinutes, viewModel.GetRecordedDateTime(), viewModel.GetSleepMinutes(), true);
+            _unitOfWork.Metrics.AddOrUpdateMetric(sleep);
+
+            _unitOfWork.Complete();
+
+            if (viewModel.MoveOntoNextDay)
+            {
+                SleepViewModel vm = new SleepViewModel(viewModel.GetRecordedDateTime().AddDays(1));
+                vm.MoveOntoNextDay = true;
+                return RedirectToAction("Sleep", vm);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+    }
 }
 
 

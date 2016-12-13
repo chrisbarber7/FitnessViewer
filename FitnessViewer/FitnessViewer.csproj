@@ -268,6 +268,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\MeasurementViewModel.cs" />
+    <Compile Include="ViewModels\SleepViewModel.cs" />
     <Compile Include="ViewModels\ValidDate.cs" />
     <Compile Include="ViewModels\ValidTime.cs" />
     <Compile Include="ViewModels\WeightViewModel.cs" />
@@ -642,9 +643,9 @@
     <Content Include="Scripts\underscore.min.map" />
     <Content Include="Views\Athlete\_RecentActivity.cshtml" />
     <Content Include="Views\Athlete\_SportSummary.cshtml" />
-    <Content Include="Views\Metrics\AddWeight.cshtml" />
-    <Content Include="Views\Metrics\AddHeartRate.cshtml" />
-    <Content Include="Views\Metrics\AddHRV.cshtml" />
+    <Content Include="Views\Metrics\Weight.cshtml" />
+    <Content Include="Views\Metrics\HeartRate.cshtml" />
+    <Content Include="Views\Metrics\HRV.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Shared\_SettingsLayout.cshtml" />
     <Content Include="Views\Settings\BikeFTP.cshtml" />
@@ -652,6 +653,7 @@
     <Content Include="Views\Activity\_LapInformation.cshtml" />
     <Content Include="Views\Activity\_Edit.cshtml" />
     <Content Include="Views\Settings\_zoneGrid.cshtml" />
+    <Content Include="Views\Metrics\Sleep.cshtml" />
     <None Include="Views\Settings\BikePower.cshtml" />
     <Content Include="Views\Settings\BikeHeartRate.cshtml" />
     <Content Include="Views\Settings\RunPace.cshtml" />

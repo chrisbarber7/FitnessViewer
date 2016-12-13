@@ -83,7 +83,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 else
                 {
                     existing.Value = metric.Value;
-                    UpdateMetric(metric);
+                    UpdateMetric(existing);
                 }
             }
 
