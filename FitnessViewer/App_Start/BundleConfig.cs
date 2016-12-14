@@ -9,7 +9,7 @@ namespace FitnessViewer
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                            "~/Scripts/jquery-1.10.2.min.js",
+                            "~/Scripts/jquery-3.1.1.min.js",
                             "~/Scripts/jquery.validate.min.js",
                             "~/Scripts/modernizr-*",
                             "~/Scripts/bootstrap.min.js",
@@ -23,11 +23,10 @@ namespace FitnessViewer
                             "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
-                            "~/Scripts/DataTables/jquery.dataTables.js",
-                            "~/Scripts/DataTables/dataTables.bootstrap.js"));
+                            "~/Scripts/DataTables/jquery.dataTables.min.js",
+                            "~/Scripts/DataTables/dataTables.bootstrap.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/dataTables").Include(
-                            "~/Content/DataTables/css/jquery.dataTables.css",
                             "~/Content/DataTables/css/jquery.dataTables.min.css"));
 
             bundles.Add(new StyleBundle("~/bundles/chart").Include(
