@@ -28,6 +28,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             try
             {
+                if (ConfigurationManager.AppSettings["useAzureQueue"].ToLower() == "false")
+                    return;
+
                 // get storage account from connection string (held in WebApp settings/connection strings)
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                         ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
