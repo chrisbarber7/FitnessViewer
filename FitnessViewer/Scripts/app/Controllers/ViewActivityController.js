@@ -40,7 +40,7 @@
         var streamStep = $(this).attr("data-stream-step");
         var activityId = document.getElementById('activityId').value;
         var selectedText = encodeURIComponent($(this).find(".lapName").text());
-        $("#activitySummaryInformation").load("/Activity/GetSummaryInformation?activityId=" + activityId + "&selection=" + selectedText + "&startIndex=" + startIndex + "&endIndex=" + endIndex);
+        $("#activitySummaryInformation").load("/Activity/GetActivitySummaryInformation?activityId=" + activityId + "&selection=" + selectedText + "&startIndex=" + startIndex + "&endIndex=" + endIndex);
 
         if (hasMap === "True") {
 

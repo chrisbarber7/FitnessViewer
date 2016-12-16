@@ -104,7 +104,7 @@ namespace FitnessViewer.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetSummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
+        public ActionResult GetActivitySummaryInformation([System.Web.Http.FromUri] SummaryInformationRequest detail)
         {
             ActivityStreams details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex);
 
