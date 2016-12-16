@@ -1,5 +1,4 @@
-﻿using FitnessViewer.Infrastructure.Repository;
-using FitnessViewer.Infrastructure.Models;
+﻿using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Net;
@@ -8,13 +7,11 @@ using System.Collections.Generic;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
-using System;
 using FitnessViewer.Infrastructure.Models.Collections;
 
 using System.Threading.Tasks;
 using AutoMapper;
 using FitnessViewer.Infrastructure.Interfaces;
-using FitnessViewer.Infrastructure.Data;
 
 namespace FitnessViewer.Controllers
 {
