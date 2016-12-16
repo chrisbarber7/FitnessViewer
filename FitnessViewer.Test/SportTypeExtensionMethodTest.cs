@@ -28,6 +28,9 @@ namespace FitnessViewer.Test
             Assert.AreEqual(SportType.Swim, EnumConversion.GetEnumFromDescription<SportType>("Swim"));
             Assert.AreEqual(SportType.All, EnumConversion.GetEnumFromDescription<SportType>("All"));
 
+            Assert.AreEqual(SportType.Ride, EnumConversion.GetEnumFromDescription<SportType>("ride"));
+            Assert.AreEqual(SportType.Ride, EnumConversion.GetEnumFromDescription<SportType>("RIDE"));
+            Assert.AreEqual(SportType.Ride, EnumConversion.GetEnumFromDescription<SportType>("RiDe"));
         }
 
 

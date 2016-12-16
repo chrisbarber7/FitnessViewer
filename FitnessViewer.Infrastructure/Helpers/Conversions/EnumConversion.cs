@@ -21,7 +21,7 @@ namespace FitnessViewer.Infrastructure.Helpers.Conversions
 
                 if (attribute != null)
                 {
-                    if (attribute.Description == description)
+                    if (attribute.Description.ToUpper() == description.ToUpper())
                         return (T)field.GetValue(null);
                 }
                 else
