@@ -54,48 +54,33 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             _trainingLoad.Setup(_userId, DateTime.Now.AddDays(-365 - 42 - 1), DateTime.Now.AddDays(1));
             _trainingLoad.Calculate(SportType.Ride);
 
-            Run7Day = GetSportSummary(SportType.Run, 7);
-            Bike7Day = GetSportSummary(SportType.Ride, 7);
-            Swim7Day = GetSportSummary(SportType.Swim, 7);
-            Other7Day = GetSportSummary(SportType.Other, 7);
-            All7Day = GetSportSummary(SportType.All, 7);
+            DateTime start = DateTime.Now.AddDays(30 * -1).Date;
+            DateTime end = DateTime.Now.Date;
+
+            RunSummary = DashboardSportSummary.Create(_userId, SportType.Run, start, end, _summaryActivities);
+            BikeSummary = DashboardSportSummary.Create(_userId, SportType.Ride, start, end, _summaryActivities);
+            SwimSummary = DashboardSportSummary.Create(_userId, SportType.Swim, start, end, _summaryActivities);
+            OtherSportSummary = DashboardSportSummary.Create(_userId, SportType.Other, start, end, _summaryActivities);
+            AllSportSummary = DashboardSportSummary.Create(_userId, SportType.All, start, end, _summaryActivities);
+
             return true;
         }
 
-        private KeyValuePair<string, string> ExtractPeak(int day, int duration)
-        {
-            foreach (var d in PowerPeaks)
-            {
-                if (d.Days == day)
-                {
-                    foreach (var p in d.DurationPeaks)
-                    {
-                        if (p == null)
-                            continue;
-
-                        if (p.Duration == duration)
-                            return new KeyValuePair<string, string>(DisplayLabel.ShortStreamDurationForDisplay(duration),
-                                  string.Format("{0}{1}", p.Peak.ToString(), DisplayLabel.PeakStreamTypeUnits(PeakStreamType.Power)));
-                    }
-                }
-            }
-            return new KeyValuePair<string, string>(DisplayLabel.ShortStreamDurationForDisplay(duration), "-");
-        }
 
         public IEnumerable<PeaksDto> PowerPeaks { get; set; }
         public IEnumerable<RunningTimesDto> RunningTime { get; internal set; }
         public WeightByDayDto CurrentWeight { get; set; }
         public IEnumerable<ActivityDto> RecentActivity { get; set; }
 
-        public SportSummaryDto Run7Day { get; set; }
+        public SportSummaryDto RunSummary { get; set; }
 
-        public SportSummaryDto Bike7Day { get; set; }
+        public SportSummaryDto BikeSummary { get; set; }
 
-        public SportSummaryDto Swim7Day { get; set; }
+        public SportSummaryDto SwimSummary { get; set; }
 
-        public SportSummaryDto Other7Day { get; set; }
+        public SportSummaryDto OtherSportSummary { get; set; }
 
-        public SportSummaryDto All7Day { get; set; }
+        public SportSummaryDto AllSportSummary { get; set; }
     
 
         public object DayValuesForChart()
@@ -123,74 +108,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         }
 
 
-        private SportSummaryDto GetSportSummary(SportType sport, int days)
-        {
-            DateTime start = DateTime.Now.AddDays(days * -1).Date;
-            DateTime end = DateTime.Now.Date;
-
-            IEnumerable<ActivityDto> activities;
-
-            SportSummaryDto sportSummary = new SportSummaryDto();
-
-            if (sport == SportType.Ride)
-            {
-                activities = _summaryActivities.Where(r => r.IsRide && r.Start >= start && r.Start <= end).ToList();
-                sportSummary.IsRide = true;
-
-                sportSummary.Peak1 = ExtractPeak(days, 5);
-                sportSummary.Peak2 = ExtractPeak(days, 60);
-                sportSummary.Peak3 = ExtractPeak(days, 1200);
-                sportSummary.Peak4 = ExtractPeak(days, 3600);
-            }
-            else if (sport == SportType.Run)
-            {
-                activities = _summaryActivities.Where(r => r.IsRun && r.Start >= start && r.Start <= end).ToList();
-                sportSummary.IsRun = true;
-
-                var bestEfforts = _timesRepo.GetBestTimes(_userId, start, end);
-
-                var OneKm = bestEfforts.Where(b => b.Distance == 1000).FirstOrDefault();
-                if (OneKm != null)
-                    sportSummary.Peak1 = new KeyValuePair<string, string>(OneKm.DistanceName, OneKm.AveragePace.ToMinSec());
-
-                var OneMile = bestEfforts.Where(b => b.Distance == 1609).FirstOrDefault();
-                if (OneMile != null)
-                    sportSummary.Peak2 = new KeyValuePair<string, string>(OneMile.DistanceName, OneMile.AveragePace.ToMinSec());
-
-                var FiveKm = bestEfforts.Where(b => b.Distance == 5000).FirstOrDefault();
-                if (FiveKm != null)
-                    sportSummary.Peak3 = new KeyValuePair<string, string>(FiveKm.DistanceName, FiveKm.AveragePace.ToMinSec());
-
-                var TenKm = bestEfforts.Where(b => b.Distance == 10000).FirstOrDefault();
-                if (TenKm != null)
-                    sportSummary.Peak4 = new KeyValuePair<string, string>(TenKm.DistanceName, TenKm.AveragePace.ToMinSec());
-
-            }
-            else if (sport == SportType.Swim)
-            {
-                activities = _summaryActivities.Where(r => r.IsSwim && r.Start >= start && r.Start <= end).ToList();
-                sportSummary.IsSwim = true;
-            }
-            else if (sport == SportType.Other)
-            {
-                activities = _summaryActivities.Where(r => r.IsOther && r.Start >= start && r.Start <= end).ToList();
-                sportSummary.IsOther = true;
-            }
-            else
-                activities = _summaryActivities.Where(r => r.Start >= start && r.Start <= end).ToList();
-
-            sportSummary.Sport = sport;
-            sportSummary.Duration = TimeSpan.FromSeconds(activities.Sum(r => r.MovingTime.TotalSeconds));
-            sportSummary.Distance = activities.Sum(r => r.Distance);
-            sportSummary.SufferScore = activities.Sum(r => r.SufferScore);
-            sportSummary.Calories = activities.Sum(r => r.Calories);
-            sportSummary.ElevationGain = activities.Sum(r => r.ElevationGain).ToFeet();
-            sportSummary.ActivityCount = activities.Count();
-            sportSummary.TSS = activities.Sum(r => r.TSS);
-            sportSummary.TrainingLoadChartName = string.Format("{0}{1}Chart", sport, (end - start).TotalDays.ToString());
-
-            return sportSummary;
-        }
+  
     }
 }
 

@@ -160,6 +160,7 @@
     <Compile Include="Helpers\Analytics\BikePower.cs" />
     <Compile Include="Helpers\Conversions\EnumConversion.cs" />
     <Compile Include="Helpers\Conversions\FitbitConversion.cs" />
+    <Compile Include="Helpers\DashboardSportSummary.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
     <Compile Include="Helpers\DisplayLabel.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
