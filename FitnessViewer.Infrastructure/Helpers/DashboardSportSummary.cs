@@ -1,5 +1,7 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
+using FitnessViewer.Infrastructure.Intefaces;
+using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Repository;
 using System;
@@ -10,7 +12,8 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public class DashboardSportSummary
     {
-        private RunningTimesDtoRepository _timesRepo;
+        private IRunningTimesDtoRepository _timesRepo;
+        private IActivityDtoRepository _activityRepo;
         private ApplicationDb _context;
         public string UserId { get; set; }
         public DateTime Start { get; set; }
@@ -23,12 +26,12 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _context = new ApplicationDb();
             _timesRepo = new RunningTimesDtoRepository(_context);
+            _activityRepo = new ActivityDtoRepository(_context);
         }
 
         public static SportSummaryDto Create(string userId, SportType sport, DateTime start, DateTime end)
         {
-            List<ActivityDto> activities = new List<ActivityDto>();
-            return Create(userId, sport, start, end, activities);
+            return Create(userId, sport, start, end, null);
         }
 
         public static SportSummaryDto Create(string userId, SportType sport, DateTime start, DateTime end, List<ActivityDto> activities)
@@ -38,8 +41,11 @@ namespace FitnessViewer.Infrastructure.Helpers
             summary.Sport = sport;
             summary.Start = start;
             summary.End = end;
-            summary._summaryActivities = activities;
 
+            if (activities != null)
+                summary._summaryActivities = activities;
+            else
+                summary._summaryActivities = summary._activityRepo.GetSportSummaryQuery(userId, sport, start, end).ToList();
 
             return summary.GetSportSummary();
         }

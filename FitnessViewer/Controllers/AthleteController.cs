@@ -1,5 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
+using FitnessViewer.Infrastructure.Helpers.Conversions;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Dto;
@@ -7,8 +8,10 @@ using FitnessViewer.Infrastructure.Repository;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using static FitnessViewer.Infrastructure.Helpers.DateHelpers;
 
 namespace FitnessViewer.Controllers
 {
@@ -49,6 +52,29 @@ namespace FitnessViewer.Controllers
                 new ProcessQueueJob(queueJob.Id).ResumbitJob();
        
             return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+        }
+
+        public class SportSummaryRequestInformation : DateRange
+        {
+            public string Sport { get; set; }
+        }
+
+        [System.Web.Http.HttpGet]
+        public ActionResult GetSportSummary([System.Web.Http.FromUri] SportSummaryRequestInformation detail)
+        {
+            SportType sportType;
+            try
+            {
+                sportType = EnumConversion.GetEnumFromDescription<SportType>(detail.Sport);
+            }
+            catch(ArgumentException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SportSummaryDto details = DashboardSportSummary.Create(this.User.Identity.GetUserId(),sportType, detail.FromDateTime.Value, detail.ToDateTime.Value);
+
+         
+            return PartialView("_sportSummary", details);
         }
     }
 }

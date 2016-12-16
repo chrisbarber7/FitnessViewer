@@ -39,11 +39,26 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <h4>Run Stats</h4>@{Html.RenderPartial("_SportSummary", Model.RunSummary); }
-        <h4>Bike Stats</h4>@{Html.RenderPartial("_SportSummary", Model.BikeSummary); }
-        <h4>Swim Stats</h4>@{Html.RenderPartial("_SportSummary", Model.SwimSummary); }
-        <h4>Other Sport Stats</h4>@{Html.RenderPartial("_SportSummary", Model.OtherSportSummary); }
-        <h4>Total</h4>@{Html.RenderPartial("_SportSummary", Model.AllSportSummary); }
+        <h4>Run Stats</h4>
+        <div id="runSummaryInformation">
+            @{Html.RenderPartial("_SportSummary", Model.RunSummary); }
+        </div>
+        <h4>Bike Stats</h4>
+        <div id="rideSummaryInformation">          
+            @{Html.RenderPartial("_SportSummary", Model.BikeSummary); }
+        </div>
+        <h4>Swim Stats</h4>
+        <div id="swimSummaryInformation">      
+            @{Html.RenderPartial("_SportSummary", Model.SwimSummary); }
+        </div>
+        <h4>Other Sport Stats</h4>
+        <div id="otherSummaryInformation">        
+            @{Html.RenderPartial("_SportSummary", Model.OtherSportSummary); }
+        </div>
+        <h4>Total</h4>
+        <div id="allSummaryInformation">
+            @{Html.RenderPartial("_SportSummary", Model.AllSportSummary); }
+        </div>
     </div>
     <div class="col-md-4">
         <div class="row">

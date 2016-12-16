@@ -31,6 +31,12 @@
         start = s;
         end = e;
         updateWeeklyReports();
+        $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+        $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+        $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+        $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+        $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+
     }
 
     var updateWeeklyReports = function () {
