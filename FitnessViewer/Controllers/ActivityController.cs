@@ -108,6 +108,9 @@ namespace FitnessViewer.Controllers
         {
             ActivityStreams details = ActivityStreams.CreateFromExistingActivityStream(detail.activityId, detail.startIndex, detail.endIndex);
 
+            if (details.UserId != User.Identity.GetUserId())
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             ActivityMinMaxDto mma = new ActivityMinMaxDto(details);
             mma.Populate();
             mma.Label = detail.selection;

@@ -521,5 +521,12 @@ namespace FitnessViewer.Infrastructure.Models.Collections
                 this.Stream.Add(newItem);
             }
         }
+
+        public string UserId
+        {
+            get { return this.Activity.Athlete.UserId; }
+            private set { }
+        }
+        }
     }
 }
