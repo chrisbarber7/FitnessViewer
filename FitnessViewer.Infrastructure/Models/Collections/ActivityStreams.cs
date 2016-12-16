@@ -511,7 +511,7 @@ namespace FitnessViewer.Infrastructure.Models.Collections
 
                 if (previous.Gradient != null)
                     newItem.Gradient = 0;
-                
+
                 if (previous.Cadence != null)
                     newItem.Cadence = 0;
 
@@ -526,7 +526,6 @@ namespace FitnessViewer.Infrastructure.Models.Collections
         {
             get { return this.Activity.Athlete.UserId; }
             private set { }
-        }
         }
     }
 }
