@@ -1,28 +1,51 @@
 ﻿var DashboardController = function () {
     var init = function () {
+  
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            "opens": "left",
+            ranges: {
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'Last 90 Days': [moment().subtract(89, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment()]
+            }
+        }, DateRangeSelected);
 
-        setupWeeklyReport("chart12weekRun", "Run", "#873D48");
-        setupWeeklyReport("chart12weekBike", "Ride", "#DC758F");
-        setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
-        setupWeightChart();
-        setupTimeBySportChart("chartTimeBySport7Day", 7);
-        setupTimeBySportChart("chartTimeBySport30Day", 30);
-
-
-
-        //jQuery("#date-7day").click(function (e) {
-        //    alert("7 day");
-        //    e.preventDefault();
-        //});
-
-
+        DateRangeSelected(start, end);
     };
 
+    // default to last 30 days.
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    var runDistanceChart;
+    var rideDistanceChart;
+    var swimDistanceChart;
+
+    function DateRangeSelected(s, e) {
+        $('#reportrange span').html(s.format('MMMM D, YYYY') + ' - ' + e.format('MMMM D, YYYY'));
+        start = s;
+        end = e;
+        updateWeeklyReports();
+    }
+
+    var updateWeeklyReports = function () {
+        setupWeeklyReport("chart12weekRun", "Run", "#873D48");
+        setupWeeklyReport("chart12weekBike", "Ride", "#DC758F");
+       setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
+        setupWeightChart();
+        setupTimeBySportChart("chartTimeBySport");
+   
+    };
 
     var setupWeeklyReport = function (chartName, api, colour) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetRunDistancePerWeek/" + api,
+            url: "/api/Activity/GetPeriodDistance/" + api + "?From=" + start.utc().format("X") + "&To=" + end.utc().format("X"),
             success: function (data) {
                 BarChart(data);
             },
@@ -46,34 +69,94 @@
 
             var ctx = document.getElementById(chartName).getContext("2d");
 
-            var myBarChart = Chart.Bar(ctx, {
-                data: barChartData,
-                options: {
-                    legend: {
-                        display: false
-                    },
-           
-                    onClick: handleClick,
-                    scales:
-                         {
-                             xAxes: [{
-                                 display: false
-                             }]
-                         }                }
-            });
+            // setting up each chart seperatly as need to destroy the prvious report
+            // before updating when date range changes
+            if (api === "Run") {
+                if (runDistanceChart !== undefined) {
+                    runDistanceChart.destroy();
+                }
 
-            function handleClick(evt) {
-                var activeElement = myBarChart.getElementAtEvent(evt); 
+                runDistanceChart = Chart.Bar(ctx, {
+                    data: barChartData,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        onClick: runHandleClick,
+                        scales:
+                             {
+                                 xAxes: [{
+                                     display: false
+                                 }]
+                             }
+                    }
+                });
+            }
+
+            if (api === "Swim") {
+                if (swimDistanceChart !== undefined) {
+                    swimDistanceChart.destroy();
+                }
+
+                swimDistanceChart = Chart.Bar(ctx, {
+                    data: barChartData,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+
+                        onClick: swimHandleClick,
+                        scales:
+                             {
+                                 xAxes: [{
+                                     display: false
+                                 }]
+                             }
+                    }
+                });
+            }
+
+            if (api === "Ride") {
+                if (rideDistanceChart !== undefined) {
+                    rideDistanceChart.destroy();
+                }
+
+                rideDistanceChart = Chart.Bar(ctx, {
+                    data: barChartData,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+
+                        onClick: rideHandleClick,
+                        scales:
+                             {
+                                 xAxes: [{
+                                     display: false
+                                 }]
+                             }
+                    }
+                });
+            }
+ 
+            function runHandleClick(evt) {
+                var activeElement = runDistanceChart.getElementAtEvent(evt); 
+            }
+
+            function rideHandleClick(evt) {
+                var activeElement = rideDistanceChart.getElementAtEvent(evt);
+            }
+
+            function swimHandleClick(evt) {
+                var activeElement = swimDistanceChart.getElementAtEvent(evt);
             }
         }
     };
 
     var setupWeightChart = function (chartName, api) {
-        var from = moment().add(-30, 'days').utc().format("X");
-        var to = moment().utc().format("X");
         $.ajax({
             dataType: "json",
-            url: "/api/Metric/GetMetrics/Weight/?From="+from+"&To="+to,
+            url: "/api/Metric/GetMetrics/Weight?From=" + start.utc().format("X") + "&To=" + end.utc().format("X"),
             success: function (data) {
                 WeightChart(data);
             },
@@ -114,10 +197,10 @@
         }
     };
 
-    var setupTimeBySportChart = function (chartName, days) {
+    var setupTimeBySportChart = function (chartName) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetTimeAndDistanceBySport/" + days,
+            url: "/api/Activity/GetTimeAndDistanceBySport?From=" + start.utc().format("X") + "&To=" + end.utc().format("X"),
             success: function (data) {
                 TimeBySportChart(data);
             },

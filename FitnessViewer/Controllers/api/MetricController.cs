@@ -23,7 +23,7 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
-        [Route("api/Metric/GetMetrics/{type}/")]
+        [Route("api/Metric/GetMetrics/{type}")]
         public IHttpActionResult GetMetrics(string type, [FromUri] DateRange dates)
         {
             string userId = this.User.Identity.GetUserId();

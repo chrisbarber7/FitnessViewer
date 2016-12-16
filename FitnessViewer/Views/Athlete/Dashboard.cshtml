@@ -3,8 +3,22 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@Scripts.Render("~/bundles/chart")
-<h1>@Model.FirstName @Model.LastName - Dashboard</h1>
+@section styles {
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+}
+<div class="row">
+    <div class="col-md-8">
+        <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
+    </div>
+    <div class="Icol-md-4">
+        <div class="dateRangePicker">
+            <div id="reportrange" >
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                <span></span> <b class="caret"></b>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-3">
         <h4>Average Run Distance Per Week</h4>
@@ -67,27 +81,18 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="col-md-6">
-                <h4>7 Day breadown</h4>
-                <canvas id="chartTimeBySport7Day" width="150" height="150"></canvas>
-            </div>
-            <div class="col-md-6">
-                <h4>30 Day breadown</h4>
-                <canvas id="chartTimeBySport30Day" width="150" height="150"></canvas>
+            <div class="col-md-12">
+                <h4>Time by Sport</h4>
+                <canvas id="chartTimeBySport" width="150" height="150"></canvas>
             </div>
         </div>
-
-
-
-    </div>
+</div>
 </div>
 
 <div class="row">
     <div class="col-md-8">
-
         </div>
     </div>
-
         <div class="row">
             <div class="col-md-8">
                 @{Html.RenderPartial("_RecentActivity", Model.RecentActivity); }
@@ -131,14 +136,14 @@
             </div>
         </div>
         @section scripts {
+            @Scripts.Render("~/bundles/chart")
             <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
+            <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
             <script type="text/javascript">
-                $(document).ready(function () {
+            $(document).ready(function () {
                     var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
 
                     setupTrainingLoadChart(trainingLoadData);
-
-
 
                     function setupTrainingLoadChart(data) {
                         var trainingLoadChartData = {

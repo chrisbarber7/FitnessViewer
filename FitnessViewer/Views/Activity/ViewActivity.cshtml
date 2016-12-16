@@ -3,14 +3,11 @@
     ViewBag.Title = "Activity";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section styles {
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
 <link rel="stylesheet" type="text/css" href="~/Content/ActivityView.css" />
-
 @Scripts.Render("~/bundles/chart")
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-
-
+}
 @Html.Hidden("activityId", Model.Id)
 @Html.Hidden("hasMap", Model.HasMap)
 <div>

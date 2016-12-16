@@ -1,5 +1,4 @@
-﻿using FitnessViewer.Infrastructure.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
@@ -9,6 +8,7 @@ using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
 using FitnessViewer.Infrastructure.Intefaces;
+using static FitnessViewer.Infrastructure.Helpers.DateHelpers;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -36,7 +36,6 @@ namespace FitnessViewer.Controllers.api
             _timeDistanceRepo = timeDistanceRepo;
             _periodRepo = periodRepo;
         }
-        
 
         [HttpGet]
         public IHttpActionResult GetActivities()
@@ -62,20 +61,20 @@ namespace FitnessViewer.Controllers.api
                  _graphRepo.GetActivityStreams(Convert.ToInt64(id))
             );
         }
-
-        [HttpGet]
-        public IHttpActionResult GetTimeAndDistanceBySport(string id)
-        {
-
-            int daysValue;
-
-            if (!int.TryParse(id, out daysValue))
-                return BadRequest("Invalid Days Parameter");
-
     
+        [HttpGet]
+        [Route("api/Activity/GetTimeAndDistanceBySport")]
+        public IHttpActionResult GetTimeAndDistanceBySport([FromUri] DateRange dates)
+        {
+            if (!dates.FromDateTime.HasValue)
+                return BadRequest("Invalid From Date");
 
+            if (!dates.ToDateTime.HasValue)
+                return BadRequest("Invalid To Date");
+            
             var data = _timeDistanceRepo.GetTimeDistanceBySport(this.User.Identity.GetUserId(), 
-                                            DateTime.Now.AddDays(daysValue*-1), DateTime.Now);
+                                                                dates.FromDateTime.Value, 
+                                                                dates.ToDateTime.Value);
 
             List<string> sport = new List<string>();
             List<string> distance = new List<string>();
@@ -95,21 +94,28 @@ namespace FitnessViewer.Controllers.api
 
             return Json(chart);
         }
-
+        
         [HttpGet]
-        public IHttpActionResult GetRunDistancePerWeek(string id)
+        [Route("api/Activity/GetPeriodDistance/{type}")]
+        public IHttpActionResult GetPeriodDistance(string type, [FromUri] DateRange dates)
         {
+            if (!dates.FromDateTime.HasValue)
+                return BadRequest("Invalid From Date");
+
+            if (!dates.ToDateTime.HasValue)
+                return BadRequest("Invalid To Date");
+            
             SportType sport;
             try
             {
-                 sport = EnumConversion.GetEnumFromDescription<SportType>(id);
+                 sport = EnumConversion.GetEnumFromDescription<SportType>(type);
             }
             catch(ArgumentException)
             {
                 return BadRequest("Invalid Sport Type");
             }
 
-            var runData = _periodRepo.ActivityByWeek(this.User.Identity.GetUserId(), sport, DateTime.Now.AddDays(12 * 7 * -1), DateTime.Now);
+            var runData = _periodRepo.ActivityByWeek(this.User.Identity.GetUserId(), sport, dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();
