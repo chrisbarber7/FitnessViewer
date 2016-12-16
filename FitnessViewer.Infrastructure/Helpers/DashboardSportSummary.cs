@@ -1,6 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Data;
 using FitnessViewer.Infrastructure.enums;
-using FitnessViewer.Infrastructure.Intefaces;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Repository;

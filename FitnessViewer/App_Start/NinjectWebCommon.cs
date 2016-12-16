@@ -14,7 +14,6 @@ namespace FitnessViewer.App_Start
     using Infrastructure.Data;
     using System.Web.Http;
     using Infrastructure.Repository;
-    using Infrastructure.Intefaces;
 
     public static class NinjectWebCommon 
     {

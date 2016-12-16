@@ -1,6 +1,6 @@
 ﻿using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers;
-using FitnessViewer.Infrastructure.Intefaces;
+using FitnessViewer.Infrastructure.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

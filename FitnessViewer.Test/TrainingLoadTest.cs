@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FitnessViewer.Infrastructure.Helpers;
 using System.Linq;
 using Moq;
-using FitnessViewer.Infrastructure.Intefaces;
+using FitnessViewer.Infrastructure.Interfaces;
 using System.Collections.Generic;
 using FitnessViewer.Infrastructure.enums;
 

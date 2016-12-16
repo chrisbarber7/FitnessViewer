@@ -5,7 +5,7 @@ using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.Infrastructure.Helpers;
 using FitnessViewer.Infrastructure.enums;
 
-namespace FitnessViewer.Infrastructure.Intefaces
+namespace FitnessViewer.Infrastructure.Interfaces
 {
     public interface IActivityDtoRepository
     {

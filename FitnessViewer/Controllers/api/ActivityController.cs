@@ -7,7 +7,6 @@ using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
-using FitnessViewer.Infrastructure.Intefaces;
 using static FitnessViewer.Infrastructure.Helpers.DateHelpers;
 
 namespace FitnessViewer.Controllers.api
