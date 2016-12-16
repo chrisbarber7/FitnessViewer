@@ -63,7 +63,7 @@
 
         function resetIcons(id) {
             var row = $("tr[data-id='" + id + "']");
-            if (id == dotNetMaxInt) {
+            if (id === dotNetMaxInt) {
                 row.addClass("Hidden");
                 $("#add").removeClass("Hidden");
             }
