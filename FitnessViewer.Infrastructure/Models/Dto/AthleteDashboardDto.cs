@@ -47,8 +47,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             RunningTime = _timesRepo.GetBestTimes(_userId);
             CurrentWeight = weightRepo.GetMetricDetails(_userId, MetricType.Weight, 1)[0];
             RecentActivity = activityRepo.GetRecentActivity(_summaryActivities, 7);
-
-
+            
             _trainingLoad = new TrainingLoad(activityRepo);
             // need to go back the highest number of days we're interested in plus 42 days for LongTerm training load duration
             // and an extra day to get a seed value.   Add an extra day to the end to hold current form.
@@ -60,19 +59,6 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             Swim7Day = GetSportSummary(SportType.Swim, 7);
             Other7Day = GetSportSummary(SportType.Other, 7);
             All7Day = GetSportSummary(SportType.All, 7);
-
-            Run30Day = GetSportSummary(SportType.Run, 30);
-            Bike30Day = GetSportSummary(SportType.Ride, 30);
-            Swim30Day = GetSportSummary(SportType.Swim, 30);
-            Other30Day = GetSportSummary(SportType.Other, 30);
-            All30Day = GetSportSummary(SportType.All, 30);
-
-            Run90Day = GetSportSummary(SportType.Run, 90);
-            Bike90Day = GetSportSummary(SportType.Ride, 90);
-            Swim90Day = GetSportSummary(SportType.Swim, 90);
-            Other90Day = GetSportSummary(SportType.Other, 90);
-            All90Day = GetSportSummary(SportType.All, 90);
-
             return true;
         }
 
@@ -102,24 +88,15 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public IEnumerable<ActivityDto> RecentActivity { get; set; }
 
         public SportSummaryDto Run7Day { get; set; }
-        public SportSummaryDto Run30Day { get; set; }
-        public SportSummaryDto Run90Day { get; set; }
 
         public SportSummaryDto Bike7Day { get; set; }
-        public SportSummaryDto Bike30Day { get; set; }
-        public SportSummaryDto Bike90Day { get; set; }
 
         public SportSummaryDto Swim7Day { get; set; }
-        public SportSummaryDto Swim30Day { get; set; }
-        public SportSummaryDto Swim90Day { get; set; }
 
         public SportSummaryDto Other7Day { get; set; }
-        public SportSummaryDto Other30Day { get; set; }
-        public SportSummaryDto Other90Day { get; set; }
 
         public SportSummaryDto All7Day { get; set; }
-        public SportSummaryDto All30Day { get; set; }
-        public SportSummaryDto All90Day { get; set; }
+    
 
         public object DayValuesForChart()
         {
