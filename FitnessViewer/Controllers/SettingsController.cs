@@ -1,5 +1,7 @@
 ﻿using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.Models;
+using FitnessViewer.Infrastructure.Models.ViewModels;
+using FitnessViewer.Infrastructure.Repository;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ namespace FitnessViewer.Controllers
     public class SettingsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+    
 
         public SettingsController(IUnitOfWork unitOfWork)
         {
@@ -45,11 +48,45 @@ namespace FitnessViewer.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult UpdateDashboardPeriod(DashboardPeriodViewModel viewModel)
+        {
+            // update missing data from model 
+            viewModel.UserId = User.Identity.GetUserId();
+            viewModel.DashboardStart = viewModel.FromDateTime.Value;
+            viewModel.DashboardEnd = viewModel.ToDateTime.Value;
+   
+            if (!ModelState.IsValid)
+                return Json(new { success = false, responseText = "Error updating dashboard settings." }, JsonRequestBehavior.AllowGet);
+
+            AthleteSetting settings = _unitOfWork.CRUDRepository.GetByUserId<AthleteSetting>(viewModel.UserId).FirstOrDefault();
+
+            if (settings==null)
+                return Json(new { success = false, responseText = "Error updating dashboard settings." }, JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                settings.DashboardStart = viewModel.DashboardStart;
+                settings.DashboardEnd = viewModel.DashboardEnd;
+                settings.DashboardRange = viewModel.DashboardRange;
+
+                _unitOfWork.CRUDRepository.Update<AthleteSetting>(settings);
+                _unitOfWork.Complete();
+
+                return Json(new { success = true, responseText = "Record Updated Sucessfully." }, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception)
+            {
+                return Json(new { success = false, responseText = "Error updating dashboard settings." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult FTPUpdate(Zone viewModel)
         {
             // userid not provided so need to populate and clear any model errors.
             viewModel.UserId = User.Identity.GetUserId();
-                ModelState["UserId"].Errors.Clear();
+            ModelState["UserId"].Errors.Clear();
 
             if (!ModelState.IsValid)
                 return Json(new { success = false, responseText = "Error.", id = viewModel.Id }, JsonRequestBehavior.AllowGet);
@@ -58,7 +95,7 @@ namespace FitnessViewer.Controllers
             {
                 _unitOfWork.CRUDRepository.Add<Zone>(viewModel);
                 _unitOfWork.Complete();
-                return Json(new { success = true, responseText = "Record Added Sucessfully.", id=viewModel.Id }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, responseText = "Record Added Sucessfully.", id = viewModel.Id }, JsonRequestBehavior.AllowGet);
 
             }
             else

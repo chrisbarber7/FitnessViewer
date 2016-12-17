@@ -41,6 +41,8 @@ namespace FitnessViewer.Infrastructure.Data
         public virtual DbSet<Zone> Zone { get; set; }
         public virtual DbSet<ZoneRange> ZoneRange { get; set; }
 
+        public virtual DbSet<AthleteSetting> AthleteSetting { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

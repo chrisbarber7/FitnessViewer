@@ -29,8 +29,22 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             settings.CheckValues();
             settings.CheckZones();
+            settings.CheckSettings();
 
             return settings;
+        }
+
+        private void CheckSettings()
+        {
+            AthleteSetting setting = _unitOfWork.CRUDRepository.GetByUserId<AthleteSetting>(UserId).FirstOrDefault();
+
+            if (setting != null)
+                return;
+
+            setting = AthleteSetting.DefaultSettings(UserId);
+
+            _unitOfWork.CRUDRepository.Add<AthleteSetting>(setting);
+            _unitOfWork.Complete();
         }
 
         public SystemSettings()

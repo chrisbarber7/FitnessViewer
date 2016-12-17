@@ -120,8 +120,14 @@
     <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <script type="text/javascript">
+
+        // default to last 30 days.
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+
         $(document).ready(function () {
             var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
+          
 
             setupTrainingLoadChart(trainingLoadData);
 

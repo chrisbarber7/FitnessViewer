@@ -150,6 +150,7 @@
     <Compile Include="enums\NotificationType.cs" />
     <Compile Include="enums\PeakStreamType.cs" />
     <Compile Include="enums\SportType.cs" />
+    <Compile Include="enums\SportUnits.cs" />
     <Compile Include="enums\StreamType.cs" />
     <Compile Include="enums\ZoneType.cs" />
     <Compile Include="Helpers\ActivityWeight.cs" />
@@ -332,7 +333,16 @@
     <Compile Include="Migrations\201611301141318_ActivityAddTSSAndIF.Designer.cs">
       <DependentUpon>201611301141318_ActivityAddTSSAndIF.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612171514474_AtheleteSettingTable.cs" />
+    <Compile Include="Migrations\201612171514474_AtheleteSettingTable.Designer.cs">
+      <DependentUpon>201612171514474_AtheleteSettingTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612171539259_AtheleteSettingTableAmend.cs" />
+    <Compile Include="Migrations\201612171539259_AtheleteSettingTableAmend.Designer.cs">
+      <DependentUpon>201612171539259_AtheleteSettingTableAmend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
+    <Compile Include="Models\AthleteSetting.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
     <Compile Include="Models\Dto\ActivityLapsDetail.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
@@ -360,6 +370,7 @@
     <Compile Include="Models\PeakStreamTypeDuration.cs" />
     <Compile Include="Models\Collections\ActivityStreams.cs" />
     <Compile Include="Models\UserNotification.cs" />
+    <Compile Include="Models\ViewModels\DashboardPeriodViewModel.cs" />
     <Compile Include="Models\ViewModels\EditActivityViewModel.cs" />
     <Compile Include="Models\Zone.cs" />
     <Compile Include="Models\ZoneRange.cs" />
@@ -721,6 +732,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611301141318_ActivityAddTSSAndIF.resx">
       <DependentUpon>201611301141318_ActivityAddTSSAndIF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612171514474_AtheleteSettingTable.resx">
+      <DependentUpon>201612171514474_AtheleteSettingTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612171539259_AtheleteSettingTableAmend.resx">
+      <DependentUpon>201612171539259_AtheleteSettingTableAmend.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

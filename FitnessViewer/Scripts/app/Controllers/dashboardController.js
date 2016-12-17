@@ -18,26 +18,55 @@
         DateRangeSelected(start, end);
     };
 
-    // default to last 30 days.
-    var start = moment().subtract(29, 'days');
-    var end = moment();
+    //// default to last 30 days.
+    //var start = moment().subtract(29, 'days');
+    //var end = moment();
 
     var runDistanceChart;
     var rideDistanceChart;
     var swimDistanceChart;
 
-    function DateRangeSelected(s, e) {
+    function DateRangeSelected(s, e, label) {
         $('#reportrange span').html(s.format('MMMM D, YYYY') + ' - ' + e.format('MMMM D, YYYY'));
         start = s;
         end = e;
         updateWeeklyReports();
-        $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-        $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-        $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-        $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-        $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
 
+        // first time in label will be undefined so skip out populating controls which are populated from the view model.
+        if (label !== undefined) {
+            $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+            $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+            $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+            $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+            $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+            UpdateDashboardSettings(s, e, label);
+        }
     }
+
+    var UpdateDashboardSettings = function (s, e, l)
+    {
+        var model = {
+
+
+
+            From: s.utc().format("X"),
+            To: e.utc().format("X"),
+ DashboardRange :l
+
+
+           
+        };
+        $.post("/settings/UpdateDashboardPeriod", model, function (data) {
+            if (data.success) {
+            }
+            else {
+                showError(data.responseText);
+                resetIcons(id);
+            }
+        });
+
+    };
+   
 
     var updateWeeklyReports = function () {
         setupWeeklyReport("chart12weekRun", "Run", "#873D48");
