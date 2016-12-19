@@ -17,6 +17,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         private TrainingLoad _trainingLoad;
         private RunningTimesDtoRepository _timesRepo;
 
+        private AthleteDto _athlete;
+
         public AthleteDashboardDto(IUnitOfWork uow, string userId)
         {
             _uow = uow;
@@ -25,47 +27,54 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public bool Populate()
         {
-            AthleteDto athlete = AthleteDto.Create(_uow, _userId);
+            _athlete = AthleteDto.Create(_uow, _userId);
 
-            if (athlete == null)
+            // athlete record 
+            if (_athlete == null)
                 return false;
 
-            this.FirstName = athlete.FirstName;
-            this.LastName = athlete.LastName;
+            this.FirstName = _athlete.FirstName;
+            this.LastName = _athlete.LastName;
 
             ApplicationDb context = new ApplicationDb();
-
+            
+            SetupDateRange();
+            
             PeaksDtoRepository peaksRepo = new PeaksDtoRepository(context);
             _timesRepo = new RunningTimesDtoRepository(context);
             ActivityDtoRepository activityRepo = new ActivityDtoRepository(context);
             WeightByDayDtoRepository weightRepo = new WeightByDayDtoRepository(context);
 
-            // get a list of activities for the past 90 days which will be used to extract various summary information details.
-            _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, SportType.All, DateTime.Now.AddDays(-90), DateTime.Now).ToList();
+            // get a list of activities which will be used to extract various summary information details.
+            _summaryActivities = activityRepo.GetSportSummaryQuery(_userId, SportType.All, Start, End).ToList();
 
             PowerPeaks = peaksRepo.GetPeaks(_userId, PeakStreamType.Power);
             RunningTime = _timesRepo.GetBestTimes(_userId);
             CurrentWeight = weightRepo.GetMetricDetails(_userId, MetricType.Weight, 1)[0];
             RecentActivity = activityRepo.GetRecentActivity(_summaryActivities, 7);
-            
+
             _trainingLoad = new TrainingLoad(activityRepo);
-            // need to go back the highest number of days we're interested in plus 42 days for LongTerm training load duration
+            // need to go back the highest number of days we're interested in plus a yearfor LongTerm training load duration
             // and an extra day to get a seed value.   Add an extra day to the end to hold current form.
-            _trainingLoad.Setup(_userId, DateTime.Now.AddDays(-365 - 42 - 1), DateTime.Now.AddDays(1));
+            _trainingLoad.Setup(_userId, Start.AddDays(-365), End.AddDays(1));
             _trainingLoad.Calculate(SportType.Ride);
 
-            DateTime start = DateTime.Now.AddDays(30 * -1).Date;
-            DateTime end = DateTime.Now.Date;
 
-            RunSummary = DashboardSportSummary.Create(_userId, SportType.Run, start, end, _summaryActivities);
-            BikeSummary = DashboardSportSummary.Create(_userId, SportType.Ride, start, end, _summaryActivities);
-            SwimSummary = DashboardSportSummary.Create(_userId, SportType.Swim, start, end, _summaryActivities);
-            OtherSportSummary = DashboardSportSummary.Create(_userId, SportType.Other, start, end, _summaryActivities);
-            AllSportSummary = DashboardSportSummary.Create(_userId, SportType.All, start, end, _summaryActivities);
+            RunSummary = DashboardSportSummary.Create(_userId, SportType.Run, Start, End, _summaryActivities);
+            BikeSummary = DashboardSportSummary.Create(_userId, SportType.Ride, Start, End, _summaryActivities);
+            SwimSummary = DashboardSportSummary.Create(_userId, SportType.Swim, Start, End, _summaryActivities);
+            OtherSportSummary = DashboardSportSummary.Create(_userId, SportType.Other, Start, End, _summaryActivities);
+            AllSportSummary = DashboardSportSummary.Create(_userId, SportType.All, Start, End, _summaryActivities);
 
             return true;
         }
 
+        private void SetupDateRange()
+        {
+            DashboardDateRange range = DashboardDateRange.CreateAndCalulcate(_athlete.AthleteSetting);
+            Start = range.Start;
+            End = range.End;
+        }
 
         public IEnumerable<PeaksDto> PowerPeaks { get; set; }
         public IEnumerable<RunningTimesDto> RunningTime { get; internal set; }
@@ -82,6 +91,8 @@ namespace FitnessViewer.Infrastructure.Models.Dto
 
         public SportSummaryDto AllSportSummary { get; set; }
     
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
 
         public object DayValuesForChart()
         {
@@ -90,7 +101,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
             List<string> longTermStress = new List<string>();
             List<string> shortTermStress = new List<string>();
 
-            foreach (TrainingLoadDay d in _trainingLoad.DayValues.Where(d => d.Date >= DateTime.Now.AddDays(-90) && d.Date <= DateTime.Now.AddDays(1)).ToList())
+            foreach (TrainingLoadDay d in _trainingLoad.DayValues.Where(d => d.Date >= Start && d.Date <= End).ToList())
             {
                 date.Add(d.Date.ToShortDateString());
                 longTermStress.Add(d.LongTermLoad.ToString());

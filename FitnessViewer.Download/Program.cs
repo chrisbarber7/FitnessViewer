@@ -24,7 +24,9 @@ namespace FitnessViewer.Download
 
             Infrastructure.Interfaces.IUnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
 
-      
+
+            SystemSettings.CheckSettings("8bfc4edb-42ac-4058-b070-4354a43897c2", 295);
+
             while (true)
             {
                 var jobs = _unitOfWork.Queue.GetQueue(20);

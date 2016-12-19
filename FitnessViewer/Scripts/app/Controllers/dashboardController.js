@@ -6,6 +6,8 @@
             endDate: end,
             "opens": "left",
             ranges: {
+             
+                // any ranges added need to also be added to DashboardDateRange.Calculate
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'Last 90 Days': [moment().subtract(89, 'days'), moment()],
@@ -15,7 +17,7 @@
             }
         }, DateRangeSelected);
 
-        DateRangeSelected(start, end);
+        DateRangeSelected(dashboardStart, dashboardEnd);
     };
 
     //// default to last 30 days.
@@ -28,8 +30,8 @@
 
     function DateRangeSelected(s, e, label) {
         $('#reportrange span').html(s.format('MMMM D, YYYY') + ' - ' + e.format('MMMM D, YYYY'));
-        start = s;
-        end = e;
+        dashboardStart = s;
+        dashboardEnd = e;
         updateWeeklyReports();
 
         // first time in label will be undefined so skip out populating controls which are populated from the view model.
@@ -57,9 +59,7 @@
            
         };
         $.post("/settings/UpdateDashboardPeriod", model, function (data) {
-            if (data.success) {
-            }
-            else {
+            if (!data.success) {
                 showError(data.responseText);
                 resetIcons(id);
             }

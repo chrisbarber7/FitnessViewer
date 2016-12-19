@@ -14,7 +14,10 @@ namespace FitnessViewer.Infrastructure.Models
     public class AthleteSetting : Entity<long>, IEntity<long>, IUserEntity
     {
         [Key]
+        [ForeignKey("Athlete")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public override long Id { get; set; }
+        public virtual Athlete Athlete { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -25,7 +28,10 @@ namespace FitnessViewer.Infrastructure.Models
 
         public DateTime DashboardStart { get; set; }
         public DateTime DashboardEnd { get; set; }
+
+        [MaxLength(32)]
         public string DashboardRange { get; set; }
+
 
         public bool ShowRun { get; set; }
         public bool ShowRide { get; set; }
@@ -52,10 +58,11 @@ namespace FitnessViewer.Infrastructure.Models
         public SportUnitsElevation OtherElevationUnit { get; set; }
         public SportUnitsElevation AllElevationUnit { get; set; }
 
-        public static AthleteSetting DefaultSettings(string userId)
+        public static AthleteSetting DefaultSettings(long id, string userId)
         {
             return new AthleteSetting()
             {
+                Id = id,
                 UserId = userId,
                 DashboardStart = DateTime.Now.AddDays(-29).Date,
                 DashboardEnd = DateTime.Now.Date,

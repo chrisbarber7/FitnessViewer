@@ -9,7 +9,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
     {
         public static AthleteDto Create(IUnitOfWork uow, string userId)
         {
-            Athlete a = uow.CRUDRepository.GetByUserId<Athlete>(userId).FirstOrDefault();
+            Athlete a = uow.CRUDRepository.GetByUserId<Athlete>(userId, o => o.AthleteSetting).FirstOrDefault();
 
             if (a == null)
                 return null;
@@ -33,5 +33,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserId { get; set; }
+
+        public AthleteSetting AthleteSetting { get; set; }
     }
 }

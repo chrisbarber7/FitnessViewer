@@ -1,4 +1,5 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDashboardDto
+@using FitnessViewer.Infrastructure.Helpers;
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -122,12 +123,20 @@
     <script type="text/javascript">
 
         // default to last 30 days.
-        var start = moment().subtract(29, 'days');
-        var end = moment();
+        //var start = moment().subtract(29, 'days');
+        //var end = moment();
+        var start = moment().year(@Model.Start.Year).month(@Model.Start.Month).date(@Model.Start.Day);
+        var end = moment().year(@Model.End.Year).month(@Model.End.Month).date(@Model.End.Day);
+
+        var dashboardStart = moment().year(@Model.Start.Year).month(@Model.Start.Month).date(@Model.Start.Day);
+        var dashboardEnd = moment().year(@Model.End.Year).month(@Model.End.Month).date(@Model.End.Day);
+
+      //  var dashboardStart = moment(@Model.Start.ToUnixDateTime());
+      //  var dashboardEnd = moment(@Model.End.ToUnixDateTime());
 
         $(document).ready(function () {
             var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
-          
+
 
             setupTrainingLoadChart(trainingLoadData);
 

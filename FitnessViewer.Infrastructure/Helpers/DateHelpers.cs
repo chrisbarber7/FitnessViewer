@@ -21,6 +21,16 @@ namespace FitnessViewer.Infrastructure.Helpers
         }
 
         /// <summary>
+        /// Convert DateTime to Unix timestamp.
+        /// </summary>
+        /// <param name="date">Date to convert</param>
+        /// <returns>Unix timestamp</returns>
+        public static int DateTimeToUnixTimeStamp(DateTime date)
+        {
+          return (int)(date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        }
+
+        /// <summary>
         /// To/From date details (input in unix format)
         /// </summary>
         public class DateRange

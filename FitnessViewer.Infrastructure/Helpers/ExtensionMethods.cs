@@ -71,5 +71,15 @@ namespace FitnessViewer.Infrastructure.Helpers
             DescriptionAttribute[] attributes = (DescriptionAttribute[])sport.GetType().GetField(sport.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
+
+        /// <summary>
+        /// Convert DateTime to Unix timestamp.
+        /// </summary>
+        /// <param name="date">Date to convert</param>
+        /// <returns></returns>
+        public static int ToUnixDateTime(this DateTime date)
+        {
+            return date.ToUnixDateTime();
+        }
     }
 }

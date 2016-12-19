@@ -21,8 +21,11 @@ namespace FitnessViewer.Infrastructure.Helpers
         public bool ValueAdded { get; private set; }
         public bool ZoneAdded { get; private set; }
 
-        internal static SystemSettings CheckSettings(string userId, int? ftp)
+        public static SystemSettings CheckSettings(string userId, int? ftp)
         {
+           
+
+
             SystemSettings settings = new SystemSettings();
             settings.UserId = userId;
             settings.Ftp = ftp;
@@ -41,7 +44,12 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (setting != null)
                 return;
 
-            setting = AthleteSetting.DefaultSettings(UserId);
+            Athlete fvAthlete = _unitOfWork.CRUDRepository.GetByUserId<Athlete>(UserId).FirstOrDefault();
+
+            if (fvAthlete == null)
+                return;
+
+            setting = AthleteSetting.DefaultSettings(fvAthlete.Id, UserId);
 
             _unitOfWork.CRUDRepository.Add<AthleteSetting>(setting);
             _unitOfWork.Complete();
