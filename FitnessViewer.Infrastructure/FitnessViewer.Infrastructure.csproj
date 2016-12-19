@@ -161,6 +161,7 @@
     <Compile Include="Helpers\Analytics\BikePower.cs" />
     <Compile Include="Helpers\Conversions\EnumConversion.cs" />
     <Compile Include="Helpers\Conversions\FitbitConversion.cs" />
+    <Compile Include="Helpers\DashboardDateRange.cs" />
     <Compile Include="Helpers\DashboardSportSummary.cs" />
     <Compile Include="Helpers\DateHelpers.cs" />
     <Compile Include="Helpers\DisplayLabel.cs" />
@@ -340,6 +341,22 @@
     <Compile Include="Migrations\201612171539259_AtheleteSettingTableAmend.cs" />
     <Compile Include="Migrations\201612171539259_AtheleteSettingTableAmend.Designer.cs">
       <DependentUpon>201612171539259_AtheleteSettingTableAmend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612180754171_AthleteAmend.cs" />
+    <Compile Include="Migrations\201612180754171_AthleteAmend.Designer.cs">
+      <DependentUpon>201612180754171_AthleteAmend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612181529199_AthleteAmend2.cs" />
+    <Compile Include="Migrations\201612181529199_AthleteAmend2.Designer.cs">
+      <DependentUpon>201612181529199_AthleteAmend2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612181537286_DropAthleteSetingsTable.cs" />
+    <Compile Include="Migrations\201612181537286_DropAthleteSetingsTable.Designer.cs">
+      <DependentUpon>201612181537286_DropAthleteSetingsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612181542095_RecreateAthleteSettingsWithoutIdentity.cs" />
+    <Compile Include="Migrations\201612181542095_RecreateAthleteSettingsWithoutIdentity.Designer.cs">
+      <DependentUpon>201612181542095_RecreateAthleteSettingsWithoutIdentity.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\AthleteSetting.cs" />
@@ -738,6 +755,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612171539259_AtheleteSettingTableAmend.resx">
       <DependentUpon>201612171539259_AtheleteSettingTableAmend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612180754171_AthleteAmend.resx">
+      <DependentUpon>201612180754171_AthleteAmend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612181529199_AthleteAmend2.resx">
+      <DependentUpon>201612181529199_AthleteAmend2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612181537286_DropAthleteSetingsTable.resx">
+      <DependentUpon>201612181537286_DropAthleteSetingsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612181542095_RecreateAthleteSettingsWithoutIdentity.resx">
+      <DependentUpon>201612181542095_RecreateAthleteSettingsWithoutIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

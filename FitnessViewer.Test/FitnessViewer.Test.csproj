@@ -89,6 +89,7 @@
     <Compile Include="FitbitConvert.cs" />
     <Compile Include="TrainingLoadTest.cs" />
     <Compile Include="SportTypeExtensionMethodTest.cs" />
+    <Compile Include="DashboardDateRangeTest.cs" />
     <Compile Include="YearlyDetailsTest.cs" />
     <Compile Include="ZoneTest.cs" />
   </ItemGroup>
