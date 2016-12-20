@@ -27,7 +27,9 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <returns>Unix timestamp</returns>
         public static int DateTimeToUnixTimeStamp(DateTime date)
         {
-          return (int)(date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.Subtract(unixStart);
+            return (int)diff.TotalSeconds;
         }
 
         /// <summary>

@@ -79,7 +79,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// <returns></returns>
         public static int ToUnixDateTime(this DateTime date)
         {
-            return date.ToUnixDateTime();
+            return DateHelpers.DateTimeToUnixTimeStamp(date);
         }
     }
 }

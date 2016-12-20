@@ -2,8 +2,8 @@
     var init = function () {
   
         $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
+            startDate: dashboardStart,
+            endDate: dashboardEnd,
             "opens": "left",
             ranges: {
              
@@ -36,11 +36,11 @@
 
         // first time in label will be undefined so skip out populating controls which are populated from the view model.
         if (label !== undefined) {
-            $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-            $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-            $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-            $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
-            $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + start.utc().format("X") + "&To=" + end.utc().format("X"));
+            $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+            $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+            $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+            $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+            $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
             UpdateDashboardSettings(s, e, label);
         }
     }
@@ -48,15 +48,9 @@
     var UpdateDashboardSettings = function (s, e, l)
     {
         var model = {
-
-
-
             From: s.utc().format("X"),
             To: e.utc().format("X"),
- DashboardRange :l
-
-
-           
+            DashboardRange :l
         };
         $.post("/settings/UpdateDashboardPeriod", model, function (data) {
             if (!data.success) {
@@ -64,10 +58,8 @@
                 resetIcons(id);
             }
         });
-
     };
    
-
     var updateWeeklyReports = function () {
         setupWeeklyReport("chart12weekRun", "Run", "#873D48");
         setupWeeklyReport("chart12weekBike", "Ride", "#DC758F");
@@ -80,7 +72,7 @@
     var setupWeeklyReport = function (chartName, api, colour) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetPeriodDistance/" + api + "?From=" + start.utc().format("X") + "&To=" + end.utc().format("X"),
+            url: "/api/Activity/GetPeriodDistance/" + api + "?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
             success: function (data) {
                 BarChart(data);
             },
@@ -191,7 +183,7 @@
     var setupWeightChart = function (chartName, api) {
         $.ajax({
             dataType: "json",
-            url: "/api/Metric/GetMetrics/Weight?From=" + start.utc().format("X") + "&To=" + end.utc().format("X"),
+            url: "/api/Metric/GetMetrics/Weight?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
             success: function (data) {
                 WeightChart(data);
             },
@@ -235,7 +227,7 @@
     var setupTimeBySportChart = function (chartName) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetTimeAndDistanceBySport?From=" + start.utc().format("X") + "&To=" + end.utc().format("X"),
+            url: "/api/Activity/GetTimeAndDistanceBySport?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
             success: function (data) {
                 TimeBySportChart(data);
             },
