@@ -358,6 +358,10 @@
     <Compile Include="Migrations\201612181542095_RecreateAthleteSettingsWithoutIdentity.Designer.cs">
       <DependentUpon>201612181542095_RecreateAthleteSettingsWithoutIdentity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612201052220_DeleteActivityUpdateFlag.cs" />
+    <Compile Include="Migrations\201612201052220_DeleteActivityUpdateFlag.Designer.cs">
+      <DependentUpon>201612201052220_DeleteActivityUpdateFlag.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\AthleteSetting.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
@@ -767,6 +771,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612181542095_RecreateAthleteSettingsWithoutIdentity.resx">
       <DependentUpon>201612181542095_RecreateAthleteSettingsWithoutIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201052220_DeleteActivityUpdateFlag.resx">
+      <DependentUpon>201612201052220_DeleteActivityUpdateFlag.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
