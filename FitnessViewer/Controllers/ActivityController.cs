@@ -47,7 +47,7 @@ namespace FitnessViewer.Controllers
             _unitOfWork.Activity.DeleteActivityDetails(id.Value);
 
             // perform another strava activity scan to pick up the activity again.
-            DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), DownloadType.Strava, id.Value);
+            DownloadQueue.CreateQueueJob(User.Identity.GetUserId(), DownloadType.Strava, id.Value).Save();
             
 
             return RedirectToAction("ViewActivity", new { id = id });
