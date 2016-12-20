@@ -120,7 +120,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="StravaDotNet, Version=3.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StravaDotNet.3.5.2\lib\net452\StravaDotNet.dll</HintPath>
+      <HintPath>..\packages\StravaDotNet.3.5.3\lib\net452\StravaDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
