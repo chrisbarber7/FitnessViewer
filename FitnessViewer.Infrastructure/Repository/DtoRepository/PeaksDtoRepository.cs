@@ -55,7 +55,12 @@ namespace FitnessViewer.Infrastructure.Repository
 
             PeaksDto ap = new PeaksDto();
             ap.PeakType = type;
-            ap.Days = Convert.ToInt32(end.Subtract(start).TotalDays);
+
+            // DateTime.MinValue = all activities so need to set days to int.maxValue so that the client can identify it as all days/activities.
+            if (start == DateTime.MinValue)
+                ap.Days = int.MaxValue;
+            else
+                ap.Days = Convert.ToInt32(end.Subtract(start).TotalDays);
 
             ap.DurationPeaks.Add(peaks.Where(p => p.Activity.Start >= start && p.Activity.Start <= end)
                                 .OrderByDescending(p => p.Peak5)
