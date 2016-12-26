@@ -11,7 +11,7 @@
     <div class="col-md-8">
         <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
     </div>
-    <div class="Icol-md-4">
+    <div class="col-md-4">
         <div class="dateRangePicker">
             <div id="reportrange">
                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
@@ -79,7 +79,14 @@
         @{Html.RenderPartial("_RecentActivity", Model.RecentActivity); }
     </div>
     <div class="col-md-4">
-        <h4>Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToString("dd MMM yyyy")</h4>
+        <h4>
+            Weight - Latest @Model.CurrentWeight.Current on @Model.CurrentWeight.Date.ToString("dd MMM yyyy")
+            <span class="zoom">
+                <a href='@Url.Action("Index", "Metrics")' data-modal="">
+                    <span class="glyphicon glyphicon-zoom-in"></span>
+                </a>
+            </span>
+        </h4>
         <div class="table-responsive">
             <table class="table table-striped table-condensed">
                 <tr>
