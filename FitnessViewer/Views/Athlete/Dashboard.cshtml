@@ -1,25 +1,14 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDashboardDto
 @using FitnessViewer.Infrastructure.Helpers;
 @{
-    ViewBag.Title = "Dashboard";
+    ViewBag.Title = @Model.FirstName + @Model.LastName + "- Dashboard";
+    
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles {
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 }
-<div class="row">
-    <div class="col-md-8">
-        <h1>@Model.FirstName @Model.LastName - Dashboard</h1>
-    </div>
-    <div class="col-md-4">
-        <div class="dateRangePicker">
-            <div id="reportrange">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                <span></span> <b class="caret"></b>
-            </div>
-        </div>
-    </div>
-</div>
+@{Html.RenderPartial("~/Views/Shared/DashboardHeader.cshtml", null); }
 <div class="row">
     <div class="col-md-3">
         <h4>Average Run Distance Per Week</h4>
