@@ -1,18 +1,18 @@
-﻿var MetricsIndexController = function () {
-    var init = function (period) {
-        setupWeightDetailedChart(period, 'Weight', 'chartDetailedWeight');
-        setupWeightDetailedChart(period, 'HeartRate', 'chartDetailedHRV');  
+﻿
+    var initReports = function () {
+      
     };
 
-    var setupWeightDetailedChart = function (period, metricType, chartName) {
+    var updateWeeklyReports = function () {
+        setupWeightDetailedChart('Weight', 'chartDetailedWeight');
+        setupWeightDetailedChart('HeartRate', 'chartDetailedHRV');
+    };
 
-        // dates in unix format.
-        var from = moment().add(period*-1, 'months').utc().format("X");
-        var to = moment().utc().format("X");
-        
+    var setupWeightDetailedChart = function ( metricType, chartName) {
         $.ajax({
             dataType: "json",
-            url: "/api/Metric/GetMetrics/"+metricType+"/?From="+from+"&To="+to,
+            url: "/api/Metric/GetMetrics/" + metricType + "/?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+     
             success: function (data) {
                 WeightDetailedChart(data);
             },
@@ -52,7 +52,3 @@
             });
         }
     };
-    return {
-        init: init
-    };
-}();
