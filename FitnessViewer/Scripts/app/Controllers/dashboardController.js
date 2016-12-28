@@ -1,69 +1,20 @@
-﻿var DashboardController = function () {
-    var init = function () {
-  
-        $('#reportrange').daterangepicker({
-            startDate: dashboardStart,
-            endDate: dashboardEnd,
-            "opens": "left",
-            ranges: {
-             
-                // any ranges added need to also be added to DashboardDateRange.Calculate
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'Last 90 Days': [moment().subtract(89, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment()]
-            }
-        }, DateRangeSelected);
-
-        DateRangeSelected(dashboardStart, dashboardEnd);
-    };
-
-    //// default to last 30 days.
-    //var start = moment().subtract(29, 'days');
-    //var end = moment();
-
-    var runDistanceChart;
+﻿    var runDistanceChart;
     var rideDistanceChart;
     var swimDistanceChart;
 
-    function DateRangeSelected(s, e, label) {
-        $('#reportrange span').html(s.format('MMMM D, YYYY') + ' - ' + e.format('MMMM D, YYYY'));
-        dashboardStart = s;
-        dashboardEnd = e;
-        updateWeeklyReports();
+    var initReports = function () {
+        $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+        $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+        $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+        $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
+        $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
 
-        // first time in label will be undefined so skip out populating controls which are populated from the view model.
-        if (label !== undefined) {
-            $("#runSummaryInformation").load("/Athlete/GetSportSummary?sport=run&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
-            $("#rideSummaryInformation").load("/Athlete/GetSportSummary?sport=Ride&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
-            $("#swimSummaryInformation").load("/Athlete/GetSportSummary?sport=Swim&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
-            $("#otherSummaryInformation").load("/Athlete/GetSportSummary?sport=Other&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
-            $("#allSummaryInformation").load("/Athlete/GetSportSummary?sport=All&From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"));
-            UpdateDashboardSettings(s, e, label);
-        }
-    }
-
-    var UpdateDashboardSettings = function (s, e, l)
-    {
-        var model = {
-            From: s.utc().format("X"),
-            To: e.utc().format("X"),
-            DashboardRange :l
-        };
-        $.post("/settings/UpdateDashboardPeriod", model, function (data) {
-            if (!data.success) {
-                showError(data.responseText);
-                resetIcons(id);
-            }
-        });
     };
-   
+
     var updateWeeklyReports = function () {
         setupWeeklyReport("chart12weekRun", "Run", "#873D48");
         setupWeeklyReport("chart12weekBike", "Ride", "#DC758F");
-       setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
+        setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport");
    
@@ -82,8 +33,8 @@
         });
 
         function BarChart(data) {
-            var barChartData = {
-               labels: data.Period,
+            var sportDistanceChartData = {
+                labels: data.Period,
                 datasets: [
                     {
                         label: 'Distance',
@@ -94,7 +45,7 @@
                     }]
             };
 
-            var ctx = document.getElementById(chartName).getContext("2d");
+            var distanceChartContext = document.getElementById(chartName).getContext("2d");
 
             // setting up each chart seperatly as need to destroy the prvious report
             // before updating when date range changes
@@ -103,8 +54,8 @@
                     runDistanceChart.destroy();
                 }
 
-                runDistanceChart = Chart.Bar(ctx, {
-                    data: barChartData,
+                runDistanceChart = Chart.Bar(distanceChartContext, {
+                    data: sportDistanceChartData,
                     options: {
                         legend: {
                             display: false
@@ -125,8 +76,8 @@
                     swimDistanceChart.destroy();
                 }
 
-                swimDistanceChart = Chart.Bar(ctx, {
-                    data: barChartData,
+                swimDistanceChart = Chart.Bar(distanceChartContext, {
+                    data: sportDistanceChartData,
                     options: {
                         legend: {
                             display: false
@@ -148,8 +99,8 @@
                     rideDistanceChart.destroy();
                 }
 
-                rideDistanceChart = Chart.Bar(ctx, {
-                    data: barChartData,
+                rideDistanceChart = Chart.Bar(distanceChartContext, {
+                    data: sportDistanceChartData,
                     options: {
                         legend: {
                             display: false
@@ -193,7 +144,7 @@
         });
 
         function WeightChart(data) {
-            var barChartData = {
+            var weightChartData = {
                 labels: data.Date,
                 datasets: [
                     {
@@ -213,10 +164,10 @@
                 ]
             };
 
-            var ctx = document.getElementById("chartWeight").getContext("2d");
+            var weightChartContext = document.getElementById("chartWeight").getContext("2d");
 
-            var myBarChart = Chart.Line(ctx, {
-                data: barChartData,
+            var weightChart = Chart.Line(weightChartContext, {
+                data: weightChartData,
                 options: {
                     animation: false
                 }
@@ -237,7 +188,7 @@
         });
 
         function TimeBySportChart(dataSet) {
-            var pieChartData = {              
+            var pieChartData = {
                 labels: dataSet.Sport,
                 datasets: [
                     {
@@ -267,16 +218,44 @@
                 }
             };
 
-            var ctx = document.getElementById(chartName).getContext("2d");
+            var timeBySportContext = document.getElementById(chartName).getContext("2d");
 
-            var myPieChart = new Chart(ctx, {
+            var timeBySportPieChart = new Chart(timeBySportContext, {
                 type: 'pie',
                 data: pieChartData,
-        options: options
+                options: options
             });
         }
     };
-    return {
-        init: init
-    };
-}();
+
+    function setupTrainingLoadChart(data) {
+        var trainingLoadChartData = {
+            labels: data.Date,
+            datasets: [
+                {
+                    label: 'LTL',
+                    data: data.LongTermLoad,
+                    lineThickness: 0.1,
+                    fill: false,
+                    radius: 0,
+                    borderColor: '#545677'
+                },
+                {
+                    label: 'STL',
+                    data: data.ShortTermLoad,
+                    radius: 0,
+                    fill: false,
+                    borderColor: '#B1B2C1'
+                }
+            ]
+        };
+
+        var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
+
+        var trainloadChart = Chart.Line(trainingLoadChartContext, {
+            data: trainingLoadChartData,
+            options: {
+                animation: false
+            }
+        });
+    }

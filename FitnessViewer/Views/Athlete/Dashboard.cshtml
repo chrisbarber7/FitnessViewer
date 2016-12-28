@@ -114,6 +114,7 @@
 </div>
 @section scripts {
     @Scripts.Render("~/bundles/chart")
+<script type="text/javascript" src="~/Scripts/app//dashboardCalendar.js"></script>
     <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <script type="text/javascript">
@@ -121,44 +122,10 @@
       // get date range to use from the model.
       var dashboardStart = moment.unix(@Model.Start.ToUnixDateTime());
       var dashboardEnd = moment.unix(@Model.End.ToUnixDateTime());
+        var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
 
         $(document).ready(function () {
-            var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
-
-
             setupTrainingLoadChart(trainingLoadData);
-
-            function setupTrainingLoadChart(data) {
-                var trainingLoadChartData = {
-                    labels: data.Date,
-                    datasets: [
-                        {
-                            label: 'LTL',
-                            data: data.LongTermLoad,
-                            lineThickness: 0.1,
-                            fill: false,
-                            radius:0,
-                            borderColor: '#545677'
-                        },
-                        {
-                            label: 'STL',
-                            data: data.ShortTermLoad,
-                            radius: 0,
-                            fill: false,
-                            borderColor: '#B1B2C1'
-                        }
-                    ]
-                };
-
-                var ctx = document.getElementById("bikeTrainingLoadChart").getContext("2d");
-
-                var myBarChart = Chart.Line(ctx, {
-                    data: trainingLoadChartData,
-                    options: {
-                        animation: false
-                    }
-                });
-            }
-            DashboardController.init();
+            DashboardCalendar.init();
         }) </script>
 }
