@@ -76,6 +76,36 @@ namespace FitnessViewer.Controllers
          
             return PartialView("_sportSummary", details);
         }
+
+        public ActionResult Bike()
+        {
+            var userId = this.User.Identity.GetUserId();
+            var dashboard = AthleteDto.Create(_unitOfWork, userId);
+            return View(dashboard);
+        }
+
+        public ActionResult Metrics()
+        {
+
+            var userId = this.User.Identity.GetUserId();
+            var dashboard = AthleteDto.Create(_unitOfWork, userId);
+            return View(dashboard);
+        }
+
+        public ActionResult Swim()
+        {
+
+            var userId = this.User.Identity.GetUserId();
+            var dashboard = AthleteDto.Create(_unitOfWork, userId);
+            return View(dashboard);
+        }
+        public ActionResult Run()
+        {
+
+            var userId = this.User.Identity.GetUserId();
+            var dashboard = AthleteDto.Create(_unitOfWork, userId);
+            return View(dashboard);
+        }
     }
 }
 

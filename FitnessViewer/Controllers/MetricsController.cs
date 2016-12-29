@@ -20,13 +20,7 @@ namespace FitnessViewer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ActionResult Index()
-        {
-
-            var userId = this.User.Identity.GetUserId();
-            var dashboard =  AthleteDto.Create(_unitOfWork, userId);
-            return View(dashboard);
-        }
+      
 
 
         [Authorize]

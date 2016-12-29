@@ -1,4 +1,5 @@
 ﻿using FitnessViewer.Infrastructure.Interfaces;
+using FitnessViewer.Infrastructure.Models.Dto;
 using FitnessViewer.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
@@ -15,9 +16,11 @@ namespace FitnessViewer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ActionResult Index()
+        public ActionResult BikeIndex()
         {
-            return View();
+            var userId = this.User.Identity.GetUserId();
+            var dashboard = AthleteDto.Create(_unitOfWork, userId);
+            return View(dashboard);
         }
     }
 }

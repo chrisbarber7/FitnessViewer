@@ -611,7 +611,7 @@
     <Content Include="Views\Fitbit\Download.cshtml" />
     <Content Include="Views\Fitbit\Home.cshtml" />
     <Content Include="Views\Bike\Index.cshtml" />
-    <Content Include="Views\Metrics\Index.cshtml" />
+    <Content Include="Views\Athlete\Metrics.cshtml" />
     <Content Include="Views\Run\Index.cshtml" />
     <Content Include="Views\Swim\Index.cshtml" />
     <Content Include="Scripts\underscore.min.map" />
@@ -628,6 +628,9 @@
     <Content Include="Views\Activity\_Edit.cshtml" />
     <Content Include="Views\Settings\_zoneGrid.cshtml" />
     <Content Include="Views\Metrics\Sleep.cshtml" />
+    <Content Include="Views\Athlete\Bike.cshtml" />
+    <Content Include="Views\Athlete\Run.cshtml" />
+    <Content Include="Views\Athlete\Swim.cshtml" />
     <None Include="Views\Settings\BikePower.cshtml" />
     <Content Include="Views\Settings\BikeHeartRate.cshtml" />
     <Content Include="Views\Settings\RunPace.cshtml" />
