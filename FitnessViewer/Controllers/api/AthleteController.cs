@@ -8,6 +8,8 @@ using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
 using static FitnessViewer.Infrastructure.Helpers.DateHelpers;
+using FitnessViewer.Infrastructure.Helpers;
+using System.Linq;
 
 namespace FitnessViewer.Controllers.api
 {
@@ -82,6 +84,7 @@ namespace FitnessViewer.Controllers.api
         }
 
 
+
         [HttpGet]
         [Route("api/Athlete/GetTimeAndDistanceBySport")]
         public IHttpActionResult GetTimeAndDistanceBySport([FromUri] DateRange dates)
@@ -116,5 +119,55 @@ namespace FitnessViewer.Controllers.api
         }
 
 
+
+        [HttpGet]
+        [Route("api/Athlete/GetTrainingLoad/{type}")]
+        public IHttpActionResult GetTrainingLoad(string type, [FromUri] DateRange dates)
+        {
+            if (!dates.FromDateTime.HasValue)
+                return BadRequest("Invalid From Date");
+
+            if (!dates.ToDateTime.HasValue)
+                return BadRequest("Invalid To Date");
+
+            SportType sport;
+            try
+            {
+                sport = EnumConversion.GetEnumFromDescription<SportType>(type);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest("Invalid Sport Type");
+            }
+
+            TrainingLoad _trainingLoad;
+            _trainingLoad = new TrainingLoad(_activityRepo);
+            // need to go back the highest number of days we're interested in plus a yearfor LongTerm training load duration
+            // and an extra day to get a seed value.   Add an extra day to the end to hold current form.
+            _trainingLoad.Setup(this.User.Identity.GetUserId(), dates.FromDateTime.Value.AddDays(-365), dates.ToDateTime.Value.AddDays(1));
+            _trainingLoad.Calculate(sport);
+
+
+
+            List<string> date = new List<string>();
+            List<string> longTermStress = new List<string>();
+            List<string> shortTermStress = new List<string>();
+
+            foreach (TrainingLoadDay d in _trainingLoad.DayValues.Where(d => d.Date >= dates.FromDateTime.Value && d.Date <= dates.ToDateTime.Value).ToList())
+            {
+                date.Add(d.Date.ToShortDateString());
+                longTermStress.Add(d.LongTermLoad.ToString());
+                shortTermStress.Add(d.ShortTermLoad.ToString());
+            }
+
+            var chart = new
+            {
+                Date = date,
+                LongTermLoad = longTermStress,
+                ShortTermLoad = shortTermStress
+            };
+
+            return Json(chart);
+        }
     }
 }

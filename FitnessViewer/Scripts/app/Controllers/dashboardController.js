@@ -17,7 +17,7 @@
         setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport");
-        setupTrainingLoadChart(trainingLoadData);
+        setupTrainingLoadChart();
     };
 
     var setupWeeklyReport = function (chartName, api, colour) {
@@ -228,34 +228,50 @@
         }
     };
 
-    function setupTrainingLoadChart(data) {
-        var trainingLoadChartData = {
-            labels: data.Date,
-            datasets: [
-                {
-                    label: 'LTL',
-                    data: data.LongTermLoad,
-                    lineThickness: 0.1,
-                    fill: false,
-                    radius: 0,
-                    borderColor: '#545677'
-                },
-                {
-                    label: 'STL',
-                    data: data.ShortTermLoad,
-                    radius: 0,
-                    fill: false,
-                    borderColor: '#B1B2C1'
-                }
-            ]
-        };
 
-        var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
-
-        var trainloadChart = Chart.Line(trainingLoadChartContext, {
-            data: trainingLoadChartData,
-            options: {
-                animation: false
+    var setupTrainingLoadChart = function (chartName, api) {
+        $.ajax({
+            dataType: "json",
+            url: "/api/Athlete/GetTrainingLoad/Ride?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+            success: function (data) {
+                TrainingLoadChart(data);
+            },
+            error: function () {
+                alert("Error loading training load data!");
             }
         });
+
+
+        function TrainingLoadChart(data) {
+            var trainingLoadChartData = {
+                labels: data.Date,
+                datasets: [
+                    {
+                        label: 'LTL',
+                        data: data.LongTermLoad,
+                        lineThickness: 0.1,
+                        fill: false,
+                        radius: 0,
+                        borderColor: '#545677'
+                    },
+                    {
+                        label: 'STL',
+                        data: data.ShortTermLoad,
+                        radius: 0,
+                        fill: false,
+                        borderColor: '#B1B2C1'
+                    }
+                ]
+            };
+
+            var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
+
+            var trainloadChart = Chart.Line(trainingLoadChartContext, {
+                data: trainingLoadChartData,
+                options: {
+                    animation: false
+                }
+            });
+        };
     }
+        
