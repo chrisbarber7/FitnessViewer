@@ -17,13 +17,13 @@
         setupWeeklyReport("chart12weekSwim", "Swim", "#955E42");
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport");
-   
+        setupTrainingLoadChart(trainingLoadData);
     };
 
     var setupWeeklyReport = function (chartName, api, colour) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetPeriodDistance/" + api + "?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+            url: "/api/Athlete/GetPeriodDistance/" + api + "?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
             success: function (data) {
                 BarChart(data);
             },
@@ -178,7 +178,7 @@
     var setupTimeBySportChart = function (chartName) {
         $.ajax({
             dataType: "json",
-            url: "/api/Activity/GetTimeAndDistanceBySport?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+            url: "/api/Athlete/GetTimeAndDistanceBySport?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
             success: function (data) {
                 TimeBySportChart(data);
             },

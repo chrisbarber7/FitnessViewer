@@ -5,7 +5,7 @@
 
     var setupActivitiesDataTable = function () {
         $('#table_id').dataTable({
-            "ajax": "/api/activity/getactivities",
+            "ajax": "/api/athlete/getactivities",
             "autoWidth": false,
             "deferRender": true,
             "order": [[1, "desc"]],

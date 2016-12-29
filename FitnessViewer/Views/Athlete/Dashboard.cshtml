@@ -1,26 +1,10 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDashboardDto
 @using FitnessViewer.Infrastructure.Helpers;
-@*@{
-        ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Dashboard";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
-    @section styles {
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-    }
-    @{Html.RenderPartial("~/Views/Shared/DashboardHeader.cshtml", null); }*@
-
-
-
-
-
-@*@model FitnessViewer.Infrastructure.Models.Dto.AthleteDto
-    @using FitnessViewer.Infrastructure.Helpers;*@
 @{
     ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Run Dashboard";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 <!-- Start Dasboard Layout-->
-
 <div class="row">
     <div class="col-md-3">
         <h4>Average Run Distance Per Week</h4>
@@ -129,8 +113,6 @@
     <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
     <script type="text/javascript">
         var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
-        $(document).ready(function () {
-            setupTrainingLoadChart(trainingLoadData);
-        });
+      
      </script>
 }
