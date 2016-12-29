@@ -1,19 +1,8 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDto
-@using FitnessViewer.Infrastructure.Helpers;
 @{
-    ViewBag.Title = "Bike";
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Bike Dashboard";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
-
-
-
+<!-- Start Bike Layout-->
 Bike Main Section
-
-
-
-
-
-
-
-
-
+<!-- End Bike Layout-->

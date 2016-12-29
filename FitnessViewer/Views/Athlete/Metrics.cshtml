@@ -1,10 +1,10 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDto
 @using FitnessViewer.Infrastructure.Helpers;
 @{
-    ViewBag.Title = "Metrics";
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Metrics Dashboard";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
-
+<!-- Start Metrics Layout-->
 <div class="row">
     <div class="col-md-12">
         <canvas id="chartDetailedWeight" width="800" height="400"></canvas>
@@ -15,3 +15,4 @@
         <canvas id="chartDetailedHRV" width="800" height="400"></canvas>
     </div>
 </div>
+<!-- End Metrics Layout-->

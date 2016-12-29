@@ -7,7 +7,7 @@
     <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     @Styles.Render("~/Content/css")
-    @RenderSection("ViewStyles", required: false)
+    @RenderSection("LayoutStyles", required: false)
     @RenderSection("styles", required: false)
     <meta name="description" content="Fitness Viewer" />
 </head>
@@ -78,7 +78,9 @@
     </nav>
 
     <div class="container body-content">
+        <!-- Layout Body Start-->
         @RenderBody()
+        <!-- Layout Body End-->
         <hr />
         <footer>
             <div>
@@ -90,7 +92,6 @@
             </div>
         </footer>
     </div>
-
     <!-- Modal -->
     <div id="modalAddMetricSelector" class="modal" role="dialog">
         <div class="modal-dialog">
@@ -119,7 +120,7 @@
 
     @Scripts.Render("~/bundles/app")
     @RenderSection("scripts", required: false)
-    @RenderSection("ViewJavaScript", required: false)
+    @RenderSection("LayoutJavaScript", required: false)
     <script type="text/x-template" id="notifications-template">
         <ul class="notifications">
             <%
