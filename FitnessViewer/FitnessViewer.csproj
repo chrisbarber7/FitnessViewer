@@ -630,6 +630,7 @@
     <Content Include="Views\Settings\RunPace.cshtml" />
     <Content Include="Views\Settings\RunHeartRate.cshtml" />
     <Content Include="Views\Settings\SwimPace.cshtml" />
+    <Content Include="Views\Shared\_DashboardLayout.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

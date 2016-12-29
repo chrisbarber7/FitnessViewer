@@ -2,12 +2,9 @@
 @using FitnessViewer.Infrastructure.Helpers;
 @{
     ViewBag.Title = "Metrics";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
-@section styles {
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-}
-@{Html.RenderPartial("~/Views/Shared/DashboardHeader.cshtml", null); }
+
 <div class="row">
     <div class="col-md-12">
         <canvas id="chartDetailedWeight" width="800" height="400"></canvas>
@@ -18,18 +15,3 @@
         <canvas id="chartDetailedHRV" width="800" height="400"></canvas>
     </div>
 </div>
-@section scripts {
-    @Scripts.Render("~/bundles/chart")
-    <script type="text/javascript" src="~/Scripts/app//dashboardCalendar.js"></script>
-    <script type="text/javascript" src="~/Scripts/app/Controllers/metricsIndexController.js"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-    <script type="text/javascript">
-        // get date range to use from the model.
-        var dashboardStart = moment.unix(@Model.Start.ToUnixDateTime());
-        var dashboardEnd = moment.unix(@Model.End.ToUnixDateTime());
-
-        $(document).ready(function () {
-            DashboardCalendar.init();
-        })
-    </script>
-}
