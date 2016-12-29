@@ -222,14 +222,11 @@
     <Compile Include="Controllers\api\MetricController.cs" />
     <Compile Include="Controllers\api\NotificationController.cs" />
     <Compile Include="Controllers\AthleteController.cs" />
-    <Compile Include="Controllers\BikeController.cs" />
     <Compile Include="Controllers\FitbitController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MetricsController.cs" />
-    <Compile Include="Controllers\RunController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\SwimController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -610,10 +607,7 @@
     <Content Include="Views\Activity\_ActivitySummaryInformation.cshtml" />
     <Content Include="Views\Fitbit\Download.cshtml" />
     <Content Include="Views\Fitbit\Home.cshtml" />
-    <Content Include="Views\Bike\Index.cshtml" />
     <Content Include="Views\Athlete\Metrics.cshtml" />
-    <Content Include="Views\Run\Index.cshtml" />
-    <Content Include="Views\Swim\Index.cshtml" />
     <Content Include="Scripts\underscore.min.map" />
     <Content Include="Views\Athlete\_RecentActivity.cshtml" />
     <Content Include="Views\Athlete\_SportSummary.cshtml" />
