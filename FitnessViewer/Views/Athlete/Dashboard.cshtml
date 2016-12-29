@@ -1,13 +1,26 @@
 ﻿@model FitnessViewer.Infrastructure.Models.Dto.AthleteDashboardDto
 @using FitnessViewer.Infrastructure.Helpers;
+@*@{
+        ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Dashboard";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    @section styles {
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    }
+    @{Html.RenderPartial("~/Views/Shared/DashboardHeader.cshtml", null); }*@
+
+
+
+
+
+@*@model FitnessViewer.Infrastructure.Models.Dto.AthleteDto
+    @using FitnessViewer.Infrastructure.Helpers;*@
 @{
-    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + "- Run Dashboard";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
-@section styles {
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-}
-@{Html.RenderPartial("~/Views/Shared/DashboardHeader.cshtml", null); }
+<!-- Start Dasboard Layout-->
+
 <div class="row">
     <div class="col-md-3">
         <h4>Average Run Distance Per Week</h4>
@@ -33,15 +46,15 @@
             @{Html.RenderPartial("_SportSummary", Model.RunSummary); }
         </div>
         <h4>Bike Stats</h4>
-        <div id="rideSummaryInformation">          
+        <div id="rideSummaryInformation">
             @{Html.RenderPartial("_SportSummary", Model.BikeSummary); }
         </div>
         <h4>Swim Stats</h4>
-        <div id="swimSummaryInformation">      
+        <div id="swimSummaryInformation">
             @{Html.RenderPartial("_SportSummary", Model.SwimSummary); }
         </div>
         <h4>Other Sport Stats</h4>
-        <div id="otherSummaryInformation">        
+        <div id="otherSummaryInformation">
             @{Html.RenderPartial("_SportSummary", Model.OtherSportSummary); }
         </div>
         <h4>Total</h4>
@@ -111,20 +124,13 @@
         @{Html.RenderPartial("_PeakPowerSummary", Model.PowerPeaks); }
     </div>
 </div>
+<!-- End Dashboard Layout-->
 @section scripts {
-    @Scripts.Render("~/bundles/chart")
-<script type="text/javascript" src="~/Scripts/app//dashboardCalendar.js"></script>
     <script type="text/javascript" src="~/Scripts/app/Controllers/dashboardController.js"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <script type="text/javascript">
-
-      // get date range to use from the model.
-      var dashboardStart = moment.unix(@Model.Start.ToUnixDateTime());
-      var dashboardEnd = moment.unix(@Model.End.ToUnixDateTime());
         var trainingLoadData = @Html.Raw(Json.Encode( @Model.DayValuesForChart()));
-
         $(document).ready(function () {
             setupTrainingLoadChart(trainingLoadData);
-            DashboardCalendar.init();
-        }) </script>
+        });
+     </script>
 }

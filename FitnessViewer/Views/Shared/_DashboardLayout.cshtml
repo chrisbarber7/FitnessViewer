@@ -17,6 +17,9 @@
     <script type="text/javascript" src="~/Scripts/app//dashboardCalendar.js"></script>
     <script type="text/javascript" src="~/Scripts/app/Controllers/metricsIndexController.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
+@RenderSection("scripts", required: false)
+
     <script type="text/javascript">
         // get date range to use from the model.
         var dashboardStart = moment.unix(@Model.Start.ToUnixDateTime());
