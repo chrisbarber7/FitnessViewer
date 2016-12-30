@@ -41,8 +41,8 @@ namespace FitnessViewer.Controllers.api
         }
 
         [HttpGet]
-        [Route("api/Athlete/GetPeriodDistance/{type}")]
-        public IHttpActionResult GetPeriodDistance(string type, [FromUri] DateRange dates)
+        [Route("api/Athlete/GetPeriodDistance/{sport}/{type}")]
+        public IHttpActionResult GetPeriodDistance(string sport, string type, [FromUri] DateRange dates)
         {
             if (!dates.FromDateTime.HasValue)
                 return BadRequest("Invalid From Date");
@@ -50,17 +50,17 @@ namespace FitnessViewer.Controllers.api
             if (!dates.ToDateTime.HasValue)
                 return BadRequest("Invalid To Date");
 
-            SportType sport;
+            SportType sportType;
             try
             {
-                sport = EnumConversion.GetEnumFromDescription<SportType>(type);
+                sportType = EnumConversion.GetEnumFromDescription<SportType>(sport);
             }
             catch (ArgumentException)
             {
                 return BadRequest("Invalid Sport Type");
             }
 
-            var runData = _periodRepo.ActivityByWeek(this.User.Identity.GetUserId(), sport, dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
+            var runData = _periodRepo.ActivityByWeek(this.User.Identity.GetUserId(), sportType, dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
 
             List<string> period = new List<string>();
             List<string> distance = new List<string>();
@@ -69,7 +69,12 @@ namespace FitnessViewer.Controllers.api
             foreach (PeriodDto a in runData)
             {
                 period.Add(a.Label);
-                distance.Add(a.TotalDistance.ToString());
+
+                if (type.ToLower() == "total")
+                    distance.Add(a.TotalDistance.ToString());
+                else
+                    distance.Add(a.MaximumDistance.ToString());
+
                 number.Add(a.Number.ToString());
             }
 

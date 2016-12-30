@@ -54,6 +54,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 {
                     Period = a.Key.Period,
                     TotalDistance = Math.Round(a.Sum(d => d.Distance).ToMiles(), 1),
+                    MaximumDistance = Math.Round(a.Max(d=>d.Distance).ToMiles(),1),
                     Number = a.Select(i => i.Id).Distinct().Count(),
                     Label = a.Key.Label
                 })
@@ -68,6 +69,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 {
                     Period = c.YearWeek,
                     TotalDistance = 0,
+                    MaximumDistance = 0,
                     Number = 0,
                     Label = c.WeekLabel
                 }

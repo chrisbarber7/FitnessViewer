@@ -3,15 +3,20 @@ var runDistanceChart;
 var rideDistanceChart;
 var swimDistanceChart;
 
-var setupWeeklyReport = function (chartName, api, colour) {
+
+var runLongestChart;
+var rideLongestChart;
+var swimLongestChart;
+
+var setupWeeklyReport = function (chartName, sport, colour, type) {
     $.ajax({
         dataType: "json",
-        url: "/api/Athlete/GetPeriodDistance/" + api + "?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+        url: "/api/Athlete/GetPeriodDistance/" + sport + "/"+type+"?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
         success: function (data) {
             BarChart(data);
         },
         error: function () {
-            alert("Error loading 12 week data!");
+            alert("Error loading weekly report data!");
         }
     });
 
@@ -32,18 +37,18 @@ var setupWeeklyReport = function (chartName, api, colour) {
 
         // setting up each chart seperatly as need to destroy the prvious report
         // before updating when date range changes
-        if (api === "Run") {
-            if (runDistanceChart !== undefined) {
-                runDistanceChart.destroy();
-            }
+    
+    
+         
 
-            runDistanceChart = Chart.Bar(distanceChartContext, {
+            var chart= Chart.Bar(distanceChartContext, {
                 data: sportDistanceChartData,
                 options: {
                     legend: {
                         display: false
                     },
-                    onClick: runHandleClick,
+
+               
                     scales:
                          {
                              xAxes: [{
@@ -52,69 +57,93 @@ var setupWeeklyReport = function (chartName, api, colour) {
                          }
                 }
             });
-        }
+            if (sport === "Ride") {
 
-        if (api === "Swim") {
-            if (swimDistanceChart !== undefined) {
-                swimDistanceChart.destroy();
+                if (type === "Total") {
+                    if (rideDistanceChart !== undefined) {
+                        rideDistanceChart.destroy();
+                    }
+                    chart.options.onClick = rideDistanceHandleClick;
+                    rideDistanceChart = chart;
+                };
+
+                if (type == "Max") {
+                    if (rideLongestChart !== undefined) {
+                        rideLongestChart.destroy();
+                    }
+                    chart.options.onClick = rideLongestHandleClick;
+                    rideLongestChart = chart;
+                };
             }
 
-            swimDistanceChart = Chart.Bar(distanceChartContext, {
-                data: sportDistanceChartData,
-                options: {
-                    legend: {
-                        display: false
-                    },
+            if (sport === "Run") {
 
-                    onClick: swimHandleClick,
-                    scales:
-                         {
-                             xAxes: [{
-                                 display: false
-                             }]
-                         }
-                }
-            });
-        }
+                if (type === "Total") {
+                    if (runDistanceChart !== undefined) {
+                        runDistanceChart.destroy();
+                    }
+                    chart.options.onClick = runDistanceHandleClick;
+                    runDistanceChart = chart;
+                };
 
-        if (api === "Ride") {
-            if (rideDistanceChart !== undefined) {
-                rideDistanceChart.destroy();
+                if (type == "Max") {
+                    if (runLongestChart !== undefined) {
+                        runLongestChart.destroy();
+                    }
+                    chart.options.onClick = runLongestHandleClick;
+                    runLongestChart = chart;
+                };
+            }
+            if (sport === "Swim") {
+
+                if (type === "Total") {
+                    if (swimDistanceChart !== undefined) {
+                        swimDistanceChart.destroy();
+                    }
+                    chart.options.onClick = swimDistanceHandleClick;
+                    swimDistanceChart = chart;
+                };
+
+                if (type == "Max") {
+                    if (swimLongestChart !== undefined) {
+                        swimLongestChart.destroy();
+                    }
+                    chart.options.onClick = swimLongestHandleClick;
+                    swimLongestChart = chart;
+                };
             }
 
-            rideDistanceChart = Chart.Bar(distanceChartContext, {
-                data: sportDistanceChartData,
-                options: {
-                    legend: {
-                        display: false
-                    },
-
-                    onClick: rideHandleClick,
-                    scales:
-                         {
-                             xAxes: [{
-                                 display: false
-                             }]
-                         }
-                }
-            });
+            function runDistanceHandleClick(evt) {
+            var activeElement = runDistanceChart.getElementAtEvent(evt);
         }
 
         function runHandleClick(evt) {
             var activeElement = runDistanceChart.getElementAtEvent(evt);
         }
-
-        function rideHandleClick(evt) {
+        function runLongestHandleClick(evt) {
+            var activeElement = runLongestChart.getElementAtEvent(evt);
+        }
+        function rideDistanceHandleClick(evt) {
             var activeElement = rideDistanceChart.getElementAtEvent(evt);
         }
 
-        function swimHandleClick(evt) {
+        function rideLongestHandleClick(evt) {
+            var activeElement = rideLongestChart.getElementAtEvent(evt);
+        }
+
+        function swimDistanceHandleClick(evt) {
             var activeElement = swimDistanceChart.getElementAtEvent(evt);
         }
+
+        function swimLongestHandleClick(evt) {
+            var activeElement = swimLongestChart.getElementAtEvent(evt);
+        }
+
+
     }
 };
 
-var setupWeightChart = function (chartName, api) {
+var setupWeightChart = function() {
     $.ajax({
         dataType: "json",
         url: "/api/Metric/GetMetrics/Weight?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
@@ -212,10 +241,10 @@ var setupTimeBySportChart = function (chartName) {
 };
 
 
-var setupTrainingLoadChart = function (chartName, api) {
+var setupTrainingLoadChart = function (sport) {
     $.ajax({
         dataType: "json",
-        url: "/api/Athlete/GetTrainingLoad/Ride?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+        url: "/api/Athlete/GetTrainingLoad/"+sport+"?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
         success: function (data) {
             TrainingLoadChart(data);
         },
@@ -255,6 +284,6 @@ var setupTrainingLoadChart = function (chartName, api) {
                 animation: false
             }
         });
-    };
-}
+    }
+};
 

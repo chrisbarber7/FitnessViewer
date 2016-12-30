@@ -10,6 +10,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
     {
         public string Period { get; set; }
         public decimal TotalDistance { get; set; }
+        public decimal MaximumDistance { get; set; }
         public int Number { get; set; }
         public string Label { get; set; }
     }
