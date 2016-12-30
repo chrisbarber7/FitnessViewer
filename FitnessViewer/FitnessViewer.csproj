@@ -457,6 +457,9 @@
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\Controllers\athleteViewController.js" />
     <Content Include="Scripts\app\Controllers\activityTableController.js" />
+    <Content Include="Scripts\app\commonCharts.js" />
+    <Content Include="Scripts\app\Controllers\runController.js" />
+    <Content Include="Scripts\app\Controllers\bikeController.js" />
     <Content Include="Scripts\app\Controllers\dashboardController.js" />
     <Content Include="Scripts\app\Controllers\metricsIndexController.js" />
     <Content Include="Scripts\app\Controllers\settingsController.js" />

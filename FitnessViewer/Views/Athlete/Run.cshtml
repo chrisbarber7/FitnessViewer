@@ -5,5 +5,17 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 <!-- Start Run Layout-->
-Run Main Section
+<div class="row">
+    <div class="col-md-6">
+        <h4>Average Run Distance Per Week</h4>
+        <canvas id="chart12weekRun" width="800" height="300" title="Recent Run Activity Summary"></canvas>
+    </div>
+    <div class="col-md-6">
+    </div>
+</div>
 <!-- End Run Layout-->
+
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/app/Controllers/runController.js"></script>
+    <script type="text/javascript" src="~/Scripts/app/commonCharts.js"></script>
+}
