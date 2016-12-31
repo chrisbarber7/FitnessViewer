@@ -366,6 +366,7 @@
     <Compile Include="Models\AthleteSetting.cs" />
     <Compile Include="Models\Collections\ActivityPeakDetails.cs" />
     <Compile Include="Models\Dto\ActivityLapsDetail.cs" />
+    <Compile Include="Models\Dto\ActivityPeaksPeriodDto.cs" />
     <Compile Include="Models\Dto\AthleteDto.cs" />
     <Compile Include="Models\Dto\AthleteDashboardDto.cs" />
     <Compile Include="Models\Dto\CoordsDto.cs" />

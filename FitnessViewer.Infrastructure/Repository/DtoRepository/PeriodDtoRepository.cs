@@ -6,6 +6,10 @@ using FitnessViewer.Infrastructure.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
+using System.Linq.Expressions;
+using FitnessViewer.Infrastructure.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Repository
 {
@@ -85,5 +89,87 @@ namespace FitnessViewer.Infrastructure.Repository
 
             return result;
         }
+
+
+
+        public IEnumerable<ActivityPeaksPeriodDto> PeaksByMonth(string userId, DateTime start, DateTime end)
+        {
+            // get list of weeks in the period (to ensure we get full weeks date where the start and/or end date may be in the 
+            // middle of a week
+            var months = _context.Calendar
+                .OrderBy(c => c.YearMonth)
+                .Where(c => c.Date >= start && c.Date <= end)
+                .Select(c => c.YearWeek)
+                .Distinct()
+                .ToList();
+
+
+            var activityPeaks = _context.ActivityPeak
+                .Include(r => r.Activity)
+                .Include(r => r.Activity.ActivityType)
+                .Include(r => r.Activity.Athlete)
+                .Include(r => r.Activity.Calendar)
+                .Where(r => r.Activity.Athlete.UserId == userId && r.Activity.ActivityType.IsRide && months.Contains(r.Activity.Calendar.YearMonth))
+                .Select(r => new
+                {
+                    Id = r.ActivityId,
+                    Period = r.Activity.Calendar.YearMonth,
+                    Label = r.Activity.Calendar.MonthName.Substring(0, 3) + " " + r.Activity.Calendar.Year.ToString(),
+                    Peak5 = r.Peak5,
+                    Peak30 = r.Peak30,
+                    Peak60 = r.Peak60,
+                    Peak300 = r.Peak300,
+                    Peak1200 = r.Peak1200,
+                    Peak3600 = r.Peak3600
+                })
+            .ToList();
+
+            // group the activities by week.
+            var monthlyPeaks = activityPeaks
+                .GroupBy(r => new { Period = r.Period, Label = r.Label })
+                .Select(a => new ActivityPeaksPeriodDto
+                {
+                    Period = a.Key.Period,
+                    Peak5 = a.Max(d => d.Peak5),
+                    Peak30 = a.Max(d => d.Peak30),
+                    Peak60 = a.Max(d => d.Peak60),
+                    Peak300 = a.Max(d => d.Peak300),
+                    Peak1200 = a.Max(d => d.Peak1200),
+                    Peak3600 = a.Max(d => d.Peak3600),
+                    Label = a.Key.Label
+                })
+                .ToList();
+
+            // get list of months in the period which we'l use to check for weeks with zero activities which won't be
+            // included in monthlyTotals.
+            var dummyMonths = _context.Calendar
+                .OrderBy(c => c.YearMonth)
+                .Where(c => c.Date >= start && c.Date <= end)
+                .Select(c => new ActivityPeaksPeriodDto
+                {
+                    Period = c.YearMonth,
+                    Peak5 = 0,
+                    Peak30 = 0,
+                    Peak60 = 0,
+                    Peak300 = 0,
+                    Peak1200 = 0,
+                    Peak3600 = 0,
+                    Label = c.MonthName.Substring(0, 3) + " " + c.Year.ToString(),
+                }
+                )
+                .Distinct()
+                .ToList();
+
+            // merge to ensure we include weeks with no activities.
+            var result = monthlyPeaks
+                .Union(dummyMonths
+                .Where(e => !monthlyPeaks.Select(x => x.Period).Contains(e.Period)))
+                .OrderBy(x => x.Period);
+
+            return result;
+        }
+
+
+ 
     }
 }
