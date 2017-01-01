@@ -635,6 +635,7 @@
     <Content Include="Views\Settings\RunHeartRate.cshtml" />
     <Content Include="Views\Settings\SwimPace.cshtml" />
     <Content Include="Views\Shared\_DashboardLayout.cshtml" />
+    <Content Include="Views\Shared\DashboardHeader.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

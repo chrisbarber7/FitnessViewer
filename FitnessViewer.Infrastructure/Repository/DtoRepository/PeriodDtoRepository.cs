@@ -99,7 +99,7 @@ namespace FitnessViewer.Infrastructure.Repository
             var months = _context.Calendar
                 .OrderBy(c => c.YearMonth)
                 .Where(c => c.Date >= start && c.Date <= end)
-                .Select(c => c.YearWeek)
+                .Select(c => c.YearMonth)
                 .Distinct()
                 .ToList();
 

@@ -174,5 +174,66 @@ namespace FitnessViewer.Controllers.api
 
             return Json(chart);
         }
+
+        [HttpGet]
+        [Route("api/Athlete/GetPeaksByMonth/{sport}")]
+        public IHttpActionResult GetPeaksByMonth(string sport, [FromUri] DateRange dates)
+        {
+            if (!dates.FromDateTime.HasValue)
+                return BadRequest("Invalid From Date");
+
+            if (!dates.ToDateTime.HasValue)
+                return BadRequest("Invalid To Date");
+
+            SportType sportType;
+            try
+            {
+                sportType = EnumConversion.GetEnumFromDescription<SportType>(sport);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest("Invalid Sport Type");
+            }
+
+            var peaksData = _periodRepo.PeaksByMonth(this.User.Identity.GetUserId(), dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
+
+            List<string> period = new List<string>();
+
+
+            List<int?> Peak5 = new List<int?>();
+
+            List<int?> Peak30 = new List<int?>();
+            List< int ?> Peak60 = new List<int?>();
+            List<int?> Peak300 = new List<int?>();
+            List<int?> Peak1200 = new List<int?>();
+            List<int?> Peak3600 = new List<int?>();
+        
+
+
+
+            foreach (ActivityPeaksPeriodDto a in peaksData)
+            {
+                period.Add(a.Label);
+                Peak5.Add(a.Peak5);
+                Peak30.Add(a.Peak30);
+                Peak60.Add(a.Peak60);
+                Peak300.Add(a.Peak300);
+                Peak1200.Add(a.Peak1200);
+                Peak3600.Add(a.Peak3600);
+            }
+
+            var chart = new
+            {
+                Period = period,
+                Peak5 = Peak5,
+                Peak30 = Peak30,
+                Peak60 = Peak60,
+                Peak300 = Peak300,
+                Peak1200 = Peak1200,
+                Peak3600 = Peak3600
+            };
+
+            return Json(chart);
+        }
     }
 }
