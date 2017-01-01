@@ -153,7 +153,10 @@
                         data: data.watts,
                         radius: 0,
                         fill: false,
-                        borderColor: 'blue'
+                        borderColor: 'blue',
+                        lineTension: 0,
+                        pointRadius: 0,
+                        borderWidth: 1
                     }
 
 
@@ -221,7 +224,10 @@
                             radius: 0,
                             fill: false,
                             borderColor: 'blue',
-                            yAxesID: 'y-axis-0'
+                            yAxesID: 'y-axis-0',
+                            lineTension: 0,
+                            pointRadius: 0,
+                            borderWidth: 1
                         },
                         {
                             label: 'Heart Rate',
@@ -230,7 +236,9 @@
                             fill: false,
                             borderColor: 'red',
                             yAxesID: 'y-axis-0',
-                            lineThickness: 0.1
+                            lineTension: 0,
+                            pointRadius: 0,
+                            borderWidth: 1
                         },
                         {
                             label: 'Elevation',
@@ -238,7 +246,10 @@
                             radius: 0,
                             fill: false,
                             borderColor: 'green',
-                            yAxesID: 'y-axis-1'
+                            yAxesID: 'y-axis-1',
+                            lineTension: 0,
+                            pointRadius: 0,
+                            borderWidth: 1
                         }
                     ]
                 };

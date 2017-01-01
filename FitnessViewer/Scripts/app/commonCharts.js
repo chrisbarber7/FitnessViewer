@@ -162,16 +162,21 @@ var setupWeightChart = function() {
                 {
                     label: 'Weight',
                     data: data.MetricValue,
-                    lineThickness: 0.1,
                     fill: false,
-                    borderColor: '#545677'
+                    borderColor: '#545677',
+                    lineTension: 0,
+                    pointRadius: 0,
+                    borderWidth: 1
                 },
                 {
                     label: 'Rolling 7 Day Average',
                     data: data.Ave7Day,
                     radius: 0,
                     fill: false,
-                    borderColor: '#B1B2C1'
+                    borderColor: '#B1B2C1',
+                    lineTension: 0,
+                    pointRadius: 0,
+                    borderWidth: 1
                 }
             ]
         };
@@ -261,17 +266,22 @@ var setupTrainingLoadChart = function (sport) {
                 {
                     label: 'LTL',
                     data: data.LongTermLoad,
-                    lineThickness: 0.1,
                     fill: false,
                     radius: 0,
-                    borderColor: '#545677'
+                    borderColor: '#545677',
+                    lineTension: 0,
+                    pointRadius: 0,
+                    borderWidth: 1
                 },
                 {
                     label: 'STL',
                     data: data.ShortTermLoad,
                     radius: 0,
                     fill: false,
-                    borderColor: '#B1B2C1'
+                    borderColor: '#B1B2C1',
+                    lineTension: 0,
+                    pointRadius: 0,
+                    borderWidth: 1
                 }
             ]
         };
