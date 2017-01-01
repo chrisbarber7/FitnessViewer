@@ -240,12 +240,12 @@ var setupTimeBySportChart = function (chartName) {
 };
 
 
-var setupTrainingLoadChart = function (sport) {
+var setupTrainingLoadChart = function (sport, labels) {
     $.ajax({
         dataType: "json",
         url: "/api/Athlete/GetTrainingLoad/"+sport+"?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
         success: function (data) {
-            TrainingLoadChart(data);
+            TrainingLoadChart(data, labels);
         },
         error: function () {
             alert("Error loading training load data!");
@@ -253,7 +253,7 @@ var setupTrainingLoadChart = function (sport) {
     });
 
 
-    function TrainingLoadChart(data) {
+    function TrainingLoadChart(data,labels) {
         var trainingLoadChartData = {
             labels: data.Date,
             datasets: [
@@ -282,11 +282,34 @@ var setupTrainingLoadChart = function (sport) {
 
         var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
 
+      
+
+        var options = {
+            animation: false,
+            legend: {
+                display: false
+            },
+
+
+            scales:
+                 {
+                     xAxes: [{
+                         display: false
+                     }]
+                 }
+        };
+
+        // if we don't need labels then just disable animations.
+        if (labels != 0) {
+            options = {
+                animation: false
+            };
+        }
+
+
         var trainloadChart = Chart.Line(trainingLoadChartContext, {
             data: trainingLoadChartData,
-            options: {
-                animation: false
-            }
+            options: options
         });
     }
 };

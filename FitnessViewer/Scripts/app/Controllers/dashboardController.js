@@ -15,6 +15,6 @@
         setupWeeklyReport("chart12weekSwim", "Swim", "#955E42", "Total");
         setupWeightChart();
         setupTimeBySportChart("chartTimeBySport");
-        setupTrainingLoadChart("Ride");
+        setupTrainingLoadChart("Ride",0);
     };
 

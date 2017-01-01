@@ -8,7 +8,7 @@
         setupWeeklyReport("chart12weekBike", "Ride", "#DC758F", "Total");
         setupWeeklyReport("chartBikeLongestRide", "Ride", "#DC758F", "Max");
         setupPowerPeakChart();
-        setupTrainingLoadChart("Ride");
+        setupTrainingLoadChart("Ride",1);
     };
 
 
