@@ -16,7 +16,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         private IActivityDtoRepository _repo;
         private List<YearlyDetailsDayInfo> _details;
         int _startYear;
-
+        int _endYear;
         
         public YearlyDetails()
         {
@@ -37,6 +37,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             _details = _repo.GetYearToDateInfo(userId, year);
              _startYear = _details.Min(d => d.Date.Year);
+            _endYear = _details.Max(d => d.Date.Year);
             AddMissingDays();
         }
 
@@ -73,7 +74,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             List<YearlyDetailsDayInfo> allDates = new List<YearlyDetailsDayInfo>();
 
-            for (DateTime d = new DateTime(_startYear, 01, 01); d <= new DateTime(DateTime.Now.Year, 12, 31); d = d.AddDays(1))
+            for (DateTime d = new DateTime(_startYear, 01, 01); d <= new DateTime(_endYear, 12, 31); d = d.AddDays(1))
                 allDates.Add(new YearlyDetailsDayInfo() { Date = d, Sport = sport });
 
             // add in any missing dates by Union
