@@ -215,12 +215,6 @@ var setupTimeBySportChart = function (chartName) {
                         "#873D48",
                         "#DC758F",
                         "#955E42"
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#3498db"
                     ]
                 }]
         };
