@@ -193,6 +193,24 @@ namespace FitnessViewer.Test
             Assert.AreEqual(expectedEnd, range.End);
         }
 
+        [TestMethod]
+        public void DashboardDateRange_Last365Days()
+        {
+            string rangeName = "Last 365 Days";
+
+            AthleteSetting setting = new AthleteSetting();
+            setting.DashboardRange = rangeName;
+
+            Assert.AreEqual(rangeName, setting.DashboardRange);
+
+            DashboardDateRange range = DashboardDateRange.CreateAndCalulcate(setting);
+
+            DateTime expectedStart = DateTime.Now.AddDays(-365).Date;
+            DateTime expectedEnd = DateTime.Now.Date;
+
+            Assert.AreEqual(expectedStart, range.Start);
+            Assert.AreEqual(expectedEnd, range.End);
+        }
 
     }
 }

@@ -80,6 +80,12 @@ namespace FitnessViewer.Infrastructure.Helpers
                             End = DateTime.Now.Date;
                             break;
                         }
+                    case "Last 365 Days":
+                        {
+                            Start = DateTime.Now.AddDays(-365).Date;
+                            End = DateTime.Now.Date;
+                            break;
+                        }
                     case "This Month":
                         {
                             Start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
