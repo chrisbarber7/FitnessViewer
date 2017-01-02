@@ -1,12 +1,11 @@
-﻿
+﻿// used to detroy existing charts before refreshing or else when hovering the previous chart maybe shown.
 var runDistanceChart;
 var rideDistanceChart;
 var swimDistanceChart;
-
-
 var runLongestChart;
 var rideLongestChart;
 var swimLongestChart;
+var trainingLoadChart;
 
 var setupWeeklyReport = function (chartName, sport, colour, type) {
     $.ajax({
@@ -35,85 +34,79 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
 
         var distanceChartContext = document.getElementById(chartName).getContext("2d");
 
-        // setting up each chart seperatly as need to destroy the prvious report
-        // before updating when date range changes
-    
-    
-         
+        var chart = Chart.Bar(distanceChartContext, {
+            data: sportDistanceChartData,
+            options: {
+                legend: {
+                    display: false
+                },
 
-            var chart= Chart.Bar(distanceChartContext, {
-                data: sportDistanceChartData,
-                options: {
-                    legend: {
-                        display: false
-                    },
 
-               
-                    scales:
-                         {
-                             xAxes: [{
-                                 display: false
-                             }]
-                         }
+                scales:
+                     {
+                         xAxes: [{
+                             display: false
+                         }]
+                     }
+            }
+        });
+        if (sport === "Ride") {
+
+            if (type === "Total") {
+                if (rideDistanceChart !== undefined) {
+                    rideDistanceChart.destroy();
                 }
-            });
-            if (sport === "Ride") {
+                chart.options.onClick = rideDistanceHandleClick;
+                rideDistanceChart = chart;
+            };
 
-                if (type === "Total") {
-                    if (rideDistanceChart !== undefined) {
-                        rideDistanceChart.destroy();
-                    }
-                    chart.options.onClick = rideDistanceHandleClick;
-                    rideDistanceChart = chart;
-                };
+            if (type == "Max") {
+                if (rideLongestChart !== undefined) {
+                    rideLongestChart.destroy();
+                }
+                chart.options.onClick = rideLongestHandleClick;
+                rideLongestChart = chart;
+            };
+        }
 
-                if (type == "Max") {
-                    if (rideLongestChart !== undefined) {
-                        rideLongestChart.destroy();
-                    }
-                    chart.options.onClick = rideLongestHandleClick;
-                    rideLongestChart = chart;
-                };
-            }
+        if (sport === "Run") {
 
-            if (sport === "Run") {
+            if (type === "Total") {
+                if (runDistanceChart !== undefined) {
+                    runDistanceChart.destroy();
+                }
+                chart.options.onClick = runDistanceHandleClick;
+                runDistanceChart = chart;
+            };
 
-                if (type === "Total") {
-                    if (runDistanceChart !== undefined) {
-                        runDistanceChart.destroy();
-                    }
-                    chart.options.onClick = runDistanceHandleClick;
-                    runDistanceChart = chart;
-                };
+            if (type == "Max") {
+                if (runLongestChart !== undefined) {
+                    runLongestChart.destroy();
+                }
+                chart.options.onClick = runLongestHandleClick;
+                runLongestChart = chart;
+            };
+        }
+        if (sport === "Swim") {
 
-                if (type == "Max") {
-                    if (runLongestChart !== undefined) {
-                        runLongestChart.destroy();
-                    }
-                    chart.options.onClick = runLongestHandleClick;
-                    runLongestChart = chart;
-                };
-            }
-            if (sport === "Swim") {
+            if (type === "Total") {
+                if (swimDistanceChart !== undefined) {
+                    swimDistanceChart.destroy();
+                }
+                chart.options.onClick = swimDistanceHandleClick;
+                swimDistanceChart = chart;
+            };
 
-                if (type === "Total") {
-                    if (swimDistanceChart !== undefined) {
-                        swimDistanceChart.destroy();
-                    }
-                    chart.options.onClick = swimDistanceHandleClick;
-                    swimDistanceChart = chart;
-                };
+            if (type == "Max") {
+                if (swimLongestChart !== undefined) {
+                    swimLongestChart.destroy();
+                }
+                chart.options.onClick = swimLongestHandleClick;
+                swimLongestChart = chart;
+            };
+        }
 
-                if (type == "Max") {
-                    if (swimLongestChart !== undefined) {
-                        swimLongestChart.destroy();
-                    }
-                    chart.options.onClick = swimLongestHandleClick;
-                    swimLongestChart = chart;
-                };
-            }
-
-            function runDistanceHandleClick(evt) {
+        function runDistanceHandleClick(evt) {
             var activeElement = runDistanceChart.getElementAtEvent(evt);
         }
 
@@ -138,8 +131,6 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
         function swimLongestHandleClick(evt) {
             var activeElement = swimLongestChart.getElementAtEvent(evt);
         }
-
-
     }
 };
 
@@ -243,7 +234,7 @@ var setupTimeBySportChart = function (chartName) {
 var setupTrainingLoadChart = function (sport, labels) {
     $.ajax({
         dataType: "json",
-        url: "/api/Athlete/GetTrainingLoad/"+sport+"?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+        url: "/api/Athlete/GetTrainingLoad/" + sport + "?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
         success: function (data) {
             TrainingLoadChart(data, labels);
         },
@@ -253,11 +244,12 @@ var setupTrainingLoadChart = function (sport, labels) {
     });
 
 
-    function TrainingLoadChart(data,labels) {
+    function TrainingLoadChart(data, labels) {
         var trainingLoadChartData = {
             labels: data.Date,
             datasets: [
                 {
+                    type: 'line',
                     label: 'LTL',
                     data: data.LongTermLoad,
                     fill: false,
@@ -265,9 +257,11 @@ var setupTrainingLoadChart = function (sport, labels) {
                     borderColor: '#545677',
                     lineTension: 0,
                     pointRadius: 0,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    yAxisID: "y-axis-0"
                 },
                 {
+                    type: 'line',
                     label: 'STL',
                     data: data.ShortTermLoad,
                     radius: 0,
@@ -275,42 +269,69 @@ var setupTrainingLoadChart = function (sport, labels) {
                     borderColor: '#B1B2C1',
                     lineTension: 0,
                     pointRadius: 0,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    yAxisID: "y-axis-0"
+                },
+                {
+                    type: 'bar',
+                    label: 'TSS',
+                    data: data.TSS,
+                    radius: 0,
+                    fill: true,
+                    borderColor: '#F0C808',
+                    yAxisID: "y-axis-1"
                 }
             ]
         };
 
         var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
 
-      
 
-        var options = {
+        var trainingLoadOptions = {
             animation: false,
             legend: {
-                display: false
+                display: labels === 0 ? false : true
             },
-
-
             scales:
                  {
                      xAxes: [{
-                         display: false
-                     }]
+                         display: labels === 0 ? false : true,
+
+
+                         gridLines: {
+                             display: false
+                         }
+
+
+                     }],
+                     yAxes: [{
+                         position: "left",
+                         "id": "y-axis-0",
+                         gridLines: {
+                             display: false
+                         }
+                     }, {
+                         position: "right",
+                         "id": "y-axis-1",
+
+                         gridLines: {
+                             display: false
+                         }
+                     }
+                     ]
                  }
         };
 
-        // if we don't need labels then just disable animations.
-        if (labels != 0) {
-            options = {
-                animation: false
-            };
+// if previous chart exists then destroy before refreshing or else the previous chart maybe shown when hovering over chart.
+        if (trainingLoadChart !== undefined) {
+            trainingLoadChart.destroy();
         }
+       
+            var chartTL = Chart.Bar(trainingLoadChartContext, {
+                data: trainingLoadChartData,
+                options: trainingLoadOptions
+            });
 
-
-        var trainloadChart = Chart.Line(trainingLoadChartContext, {
-            data: trainingLoadChartData,
-            options: options
-        });
-    }
-};
-
+            trainingLoadChart = chartTL;
+        }
+    };
