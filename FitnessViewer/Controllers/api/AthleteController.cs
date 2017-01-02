@@ -152,26 +152,16 @@ namespace FitnessViewer.Controllers.api
             _trainingLoad.Setup(this.User.Identity.GetUserId(), dates.FromDateTime.Value.AddDays(-365), dates.ToDateTime.Value.AddDays(1));
             _trainingLoad.Calculate(sport);
 
+            var requiredDayValues = _trainingLoad.DayValues.Where(d => d.Date >= dates.FromDateTime.Value && d.Date <= dates.ToDateTime.Value).ToList();
 
-
-            List<string> date = new List<string>();
-            List<string> longTermStress = new List<string>();
-            List<string> shortTermStress = new List<string>();
-
-            foreach (TrainingLoadDay d in _trainingLoad.DayValues.Where(d => d.Date >= dates.FromDateTime.Value && d.Date <= dates.ToDateTime.Value).ToList())
-            {
-                date.Add(d.Date.ToShortDateString());
-                longTermStress.Add(d.LongTermLoad.ToString());
-                shortTermStress.Add(d.ShortTermLoad.ToString());
-            }
 
             var chart = new
             {
-                Date = date,
-                LongTermLoad = longTermStress,
-                ShortTermLoad = shortTermStress
+                Date = requiredDayValues.Select(a => a.Date.ToShortDateString()).ToArray(),
+                LongTermLoad = requiredDayValues.Select(a => a.ShortTermLoad.ToString()).ToArray(),
+                ShortTermLoad = requiredDayValues.Select(a => a.LongTermLoad.ToString()).ToArray(),
+                TSS = requiredDayValues.Select(a => a.TSS.ToString()).ToArray()
             };
-
             return Json(chart);
         }
 
