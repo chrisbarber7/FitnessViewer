@@ -6,6 +6,8 @@ var runLongestChart;
 var rideLongestChart;
 var swimLongestChart;
 var trainingLoadChart;
+var weightChart;
+var timeBySportChart;
 
 var setupWeeklyReport = function (chartName, sport, colour, type) {
     $.ajax({
@@ -174,12 +176,19 @@ var setupWeightChart = function() {
 
         var weightChartContext = document.getElementById("chartWeight").getContext("2d");
 
-        var weightChart = Chart.Line(weightChartContext, {
+        // if previous chart exists then destroy before refreshing or else the previous chart maybe shown when hovering over chart.
+        if (weightChart !== undefined) {
+            weightChart.destroy();
+        }
+
+        var chartW = Chart.Line(weightChartContext, {
             data: weightChartData,
             options: {
                 animation: false
             }
         });
+
+        weightChart = chartW;
     }
 };
 
@@ -222,11 +231,17 @@ var setupTimeBySportChart = function (chartName) {
 
         var timeBySportContext = document.getElementById(chartName).getContext("2d");
 
+        if (timeBySportChart !== undefined) {
+            timeBySportChart.destroy();
+        }
+
         var timeBySportPieChart = new Chart(timeBySportContext, {
             type: 'pie',
             data: pieChartData,
             options: options
         });
+
+        timeBySportChart = timeBySportPieChart;
     }
 };
 
