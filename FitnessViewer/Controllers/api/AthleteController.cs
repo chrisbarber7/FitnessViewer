@@ -104,20 +104,20 @@ namespace FitnessViewer.Controllers.api
                                                                 dates.FromDateTime.Value,
                                                                 dates.ToDateTime.Value);
 
-            List<string> sport = new List<string>();
-            List<string> distance = new List<string>();
-            List<int> duration = new List<int>();
+            //List<string> sport = new List<string>();
+            //List<string> distance = new List<string>();
+            //List<int> duration = new List<int>();
 
-            foreach (TimeDistanceBySportDto t in data)
-            {
-                sport.Add(t.SportLabel);
-                duration.Add(Convert.ToInt32(t.Duration));
-            }
+            //foreach (TimeDistanceBySportDto t in data)
+            //{
+            //    sport.Add(t.SportLabel);
+            //    duration.Add(Convert.ToInt32(t.Duration));
+            //}
 
             var chart = new
             {
-                Sport = sport,
-                Duration = duration
+                Sport =data.Select(a=>a.SportLabel).ToArray(),
+                Duration = data.Select(a=>Convert.ToInt32(a.Duration)).ToArray()
             };
 
             return Json(chart);
@@ -187,43 +187,40 @@ namespace FitnessViewer.Controllers.api
 
             var peaksData = _periodRepo.PeaksByMonth(this.User.Identity.GetUserId(), dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
 
-            List<string> period = new List<string>();
-
-
-            List<int?> Peak5 = new List<int?>();
-
-            List<int?> Peak30 = new List<int?>();
-            List< int ?> Peak60 = new List<int?>();
-            List<int?> Peak300 = new List<int?>();
-            List<int?> Peak1200 = new List<int?>();
-            List<int?> Peak3600 = new List<int?>();
-        
-
-
-
-            foreach (ActivityPeaksPeriodDto a in peaksData)
-            {
-                period.Add(a.Label);
-                Peak5.Add(a.Peak5);
-                Peak30.Add(a.Peak30);
-                Peak60.Add(a.Peak60);
-                Peak300.Add(a.Peak300);
-                Peak1200.Add(a.Peak1200);
-                Peak3600.Add(a.Peak3600);
-            }
-
             var chart = new
             {
-                Period = period,
-                Peak5 = Peak5,
-                Peak30 = Peak30,
-                Peak60 = Peak60,
-                Peak300 = Peak300,
-                Peak1200 = Peak1200,
-                Peak3600 = Peak3600
+                Period = peaksData.Select(a => a.Label).ToArray(),
+                Peak5 = peaksData.Select(a=>a.Peak5.ToString()).ToArray(),
+                Peak30 = peaksData.Select(a => a.Peak30.ToString()).ToArray(),
+                Peak60 = peaksData.Select(a => a.Peak60.ToString()).ToArray(),
+                Peak300 = peaksData.Select(a => a.Peak300.ToString()).ToArray(),
+                Peak1200 = peaksData.Select(a => a.Peak1200.ToString()).ToArray(),
+                Peak3600 = peaksData.Select(a => a.Peak3600.ToString()).ToArray()
             };
 
             return Json(chart);
         }
+
+
+        [HttpGet]
+        [Route("api/Athlete/GetPowerCurve")]
+        public IHttpActionResult GetPowerCurve( [FromUri] DateRange dates)
+        {
+            if (!dates.FromDateTime.HasValue)
+                return BadRequest("Invalid From Date");
+
+            if (!dates.ToDateTime.HasValue)
+                return BadRequest("Invalid To Date");
+
+            var powerCurve = _periodRepo.PowerCurve(this.User.Identity.GetUserId(), dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
+            
+            var chart = new
+            {
+                Duration =  powerCurve.Select(a => DisplayLabel.ShortStreamDurationForDisplay( a.Duration)).ToArray(),
+                Watts = powerCurve.Select(a=>a.Watts.ToString()).ToArray()
+            };
+            return Ok(chart);
+        }
+
     }
 }
