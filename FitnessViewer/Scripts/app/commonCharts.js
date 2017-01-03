@@ -328,17 +328,23 @@ var setupTrainingLoadChart = function (sport, labels) {
 
                      }],
                      yAxes: [{
-                         position: "left",
+                         display: labels === 0 ? false : true,
+                         position: "right",
                          "id": "y-axis-0",
                          gridLines: {
                              display: false
                          }
-                     }, {
-                         position: "right",
+                     },
+                     {
+                         display: labels === 0 ? false : true,
+                         position: "left",
                          "id": "y-axis-1",
-
                          gridLines: {
                              display: false
+                         },
+                         scaleLabel: {
+                             display: true,
+                             labelString: 'TSS/d'
                          }
                      }
                      ]

@@ -3,6 +3,7 @@ using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.Models.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 
 namespace FitnessViewer.Infrastructure.Helpers.Analytics
 {
@@ -48,7 +49,7 @@ namespace FitnessViewer.Infrastructure.Helpers.Analytics
             // try populating TSS/IF values for each possible activity.That 
             foreach (long id in _activity)
             {
-                Activity fvActivity = _uow.CRUDRepository.GetByKey<Activity>(id);
+                Activity fvActivity = _uow.CRUDRepository.GetByKey<Activity>(id, o=>o.Athlete);
 
                 if (fvActivity == null)
                     continue;
