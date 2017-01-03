@@ -58,7 +58,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 {
                     Period = a.Key.Period,
                     TotalDistance = Math.Round(a.Sum(d => d.Distance).ToMiles(), 1),
-                    MaximumDistance = Math.Round(a.Max(d=>d.Distance).ToMiles(),1),
+                    MaximumDistance = Math.Round(a.Max(d => d.Distance).ToMiles(), 1),
                     Number = a.Select(i => i.Id).Distinct().Count(),
                     Label = a.Key.Label
                 })
@@ -103,12 +103,7 @@ namespace FitnessViewer.Infrastructure.Repository
                 .Distinct()
                 .ToList();
 
-
             var activityPeaks = _context.ActivityPeak
-                .Include(r => r.Activity)
-                .Include(r => r.Activity.ActivityType)
-                .Include(r => r.Activity.Athlete)
-                .Include(r => r.Activity.Calendar)
                 .Where(r => r.Activity.Athlete.UserId == userId && r.Activity.ActivityType.IsRide && months.Contains(r.Activity.Calendar.YearMonth))
                 .Select(r => new
                 {
@@ -169,7 +164,24 @@ namespace FitnessViewer.Infrastructure.Repository
             return result;
         }
 
+        public IEnumerable<PowerCurveDto> PowerCurve(string userId, DateTime start, DateTime end)
+        {
+            var powerCurve = _context.ActivityPeakDetail
+                .Where(r => r.Activity.Athlete.UserId == userId &&
+                            r.Activity.ActivityType.IsRide &&
+                            r.Value.HasValue &&
+                            r.Activity.Start >= start &&
+                            r.Activity.Start <= end)
+                .GroupBy(r => new { Duration = r.Duration })
+                .Select(p => new PowerCurveDto
+                    {
+                     Duration = p.Key.Duration,
+                        Watts = p.Max(g => g.Value.Value)
+                    })
+                .OrderBy(r => r.Duration)
+                .ToList();
 
- 
+            return powerCurve;
+        }
     }
 }
