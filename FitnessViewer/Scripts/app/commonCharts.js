@@ -260,6 +260,8 @@ var setupTrainingLoadChart = function (sport, labels) {
 
 
     function TrainingLoadChart(data, labels) {
+        var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
+
         var trainingLoadChartData = {
             labels: data.Date,
             datasets: [
@@ -267,9 +269,9 @@ var setupTrainingLoadChart = function (sport, labels) {
                     type: 'line',
                     label: 'LTL',
                     data: data.LongTermLoad,
-                    fill: false,
+                    fill: 'bottom',
                     radius: 0,
-                    borderColor: '#545677',
+                    borderColor: '#0057A1',
                     lineTension: 0,
                     pointRadius: 0,
                     borderWidth: 1,
@@ -281,7 +283,8 @@ var setupTrainingLoadChart = function (sport, labels) {
                     data: data.ShortTermLoad,
                     radius: 0,
                     fill: false,
-                    borderColor: '#B1B2C1',
+                    borderColor: '#06AED5',
+                    backgroundColor: '#06AED5',
                     lineTension: 0,
                     pointRadius: 0,
                     borderWidth: 1,
@@ -293,17 +296,22 @@ var setupTrainingLoadChart = function (sport, labels) {
                     data: data.TSS,
                     radius: 0,
                     fill: true,
-                    borderColor: '#F0C808',
+                    borderColor: '#D0E0ED',
+                    backgroundColor: '#D0E0ED',
+                    fillColor: '#D0E0ED',
                     yAxisID: "y-axis-1"
                 }
             ]
         };
 
-        var trainingLoadChartContext = document.getElementById("bikeTrainingLoadChart").getContext("2d");
-
 
         var trainingLoadOptions = {
             animation: false,
+
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
             legend: {
                 display: labels === 0 ? false : true
             },
