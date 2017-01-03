@@ -26,6 +26,10 @@
         });
 
         function PowerPeakChart(data) {
+
+
+
+
             var powerPeakChartData = {
                 labels: data.Period,
        
