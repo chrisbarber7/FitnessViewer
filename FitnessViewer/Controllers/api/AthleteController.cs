@@ -158,8 +158,8 @@ namespace FitnessViewer.Controllers.api
             var chart = new
             {
                 Date = requiredDayValues.Select(a => a.Date.ToShortDateString()).ToArray(),
-                LongTermLoad = requiredDayValues.Select(a => a.ShortTermLoad.ToString()).ToArray(),
-                ShortTermLoad = requiredDayValues.Select(a => a.LongTermLoad.ToString()).ToArray(),
+                LongTermLoad = requiredDayValues.Select(a => a.LongTermLoad.ToString()).ToArray(),
+                ShortTermLoad = requiredDayValues.Select(a => a.ShortTermLoad.ToString()).ToArray(),
                 TSS = requiredDayValues.Select(a => a.TSS.ToString()).ToArray()
             };
             return Json(chart);
