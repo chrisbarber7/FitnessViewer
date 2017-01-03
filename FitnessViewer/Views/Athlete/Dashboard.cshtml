@@ -19,7 +19,14 @@
         <canvas id="chart12weekSwim" width="800" height="300" title="Recent Run Activity Summary"></canvas>
     </div>
     <div class="col-md-3">
-        <h4>Bike PMC</h4>
+        <h4>
+            Bike PMC
+            <span class="zoom">
+                <a href='@Url.Action("Bike", "Athlete")' data-modal="">
+                    <span class="glyphicon glyphicon-zoom-in"></span>
+                </a>
+            </span>
+        </h4>
         <canvas id="bikeTrainingLoadChart" width="800" height="300" title="Bike PMC Chart"></canvas>
     </div>
 </div>
