@@ -136,19 +136,19 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
     }
 };
 
-var setupWeightChart = function() {
+var setupWeightChart = function(metricType, chartName) {
     $.ajax({
         dataType: "json",
-        url: "/api/Metric/GetMetrics/Weight?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
+        url: "/api/Metric/GetMetrics/" + metricType + "/?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
         success: function (data) {
-            WeightChart(data);
+            WeightChart(data, chartName);
         },
         error: function () {
             alert("Error loading weight data!");
         }
     });
 
-    function WeightChart(data) {
+    function WeightChart(data, chartName) {
         var weightChartData = {
             labels: data.Date,
             datasets: [
@@ -156,25 +156,27 @@ var setupWeightChart = function() {
                     label: 'Weight',
                     data: data.MetricValue,
                     fill: false,
-                    borderColor: '#545677',
+                    borderColor: '#3a8904',
                     lineTension: 0,
                     pointRadius: 0,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    radius: 0
                 },
                 {
                     label: 'Rolling 7 Day Average',
                     data: data.Ave7Day,
                     radius: 0,
                     fill: false,
-                    borderColor: '#B1B2C1',
+                    borderColor: '#c0ef95',
                     lineTension: 0,
                     pointRadius: 0,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    radius: 0
                 }
             ]
         };
 
-        var weightChartContext = document.getElementById("chartWeight").getContext("2d");
+        var weightChartContext = document.getElementById(chartName).getContext("2d");
 
         // if previous chart exists then destroy before refreshing or else the previous chart maybe shown when hovering over chart.
         if (weightChart !== undefined) {
@@ -184,7 +186,11 @@ var setupWeightChart = function() {
         var chartW = Chart.Line(weightChartContext, {
             data: weightChartData,
             options: {
-                animation: false
+                animation: false,
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                }
             }
         });
 

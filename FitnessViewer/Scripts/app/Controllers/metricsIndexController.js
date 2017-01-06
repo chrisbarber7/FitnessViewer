@@ -4,24 +4,24 @@
     };
 
     var updateWeeklyReports = function () {
-        setupWeightDetailedChart('Weight', 'chartDetailedWeight');
-        setupWeightDetailedChart('HeartRate', 'chartDetailedHRV');
+        setupWeightChart('Weight', 'chartDetailedWeight');
+        setupDetailedMetricsChart('HeartRate', 'chartDetailedHRV');
     };
 
-    var setupWeightDetailedChart = function ( metricType, chartName) {
+    var setupDetailedMetricsChart = function ( metricType, chartName) {
         $.ajax({
             dataType: "json",
             url: "/api/Metric/GetMetrics/" + metricType + "/?From=" + dashboardStart.utc().format("X") + "&To=" + dashboardEnd.utc().format("X"),
      
             success: function (data) {
-                WeightDetailedChart(data);
+                DetailedChart(data);
             },
             error: function () {
                 alert("Error loading weight data!");
             }
         });
 
-        function WeightDetailedChart(data) {
+        function DetailedChart(data) {
             var barChartData = {
                 labels: data.Date,
                 datasets: [
@@ -47,7 +47,11 @@
             var myBarChart = Chart.Line(ctx, {
                 data: barChartData,
                 options: {
-                    animation: false
+                    animation: false,
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    }
                 }
             });
         }

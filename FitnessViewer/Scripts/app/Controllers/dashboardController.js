@@ -13,7 +13,7 @@
         setupWeeklyReport("chart12weekRun", "Run", "#873D48", "Total");
         setupWeeklyReport("chart12weekBike", "Ride", "#DC758F", "Total");
         setupWeeklyReport("chart12weekSwim", "Swim", "#955E42", "Total");
-        setupWeightChart();
+        setupWeightChart('Weight', "chartWeight");
         setupTimeBySportChart("chartTimeBySport");
         setupTrainingLoadChart("Ride",0);
     };
