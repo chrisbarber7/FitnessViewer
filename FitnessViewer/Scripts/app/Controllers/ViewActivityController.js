@@ -158,46 +158,19 @@
                         pointRadius: 0,
                         borderWidth: 1
                     }
-
-
                 ]
             };
-
-
 
             var ctx = document.getElementById(chartName).getContext("2d");
 
             var myBarChart = Chart.Line(ctx, {
                 data: powerCurveChartData,
                 options: {
-                    animation: false,
-                    //fill: false,
-                    //beizierCurve: false,
-                    responsive: true,
-                    datasetFill: true
-                    //,
-                    //scales: {
-                    //    xAxes: [{
-                    //        type: "logarithmic",
-                    //        position: "bottom",
-                    //        ticks: {
-                    //            min:1,
-                    //        max:2000
-                    //        }
-                    //    }]
-                    //}
-                   
+                    animation: false
                 }
             });
         }
-
-
     }
-
-
-
-
-     
         SetupActivityChart("chartActivity");
 
         function SetupActivityChart(chartName) {
@@ -264,8 +237,6 @@
                         animation: false,
                         fill: false,
                         beizierCurve: false,
-                        responsive: true,
-                        datasetFill: true,
                         scales: {
                             yAxes: [{
                                 position: "left",
@@ -278,8 +249,6 @@
                     }
                 });
             }
-
-
         }
  
         });

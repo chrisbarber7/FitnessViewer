@@ -130,22 +130,7 @@
             var myBarChart = Chart.Line(powerCurveContext, {
                 data: powerCurveChartData,
                 options: {
-                    animation: false,
-                    //fill: false,
-                    //beizierCurve: false,
-                    responsive: true,
-                    datasetFill: true
-                    //,
-                    //scales: {
-                    //    xAxes: [{
-                    //        type: "logarithmic",
-                    //        position: "bottom",
-                    //        ticks: {
-                    //            min:1,
-                    //        max:2000
-                    //        }
-                    //    }]
-                    //}
+                    animation: false
 
                 }
             });

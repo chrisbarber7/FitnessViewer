@@ -1,4 +1,10 @@
 ﻿$(document).ready(function () {
+
+    // chart default settings.
+    Chart.defaults.global.responsive = true;
+    Chart.defaults.global.tooltips.mode='index';
+    Chart.defaults.global.tooltips.intersect=false;
+
     $.getJSON("/api/notifications/GetNewNotifications", function (notifications) {
         if (notifications.length === 0)
             return;

@@ -47,11 +47,12 @@
             var myBarChart = Chart.Line(ctx, {
                 data: barChartData,
                 options: {
-                    animation: false,
-                    tooltips: {
-                        mode: 'index',
-                        intersect: false
-                    }
+                    animation: false
+//,
+//                    tooltips: {
+//                        mode: 'index',
+//                        intersect: false
+//                    }
                 }
             });
         }

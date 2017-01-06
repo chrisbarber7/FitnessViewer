@@ -42,8 +42,6 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
                 legend: {
                     display: false
                 },
-
-
                 scales:
                      {
                          xAxes: [{
@@ -186,11 +184,7 @@ var setupWeightChart = function(metricType, chartName) {
         var chartW = Chart.Line(weightChartContext, {
             data: weightChartData,
             options: {
-                animation: false,
-                tooltips: {
-                    mode: 'index',
-                    intersect: false
-                }
+                animation: false
             }
         });
 
@@ -227,9 +221,10 @@ var setupTimeBySportChart = function (chartName) {
 
         var options = {
             options: {
+                animation: true,
                 legend: {
                     display: true,
-                    poisition: 'bottom',
+                    position: 'bottom',
                     fullWidth: false
                 }
             }
@@ -313,11 +308,6 @@ var setupTrainingLoadChart = function (sport, labels) {
 
         var trainingLoadOptions = {
             animation: false,
-
-            tooltips: {
-                mode: 'index',
-                intersect: false
-            },
             legend: {
                 display: labels === 0 ? false : true
             },
@@ -325,13 +315,9 @@ var setupTrainingLoadChart = function (sport, labels) {
                  {
                      xAxes: [{
                          display: labels === 0 ? false : true,
-
-
                          gridLines: {
                              display: false
                          }
-
-
                      }],
                      yAxes: [{
                          display: labels === 0 ? false : true,
