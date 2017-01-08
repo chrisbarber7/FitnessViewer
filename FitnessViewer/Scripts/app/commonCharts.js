@@ -74,7 +74,7 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
                 rideDistanceChart = chart;
             };
 
-            if (type == "Max") {
+            if (type === "Max") {
                 if (rideLongestChart !== undefined) {
                     rideLongestChart.destroy();
                 }
@@ -93,7 +93,7 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
                 runDistanceChart = chart;
             };
 
-            if (type == "Max") {
+            if (type === "Max") {
                 if (runLongestChart !== undefined) {
                     runLongestChart.destroy();
                 }
@@ -111,7 +111,7 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
                 swimDistanceChart = chart;
             };
 
-            if (type == "Max") {
+            if (type === "Max") {
                 if (swimLongestChart !== undefined) {
                     swimLongestChart.destroy();
                 }
@@ -182,8 +182,7 @@ var setupWeightChart = function(metricType, chartName) {
                     borderColor: '#c0ef95',
                     lineTension: 0,
                     pointRadius: 0,
-                    borderWidth: 1,
-                    radius: 0
+                    borderWidth: 1
                 }
             ]
         };
