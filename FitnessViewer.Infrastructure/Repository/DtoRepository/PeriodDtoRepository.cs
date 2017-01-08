@@ -50,7 +50,7 @@ namespace FitnessViewer.Infrastructure.Repository
                     Label = r.Calendar.WeekLabel,
                 })
             .ToList();
-
+            
             // group the activities by week.
             var weeklyTotals = activities
                 .GroupBy(r => new { Period = r.Period, Label = r.Label })
@@ -86,6 +86,17 @@ namespace FitnessViewer.Infrastructure.Repository
                 .Union(dummyWeeks
                 .Where(e => !weeklyTotals.Select(x => x.Period).Contains(e.Period)))
                 .OrderBy(x => x.Period);
+
+            // work out average weekly distance for the period.
+            decimal averageDistance = Math.Round(weeklyTotals.Average(a => a.TotalDistance),1);
+            decimal periodAverageMaximumDistance = Math.Round(weeklyTotals.Average(a => a.PeriodAverageMaximumDistance), 1);
+
+            // update each week with the overall average.
+            foreach (PeriodDto p in weeklyTotals)
+            {
+                p.PeriodAverageDistance = averageDistance;
+                p.PeriodAverageMaximumDistance = periodAverageMaximumDistance;
+            }
 
             return result;
         }

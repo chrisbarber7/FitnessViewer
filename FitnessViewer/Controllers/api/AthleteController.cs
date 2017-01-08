@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
-using FitnessViewer.Infrastructure.Models.Dto;
-using FitnessViewer.Infrastructure.Models.Collections;
 using FitnessViewer.Infrastructure.Interfaces;
 using FitnessViewer.Infrastructure.enums;
 using FitnessViewer.Infrastructure.Helpers.Conversions;
@@ -62,33 +59,16 @@ namespace FitnessViewer.Controllers.api
 
             var runData = _periodRepo.ActivityByWeek(this.User.Identity.GetUserId(), sportType, dates.FromDateTime.Value.Date, dates.ToDateTime.Value.Date);
 
-            List<string> period = new List<string>();
-            List<string> distance = new List<string>();
-            List<string> number = new List<string>();
-
-            foreach (PeriodDto a in runData)
-            {
-                period.Add(a.Label);
-
-                if (type.ToLower() == "total")
-                    distance.Add(a.TotalDistance.ToString());
-                else
-                    distance.Add(a.MaximumDistance.ToString());
-
-                number.Add(a.Number.ToString());
-            }
-
             var chart = new
             {
-                Period = period,
-                distance = distance,
-                number = number,
+                Period =  runData.Select(a => a.Label).ToArray(),
+                distance = runData.Select(a=> type.ToLower() == "total" ? a.TotalDistance.ToString() : a.MaximumDistance.ToString()).ToArray(),
+                number = runData.Select(a=>a.Number).ToArray(),
+                average = runData.Select(a=> type.ToLower() == "total" ? a.PeriodAverageDistance.ToString() : a.PeriodAverageMaximumDistance.ToString()).ToArray()
             };
 
             return Json(chart);
         }
-
-
 
         [HttpGet]
         [Route("api/Athlete/GetTimeAndDistanceBySport")]
@@ -101,19 +81,7 @@ namespace FitnessViewer.Controllers.api
                 return BadRequest("Invalid To Date");
 
             var data = _timeDistanceRepo.GetTimeDistanceBySport(this.User.Identity.GetUserId(),
-                                                                dates.FromDateTime.Value,
-                                                                dates.ToDateTime.Value);
-
-            //List<string> sport = new List<string>();
-            //List<string> distance = new List<string>();
-            //List<int> duration = new List<int>();
-
-            //foreach (TimeDistanceBySportDto t in data)
-            //{
-            //    sport.Add(t.SportLabel);
-            //    duration.Add(Convert.ToInt32(t.Duration));
-            //}
-
+                                                        
             var chart = new
             {
                 Sport =data.Select(a=>a.SportLabel).ToArray(),

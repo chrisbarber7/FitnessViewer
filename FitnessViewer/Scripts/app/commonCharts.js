@@ -26,12 +26,26 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
             labels: data.Period,
             datasets: [
                 {
+                    type: 'bar',
                     label: 'Distance',
                     data: data.distance,
                     borderColor: colour,
                     backgroundColor: colour,
                     fill: false
-                }]
+                },
+                {
+                    type: 'line',
+                    label: 'Average',
+                    data: data.average,
+                    fill: false,
+                    borderColor: colour,
+                    borderDash: [10, 5],
+                    pointRadius: 0,
+                    borderWidth: 1,
+                    radius: 0
+
+                }
+            ]
         };
 
         var distanceChartContext = document.getElementById(chartName).getContext("2d");
