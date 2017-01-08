@@ -83,13 +83,11 @@ namespace FitnessViewer.Infrastructure.Models.Collections
             else
             {
                 foreach (ActivityPeakDetail p in _containedPeaks)
-                    _unitOfWork.CRUDRepository.Add<ActivityPeakDetail>(p);
-
+                    AddPeakDetail(p);
+            
                 _unitOfWork.Complete();
-
             }
         }
-
 
         public void AddPeakDetail(ActivityPeakDetail peak)
         {
