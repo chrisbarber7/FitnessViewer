@@ -81,7 +81,9 @@ namespace FitnessViewer.Controllers.api
                 return BadRequest("Invalid To Date");
 
             var data = _timeDistanceRepo.GetTimeDistanceBySport(this.User.Identity.GetUserId(),
-                                                        
+                                                                dates.FromDateTime.Value,
+                                                                dates.ToDateTime.Value);
+
             var chart = new
             {
                 Sport =data.Select(a=>a.SportLabel).ToArray(),
