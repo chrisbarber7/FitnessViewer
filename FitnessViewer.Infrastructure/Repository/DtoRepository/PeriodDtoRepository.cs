@@ -57,8 +57,8 @@ namespace FitnessViewer.Infrastructure.Repository
                 .Select(a => new PeriodDto
                 {
                     Period = a.Key.Period,
-                    TotalDistance = Math.Round(a.Sum(d => d.Distance).ToMiles(), 1),
-                    MaximumDistance = Math.Round(a.Max(d => d.Distance).ToMiles(), 1),
+                    TotalDistance = Math.Round(a.Sum(d => d.Distance).ToSportDistance(sport), 1),
+                    MaximumDistance = Math.Round(a.Max(d => d.Distance).ToSportDistance(sport), 1),
                     Number = a.Select(i => i.Id).Distinct().Count(),
                     Label = a.Key.Label
                 })
@@ -88,11 +88,11 @@ namespace FitnessViewer.Infrastructure.Repository
                 .OrderBy(x => x.Period);
 
             // work out average weekly distance for the period.
-            decimal averageDistance = Math.Round(weeklyTotals.Average(a => a.TotalDistance),1);
-            decimal periodAverageMaximumDistance = Math.Round(weeklyTotals.Average(a => a.PeriodAverageMaximumDistance), 1);
+            decimal averageDistance = Math.Round(result.Average(a => a.TotalDistance),1);
+            decimal periodAverageMaximumDistance = Math.Round(result.Average(a => a.PeriodAverageMaximumDistance), 1);
 
             // update each week with the overall average.
-            foreach (PeriodDto p in weeklyTotals)
+            foreach (PeriodDto p in result)
             {
                 p.PeriodAverageDistance = averageDistance;
                 p.PeriodAverageMaximumDistance = periodAverageMaximumDistance;

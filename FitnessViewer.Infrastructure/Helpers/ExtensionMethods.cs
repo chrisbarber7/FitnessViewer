@@ -11,6 +11,20 @@ namespace FitnessViewer.Infrastructure.Helpers
 {
     public static class ExtensionMethods
     {
+
+        public static decimal ToSportDistance(this decimal distanceInMetres, SportType sport)
+        {
+            switch(sport)
+            {
+                case SportType.Ride: { return distanceInMetres.ToMiles(); }
+                case SportType.Run: { return distanceInMetres.ToMiles(); }
+                case SportType.Swim: { return distanceInMetres; }
+                case SportType.Other: { return distanceInMetres.ToMiles(); }
+                default: { return distanceInMetres.ToMiles(); }
+            }
+        }
+
+
         /// <summary>
         /// Convert a distance in meters to a distance in miles.
         /// </summary>
