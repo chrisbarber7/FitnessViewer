@@ -89,7 +89,7 @@ namespace FitnessViewer.Infrastructure.Repository
 
             // work out average weekly distance for the period.
             decimal averageDistance = Math.Round(result.Average(a => a.TotalDistance),1);
-            decimal periodAverageMaximumDistance = Math.Round(result.Average(a => a.PeriodAverageMaximumDistance), 1);
+            decimal periodAverageMaximumDistance = Math.Round(result.Average(a => a.MaximumDistance), 1);
 
             // update each week with the overall average.
             foreach (PeriodDto p in result)
