@@ -60,6 +60,16 @@ var setupWeeklyReport = function (chartName, sport, colour, type) {
                      {
                          xAxes: [{
                              display: false
+
+
+
+
+
+                         }],
+                         yAxes: [{
+                             ticks: {
+                                 beginAtZero: true
+                             }
                          }]
                      }
             }
