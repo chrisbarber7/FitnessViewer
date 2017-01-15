@@ -24,14 +24,7 @@ namespace FitnessViewer.Download
             AutoMapperConfig();
 
             Infrastructure.Interfaces.IUnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
-
-
-            AllActivityCalculation calc = new AllActivityCalculation();
-            calc.CalculateAll();
-
-            PeriodDtoRepository repo = new PeriodDtoRepository();
-   //   var peaks=       repo.PeaksByMonth("8bfc4edb-42ac-4058-b070-4354a43897c2", new DateTime(2015, 1, 1), DateTime.Now);
-            var curve = repo.PowerCurve("8bfc4edb-42ac-4058-b070-4354a43897c2", new DateTime(2015, 1, 1), DateTime.Now);
+            
             while (true)
             {
                 var jobs = _unitOfWork.Queue.GetQueue(20);
