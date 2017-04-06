@@ -12,7 +12,7 @@ using FitnessViewer.ViewModels;
 using FitnessViewer.Infrastructure.Data;
 using System.Web.Security;
 
-namespace FitnessViewer.Controllers
+namespace FitnessViewer.Controllers  
 {
     [Authorize]
     public class AccountController : Controller
