@@ -255,6 +255,9 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (!_fvActivity.ActivityType.IsRun)
                 return;
 
+            if (_fvActivity.ActivityType.Id == "VirtualRun")
+                return;
+
             LogActivity("Download Best Efforts", _fvActivity);
             foreach (StravaDotNetActivities.BestEffort effort in _stravaActivity.BestEfforts)
                 InsertBestEffort(effort);

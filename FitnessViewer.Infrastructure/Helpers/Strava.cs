@@ -73,7 +73,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentException("Invalid UserId");
 
-            SetupClient(token);
+            SetupClient(token, athlete.RefreshToken, athlete.ExpiresAt, athlete.ExpiresIn);
         }
 
       
@@ -82,7 +82,7 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// Create Strava client used for downloading information
         /// </summary>
         /// <param name="token">Strava Access Token</param>
-        protected void SetupClient(string token)
+        protected void SetupClient(string token, string refreshToken, int expiresAt, int expiresIn)
         {
             StravaDotNetAuthentication.StaticAuthentication auth = new StravaDotNetAuthentication.StaticAuthentication(token);
             _client = new StravaDotNetClient.StravaClient(auth);

@@ -29,7 +29,7 @@ namespace FitnessViewer.Infrastructure.Models
         public string ActivityTypeId { get; set; }
         public virtual ActivityType ActivityType { get; set; }
 
-        public int? SufferScore { get; set; }
+        public decimal? SufferScore { get; set; }
         public string EmbedToken { get; set; }
 
         private decimal _distance { get; set; }

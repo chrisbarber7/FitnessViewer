@@ -338,17 +338,20 @@ namespace FitnessViewer.Controllers
                     {
                         // grab hold of the access token from the strava external login
                         Claim stravaTokenClaim = loginInfo.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:accesstoken");
+                        Claim stravaRefreshTokenClaim = loginInfo.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:refreshtoken");
+                        Claim stravaExpiresAtClaim = loginInfo.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:expiresat");
+                        Claim stravaExpiresInClaim = loginInfo.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:expiresin");
 
                         long stravaAthleteId = Convert.ToInt64(loginInfo.Login.ProviderKey);
                         
                         // update details from current strava athlete settings.
-                        FitnessViewer.Infrastructure.Helpers.StravaAthlete s = new Infrastructure.Helpers.StravaAthlete(stravaAthleteId, stravaTokenClaim.Value);
+                        FitnessViewer.Infrastructure.Helpers.StravaAthlete s = new Infrastructure.Helpers.StravaAthlete(stravaAthleteId, stravaTokenClaim.Value, stravaRefreshTokenClaim.Value,Convert.ToInt32(stravaExpiresAtClaim.Value),Convert.ToInt32(stravaExpiresInClaim.Value));
                         if (!s.UpdateAthlete(stravaTokenClaim.Value))
                         {
                             // error occured somewhere during account creation.  ASP.NET user record exists but not an Athlete record
                             var userDetails = await UserManager.FindByEmailAsync(loginInfo.Email);
                             if (userDetails != null)
-                                s.AddAthlete(userDetails.Id, stravaTokenClaim.Value);
+                                s.AddAthlete(userDetails.Id, stravaTokenClaim.Value, stravaRefreshTokenClaim.Value, Convert.ToInt32(stravaExpiresAtClaim.Value), Convert.ToInt32(stravaExpiresInClaim.Value));
                         }
 
                        return RedirectToLocal(returnUrl);
@@ -402,11 +405,14 @@ namespace FitnessViewer.Controllers
                     {
                         // at this point the user exists so grab hold of the access token from the strava external login
                         Claim stravaTokenClaim = info.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:accesstoken");
-                  
+                        Claim stravaRefreshTokenClaim = info.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:refreshtoken");
+                        Claim stravaExpiresAtClaim = info.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:expiresat");
+                        Claim stravaExpiresInClaim = info.ExternalIdentity.Claims.First(x => x.Type == "urn:strava:expiresin");
+
                         // create a new strava athlete record and store the UserId and access token. 
                         FitnessViewer.Infrastructure.Helpers.StravaAthlete s = new Infrastructure.Helpers.StravaAthlete();
-                        s.AddAthlete(user.Id, stravaTokenClaim.Value);
-                        
+                        s.AddAthlete(user.Id, stravaTokenClaim.Value, stravaRefreshTokenClaim.Value, Convert.ToInt32(stravaExpiresAtClaim.Value), Convert.ToInt32(stravaExpiresInClaim.Value));
+
                         await SignInManager.SignInAsync(user, isPersistent: true, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }

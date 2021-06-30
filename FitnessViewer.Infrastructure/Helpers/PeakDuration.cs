@@ -71,28 +71,29 @@ namespace FitnessViewer.Infrastructure.Helpers
         {
             List<int> durations = new List<int>();
 
-            // under 3 minutes = every second
-            for (int x = 1; x <= 179; x++)
+            // under 1 minutes = every second
+            for (int x = 1; x <= 60; x++)
                 durations.Add(x);
 
-            // 3 mins to 5 mins = every 2 seconds
-            for (int x = 180; x <= 299; x = x + 2)
+            // 1 mins to 2 mins = every 5 seconds
+            for (int x = 60; x <= 119; x = x + 5)
                 durations.Add(x);
 
-            // 5 mins to 30 mins = every 5 seconds
-            for (int x = 300; x <= (30 * 60) - 1; x = x + 5)
+            // 2 mins to 5 mins = every 10 seconds
+            for (int x = 120; x <= (5 * 60) - 1; x = x + 10)
                 durations.Add(x);
 
-            // 30 mins to 1 hour = every 30 seconds.
-            for (int x = (30 * 60); x <= (60 * 60) - 1; x = x + 30)
+            // 5 mins to 10 mins = every 30 seconds.
+            for (int x = (5 * 60); x <= (10 * 60) - 1; x = x + 30)
                 durations.Add(x);
 
-            // one hour to two hours = every 60 seconds.
-            for (int x = (60 * 60); x <= (2 * 60 * 60) - 1; x = x + 60)
+            // 10 mins to 1 hour = every 1 minute
+            for (int x = (10 * 60); x <= (1 * 60 * 60) - 1; x = x + 60)
                 durations.Add(x);
 
             // anything over every 5 mins
-            for (int x = (2 * 60 * 60); x <= (3 * 60 * 60) - 1; x = x + 300)
+            //for (int x = (60 * 60); x <= (3 * 60 * 60) - 1; x = x + 300)
+                for (int x = ( 60 * 60); x <= streamSize; x = x + 300)
                 durations.Add(x);
             
             // include any duration less than event time (and int.MaxValue for full event).

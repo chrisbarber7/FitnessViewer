@@ -20,35 +20,40 @@ namespace FitnessViewer.Infrastructure.Helpers
         /// </summary>
         /// <param name="stravaAthleteId">Strava athlete id</param>
         /// <param name="token">Strava access token</param>
-        public StravaAthlete(long stravaAthleteId, string token)
+        public StravaAthlete(long stravaAthleteId, string token, string refreshToken, int expiresAt, int expiresIn)
         {
             _unitOfWork = new Data.UnitOfWork();
             this._stravaId = stravaAthleteId;
-            SetupClient(token);
+            SetupClient(token, refreshToken, expiresAt, expiresIn);
         }
         /// <summary>
         /// Add strava athlete details to data
         /// </summary>
         /// <param name="userId">Indentity userId</param>
         /// <param name="token">Strava access token</param>
-        public void AddAthlete(string userId, string token)
+        public void AddAthlete(string userId, string token, string refreshToken, int expiresAt, int expiresIn)
         {
             _userId = userId;
-            base.SetupClient(token);
+            base.SetupClient(token, refreshToken, expiresAt, expiresIn);
             stravaAthleteDetails = _client.Athletes.GetAthlete();
 
             fitnessViewerAthlete = Mapper.Map<Athlete>(stravaAthleteDetails);
             fitnessViewerAthlete.UserId = userId;
             fitnessViewerAthlete.Token = token;
+            fitnessViewerAthlete.RefreshToken = refreshToken;
+            fitnessViewerAthlete.ExpiresAt = expiresAt;
+            fitnessViewerAthlete.ExpiresIn = expiresIn;            
 
             _unitOfWork.CRUDRepository.Add<Athlete>(fitnessViewerAthlete);
 
-            UpdateUserConfig();
+            //UpdateUserConfig();
 
             // add user to the strava download queue for background downloading of activities.
             DownloadQueue.CreateQueueJob(userId, enums.DownloadType.Strava).Save();
 
             _unitOfWork.Complete();
+
+            UpdateUserConfig();
 
         }
 

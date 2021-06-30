@@ -27,7 +27,9 @@ namespace FitnessViewer.Download
             
             while (true)
             {
-                var jobs = _unitOfWork.Queue.GetQueue(20);
+                var 
+                    
+                    jobs = _unitOfWork.Queue.GetQueue(20);
 
                 if (jobs.Count() == 0)
                     break;

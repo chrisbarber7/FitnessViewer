@@ -21,7 +21,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public decimal Distance { get; set; }
         public TimeSpan Duration { get; set; }
         public SportType Sport { get; set; }
-        public int SufferScore { get; set; }
+        public decimal SufferScore { get; set; }
         public decimal Calories { get; set; }
         public decimal ElevationGain { get; set; }
         public int ActivityCount { get; set; }

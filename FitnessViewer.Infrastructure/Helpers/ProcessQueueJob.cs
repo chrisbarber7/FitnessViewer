@@ -1,10 +1,10 @@
-﻿using FitnessViewer.Infrastructure.Data;
-using FitnessViewer.Infrastructure.Models;
+﻿using FitnessViewer.Infrastructure.Models;
 using FitnessViewer.Infrastructure.enums;
 using System;
-
 using FitnessViewer.Infrastructure.Models.Collections;
-using FitnessViewer.Infrastructure.Interfaces;
+using System.Linq;
+using Owin.Security.Strava.TokenRefresh;
+using System.Configuration;
 
 namespace FitnessViewer.Infrastructure.Helpers
 {
@@ -82,6 +82,43 @@ namespace FitnessViewer.Infrastructure.Helpers
 
         private  void StravaDownload()
         {
+
+
+
+
+            var athlete = _uow.CRUDRepository.GetByUserId<Athlete>(_jobDetails.UserId).FirstOrDefault();
+
+            if (athlete != null)
+            {
+                Token currentToken = new Token();
+                currentToken.RefreshToken = athlete.RefreshToken;
+                currentToken.AccessToken = athlete.Token;
+                currentToken.ExpiresAt = athlete.ExpiresAt;
+                currentToken.ExpiresIn = athlete.ExpiresIn;
+
+                var expires = DateHelpers.UnixTimeStampToDateTime(currentToken.ExpiresAt);
+
+                var expiresIn = expires.Subtract(DateTime.Now).TotalMinutes;
+
+                if (expiresIn < 60)
+                {
+
+                    var clientId = ConfigurationManager.AppSettings["stravaApiClientId"];
+                    var clientSecret = ConfigurationManager.AppSettings["stravaApiClientSecret"];
+
+
+                    var newToken = StravaTokenRefresh.RefreshToken(currentToken, clientId, clientSecret);
+
+                    athlete.RefreshToken = newToken.Result.RefreshToken;
+                    athlete.Token = newToken.Result.AccessToken;
+                    athlete.ExpiresAt = newToken.Result.ExpiresAt;
+                    athlete.ExpiresIn = newToken.Result.ExpiresIn;
+
+                    _uow.CRUDRepository.Update<Athlete>(athlete);
+                }
+            }
+
+
 
             if (_jobDetails.ActivityId != null)
             {

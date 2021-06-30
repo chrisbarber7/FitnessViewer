@@ -9,6 +9,7 @@ using FitnessViewer.ViewModels;
 using System.Configuration;
 using FitnessViewer.Infrastructure.Data;
 
+    
 namespace FitnessViewer
 {
     public partial class Startup

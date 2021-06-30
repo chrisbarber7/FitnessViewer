@@ -88,7 +88,7 @@ namespace FitnessViewer.Infrastructure.Models.Dto
         public TimeSpan MovingTime { get; set; }
 
         public string ActivityTypeId { get; set; }
-        public int SufferScore { get; set; }
+        public decimal SufferScore { get; set; }
         public decimal Calories { get; set; }
         public bool HasMap { get; set; }
 
