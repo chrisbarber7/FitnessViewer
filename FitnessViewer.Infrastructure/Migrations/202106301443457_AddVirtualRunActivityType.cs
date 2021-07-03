@@ -12,6 +12,7 @@ namespace FitnessViewer.Infrastructure.Migrations
         
         public override void Down()
         {
+            Sql("delete from dbo.ActivityTypes where Id='VirtualRun';");
         }
     }
 }

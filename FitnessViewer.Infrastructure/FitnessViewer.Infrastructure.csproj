@@ -115,12 +115,11 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Owin.Security.Strava">
-      <HintPath>..\..\Owin.Security.Strava\Owin.Security.Strava\bin\Debug\Owin.Security.Strava.dll</HintPath>
+    <Reference Include="Owin.Security.Strava, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StravaOAuth2.1.3.3\lib\net452\Owin.Security.Strava.dll</HintPath>
     </Reference>
-    <Reference Include="StravaDotNet, Version=3.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\stravadotnet\StravaDotNet\bin\Debug\StravaDotNet.dll</HintPath>
+    <Reference Include="stravadotnet, Version=3.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StravaDotNet.3.5.5\lib\net452\stravadotnet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -372,6 +371,10 @@
     <Compile Include="Migrations\202106301443457_AddVirtualRunActivityType.cs" />
     <Compile Include="Migrations\202106301443457_AddVirtualRunActivityType.Designer.cs">
       <DependentUpon>202106301443457_AddVirtualRunActivityType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106301739061_AddNewActivtyTypes.cs" />
+    <Compile Include="Migrations\202106301739061_AddNewActivtyTypes.Designer.cs">
+      <DependentUpon>202106301739061_AddNewActivtyTypes.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityPeakDetail.cs" />
     <Compile Include="Models\AthleteSetting.cs" />
@@ -795,6 +798,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106301443457_AddVirtualRunActivityType.resx">
       <DependentUpon>202106301443457_AddVirtualRunActivityType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106301739061_AddNewActivtyTypes.resx">
+      <DependentUpon>202106301739061_AddNewActivtyTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -255,6 +255,7 @@ namespace FitnessViewer.Infrastructure.Helpers
             if (!_fvActivity.ActivityType.IsRun)
                 return;
 
+            // virtual runs do not have best efforts stored.
             if (_fvActivity.ActivityType.Id == "VirtualRun")
                 return;
 

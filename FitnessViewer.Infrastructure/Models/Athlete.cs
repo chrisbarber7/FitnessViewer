@@ -47,8 +47,7 @@ namespace FitnessViewer.Infrastructure.Models
 
         public int AthleteType { get; set; }
         public string DatePreference { get; set; }
-        public string MeasurementPreference { get; set; }
-        //public string Email { get; set; }
+        public string MeasurementPreference { get; set; }        
         public int? FTP { get; set; }
         public decimal? Weight { get; set; }
         public string Token { get; set; }
