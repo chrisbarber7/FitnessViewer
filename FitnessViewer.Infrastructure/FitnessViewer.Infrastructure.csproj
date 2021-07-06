@@ -119,7 +119,7 @@
       <HintPath>..\packages\StravaOAuth2.1.3.3\lib\net452\Owin.Security.Strava.dll</HintPath>
     </Reference>
     <Reference Include="stravadotnet, Version=3.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StravaDotNet.3.5.5\lib\net452\stravadotnet.dll</HintPath>
+      <HintPath>..\packages\StravaDotNet.3.5.6\lib\net452\stravadotnet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -572,6 +572,9 @@
       <SubType>Designer</SubType>
     </None>
     <Compile Include="Helpers\Analytics\ActivityAnalytics.cs" />
+    <Content Include="app.keys.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
