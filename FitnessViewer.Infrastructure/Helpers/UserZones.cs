@@ -37,6 +37,7 @@ namespace FitnessViewer.Infrastructure.Helpers
                     new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="1 - Recovery", ZoneStart=0 },
                     new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="2 - Endurance", ZoneStart=55},
                     new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="3 - Tempo", ZoneStart=75},
+                    new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="4 - Threshold", ZoneStart=90},
                     new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="5 - VO2 Max", ZoneStart=105},
                     new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="6 - Anaerobic", ZoneStart=120},
                     new ZoneRange() {ZoneType= ZoneType.BikePower, ZoneName="7 - Neuromuscualar", ZoneStart=200}
