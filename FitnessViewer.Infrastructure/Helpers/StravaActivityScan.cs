@@ -55,7 +55,7 @@ namespace FitnessViewer.Infrastructure.Helpers
 
             // if no activites then we're doing a full download (or the last 5 years worth).
             if (currentActivities.Count == 0)
-                startDate = DateTime.Now.AddYears(-5);
+                startDate = DateTime.Now.AddYears(-15);
 
             // loop until no activities are downloaded in last request to strava.
             while (true)
