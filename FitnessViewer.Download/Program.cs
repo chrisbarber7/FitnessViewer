@@ -24,10 +24,17 @@ namespace FitnessViewer.Download
             AutoMapperConfig();
 
             Infrastructure.Interfaces.IUnitOfWork _unitOfWork = new Infrastructure.Data.UnitOfWork();
-            
+
+            int? type = null;
+
+            if (args.Count() >= 1)
+            {
+                type = Convert.ToInt32(args[0]);
+            }
+
             while (true)
             {
-                var jobs = _unitOfWork.Queue.GetQueue(20);
+                var jobs = _unitOfWork.Queue.GetQueue(20, type);
 
                 if (jobs.Count() == 0)
                     break;
