@@ -2,6 +2,7 @@
 using FitnessViewer.Infrastructure.Core.enums;
 using FitnessViewer.Infrastructure.Core.Helpers;
 using FitnessViewer.Infrastructure.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,11 @@ namespace FitnessViewer.Infrastructure.Core.Models
     /// <summary>
     /// holds detail of a single peak.
     /// </summary>
+    /// 
+
+
+    [Index(nameof(Duration), nameof(StreamType), IsUnique = false, Name = "IX_ActivityPeakDetail_DurationAndStreamType")]
+    [Index(nameof(Value), IsUnique = false, Name = "IX_ActivityPeakDetail_Value")]
     public class ActivityPeakDetail : Entity<int>, IEntity<int>, IActivityEntity
     {
         private ActivityPeakDetail()
@@ -41,10 +47,8 @@ namespace FitnessViewer.Infrastructure.Core.Models
         public long ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
-        //[Index("IX_ActivityPeakDetail_DurationAndStreamType", 1)]
         public int Duration { get; set; }                                                // duration of peak (in seconds)
 
-        //[Index("IX_ActivityPeakDetail_Value")]
         public int? Value { get; set; }                                                  // peak
 
         private int? _startIndex;
@@ -66,7 +70,6 @@ namespace FitnessViewer.Infrastructure.Core.Models
         
         public int? EndIndex { get; private set; }                                      // ending point for the peak  Calculated from startIndex + duration.  
 
-        //[Index("IX_ActivityPeakDetail_DurationAndStreamType", 2)]
         public PeakStreamType StreamType { get; set; }
 
         [NotMapped]

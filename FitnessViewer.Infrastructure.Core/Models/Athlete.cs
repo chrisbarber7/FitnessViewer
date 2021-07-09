@@ -22,7 +22,7 @@ namespace FitnessViewer.Infrastructure.Core.Models
         public override long Id { get; set; }
 
         [Required]
-        [MaxLength(128)]
+        [MaxLength(450)]
         [ForeignKey("User")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }

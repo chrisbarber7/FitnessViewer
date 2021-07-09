@@ -1,11 +1,15 @@
 ﻿using FitnessViewer.Infrastructure.Core.Data;
 using FitnessViewer.Infrastructure.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+
+    [Index(nameof(Name), IsUnique = false, Name = "IX_BestEffort_Name")]
+    [Index(nameof(ElapsedTime), IsUnique = false, Name = "IX_BestEffort_ElapsedTime")]
     public class BestEffort : Entity<int>, IEntity<int>, IActivityEntity
     {
        // public int Id { get; set; }
@@ -17,11 +21,9 @@ namespace FitnessViewer.Infrastructure.Core.Models
         
         public int ResourceState { get; set; }
 
-        //[Index("IX_BestEffort_Name")]
         [MaxLength(20)]
         public string Name { get; set; }
 
- //       [Index("IX_BestEffort_ElapsedTime")]
         public TimeSpan ElapsedTime { get; set; }
 
         public TimeSpan MovingTime { get; set; }

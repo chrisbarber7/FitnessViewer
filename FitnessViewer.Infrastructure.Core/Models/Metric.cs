@@ -9,24 +9,24 @@ using System.Text;
 using System.Threading.Tasks;
 //using Fitbit.Models;
 using FitnessViewer.Infrastructure.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+
+    [Index(nameof(UserId), nameof(Recorded), nameof(MetricType), IsUnique = true, Name = "IX_Metric_UserIdRecorded")]
     public class Metric : Entity<int>, IEntity<int>, IUserEntity
     {
    //     public int Id { get; set; }
 
         [Required]
-        [MaxLength(128)]
+        [MaxLength(450)]
         [ForeignKey("User")]
-        //[Index("IX_Metric_UserIdRecorded", 1, IsUnique = true)]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        //[Index("IX_Metric_UserIdRecorded", 3, IsUnique = true)]
-        public MetricType MetricType { get; set; }
+             public MetricType MetricType { get; set; }
 
-        //[Index("IX_Metric_UserIdRecorded", 2, IsUnique = true)]
         public DateTime Recorded { get; set; }
         public decimal Value { get; set; }
 

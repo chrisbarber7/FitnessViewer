@@ -11,12 +11,12 @@ namespace FitnessViewer.Infrastructure.Core.Models
 {
     public class PeakStreamTypeDuration
     {
-        [Key]
-        [Column(Order = 1)]
+        //[Key]
+        //[Column(Order = 1)]
         public PeakStreamType PeakStreamType { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
+        //[Key]
+        //[Column(Order = 2)]
         public int Duration { get; set; }
     }
 }

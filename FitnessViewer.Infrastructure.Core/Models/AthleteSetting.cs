@@ -1,6 +1,7 @@
 ﻿using FitnessViewer.Infrastructure.Core.Data;
 using FitnessViewer.Infrastructure.Core.enums;
 using FitnessViewer.Infrastructure.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,20 +12,21 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
-    public class AthleteSetting : Entity<long>, IEntity<long>, IUserEntity
+    [Index(nameof(UserId), IsUnique = true, Name = "IX_AthleteSetting_UserId")]
+    public class AthleteSetting : Entity<long>, IUserEntity//IEntity<long>,
     {
-        [Key]
-        [ForeignKey("Athlete")]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public override long Id { get; set; }
-        public virtual Athlete Athlete { get; set; }
+        //[Key]
+        //[ForeignKey("Athlete")]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //public override long Id { get; set; }
+        //public virtual Athlete Athlete { get; set; }
 
         [Required]
-        [MaxLength(128)]
+        [MaxLength(450)]
         [ForeignKey("User")]
-        //[Index("IX_AthleteSetting_UserId", 1, IsUnique = true)]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
+        
 
         public DateTime DashboardStart { get; set; }
         public DateTime DashboardEnd { get; set; }

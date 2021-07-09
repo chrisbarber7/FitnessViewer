@@ -9,16 +9,22 @@ namespace FitnessViewer.Infrastructure.Core.Data
 {
     public class ApplicationDb : IdentityDbContext<ApplicationUser>, IApplicationDb
     {
+
+
         public ApplicationDb()
+
+
+
+
          //  : base("FitnessViewer")//, throwIfV1Schema: false)
         {
           //  this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public static ApplicationDb Create()
-        {
-            return new ApplicationDb();
-        }
+        //public static ApplicationDb Create()
+        //{
+        //    return new ApplicationDb();
+        //}
 
         public virtual DbSet<Athlete> Athlete { get; set; }
         public virtual DbSet<Activity> Activity { get; set; }
@@ -43,11 +49,34 @@ namespace FitnessViewer.Infrastructure.Core.Data
         public virtual DbSet<Zone> Zone { get; set; }
         public virtual DbSet<ZoneRange> ZoneRange { get; set; }
 
-  //      public virtual DbSet<AthleteSetting> AthleteSetting { get; set; }
+              public virtual DbSet<AthleteSetting> AthleteSetting { get; set; }
 
-  //      protected override void OnModelCreating(DbModelBuilder modelBuilder)
-  //      {
-  //          base.OnModelCreating(modelBuilder);
-  //      }
+        //      protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //      {
+        //          base.OnModelCreating(modelBuilder);
+        //      }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=localhost;Database=FitnessViewerCore;Trusted_Connection=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //Configure domain classes using modelBuilder here   
+
+            modelBuilder.Entity<PeakStreamTypeDuration>()
+                .HasKey(o => new { o.PeakStreamType, o.Duration });
+
+            //modelBuilder.Entity<Tenant>()
+            //    .HasOne<User>(s => s.User)
+            //    .WithMany(ta => ta.Tenants)
+            //    .HasForeignKey(u => u.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }

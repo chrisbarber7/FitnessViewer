@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
-    public class Lap : Entity<long>, IEntity<long>, IActivityEntity
+    public class Lap : Entity<long>, IEntity<long>//, IActivityEntity
     {
        // public long Id { get; set; }
 
@@ -19,10 +19,10 @@ namespace FitnessViewer.Infrastructure.Core.Models
         public long ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
-     //   [Required]
-        [ForeignKey("Athlete")]
-        public long AthleteId { get; set; }
-        public virtual Athlete Athlete { get; set; }
+       //[Required]
+       // [ForeignKey("Athlete")]
+       // public long AthleteId { get; set; }
+       // public virtual Athlete Athlete { get; set; }
 
         public int ResourceState { get; set; }
         public string Name { get; set; }

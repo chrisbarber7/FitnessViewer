@@ -21,9 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.DownloadWebJo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.TriggerDownloadWebJob", "FitnessViewer.TriggerDownloadWebJob\FitnessViewer.TriggerDownloadWebJob.csproj", "{8179D0EC-A843-479C-A687-EA829F46DC2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Infrastructure.Core", "FitnessViewer.Infrastructure.Core\FitnessViewer.Infrastructure.Core.csproj", "{187AF02D-6AB3-4493-A90F-55B04FA211E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessViewer.Infrastructure.Core", "FitnessViewer.Infrastructure.Core\FitnessViewer.Infrastructure.Core.csproj", "{187AF02D-6AB3-4493-A90F-55B04FA211E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaDotNet.Core", "StravaDotNet.Core\StravaDotNet.Core.csproj", "{5B96A067-4F7A-49EB-9F63-B6220F960C85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaDotNet.Core", "StravaDotNet.Core\StravaDotNet.Core.csproj", "{5B96A067-4F7A-49EB-9F63-B6220F960C85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Download.Core", "FitnessViewer.Download.Core\FitnessViewer.Download.Core.csproj", "{C8B3AB16-6F42-46E9-927E-19BBD040CFAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8B3AB16-6F42-46E9-927E-19BBD040CFAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8B3AB16-6F42-46E9-927E-19BBD040CFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8B3AB16-6F42-46E9-927E-19BBD040CFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8B3AB16-6F42-46E9-927E-19BBD040CFAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
