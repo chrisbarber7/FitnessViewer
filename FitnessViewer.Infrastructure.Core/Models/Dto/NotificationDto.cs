@@ -1,0 +1,20 @@
+﻿using FitnessViewer.Infrastructure.Core.enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FitnessViewer.Infrastructure.Core.Models.Dto
+{
+    public class NotificationDto
+    {
+        public int Id { get; set; }
+        public NotificationType Type { get; set; }
+        public string ActivityName { get; set; }
+        public long? ActivityId { get; set;}
+        public string ActivityLink { get; set; }
+        public int ItemsAdded { get; set; }
+        public string Message { get; set; }
+    }
+}

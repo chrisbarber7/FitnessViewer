@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer", "FitnessViewer\FitnessViewer.csproj", "{6F4D394D-7888-4799-B8BB-CB1AF158BA28}"
 EndProject
@@ -20,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.DownloadWebJob", "FitnessViewer.DownloadWebJob\FitnessViewer.DownloadWebJob.csproj", "{BD747D5A-82A1-4F6E-B3FB-989BEDBDE989}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.TriggerDownloadWebJob", "FitnessViewer.TriggerDownloadWebJob\FitnessViewer.TriggerDownloadWebJob.csproj", "{8179D0EC-A843-479C-A687-EA829F46DC2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessViewer.Infrastructure.Core", "FitnessViewer.Infrastructure.Core\FitnessViewer.Infrastructure.Core.csproj", "{187AF02D-6AB3-4493-A90F-55B04FA211E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaDotNet.Core", "StravaDotNet.Core\StravaDotNet.Core.csproj", "{5B96A067-4F7A-49EB-9F63-B6220F960C85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,8 +55,19 @@ Global
 		{8179D0EC-A843-479C-A687-EA829F46DC2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8179D0EC-A843-479C-A687-EA829F46DC2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8179D0EC-A843-479C-A687-EA829F46DC2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{187AF02D-6AB3-4493-A90F-55B04FA211E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{187AF02D-6AB3-4493-A90F-55B04FA211E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{187AF02D-6AB3-4493-A90F-55B04FA211E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{187AF02D-6AB3-4493-A90F-55B04FA211E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B96A067-4F7A-49EB-9F63-B6220F960C85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E865B8D7-9DAA-46DE-B47E-F451E9FCBAD5}
 	EndGlobalSection
 EndGlobal
