@@ -4,14 +4,16 @@ using FitnessViewer.Infrastructure.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessViewer.Infrastructure.Core.Migrations
 {
     [DbContext(typeof(ApplicationDb))]
-    partial class ApplicationDbModelSnapshot : ModelSnapshot
+    [Migration("20210710140514_RenameDownloadQueuesTable")]
+    partial class RenameDownloadQueuesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,7 +264,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("Start");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Activity");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.ActivityPeakDetail", b =>
@@ -298,7 +300,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex(new[] { "Value" }, "IX_ActivityPeakDetail_Value");
 
-                    b.ToTable("ActivityPeakDetails");
+                    b.ToTable("ActivityPeakDetail");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.ActivityPeaks", b =>
@@ -357,7 +359,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.ToTable("ActivityPeaks");
+                    b.ToTable("ActivityPeak");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.ActivityType", b =>
@@ -382,7 +384,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActivityTypes");
+                    b.ToTable("ActivityType");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Athlete", b =>
@@ -473,7 +475,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Athletes");
+                    b.ToTable("Athlete");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.AthleteSetting", b =>
@@ -563,7 +565,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
                     b.HasIndex(new[] { "UserId" }, "IX_AthleteSetting_UserId")
                         .IsUnique();
 
-                    b.ToTable("AthleteSettings");
+                    b.ToTable("AthleteSetting");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.BestEffort", b =>
@@ -612,7 +614,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex(new[] { "Name" }, "IX_BestEffort_Name");
 
-                    b.ToTable("BestEfforts");
+                    b.ToTable("BestEffort");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Calendar", b =>
@@ -652,7 +654,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasKey("Date");
 
-                    b.ToTable("Calendars");
+                    b.ToTable("Calendar");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.DownloadQueue", b =>
@@ -734,7 +736,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("AthleteId");
 
-                    b.ToTable("Gears");
+                    b.ToTable("Gear");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Lap", b =>
@@ -802,7 +804,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.ToTable("Laps");
+                    b.ToTable("Lap");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Metric", b =>
@@ -834,7 +836,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
                     b.HasIndex(new[] { "UserId", "Recorded", "MetricType" }, "IX_Metric_UserIdRecorded")
                         .IsUnique();
 
-                    b.ToTable("Metrics");
+                    b.ToTable("Metric");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Notification", b =>
@@ -860,7 +862,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.PeakStreamTypeDuration", b =>
@@ -873,7 +875,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasKey("PeakStreamType", "Duration");
 
-                    b.ToTable("PeakStreamTypeDurations");
+                    b.ToTable("PeakStreamTypeDuration");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Stream", b =>
@@ -930,7 +932,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
                     b.HasIndex(new[] { "ActivityId", "Time" }, "IX_Stream_ActivityIdAndStream")
                         .IsUnique();
 
-                    b.ToTable("Streams");
+                    b.ToTable("Stream");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.UserNotification", b =>
@@ -957,7 +959,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserNotifications");
+                    b.ToTable("UserNotification");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.Zone", b =>
@@ -985,7 +987,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Zones");
+                    b.ToTable("Zone");
                 });
 
             modelBuilder.Entity("FitnessViewer.Infrastructure.Core.Models.ZoneRange", b =>
@@ -1014,7 +1016,7 @@ namespace FitnessViewer.Infrastructure.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ZoneRanges");
+                    b.ToTable("ZoneRange");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

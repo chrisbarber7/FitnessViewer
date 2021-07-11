@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Notifications")]
     public class Notification : Entity<int>, IEntity<int>
     {
         private Notification()

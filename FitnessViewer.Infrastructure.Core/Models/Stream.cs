@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Streams")]
     [Index(nameof(ActivityId), IsUnique = true, Name = "IX_Stream_ActivityId")]
     [Index(nameof(ActivityId), nameof(Time), IsUnique = true, Name = "IX_Stream_ActivityIdAndStream")]
     public class Stream :  Entity<int>, IEntity<int>, IActivityEntity

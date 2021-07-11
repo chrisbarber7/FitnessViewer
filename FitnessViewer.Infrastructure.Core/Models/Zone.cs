@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Zones")]
     public class Zone : Entity<int>, IEntity<int>, IUserEntity
     {
       //  public int Id { get; set; }

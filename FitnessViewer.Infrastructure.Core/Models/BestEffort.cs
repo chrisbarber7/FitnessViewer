@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
-
+    [Table("BestEfforts")]
     [Index(nameof(Name), IsUnique = false, Name = "IX_BestEffort_Name")]
     [Index(nameof(ElapsedTime), IsUnique = false, Name = "IX_BestEffort_ElapsedTime")]
     public class BestEffort : Entity<int>, IEntity<int>, IActivityEntity

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("ActivityPeaks")]
     public class ActivityPeaks : Entity<int>, IEntity<int>, IActivityEntity
     {
         [Required]

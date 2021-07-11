@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("AthleteSettings")]
     [Index(nameof(UserId), IsUnique = true, Name = "IX_AthleteSetting_UserId")]
     public class AthleteSetting : Entity<long>, IUserEntity//IEntity<long>,
     {

@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Activities")]
     public class Activity : Entity<long>, IEntity<long>
     {
         // disabling auto identity column to allow use of strava activity id as the key.

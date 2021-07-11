@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Gears")]
     public class Gear
     {
         private Gear()

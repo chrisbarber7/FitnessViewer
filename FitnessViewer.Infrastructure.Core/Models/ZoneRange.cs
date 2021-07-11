@@ -9,6 +9,7 @@ namespace FitnessViewer.Infrastructure.Core.Models
     /// <summary>
     /// Lower/Upper zone ranges for a user/sport 
     /// </summary>
+    [Table("ZoneRanges")]
     public class ZoneRange : Entity<int>, IEntity<int>, IUserEntity
     {
      //   public int Id { get; set; }

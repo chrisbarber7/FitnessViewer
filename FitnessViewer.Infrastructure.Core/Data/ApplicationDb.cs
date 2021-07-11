@@ -58,7 +58,7 @@ namespace FitnessViewer.Infrastructure.Core.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=FitnessViewerCore;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=FitnessViewer;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

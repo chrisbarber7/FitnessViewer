@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Athletes")]
     public class Athlete : Entity<long>, IEntity<long>, IUserEntity
     {
         public Athlete() 

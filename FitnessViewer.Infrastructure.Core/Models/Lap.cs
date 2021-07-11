@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("Laps")]
     public class Lap : Entity<long>, IEntity<long>//, IActivityEntity
     {
        // public long Id { get; set; }

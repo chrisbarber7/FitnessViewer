@@ -11,6 +11,7 @@ namespace FitnessViewer.Infrastructure.Core.Models
     /// <summary>
     /// Calendar table.  To be used for easy reporting of week/month/year stats
     /// </summary>
+    [Table("Calendars")]
     public class Calendar
     {
         public Calendar(DateTime d)

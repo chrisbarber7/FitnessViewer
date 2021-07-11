@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("PeakStreamTypeDurations")]
     public class PeakStreamTypeDuration
     {
         //[Key]

@@ -10,6 +10,7 @@ using FitnessViewer.Infrastructure.Core.Data;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("ActivityTypes")]
     public class ActivityType : Entity<string>, IEntity<string>
     {
         [Key]

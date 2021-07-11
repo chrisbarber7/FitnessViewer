@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
+    [Table("DownloadQueues")]
     public class DownloadQueue : Entity<int>, IEntity<int>, IUserEntity
     {
         private DownloadQueue()

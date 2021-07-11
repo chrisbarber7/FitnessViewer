@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessViewer.Infrastructure.Core.Models
 {
-
+    [Table("Metrics")]
     [Index(nameof(UserId), nameof(Recorded), nameof(MetricType), IsUnique = true, Name = "IX_Metric_UserIdRecorded")]
     public class Metric : Entity<int>, IEntity<int>, IUserEntity
     {

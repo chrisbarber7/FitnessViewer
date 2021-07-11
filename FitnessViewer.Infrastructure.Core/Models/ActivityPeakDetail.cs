@@ -18,7 +18,7 @@ namespace FitnessViewer.Infrastructure.Core.Models
     /// </summary>
     /// 
 
-
+    [Table("ActivityPeakDetails")]
     [Index(nameof(Duration), nameof(StreamType), IsUnique = false, Name = "IX_ActivityPeakDetail_DurationAndStreamType")]
     [Index(nameof(Value), IsUnique = false, Name = "IX_ActivityPeakDetail_Value")]
     public class ActivityPeakDetail : Entity<int>, IEntity<int>, IActivityEntity
