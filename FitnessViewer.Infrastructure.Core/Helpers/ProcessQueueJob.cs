@@ -6,6 +6,9 @@ using System.Linq;
 
 using System.Configuration;
 using Strava.TokenRefresh;
+using Microsoft.Extensions.Configuration;
+
+using Newtonsoft.Json;
 
 namespace FitnessViewer.Infrastructure.Core.Helpers
 {
@@ -14,11 +17,15 @@ namespace FitnessViewer.Infrastructure.Core.Helpers
         private Interfaces.IUnitOfWork _uow;
         private int _jobId;
         private DownloadQueue _jobDetails;
+        private IConfiguration _config;
 
         public ProcessQueueJob(int jobId)
         {
             _uow = new Data.UnitOfWork();
             _jobId = jobId;
+
+             _config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true)
+     .Build();
         }
 
         public void ResumbitJob()
@@ -104,8 +111,8 @@ namespace FitnessViewer.Infrastructure.Core.Helpers
                 if (expiresIn < 60)
                 {
 
-                    var clientId = "REPLACE_ME";// ConfigurationManager.AppSettings["stravaApiClientId"];
-                    var clientSecret = "REPLACE_ME";// ConfigurationManager.AppSettings["stravaApiClientSecret"];
+                    var clientId = _config["StravaClientId"];
+                    var clientSecret = _config["StravaClientSecret"];
 
 
                     var newToken = StravaTokenRefresh.RefreshToken(currentToken, clientId, clientSecret);

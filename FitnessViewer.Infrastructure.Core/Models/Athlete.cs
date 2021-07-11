@@ -28,7 +28,7 @@ namespace FitnessViewer.Infrastructure.Core.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        public AthleteSetting AthleteSetting { get; set;  }
+    //    public AthleteSetting AthleteSetting { get; set;  }
         
 
         public string FirstName { get; set; }

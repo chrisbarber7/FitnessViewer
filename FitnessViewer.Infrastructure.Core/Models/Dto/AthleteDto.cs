@@ -12,14 +12,15 @@ namespace FitnessViewer.Infrastructure.Core.Models.Dto
     {
         public static AthleteDto Create(IUnitOfWork uow, string userId)
         {
-            Athlete a = uow.CRUDRepository.GetByUserId<Athlete>(userId, o => o.AthleteSetting).FirstOrDefault();
+            throw new NotImplementedException();
+            //Athlete a = uow.CRUDRepository.GetByUserId<Athlete>(userId, o => o.AthleteSetting).FirstOrDefault();
 
-            if (a == null)
-                return null;
+            //if (a == null)
+            //    return null;
 
-            AthleteDto dto = ObjectMapper.Mapper.Map<AthleteDto>(a);
-            dto.SetupDateRange();
-            return dto;
+            //AthleteDto dto = ObjectMapper.Mapper.Map<AthleteDto>(a);
+            //dto.SetupDateRange();
+            //return dto;
         }
 
         public static AthleteDto CreateFromAthlete(Athlete fvAthlete)
