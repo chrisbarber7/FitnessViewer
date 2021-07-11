@@ -250,3 +250,5 @@ connectionStrings.config
 /FitnessViewer/Properties/PublishProfiles/FitnessViewer - Web Deploy.pubxml
 /FitnessViewer.Download/Properties/PublishProfiles/FitnessViewer - Web Deploy.pubxml
 *.pubxml
+/FitnessViewer.Download.Core/appsettings.json
+/FitnessViewer.Infrastructure.Core/appsettings.json
